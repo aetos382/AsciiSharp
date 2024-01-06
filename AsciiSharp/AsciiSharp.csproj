@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <CLSCompliant>true</CLSCompliant>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <IsTrimmable>True</IsTrimmable>
+    <IsAotCompatible>True</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AsciiSharp.Tests" />
+  </ItemGroup>
+
+</Project>
