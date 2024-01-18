@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IsTrimmable>True</IsTrimmable>
     <IsAotCompatible>True</IsAotCompatible>
