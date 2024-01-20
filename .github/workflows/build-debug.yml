@@ -39,6 +39,7 @@ jobs:
           --collect:"XPlat Code Coverage"
       
       - uses: bibipkins/dotnet-test-reporter@v1.3.3
+        if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           results-path: 'Test/**/TestResults/**/*.trx'
