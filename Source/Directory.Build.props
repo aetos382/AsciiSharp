@@ -11,8 +11,9 @@
     <PackageProjectUrl>https://github.com/aetos382/AsciiSharp</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>asciidoc</PackageTags>
-    <ApiCompatValidateAssemblies>true</ApiCompatValidateAssemblies>
+    <ApiCompatValidateAssemblies>false</ApiCompatValidateAssemblies>
     <EnablePackageValidation>true</EnablePackageValidation>
+    <ApiCompatEnableRuleCannotChangeParameterName>true</ApiCompatEnableRuleCannotChangeParameterName>
   </PropertyGroup>
 
   <ItemGroup>

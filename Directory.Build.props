@@ -5,9 +5,9 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <ArtifactsPath>$(MSBuildThisFileDirectory)\artifacts</ArtifactsPath>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest-all</AnalysisLevel>
     <WarningLevel>9999</WarningLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DefaultItemExcludesInProjectFolder>
       $(DefaultItemExcludesInProjectFolder);
@@ -24,5 +24,6 @@
     <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
+    <OptimizeImplicitlyTriggeredBuild>true</OptimizeImplicitlyTriggeredBuild>
   </PropertyGroup>
 </Project>
