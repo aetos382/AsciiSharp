@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build-dotnet:
     runs-on: ubuntu-latest
@@ -31,3 +35,12 @@ jobs:
       - run: >-
           dotnet test
           --configuration Debug
+          --logger trx
+          --collect:"XPlat Code Coverage"
+      
+      - uses: bibipkins/dotnet-test-reporter@v1.3.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          results-path: 'Test/**/TestResults/**/*.trx'
+          coverage-path: 'Test/**/TestResults/**/coverage.cobertura.xml'
+          coverage-type: cobertura

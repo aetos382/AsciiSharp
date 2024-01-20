@@ -31,3 +31,4 @@ jobs:
       - run: >-
           dotnet test
           --configuration Release
+          --collect:"XPlat Code Coverage"
