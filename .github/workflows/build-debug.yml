@@ -1,0 +1,31 @@
+name: build-debug
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-dotnet:
+    runs-on: ubuntu-latest
+
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      NUGET_XMLDOC_MODE: ''
+
+    steps:
+      - uses: actions/Checkout@v4
+      
+      - uses: actions/setup-dotnet@v4
+        with:
+          cache: true
+          cache-dependency-path: "${env.GITHUB_WORKSPACE}/**/packages.lock.json"
+      
+      - run: >-
+          dotnet build
+          --configuration Debug
+
+      - run: >-
+          dotnet test
+          --configuration Debug
