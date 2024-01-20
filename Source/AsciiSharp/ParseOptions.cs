@@ -9,7 +9,9 @@ public class ParseOptions
 
     public IFileResolver? FileResolver { get; set; }
 
+    public bool PreprocessDocument { get; set; }
 
+    public IDocumentPreprocessor[]? Preprocessors { get; set; }
 
     public static readonly ParseOptions Default = new();
 }
