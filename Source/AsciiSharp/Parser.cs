@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace AsciiSharp;
 
-internal class Parser
+public class Parser
 {
     public Parser(
         ParseOptions options)
