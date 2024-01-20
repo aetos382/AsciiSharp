@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSharp", "AsciiSharp\AsciiSharp.csproj", "{7AF3A08A-5C64-49E1-84CA-1E79B61A87BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSharp", "Source\AsciiSharp\AsciiSharp.csproj", "{7AF3A08A-5C64-49E1-84CA-1E79B61A87BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSharp.Tests", "AsciiSharp.Tests\AsciiSharp.Tests.csproj", "{887DA844-6454-4405-A6A8-8540C2F1AF27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSharp.Tests", "Test\AsciiSharp.Tests\AsciiSharp.Tests.csproj", "{887DA844-6454-4405-A6A8-8540C2F1AF27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

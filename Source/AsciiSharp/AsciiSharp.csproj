@@ -3,11 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <CLSCompliant>true</CLSCompliant>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <IsTrimmable>True</IsTrimmable>
-    <IsAotCompatible>True</IsAotCompatible>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsTrimmable>true</IsTrimmable>
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AsciiSharp;
 
@@ -10,8 +12,9 @@ internal class Parser
         this.Options = options;
     }
 
-    public Document ParseDocument(
-        ReadOnlySpan<char> source)
+    public ValueTask<Document> ParseDocumentAsync(
+        ReadOnlySpan<char> source,
+        CancellationToken cancellationToken)
     {
         foreach (var line in source.GetLines())
         {

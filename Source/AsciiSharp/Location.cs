@@ -1,5 +1,5 @@
 ﻿namespace AsciiSharp;
 
-public class ParseOptions
+public readonly struct Location
 {
 }
