@@ -10,7 +10,8 @@
     <WarningLevel>9999</WarningLevel>
     <DefaultItemExcludesInProjectFolder>
       $(DefaultItemExcludesInProjectFolder);
-      packages.lock.json
+      packages.lock.json;
+      TestResults\**
     </DefaultItemExcludesInProjectFolder>
     <DefaultItemExcludes>
       $(DefaultItemExcludes);
