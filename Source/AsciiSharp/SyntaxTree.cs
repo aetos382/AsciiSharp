@@ -49,13 +49,13 @@ public class SyntaxTree
         return result;
     }
 
-    public ReadOnlySequence<char> AsSequence()
+    public ReadOnlySequence<char> ToSequence()
     {
         return new ReadOnlySequence<char>("SyntaxTree".AsMemory());
     }
 
     public override string ToString()
     {
-        return this.AsSequence().ToString();
+        return this.ToSequence().ToString();
     }
 }
