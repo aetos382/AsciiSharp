@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AsciiSharp;
+using AsciiSharp.Model;
+
+namespace AsciiSharp.Parsing;
 
 public class Parser
 {

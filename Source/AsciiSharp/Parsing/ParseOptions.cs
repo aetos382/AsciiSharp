@@ -1,4 +1,4 @@
-﻿namespace AsciiSharp;
+﻿namespace AsciiSharp.Parsing;
 
 public class ParseOptions
 {

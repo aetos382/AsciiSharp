@@ -2,5 +2,11 @@
 
 public enum SyntaxKind
 {
-    Document
+    Document,
+    Section,
+
+    Colon,
+    SectionMarker,
+
+    EndOfSource
 }

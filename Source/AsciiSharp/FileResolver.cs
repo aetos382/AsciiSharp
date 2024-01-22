@@ -1,4 +1,6 @@
-﻿namespace AsciiSharp;
+﻿using AsciiSharp.Parsing;
+
+namespace AsciiSharp;
 
 public class FileResolver :
     IFileResolver
