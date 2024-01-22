@@ -7,20 +7,15 @@ namespace AsciiSharp;
 public class Parser
 {
     public Parser(
-        ParseOptions options)
+        ParseOptions? options)
     {
-        this.Options = options;
+        this.Options = options ?? ParseOptions.Default;
     }
 
-    public ValueTask<Document> ParseDocumentAsync(
-        ReadOnlySpan<char> source,
+    public ValueTask<SyntaxTree> ParseAsync(
+        ReadOnlyMemory<char> source,
         CancellationToken cancellationToken)
     {
-        foreach (var line in source.GetLines())
-        {
-            var x = 1;
-        }
-
         throw new NotImplementedException();
     }
 
