@@ -49,13 +49,17 @@ public class SyntaxTree
         return result;
     }
 
-    public ReadOnlySequence<char> ToSequence()
+    public void WriteTo(
+        IBufferWriter<char> writer)
     {
-        return new ReadOnlySequence<char>("SyntaxTree".AsMemory());
+        ArgumentNullException.ThrowIfNull(writer);
+
+        throw new NotImplementedException();
     }
 
+    // TODO: implement
     public override string ToString()
     {
-        return this.ToSequence().ToString();
+        return base.ToString();
     }
 }
