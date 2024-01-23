@@ -1,4 +1,4 @@
-﻿namespace AsciiSharp;
+﻿namespace AsciiSharp.Model;
 
 public class Diagnostic
 {

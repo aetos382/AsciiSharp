@@ -1,4 +1,4 @@
-﻿namespace AsciiSharp;
+﻿namespace AsciiSharp.Model;
 
 public enum SyntaxKind
 {
@@ -6,7 +6,7 @@ public enum SyntaxKind
     Section,
 
     Colon,
-    SectionMarker,
+    SectionHeadingMarkerToken,
 
     EndOfSource
 }

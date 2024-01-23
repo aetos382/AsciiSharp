@@ -1,5 +1,7 @@
 ﻿using System;
 
+using AsciiSharp.Model;
+
 namespace AsciiSharp.Parsing;
 
 public class Scanner
@@ -15,13 +17,16 @@ public class Scanner
 
     }
 
-    private void ScanToken()
+    private void ScanToken(ref TokenInfo info)
     {
         var c = this.GetAndAdvance();
 
         switch (c)
         {
-
+            case '=':
+                this.ScanWhile('=');
+                info.Kind = SyntaxKind.SectionHeadingMarkerToken;
+                break;
         }
     }
 
@@ -29,18 +34,27 @@ public class Scanner
     {
         get
         {
-            return this._current >= this._source.Length;
+            return this._position >= this._source.Length;
         }
     }
 
     private char GetAndAdvance()
     {
-        return this._source.Span[this._current++];
+        var c = this.Peek();
+
+        this.Advance();
+
+        return c;
+    }
+
+    private void Advance()
+    {
+        ++this._position;
     }
 
     private char Peek()
     {
-        return this._source.Span[this._current];
+        return this._source.Span[this._position];
     }
 
     private bool IsMatch(char nextExpected)
@@ -55,13 +69,20 @@ public class Scanner
             return false;
         }
 
-        ++this._current;
+        ++this._position;
         return true;
+    }
+
+    private void ScanWhile(char expected)
+    {
+        while (this.IsMatch(expected))
+        {
+        }
     }
 
     private ReadOnlyMemory<char> _source;
     private int _start = 0;
-    private int _current = 0;
+    private int _position = 0;
     private int _line = 1;
     private int _column = 1;
 }
