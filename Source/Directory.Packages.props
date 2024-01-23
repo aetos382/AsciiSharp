@@ -1,5 +1,5 @@
 <Project>
-  <Import Project="$([MSBuild]::GetPathOfFileAbove($(MSBuildThisFile), '$(MSBuildThisFileDirectory)..'))" />
+  <Import Project="$(MSBuildThisFileDirectory)../$(MSBuildThisFile)" />
 
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.DotNet.ApiCompat.Task" Version="8.0.101" />
