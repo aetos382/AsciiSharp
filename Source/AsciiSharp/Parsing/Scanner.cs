@@ -4,17 +4,23 @@ using AsciiSharp.Model;
 
 namespace AsciiSharp.Parsing;
 
-public class Scanner
+internal class Scanner
 {
     public Scanner(
-        ReadOnlyMemory<char> source)
+        ReadOnlyMemory<char> source,
+        ScanOptions options)
     {
         this._source = source;
+        this._options = options;
     }
 
     public void ScanTokens()
     {
-
+        while (!this.IsAtEnd)
+        {
+            var token = new TokenInfo();
+            this.ScanToken(ref token);
+        }
     }
 
     private void ScanToken(ref TokenInfo info)
@@ -81,6 +87,7 @@ public class Scanner
     }
 
     private ReadOnlyMemory<char> _source;
+    private readonly ScanOptions _options;
     private int _start = 0;
     private int _position = 0;
     private int _line = 1;

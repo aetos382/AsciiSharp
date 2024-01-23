@@ -1,6 +1,7 @@
 ﻿namespace AsciiSharp.Model;
 
-public abstract class SyntaxNode
+public abstract class SyntaxNode :
+    SyntaxElement
 {
     public abstract SyntaxKind Kind { get; }
 }
