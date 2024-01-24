@@ -48,7 +48,7 @@ public class SyntaxTree
         var parser = new Parser(parseOptions);
 
         var result = await parser
-            .ParseAsync(source, cancellationToken)
+            .ParseAsync(source, path, cancellationToken)
             .ConfigureAwait(false);
 
         return result;

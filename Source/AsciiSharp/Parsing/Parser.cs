@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using AsciiSharp.Model;
+using AsciiSharp.Syntax;
 
 namespace AsciiSharp.Parsing;
 
@@ -16,7 +16,8 @@ public class Parser
 
     public ValueTask<SyntaxTree> ParseAsync(
         ReadOnlyMemory<char> source,
-        CancellationToken cancellationToken)
+        string? path = null,
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
