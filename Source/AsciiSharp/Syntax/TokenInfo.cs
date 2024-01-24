@@ -1,4 +1,4 @@
-﻿namespace AsciiSharp.Model;
+﻿namespace AsciiSharp.Syntax;
 
 internal struct TokenInfo
 {

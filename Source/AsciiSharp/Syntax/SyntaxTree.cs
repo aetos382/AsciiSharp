@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using AsciiSharp.Parsing;
 
-namespace AsciiSharp.Model;
+namespace AsciiSharp.Syntax;
 
 public class SyntaxTree
 {

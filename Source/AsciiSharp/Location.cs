@@ -1,4 +1,4 @@
-﻿namespace AsciiSharp.Model;
+﻿namespace AsciiSharp;
 
 public readonly struct Location
 {

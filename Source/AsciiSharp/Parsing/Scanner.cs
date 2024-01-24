@@ -1,6 +1,6 @@
 ﻿using System;
 
-using AsciiSharp.Model;
+using AsciiSharp.Syntax;
 
 namespace AsciiSharp.Parsing;
 
