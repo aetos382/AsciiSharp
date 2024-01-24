@@ -2,5 +2,7 @@
 
 public interface ISyntaxVisitor
 {
-    void VisitDocument(Document document);
+    void VisitDocument(Document node);
+
+    void VisitDocumentHeader(DocumentHeader node);
 }

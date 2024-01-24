@@ -1,6 +1,8 @@
 ﻿namespace AsciiSharp.Syntax;
 
-public interface ISyntaxVisitor<T>
+public interface ISyntaxVisitor<out T>
 {
-    T VisitDocument(Document document);
+    T VisitDocument(Document node);
+
+    T VisitDocumentHeader(DocumentHeader node);
 }

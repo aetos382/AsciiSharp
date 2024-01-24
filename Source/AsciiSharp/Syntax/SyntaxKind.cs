@@ -3,6 +3,7 @@
 public enum SyntaxKind
 {
     Document,
+    DocumentHeader,
     Section,
 
     Colon,

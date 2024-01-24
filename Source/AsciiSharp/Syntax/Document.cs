@@ -7,6 +7,8 @@ public partial class Document :
 {
     public override SyntaxKind Kind => SyntaxKind.Document;
 
+    public DocumentHeader Header { get; }
+
     public override void Accept(
         ISyntaxVisitor visitor)
     {
