@@ -19,8 +19,34 @@ internal class Scanner
         while (!this.IsAtEnd)
         {
             var token = new TokenInfo();
+
+            var leadingTrivia = this.ScanTrivia();
+
             this.ScanToken(ref token);
+
+            var trailingTrivia = this.ScanTrivia();
+
+            this.CreateToken(token, leadingTrivia, trailingTrivia);
         }
+    }
+
+    private SyntaxTriviaList ScanTrivia()
+    {
+        return new SyntaxTriviaList();
+    }
+
+    private SyntaxToken CreateToken(
+        in TokenInfo tokenInfo,
+        SyntaxTriviaList leadingTrivia,
+        SyntaxTriviaList trailingTrivia)
+    {
+        switch (tokenInfo.Kind)
+        {
+            case SyntaxKind.SectionHeadingMarkerToken:
+                return SyntaxFactory.SectionHeadingMarker(tokenInfo.Text, leadingTrivia, trailingTrivia);
+        }
+
+        throw new NotImplementedException();
     }
 
     private void ScanToken(ref TokenInfo info)
