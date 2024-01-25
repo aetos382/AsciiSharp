@@ -18,4 +18,10 @@ public class SyntaxVisitor :
     {
         ArgumentNullException.ThrowIfNull(node);
     }
+
+    public virtual void VisitSection(
+        Section node)
+    {
+        ArgumentNullException.ThrowIfNull(node);
+    }
 }
