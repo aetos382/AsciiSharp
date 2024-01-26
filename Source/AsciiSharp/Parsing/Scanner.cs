@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using AsciiSharp.Syntax;
 
@@ -14,19 +15,20 @@ internal class Scanner
         this._options = options;
     }
 
-    public void ScanTokens()
+    public IEnumerable<SyntaxToken> ScanTokens()
     {
         while (!this.IsAtEnd)
         {
-            var token = new TokenInfo();
+            var tokenInfo = new TokenInfo();
 
             var leadingTrivia = this.ScanTrivia();
 
-            this.ScanToken(ref token);
+            this.ScanToken(ref tokenInfo);
 
             var trailingTrivia = this.ScanTrivia();
 
-            this.CreateToken(token, leadingTrivia, trailingTrivia);
+            var token = this.CreateToken(tokenInfo, leadingTrivia, trailingTrivia);
+            yield return token;
         }
     }
 

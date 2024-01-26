@@ -15,6 +15,11 @@ public abstract class SyntaxElement
 
     public TextSpan FullSpan { get; }
 
+    public Location GetLocation()
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<Diagnostic> GetDiagnostics()
     {
         throw new NotImplementedException();
