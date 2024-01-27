@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using AsciiSharp.Syntax;
 
@@ -8,17 +9,18 @@ namespace AsciiSharp.Parsing;
 internal class Scanner
 {
     public Scanner(
-        ReadOnlyMemory<char> source,
-        ScanOptions options)
+        ReadOnlyMemory<char> source)
     {
         this._source = source;
-        this._options = options;
     }
 
-    public IEnumerable<SyntaxToken> ScanTokens()
+    public IEnumerable<SyntaxToken> ScanTokens(
+        CancellationToken cancellationToken)
     {
-        while (!this.IsAtEnd)
+        while (!this.IsAtEnd())
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var tokenInfo = new TokenInfo();
 
             var leadingTrivia = this.ScanTrivia();
@@ -53,32 +55,101 @@ internal class Scanner
 
     private void ScanToken(ref TokenInfo info)
     {
-        var c = this.GetAndAdvance();
+        if (!this.TryGetAndAdvance(out var c))
+        {
+            info.Kind = SyntaxKind.EndOfSourceToken;
+            return;
+        }
 
         switch (c)
         {
+            case >= 'a' and <= 'z':
+            case >= 'A' and <= 'Z':
+                info.Kind = SyntaxKind.IdentifierToken;
+                break;
+
             case '=':
                 this.ScanWhile('=');
+                // TODO:
                 info.Kind = SyntaxKind.SectionHeadingMarkerToken;
+                info.Kind = SyntaxKind.ExampleBlockDelimiterToken;
+                break;
+
+            case '-':
+                info.Kind = SyntaxKind.ListingBlockDelimiterToken;
+                break;
+
+            case '.':
+                info.Kind = SyntaxKind.LiteralBlockDelimiterToken;
+                break;
+
+            case '*':
+                info.Kind = SyntaxKind.SidebarBlockDelimiterToken;
+                break;
+
+            case '+':
+                info.Kind = SyntaxKind.PassBlockDelimiterToken;
+                break;
+
+            case '_':
+                info.Kind = SyntaxKind.QuoteBlockDelimiterToken;
+                break;
+            
+            case '[':
+                info.Kind = SyntaxKind.OpenBracketToken;
+                break;
+
+            case ']':
+                info.Kind = SyntaxKind.CloseBracketToken;
+                break;
+
+            case '/':
+                if (!this.IsMatch('/'))
+                {
+                    break;
+                }
+
+                this.ScanWhile(() => !this.IsAtEnd() && !this.IsNewLine);
+
                 break;
         }
     }
 
-    private bool IsAtEnd
+    private bool IsAtEnd(
+        int skip = 0)
+    {
+        return this._position + skip >= this._source.Length;
+    }
+
+    private bool IsNewLine
     {
         get
         {
-            return this._position >= this._source.Length;
+            if (!this.TryPeek(out var c))
+            {
+                return false;
+            }
+
+            if (c is '\r' or '\n' or '\u0085' or '\u2028' or '\u2029')
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 
-    private char GetAndAdvance()
+    private bool TryGetAndAdvance(
+        out char result)
     {
-        var c = this.Peek();
+        if (!this.TryPeek(out result))
+        {
+            return false;
+        }
 
         this.Advance();
 
-        return c;
+        return true;
     }
 
     private void Advance()
@@ -86,19 +157,29 @@ internal class Scanner
         ++this._position;
     }
 
-    private char Peek()
+    private bool TryPeek(
+        out char result,
+        int skip = 0)
     {
-        return this._source.Span[this._position];
+        if (this.IsAtEnd(skip))
+        {
+            result = default;
+            return false;
+        }
+
+        result = this._source.Span[this._position + skip];
+        return true;
     }
 
-    private bool IsMatch(char nextExpected)
+    private bool IsMatch(
+        char nextExpected)
     {
-        if (this.IsAtEnd)
+        if (this.IsAtEnd())
         {
             return false;
         }
 
-        if (this.Peek() != nextExpected)
+        if (!this.TryPeek(out var c) || c != nextExpected)
         {
             return false;
         }
@@ -107,15 +188,23 @@ internal class Scanner
         return true;
     }
 
-    private void ScanWhile(char expected)
+    private void ScanWhile(
+        char expected)
     {
         while (this.IsMatch(expected))
         {
         }
     }
 
+    private void ScanWhile(
+        Func<bool> predicate)
+    {
+        while (!this.TryPeek(out var c) || !predicate())
+        {
+        }
+    }
+
     private ReadOnlyMemory<char> _source;
-    private readonly ScanOptions _options;
     private int _start = 0;
     private int _position = 0;
     private int _line = 1;

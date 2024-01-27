@@ -3,7 +3,7 @@
 public class DocumentHeader :
     SyntaxNode
 {
-    public override SyntaxKind Kind => SyntaxKind.DocumentHeader;
+    public override SyntaxKind Kind => SyntaxKind.DocumentHeaderNode;
 
     public override void Accept(ISyntaxVisitor visitor)
     {

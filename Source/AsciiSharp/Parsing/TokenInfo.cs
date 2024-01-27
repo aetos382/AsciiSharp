@@ -1,4 +1,6 @@
-﻿namespace AsciiSharp.Syntax;
+﻿using AsciiSharp.Syntax;
+
+namespace AsciiSharp.Parsing;
 
 internal struct TokenInfo
 {

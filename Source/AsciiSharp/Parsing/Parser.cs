@@ -19,7 +19,9 @@ public class Parser
         string? path = null,
         CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var scanner = new Scanner(source);
+
+        return default;
     }
 
     public ParseOptions Options { get; }

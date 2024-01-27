@@ -5,7 +5,7 @@ namespace AsciiSharp.Syntax;
 public partial class Document :
     Block
 {
-    public override SyntaxKind Kind => SyntaxKind.Document;
+    public override SyntaxKind Kind => SyntaxKind.DocumentNode;
 
     public DocumentHeader Header { get; }
 

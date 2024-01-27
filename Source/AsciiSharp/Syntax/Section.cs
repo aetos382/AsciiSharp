@@ -5,7 +5,7 @@ namespace AsciiSharp.Syntax;
 public class Section :
     Block
 {
-    public override SyntaxKind Kind => SyntaxKind.Section;
+    public override SyntaxKind Kind => SyntaxKind.SectionNode;
 
     public override void Accept(
         ISyntaxVisitor visitor)

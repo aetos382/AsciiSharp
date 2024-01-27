@@ -15,6 +15,8 @@ public abstract class SyntaxElement
 
     public TextSpan FullSpan { get; }
 
+    public int Width { get; }
+    
     public Location GetLocation()
     {
         throw new NotImplementedException();

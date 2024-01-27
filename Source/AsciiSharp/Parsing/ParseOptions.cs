@@ -13,5 +13,7 @@ public class ParseOptions
 
     public IDocumentPreprocessor[]? Preprocessors { get; set; }
 
+    public bool SkipTrivias { get; set; }
+
     public static readonly ParseOptions Default = new();
 }
