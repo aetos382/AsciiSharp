@@ -44,13 +44,7 @@ internal class Scanner
         SyntaxTriviaList leadingTrivia,
         SyntaxTriviaList trailingTrivia)
     {
-        switch (tokenInfo.Kind)
-        {
-            case SyntaxKind.SectionHeadingMarkerToken:
-                return SyntaxFactory.SectionHeadingMarker(tokenInfo.Text, leadingTrivia, trailingTrivia);
-        }
-
-        throw new NotImplementedException();
+        return new SyntaxToken(tokenInfo.Kind, tokenInfo.Text, leadingTrivia, trailingTrivia);
     }
 
     private void ScanToken(ref TokenInfo info)
@@ -71,7 +65,7 @@ internal class Scanner
             case '=':
                 this.ScanWhile('=');
                 // TODO:
-                info.Kind = SyntaxKind.SectionHeadingMarkerToken;
+                info.Kind = SyntaxKind.EqualsSequenceToken;
                 info.Kind = SyntaxKind.ExampleBlockDelimiterToken;
                 break;
 

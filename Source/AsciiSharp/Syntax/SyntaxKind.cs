@@ -51,7 +51,7 @@ public enum SyntaxKind
     LessThanToken,
     GreaterThanToken,
 
-    SectionHeadingMarketToken,
+    EqualsSequenceToken,
 
     EndOfLineTrivia,
     LineCommentTrivia,
