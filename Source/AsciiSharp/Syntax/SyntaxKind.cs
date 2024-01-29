@@ -2,6 +2,10 @@
 
 public enum SyntaxKind
 {
+    None,
+    Unknown,
+    Error,
+
     DocumentNode,
     DocumentHeaderNode,
     AuthorLineNode,

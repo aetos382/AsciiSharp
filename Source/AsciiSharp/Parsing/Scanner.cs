@@ -66,7 +66,6 @@ internal class Scanner
                 this.ScanWhile('=');
                 // TODO:
                 info.Kind = SyntaxKind.EqualsSequenceToken;
-                info.Kind = SyntaxKind.ExampleBlockDelimiterToken;
                 break;
 
             case '-':
@@ -88,7 +87,7 @@ internal class Scanner
             case '_':
                 info.Kind = SyntaxKind.QuoteBlockDelimiterToken;
                 break;
-            
+
             case '[':
                 info.Kind = SyntaxKind.OpenBracketToken;
                 break;
@@ -104,7 +103,16 @@ internal class Scanner
                 }
 
                 this.ScanWhile(() => !this.IsAtEnd() && !this.IsNewLine);
+                break;
 
+            case ':':
+                if (this.IsMatch(':'))
+                {
+                    info.Kind = SyntaxKind.DoubleColonToken;
+                    break;
+                }
+
+                info.Kind = SyntaxKind.ColonToken;
                 break;
         }
     }

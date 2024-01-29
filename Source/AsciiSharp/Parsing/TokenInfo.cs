@@ -6,5 +6,5 @@ internal struct TokenInfo
 {
     public SyntaxKind Kind;
 
-    public string Text;
+    public string? Text;
 }
