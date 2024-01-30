@@ -31,4 +31,8 @@ WORKDIR /workspace
 
 COPY --from=dotnet-build ["/workspace/artifacts/bin/AsciiSharp.TckAdapter/release_linux-x64", "tck-adapter/"]
 
-RUN npm init --yes
+COPY ["tck-tests/package*.json", "."]
+
+RUN ["npm", "ci", "--omit=dev"]
+
+RUN ["npx", "asciidoc-tck", "cli", "--adapter-command", "tck-adapter/AsciiDoc.TckAdapter"]
