@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsciiSharp", "Source\AsciiS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsciiSharp.Tests", "Test\AsciiSharp.Tests\AsciiSharp.Tests.csproj", "{887DA844-6454-4405-A6A8-8540C2F1AF27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSharp.TckAdapter", "Test\AsciiSharp.TckAdapter\AsciiSharp.TckAdapter.csproj", "{8AE76DE8-C773-4232-A72D-72F267E9802E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsciiSharp.TckAdapter", "Source\AsciiSharp.TckAdapter\AsciiSharp.TckAdapter.csproj", "{8AE76DE8-C773-4232-A72D-72F267E9802E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

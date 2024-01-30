@@ -1,7 +1,7 @@
 <Project>
   <Import Project="$(MSBuildThisFileDirectory)../$(MSBuildThisFile)" />
 
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IncludeSymbols>true</IncludeSymbols>
@@ -16,7 +16,7 @@
     <ApiCompatEnableRuleCannotChangeParameterName>true</ApiCompatEnableRuleCannotChangeParameterName>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)..\README.md" Link="README.md">
       <Pack>true</Pack>
       <PackagePath>\</PackagePath>

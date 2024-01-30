@@ -1,7 +1,0 @@
-{
-  "name": "tck-tests",
-  "private": true,
-  "dependencies": {
-    "asciidoc-tck": "git+https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git"
-  }
-}

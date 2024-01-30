@@ -7,7 +7,6 @@ artifacts/
 **/bin/
 **/obj/
 **/TestResults/
-**/node_modules/
 
 **/*.log
 **/*.binlog
