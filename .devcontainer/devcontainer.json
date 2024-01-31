@@ -13,7 +13,6 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "MS-CEINTL.vscode-language-pack-ja",
         "asciidoctor.asciidoctor-vscode",
         "EditorConfig.EditorConfig",
         "eamodio.gitlens"
