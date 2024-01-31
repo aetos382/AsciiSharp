@@ -34,13 +34,14 @@ RUN \
 COPY ["README.md", "."]
 COPY ["Source", "Source/"]
 
-RUN \
-  --mount=type=bind,source=logs,target=/logs,readwrite \
-  echo foo > /logs/foo.txt
-
-RUN \
-  --mount=type=bind,source=logs,target=/logs,readwrite \
-  ["dotnet", "publish", "Source/AsciiSharp.TckAdapter", "--configuration", "Release", "--self-contained", "--runtime", "linux-x64", "--no-restore", "-bl:/var/log/dotnet/msbuild.binlog"]
+RUN [ \
+  "dotnet", "publish", \
+  "Source/AsciiSharp.TckAdapter", \
+  "--configuration", "Release", \
+  "--self-contained", \
+  "--runtime", "linux-x64", \
+  "--no-restore" \
+]
 
 FROM node:21-bookworm as tck-build
 
