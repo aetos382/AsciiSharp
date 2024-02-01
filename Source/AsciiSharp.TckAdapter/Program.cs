@@ -6,6 +6,7 @@ using AsciiSharp.TckAdapter;
 
 if (IsDebug())
 {
+    Console.WriteLine("Debug Mode");
     Debugger.Break();
 }
 
