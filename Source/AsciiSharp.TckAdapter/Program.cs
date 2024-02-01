@@ -7,7 +7,13 @@ using AsciiSharp.TckAdapter;
 if (IsDebug())
 {
     Console.WriteLine("Debug Mode");
-    Debugger.Break();
+    Debugger.Launch();
+}
+
+if (!Console.IsInputRedirected)
+{
+    Console.Error.WriteLine("No input.");
+    return -1;
 }
 
 var inputString = Console.In.ReadToEnd();
@@ -15,6 +21,8 @@ var inputString = Console.In.ReadToEnd();
 var input = JsonSerializer.Deserialize(inputString, TestSerializerContext.Default.TestInput);
 
 Console.WriteLine("{}");
+
+return 0;
 
 static bool IsDebug()
 {
