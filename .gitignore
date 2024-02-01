@@ -9,3 +9,4 @@ node_modules/
 *.binlog
 
 *.user
+launchSettings.json
