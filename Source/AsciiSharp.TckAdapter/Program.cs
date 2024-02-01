@@ -1,3 +1,5 @@
 ﻿using System;
 
-Console.WriteLine("Hello.");
+var input = Console.In.ReadToEnd();
+
+Console.WriteLine("{}");

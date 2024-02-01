@@ -64,8 +64,9 @@ FROM debian:bookworm
 
 WORKDIR /workspace
 
-COPY --from=adapter-build --chmod=555 ["/workspace/artifacts/bin/AsciiSharp.TckAdapter/release_linux-x64/AsciiSharp.TckAdapter", "tck-adapter/"]
-COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/dist/asciidoc-tck", "tck/"]
+COPY --from=adapter-build --chmod=555 ["/workspace/artifacts/bin/AsciiSharp.TckAdapter/release_linux-x64", "tck-adapter/"]
+COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/dist", "tck/"]
+COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/tests", "tests/"]
 
 ENTRYPOINT [ "tck/asciidoc-tck" ]
-CMD [ "--adapter-command", "tck-adapter/AsciiSharp.TckAdapter" ]
+CMD [ "cli", "--adapter-command", "tck-adapter/AsciiSharp.TckAdapter" ]
