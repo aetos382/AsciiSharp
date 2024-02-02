@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\AsciiSharp\AsciiSharp.csproj" />
+    <ProjectReference Include="..\AsciiSharp.TckAdapter\AsciiSharp.TckAdapter.csproj" />
   </ItemGroup>
 
 </Project>

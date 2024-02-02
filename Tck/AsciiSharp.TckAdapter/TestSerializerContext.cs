@@ -6,7 +6,7 @@ namespace AsciiSharp.TckAdapter;
 [JsonSerializable(typeof(TestInput))]
 [JsonSerializable(typeof(SyntaxGraph))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web)]
-internal sealed partial class TestSerializerContext :
+public sealed partial class TestSerializerContext :
     JsonSerializerContext
 {
 }

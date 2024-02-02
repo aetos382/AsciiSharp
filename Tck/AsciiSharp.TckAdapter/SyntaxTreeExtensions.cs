@@ -4,7 +4,7 @@ using AsciiSharp.Syntax;
 
 namespace AsciiSharp.TckAdapter;
 
-internal static class SyntaxTreeExtensions
+public static class SyntaxTreeExtensions
 {
     public static SyntaxGraph ToSyntaxGraph(
         this SyntaxTree syntaxTree)
