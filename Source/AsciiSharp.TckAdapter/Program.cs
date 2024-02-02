@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text.Json;
 
+using AsciiSharp.Syntax;
 using AsciiSharp.TckAdapter;
 
 if (IsDebug())
@@ -20,7 +21,12 @@ var inputString = Console.In.ReadToEnd();
 
 var input = JsonSerializer.Deserialize(inputString, TestSerializerContext.Default.TestInput);
 
-Console.WriteLine("{}");
+var tree = SyntaxTree.ParseText(input.Contents);
+var graph = tree.ToSyntaxGraph();
+
+var result = JsonSerializer.Serialize(graph);
+
+Console.WriteLine(result);
 
 return 0;
 

@@ -2,7 +2,6 @@
 using System.Buffers;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 using AsciiSharp.Parsing;
 
@@ -10,46 +9,40 @@ namespace AsciiSharp.Syntax;
 
 public class SyntaxTree
 {
-    public static ValueTask<SyntaxTree> ParseTextAsync(
+    public static SyntaxTree ParseText(
         string source,
-        ParseOptions? parseOptions,
+        ParseOptions? parseOptions = null,
         string? path = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(source);
 
-        return ParseTextAsync(source.AsMemory(), parseOptions, path, cancellationToken);
+        return ParseText(source.AsMemory(), parseOptions, path, cancellationToken);
     }
 
-    public static async ValueTask<SyntaxTree> ParseTextAsync(
+    public static SyntaxTree ParseText(
         TextReader textReader,
-        ParseOptions? parseOptions,
+        ParseOptions? parseOptions = null,
         string? path = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(textReader);
 
-        var source = await textReader
-            .ReadToEndAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        var result = await ParseTextAsync(source, parseOptions, path, cancellationToken)
-            .ConfigureAwait(false);
+        var source = textReader.ReadToEnd();
+        var result = ParseText(source, parseOptions, path, cancellationToken);
 
         return result;
     }
 
-    public static async ValueTask<SyntaxTree> ParseTextAsync(
+    public static SyntaxTree ParseText(
         ReadOnlyMemory<char> source,
-        ParseOptions? parseOptions,
+        ParseOptions? parseOptions = null,
         string? path = null,
         CancellationToken cancellationToken = default)
     {
         var parser = new Parser(parseOptions);
 
-        var result = await parser
-            .ParseAsync(source, path, cancellationToken)
-            .ConfigureAwait(false);
+        var result = parser.Parse(source, path, cancellationToken);
 
         return result;
     }
