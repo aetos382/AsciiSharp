@@ -14,7 +14,7 @@ public class Parser
         this.Options = options ?? ParseOptions.Default;
     }
 
-    public ValueTask<SyntaxTree> ParseAsync(
+    public SyntaxTree Parse(
         ReadOnlyMemory<char> source,
         string? path = null,
         CancellationToken cancellationToken = default)

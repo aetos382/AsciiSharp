@@ -3,8 +3,10 @@
 bin/
 obj/
 TestResults/
+node_modules/
 
 *.log
 *.binlog
 
 *.user
+launchSettings.json

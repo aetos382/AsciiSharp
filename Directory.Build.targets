@@ -8,4 +8,5 @@
   <ItemGroup Condition="'$(ExcludeFromCodeCoverage)' == 'true'">
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
   </ItemGroup>
+
 </Project>
