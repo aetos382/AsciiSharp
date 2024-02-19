@@ -38,7 +38,7 @@ jobs:
           --logger trx
           --collect:"XPlat Code Coverage"
       
-      - uses: bibipkins/dotnet-test-reporter@v1.3.3
+      - uses: bibipkins/dotnet-test-reporter@v1.4.1
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
