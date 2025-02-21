@@ -1,5 +1,5 @@
 ﻿namespace AsciiSharp;
 
-public interface IFileResolver
+public class Workspace
 {
 }
