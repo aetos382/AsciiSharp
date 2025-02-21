@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TckAdapter", "TckAdapter", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Converter", "Converter", "{BA863A3E-FC09-4C45-B5D2-888E0349BBF9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Design", "Design", "{DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsciiSharp", "Source\AsciiSharp\AsciiSharp.csproj", "{7AF3A08A-5C64-49E1-84CA-1E79B61A87BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsciiSharp.Tests", "Test\AsciiSharp.Tests\AsciiSharp.Tests.csproj", "{887DA844-6454-4405-A6A8-8540C2F1AF27}"
@@ -26,6 +28,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsciiSharp.Converter.DocBook", "Source\Converter\AsciiSharp.Converter.DocBook\AsciiSharp.Converter.DocBook.csproj", "{598B4F69-34A5-4106-B90B-37F2DF6CDFD7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsciiSharp.Converter.Html", "Source\Converter\AsciiSharp.Converter.Html\AsciiSharp.Converter.Html.csproj", "{02FB5100-C222-4726-9DD7-0380D533589B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSharp.Concept", "Design\AsciiSharp.Concept\AsciiSharp.Concept.csproj", "{94F3C4A2-F98D-4AE4-A073-34AD4C4F0795}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +69,10 @@ Global
 		{02FB5100-C222-4726-9DD7-0380D533589B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02FB5100-C222-4726-9DD7-0380D533589B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02FB5100-C222-4726-9DD7-0380D533589B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94F3C4A2-F98D-4AE4-A073-34AD4C4F0795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94F3C4A2-F98D-4AE4-A073-34AD4C4F0795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94F3C4A2-F98D-4AE4-A073-34AD4C4F0795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94F3C4A2-F98D-4AE4-A073-34AD4C4F0795}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +88,7 @@ Global
 		{5B81245F-2ED9-45B2-A73D-23EE95FCCC1F} = {BA863A3E-FC09-4C45-B5D2-888E0349BBF9}
 		{598B4F69-34A5-4106-B90B-37F2DF6CDFD7} = {BA863A3E-FC09-4C45-B5D2-888E0349BBF9}
 		{02FB5100-C222-4726-9DD7-0380D533589B} = {BA863A3E-FC09-4C45-B5D2-888E0349BBF9}
+		{94F3C4A2-F98D-4AE4-A073-34AD4C4F0795} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E971BDE-B41E-4DD2-A7A1-19B867876463}
