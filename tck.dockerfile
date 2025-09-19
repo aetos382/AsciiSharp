@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0.101-bookworm-slim AS adapter-build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS adapter-build
 
 RUN --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
@@ -43,7 +43,7 @@ RUN [ \
   "--no-restore" \
 ]
 
-FROM node:21-bookworm as tck-build
+FROM node:22-bookworm AS tck-build
 
 WORKDIR /workspace
 
