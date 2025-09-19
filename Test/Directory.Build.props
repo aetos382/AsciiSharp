@@ -1,8 +1,8 @@
 <Project>
-  <Import Project="$(MSBuildThisFileDirectory)../$(MSBuildThisFile)" />
+  <Import Project="../Directory.Build.props" />
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1707;CA2007</NoWarn>
+    <NoWarn>$(NoWarn);CA1515;CA1707;CA2007</NoWarn>
     <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
   </PropertyGroup>
 </Project>

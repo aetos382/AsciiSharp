@@ -1,8 +1,6 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
-  <ItemGroup>
-    <GlobalPackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.25" />
-  </ItemGroup>
 </Project>

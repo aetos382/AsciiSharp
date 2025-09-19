@@ -5,10 +5,15 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <ArtifactsPath>$(MSBuildThisFileDirectory)\artifacts</ArtifactsPath>
+    <DebugType>embedded</DebugType>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AnalysisLevel>latest-all</AnalysisLevel>
     <WarningLevel>9999</WarningLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CA1303</NoWarn>
+    <EnablePackageValidation>false</EnablePackageValidation>
     <DefaultItemExcludesInProjectFolder>
       $(DefaultItemExcludesInProjectFolder);
       packages.lock.json;
@@ -20,5 +25,9 @@
       *.binlog
     </DefaultItemExcludes>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+    <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
+    <OptimizeImplicitlyTriggeredBuild>true</OptimizeImplicitlyTriggeredBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 </Project>
