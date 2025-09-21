@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS adapter-build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS adapter-build
 
 RUN --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
@@ -43,7 +43,7 @@ RUN [ \
   "--no-restore" \
 ]
 
-FROM node:22-bookworm AS tck-build
+FROM node:22-trixie-slim AS tck-build
 
 WORKDIR /workspace
 
@@ -60,7 +60,7 @@ RUN \
   --mount=type=cache,target=/workspace/asciidoc-tck/node_modules \
   npm ci && npm install -D postject && npm run dist
 
-FROM debian:bookworm
+FROM debian:trixie-slim
 
 WORKDIR /workspace
 
