@@ -17,33 +17,40 @@ COPY ["Source/Directory.*", "Source/"]
 
 COPY [ \
   "Source/AsciiSharp/AsciiSharp.csproj",  \
-  "Source/AsciiSharp/packages.lock.json", \
   "Source/AsciiSharp/" \
 ]
 
 COPY [ \
-  "Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
-  "Source/AsciiSharp.TckAdapter/packages.lock.json", \
-  "Source/AsciiSharp.TckAdapter/" \
+  "Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter/" \
+]
+
+COPY [ \
+  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/" \
 ]
 
 RUN \
   #--mount=type=cache,target=/var/cache/nuget \
-  ["dotnet", "restore", "Source/AsciiSharp.TckAdapter", "--locked-mode"]
+  [ \
+    "dotnet", "restore", \
+    "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
+    "--runtime", "linux-x64" \
+]
 
 COPY ["README.md", "."]
 COPY ["Source", "Source/"]
 
-RUN [ \
+RUN [ \ 
   "dotnet", "publish", \
-  "Source/AsciiSharp.TckAdapter", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--configuration", "Release", \
   "--self-contained", \
   "--runtime", "linux-x64", \
   "--no-restore" \
 ]
 
-FROM node:22-trixie-slim AS tck-build
+FROM node:22-trixie AS tck-build
 
 WORKDIR /workspace
 
@@ -64,7 +71,7 @@ FROM debian:trixie-slim
 
 WORKDIR /workspace
 
-COPY --from=adapter-build --chmod=555 ["/workspace/artifacts/bin/AsciiSharp.TckAdapter/release_linux-x64", "tck-adapter/"]
+COPY --from=adapter-build --chmod=555 ["/workspace/artifacts/publish/AsciiSharp.TckAdapter.Cli/release_linux-x64", "tck-adapter/"]
 COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/dist", "tck/"]
 COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/tests", "tests/"]
 
