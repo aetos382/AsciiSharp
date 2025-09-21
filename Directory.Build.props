@@ -24,7 +24,7 @@
       *.log;
       *.binlog
     </DefaultItemExcludes>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
     <OptimizeImplicitlyTriggeredBuild>true</OptimizeImplicitlyTriggeredBuild>
