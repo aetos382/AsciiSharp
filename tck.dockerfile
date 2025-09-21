@@ -76,4 +76,4 @@ COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/dist", "tck/"]
 COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/tests", "tests/"]
 
 ENTRYPOINT [ "tck/asciidoc-tck" ]
-CMD [ "cli", "--adapter-command", "tck-adapter/AsciiSharp.TckAdapter" ]
+CMD [ "cli", "--adapter-command", "tck-adapter/AsciiSharp.TckAdapter.Cli" ]
