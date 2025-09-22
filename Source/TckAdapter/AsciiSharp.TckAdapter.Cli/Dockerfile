@@ -13,7 +13,6 @@ WORKDIR /workspace
 
 COPY ["global.json", "Directory.*", "NuGet.config", "./"]
 
-
 COPY ["Source/Directory.*", "Source/"]
 
 COPY [ \
@@ -39,7 +38,6 @@ RUN \
     "--runtime", "linux-x64" \
 ]
 
-COPY ["README.md", "."]
 COPY ["Source/", "Source/"]
 
 RUN [ \ 
