@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS adapter-build
+FROM mcr.microsoft.com/dotnet/sdk:10.0.100-rc.1-noble AS adapter-build
 
 RUN --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
@@ -17,30 +17,31 @@ COPY ["Source/Directory.*", "Source/"]
 
 COPY [ \
   "Source/AsciiSharp/AsciiSharp.csproj",  \
+  "Source/AsciiSharp/packages.lock.json", \
   "Source/AsciiSharp/" \
 ]
 
 COPY [ \
   "Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter/packages.lock.json", \
   "Source/TckAdapter/AsciiSharp.TckAdapter/" \
 ]
 
 COPY [ \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/packages.lock.json", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/" \
 ]
 
-RUN \
-  #--mount=type=cache,target=/var/cache/nuget \
-  [ \
-    "dotnet", "restore", \
-    "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
-    "--runtime", "linux-x64" \
+RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \
+  "dotnet", "restore", \
+  "--locked-mode", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj" \
 ]
 
 COPY ["Source/", "Source/"]
 
-RUN [ \ 
+RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \ 
   "dotnet", "publish", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--configuration", "Release", \

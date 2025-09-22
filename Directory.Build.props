@@ -24,7 +24,8 @@
       *.log;
       *.binlog
     </DefaultItemExcludes>
-    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
     <OptimizeImplicitlyTriggeredBuild>true</OptimizeImplicitlyTriggeredBuild>
