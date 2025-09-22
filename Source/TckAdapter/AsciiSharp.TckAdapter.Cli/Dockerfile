@@ -13,6 +13,7 @@ WORKDIR /workspace
 
 COPY ["global.json", "Directory.*", "NuGet.config", "./"]
 
+
 COPY ["Source/Directory.*", "Source/"]
 
 COPY [ \
@@ -39,7 +40,7 @@ RUN \
 ]
 
 COPY ["README.md", "."]
-COPY ["Source", "Source/"]
+COPY ["Source/", "Source/"]
 
 RUN [ \ 
   "dotnet", "publish", \
