@@ -1,5 +1,5 @@
-[submodule "submodules/asciidoc-lnag"]
-	path = submodules/asciidoc-lnag
+[submodule "submodules/asciidoc-lang"]
+	path = submodules/asciidoc-lang
 	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang.git
 	branch = main
 [submodule "submodules/asciidoc-tck"]
