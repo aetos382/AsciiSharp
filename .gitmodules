@@ -6,3 +6,7 @@
 	path = submodules/asciidoc-tck
 	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git
 	branch = main
+[submodule "submodules/submodules/asciidoc-lang"]
+	path = submodules/submodules/asciidoc-lang
+	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang.git
+	branch = main
