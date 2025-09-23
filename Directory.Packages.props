@@ -3,4 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Reqnroll.MsTest" Version="3.0.3" />
+  </ItemGroup>
 </Project>

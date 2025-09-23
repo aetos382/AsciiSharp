@@ -16,6 +16,7 @@
     <Project Path="Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj" />
   </Folder>
   <Folder Name="/Test/">
+    <Project Path="Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj" />
     <Project Path="Test/AsciiSharp.Tests/AsciiSharp.Tests.csproj" />
   </Folder>
 </Solution>

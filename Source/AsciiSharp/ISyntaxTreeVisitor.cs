@@ -1,5 +1,5 @@
 ﻿namespace AsciiSharp;
 
-public interface ISyntaxTreeVisitor
+public interface ISyntaxTreeVisitor<T>
 {
 }

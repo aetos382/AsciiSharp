@@ -4,9 +4,16 @@ namespace AsciiSharp;
 
 public class SyntaxTree
 {
-    public static SyntaxTree Parse(
-        ReadOnlySpan<char> source)
+    public Document Root { get; init; }
+
+    private SyntaxTree(Document root)
     {
-        return new SyntaxTree();
+        Root = root;
+    }
+
+    public static SyntaxTree Parse(ReadOnlySpan<char> source)
+    {
+        var document = Parser.Parse(source);
+        return new SyntaxTree(document);
     }
 }

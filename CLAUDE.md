@@ -42,6 +42,10 @@ dotnet test --filter "TestMethodName"
 
 ## 開発設定
 
+### 言語
+- .NET 10.0 をターゲットとし、C# 14 で記述する。
+- 最新のフレームワークや言語の機能を積極的に利用する。
+
 ### コード品質設定
 - Nullable参照型有効
 - Implicit usings無効（明示的using文が必要）
@@ -64,10 +68,18 @@ dotnet test --filter "TestMethodName"
 - CLS準拠
 - Apache-2.0ライセンス
 
-## 方針
+## コンセプト
 - パーサーは Roslyn をモデルとする。
 - 生成された構文木は Immutable とする。
 - エラーのある文書も最大限にパースできる設計とする。
+- 空白も完全に保持して元の文書を忠実に再現できるようにする。
+
+## テスト
+- テスト フレームワークは MSTest を使用する。
+  - テストケース名は日本語で命名する。
+- Reqnroll を使った BDD による設計を採用する。
+  - Cucumber ファイルは日本語で記述する。
+- ファイル名は英語で命名する。
 
 ## 参照
 - AsciiDoc 言語の仕様については、@submodules/asciidoc-lang/spec/outline.adoc を参照する。
