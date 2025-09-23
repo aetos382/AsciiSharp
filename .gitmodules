@@ -1,0 +1,8 @@
+[submodule "submodules/asciidoc-lnag"]
+	path = submodules/asciidoc-lnag
+	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang.git
+	branch = main
+[submodule "submodules/asciidoc-tck"]
+	path = submodules/asciidoc-tck
+	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git
+	branch = main
