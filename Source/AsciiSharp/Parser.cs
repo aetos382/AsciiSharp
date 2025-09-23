@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using AsciiSharp.SyntaxNodes;
+
 namespace AsciiSharp;
 
 internal static class Parser

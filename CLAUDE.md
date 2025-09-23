@@ -82,7 +82,7 @@ dotnet test --filter "TestMethodName"
 - ファイル名は英語で命名する。
 
 ## 参照
-- AsciiDoc 言語の仕様については、@submodules/asciidoc-lang/spec/outline.adoc を参照する。
+- AsciiDoc 言語の仕様については、@submodules/asciidoc-lang/spec/ を参照する。
 
 ## submodules
 - submodules/asciidoc-lang: AsciiDoc 言語仕様プロジェクトのリポジトリ

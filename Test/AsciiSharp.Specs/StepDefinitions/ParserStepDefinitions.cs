@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Reqnroll;
 
+using AsciiSharp.SyntaxNodes;
+
 namespace AsciiSharp.Specs.StepDefinitions;
 
 [Binding]

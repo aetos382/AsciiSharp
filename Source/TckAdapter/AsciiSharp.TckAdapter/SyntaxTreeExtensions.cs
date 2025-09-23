@@ -1,4 +1,6 @@
-﻿namespace AsciiSharp.TckAdapter;
+﻿using AsciiSharp.SyntaxNodes;
+
+namespace AsciiSharp.TckAdapter;
 
 public static class SyntaxTreeExtensions
 {

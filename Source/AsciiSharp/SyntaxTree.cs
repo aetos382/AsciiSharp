@@ -1,5 +1,7 @@
 ﻿using System;
 
+using AsciiSharp.SyntaxNodes;
+
 namespace AsciiSharp;
 
 public class SyntaxTree
