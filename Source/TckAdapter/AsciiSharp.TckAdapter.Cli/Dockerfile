@@ -11,7 +11,7 @@ ENV NUGET_PACKAGES=/var/cache/nuget
 
 WORKDIR /workspace
 
-COPY ["global.json", "Directory.*", "NuGet.config", "./"]
+COPY ["global.json", "Directory.*", "NuGet.config", ".globalconfig", "./"]
 
 COPY ["Source/Directory.*", "Source/"]
 
@@ -35,19 +35,31 @@ COPY [ \
 
 RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \
   "dotnet", "restore", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--locked-mode", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj" \
+  "--nologo" \
 ]
 
 COPY ["Source/", "Source/"]
 
 RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \ 
+  "dotnet", "build", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
+  "--configuration", "Release", \
+  "--runtime", "linux-x64", \
+  "--no-restore", \
+  "--no-incremental", \
+  "--nologo" \
+]
+
+RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \ 
   "dotnet", "publish", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--configuration", "Release", \
-  "--self-contained", \
   "--runtime", "linux-x64", \
-  "--no-restore" \
+  "--no-restore", \
+  "--no-build", \
+  "--nologo" \
 ]
 
 FROM node:22-trixie AS tck-build

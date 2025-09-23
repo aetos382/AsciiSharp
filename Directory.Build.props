@@ -13,6 +13,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CA1303</NoWarn>
+    <IsAotCompatible>true</IsAotCompatible>
     <EnablePackageValidation>false</EnablePackageValidation>
     <DefaultItemExcludesInProjectFolder>
       $(DefaultItemExcludesInProjectFolder);

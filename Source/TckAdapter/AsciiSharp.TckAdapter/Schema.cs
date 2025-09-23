@@ -194,7 +194,7 @@ public class List : AbstractBlock
     public string Marker { get; set; } = string.Empty;
 
     [JsonPropertyName("variant")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<ListVariant>))]
     public ListVariant Variant { get; set; }
 
     [JsonPropertyName("items")]
@@ -254,7 +254,7 @@ public class Break : AbstractBlock
     public override string Name { get; set; } = "break";
 
     [JsonPropertyName("variant")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<BreakVariant>))]
     public BreakVariant Variant { get; set; }
 }
 
@@ -303,7 +303,7 @@ public enum BlockForm
 public abstract class LeafBlock : AbstractBlock
 {
     [JsonPropertyName("form")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<BlockForm>))]
     public BlockForm? Form { get; set; }
 
     [JsonPropertyName("delimiter")]
@@ -377,7 +377,7 @@ public class AdmonitionBlock : ParentBlock
     public override string Name { get; set; } = "admonition";
 
     [JsonPropertyName("variant")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<AdmonitionVariant>))]
     public AdmonitionVariant Variant { get; set; }
 }
 
@@ -456,11 +456,11 @@ public class InlineSpan : AbstractParentInline
     public override string Name { get; set; } = "span";
 
     [JsonPropertyName("variant")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<SpanVariant>))]
     public SpanVariant Variant { get; set; }
 
     [JsonPropertyName("form")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<SpanForm>))]
     public SpanForm Form { get; set; }
 }
 
@@ -477,7 +477,7 @@ public class InlineRef : AbstractParentInline
     public override string Name { get; set; } = "ref";
 
     [JsonPropertyName("variant")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<RefVariant>))]
     public RefVariant Variant { get; set; }
 
     [JsonPropertyName("target")]

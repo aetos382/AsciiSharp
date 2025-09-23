@@ -1,3 +1,0 @@
-[submodule "asciidoc-tck"]
-	path = asciidoc-tck
-	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git
