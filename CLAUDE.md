@@ -11,7 +11,7 @@ AsciiSharpは.NET 10.0をターゲットとするAsciiDoc処理ライブラリ�
 ### ソリューション構成
 - `Source/AsciiSharp/` - AsciiDoc処理のコアライブラリ
 - `Source/Converter/` - 出力形式コンバーター（CLI、DocBook、HTML、Core）
-- `Source/TckAdapter/` - Test Compatibility Kit アダプター
+- `Source/TckAdapter/` - Technology Compatibility Kit アダプター
 - `Test/AsciiSharp.Tests/` - MSTestベースの単体テスト
 - `Design/AsciiSharp.Concept/` - コンセプト・設計検討プロジェクト
 
@@ -63,3 +63,15 @@ dotnet test --filter "TestMethodName"
 - トリミング対応
 - CLS準拠
 - Apache-2.0ライセンス
+
+## 方針
+- パーサーは Roslyn をモデルとする。
+- 生成された構文木は Immutable とする。
+- エラーのある文書も最大限にパースできる設計とする。
+
+## 参照
+- AsciiDoc 言語の仕様については、@submodules/asciidoc-lang/spec/outline.adoc を参照する。
+
+## submodules
+- submodules/asciidoc-lang: AsciiDoc 言語仕様プロジェクトのリポジトリ
+- submodules/asciidoc-tck: AsciiDoc Technology Compatibility Kit のリポジトリ
