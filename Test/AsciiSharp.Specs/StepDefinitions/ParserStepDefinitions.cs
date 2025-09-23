@@ -1,5 +1,7 @@
-using System;
+﻿using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Reqnroll;
 
 namespace AsciiSharp.Specs.StepDefinitions;
@@ -32,7 +34,8 @@ public sealed class ParserStepDefinitions
     public void 構文木のルートはノードである(string expectedNodeName)
     {
         Assert.IsNotNull(_parsedTree);
-        Assert.AreEqual(expectedNodeName, _parsedTree.Root.Name);
+        var expectedKind = SyntaxNodeKind.Parse(expectedNodeName);
+        Assert.AreEqual(expectedKind, _parsedTree.Root.Kind);
     }
 
     [Then(@"(\d+)つの ""(.*)"" ブロックを含む")]
@@ -42,7 +45,8 @@ public sealed class ParserStepDefinitions
         Assert.AreEqual(count, _parsedTree.Root.Blocks.Count);
         if (count > 0)
         {
-            Assert.AreEqual(blockType, _parsedTree.Root.Blocks[0].Name);
+            var expectedKind = SyntaxNodeKind.Parse(blockType);
+            Assert.AreEqual(expectedKind, _parsedTree.Root.Blocks[0].Kind);
         }
     }
 
@@ -58,7 +62,8 @@ public sealed class ParserStepDefinitions
 
         if (count > 0)
         {
-            Assert.AreEqual(inlineType, paragraph.Inlines[0].Name);
+            var expectedKind = SyntaxNodeKind.Parse(inlineType);
+            Assert.AreEqual(expectedKind, paragraph.Inlines[0].Kind);
         }
     }
 

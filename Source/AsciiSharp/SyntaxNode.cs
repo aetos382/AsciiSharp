@@ -5,36 +5,36 @@ namespace AsciiSharp;
 
 public abstract class SyntaxNode
 {
-    public abstract string Name { get; }
-    public abstract string Type { get; }
+    public abstract SyntaxNodeKind Kind { get; }
+    public abstract SyntaxNodeType NodeType { get; }
     public Location? Location { get; init; }
 }
 
 public abstract class BlockNode : SyntaxNode
 {
-    public override string Type => "block";
+    public override SyntaxNodeType NodeType => SyntaxNodeType.Block;
 }
 
 public abstract class InlineNode : SyntaxNode
 {
-    public override string Type => "inline";
+    public override SyntaxNodeType NodeType => SyntaxNodeType.Inline;
 }
 
 public sealed class Document : BlockNode
 {
-    public override string Name => "document";
-    public IReadOnlyList<BlockNode> Blocks { get; init; } = Array.Empty<BlockNode>();
+    public override SyntaxNodeKind Kind => SyntaxNodeKind.Document;
+    public IReadOnlyList<BlockNode> Blocks { get; init; } = [];
 }
 
 public sealed class Paragraph : BlockNode
 {
-    public override string Name => "paragraph";
-    public IReadOnlyList<InlineNode> Inlines { get; init; } = Array.Empty<InlineNode>();
+    public override SyntaxNodeKind Kind => SyntaxNodeKind.Paragraph;
+    public IReadOnlyList<InlineNode> Inlines { get; init; } = [];
 }
 
 public sealed class Text : InlineNode
 {
-    public override string Name => "text";
-    public override string Type => "string";
+    public override SyntaxNodeKind Kind => SyntaxNodeKind.Text;
+    public override SyntaxNodeType NodeType => SyntaxNodeType.String;
     public string Value { get; init; } = string.Empty;
 }
