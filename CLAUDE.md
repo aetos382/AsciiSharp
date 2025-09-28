@@ -86,4 +86,4 @@ dotnet test --filter "TestMethodName"
 
 ## submodules
 - submodules/asciidoc-lang: AsciiDoc 言語仕様プロジェクトのリポジトリ
-- submodules/asciidoc-tck: AsciiDoc Technology Compatibility Kit のリポジトリ
+- submodules/asciidoc-tck: AsciiDoc Technology Compatibility Kit (TCK) のリポジトリ
