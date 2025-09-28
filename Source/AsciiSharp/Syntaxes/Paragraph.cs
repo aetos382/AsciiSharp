@@ -2,7 +2,7 @@
 
 namespace AsciiSharp.Syntaxes;
 
-public sealed class Paragraph : BlockNode
+public sealed class ParagraphSyntax : BlockSyntax
 {
     public override SyntaxNodeKind Kind => SyntaxNodeKind.Paragraph;
     public override TResult Accept<TResult, TState>(ISyntaxVisitor<TResult, TState> visitor, TState state)
@@ -10,5 +10,5 @@ public sealed class Paragraph : BlockNode
         return visitor.VisitParagraph(this, state);
     }
 
-    public IReadOnlyList<InlineNode> Inlines { get; init; } = [];
+    public IReadOnlyList<InlineSyntax> Inlines { get; init; } = [];
 }

@@ -1,6 +1,6 @@
 ﻿namespace AsciiSharp.Syntaxes;
 
-public sealed class Text : InlineNode
+public sealed class TextSyntax : InlineSyntax
 {
     public override SyntaxNodeKind Kind => SyntaxNodeKind.Text;
     public override SyntaxNodeType NodeType => SyntaxNodeType.String;

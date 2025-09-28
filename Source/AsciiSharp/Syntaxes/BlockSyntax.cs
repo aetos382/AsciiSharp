@@ -1,6 +1,6 @@
 ﻿namespace AsciiSharp.Syntaxes;
 
-public abstract class BlockNode : SyntaxNode
+public abstract class BlockSyntax : SyntaxNode
 {
     public override SyntaxNodeType NodeType => SyntaxNodeType.Block;
 }

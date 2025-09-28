@@ -2,10 +2,10 @@
 
 namespace AsciiSharp.Syntaxes;
 
-public sealed class Document : BlockNode
+public sealed class DocumentSyntax : BlockSyntax
 {
     public override SyntaxNodeKind Kind => SyntaxNodeKind.Document;
-    public IReadOnlyList<BlockNode> Blocks { get; init; } = [];
+    public IReadOnlyList<BlockSyntax> Blocks { get; init; } = [];
 
     public override TResult Accept<TResult, TState>(ISyntaxVisitor<TResult, TState> visitor, TState state)
     {
