@@ -40,25 +40,16 @@ RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \
   "--nologo" \
 ]
 
-COPY ["Source/", "Source/"]
-
-RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \ 
-  "dotnet", "build", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
-  "--configuration", "Release", \
-  "--runtime", "linux-x64", \
-  "--no-restore", \
-  "--no-incremental", \
-  "--nologo" \
-]
+COPY ["Source", "Source/"]
 
 RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \ 
   "dotnet", "publish", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--configuration", "Release", \
   "--runtime", "linux-x64", \
+  "-p:PublishAot=true", \
+  "--output", "/workspace/publish", \
   "--no-restore", \
-  "--no-build", \
   "--nologo" \
 ]
 
@@ -83,7 +74,7 @@ FROM debian:trixie-slim
 
 WORKDIR /workspace
 
-COPY --from=adapter-build --chmod=555 ["/workspace/artifacts/publish/AsciiSharp.TckAdapter.Cli/release_linux-x64", "tck-adapter/"]
+COPY --from=adapter-build --chmod=555 ["/workspace/publish", "tck-adapter/"]
 COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/dist", "tck/"]
 COPY --from=tck-build --chmod=555 ["/workspace/asciidoc-tck/tests", "tests/"]
 
