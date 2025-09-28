@@ -1,4 +1,4 @@
-namespace AsciiSharp.SyntaxNodes;
+﻿namespace AsciiSharp.Syntaxes;
 
 public abstract class BlockNode : SyntaxNode
 {

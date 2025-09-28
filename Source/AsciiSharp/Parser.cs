@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-using AsciiSharp.SyntaxNodes;
+using AsciiSharp.Syntaxes;
 
 namespace AsciiSharp;
 

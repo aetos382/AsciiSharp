@@ -1,4 +1,4 @@
-﻿namespace AsciiSharp.SyntaxNodes;
+﻿namespace AsciiSharp.Syntaxes;
 
 public sealed class Text : InlineNode
 {

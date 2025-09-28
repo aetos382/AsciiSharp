@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AsciiSharp.SyntaxNodes;
+namespace AsciiSharp.Syntaxes;
 
 public sealed class Document : BlockNode
 {
