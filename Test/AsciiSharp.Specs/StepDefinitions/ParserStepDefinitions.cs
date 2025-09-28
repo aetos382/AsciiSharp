@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Reqnroll;
 
-using AsciiSharp.SyntaxNodes;
+using AsciiSharp.Syntax;
 
 namespace AsciiSharp.Specs.StepDefinitions;
 
@@ -58,7 +58,7 @@ public sealed class ParserStepDefinitions
         Assert.IsNotNull(this._parsedTree);
         Assert.AreEqual(1, this._parsedTree.Root.Blocks.Count);
 
-        var paragraph = this._parsedTree.Root.Blocks[0] as Paragraph;
+        var paragraph = this._parsedTree.Root.Blocks[0] as ParagraphSyntax;
         Assert.IsNotNull(paragraph);
         Assert.AreEqual(count, paragraph.Inlines.Count);
 
@@ -73,10 +73,10 @@ public sealed class ParserStepDefinitions
     public void テキストの値はである(string expectedValue)
     {
         Assert.IsNotNull(this._parsedTree);
-        var paragraph = this._parsedTree.Root.Blocks[0] as Paragraph;
+        var paragraph = this._parsedTree.Root.Blocks[0] as ParagraphSyntax;
         Assert.IsNotNull(paragraph);
 
-        var text = paragraph.Inlines[0] as Text;
+        var text = paragraph.Inlines[0] as TextSyntax;
         Assert.IsNotNull(text);
         Assert.AreEqual(expectedValue, text.Value);
     }
@@ -85,10 +85,10 @@ public sealed class ParserStepDefinitions
     public void 位置情報が正しく設定されている()
     {
         Assert.IsNotNull(this._parsedTree);
-        var paragraph = this._parsedTree.Root.Blocks[0] as Paragraph;
+        var paragraph = this._parsedTree.Root.Blocks[0] as ParagraphSyntax;
         Assert.IsNotNull(paragraph);
 
-        var text = paragraph.Inlines[0] as Text;
+        var text = paragraph.Inlines[0] as TextSyntax;
         Assert.IsNotNull(text);
 
         var endColumn = this._inputDocument.Length == 0 ? 1 : this._inputDocument.Length;

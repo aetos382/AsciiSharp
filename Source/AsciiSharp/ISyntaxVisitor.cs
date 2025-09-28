@@ -1,10 +1,10 @@
-﻿using AsciiSharp.SyntaxNodes;
+﻿using AsciiSharp.Syntax;
 
 namespace AsciiSharp;
 
 public interface ISyntaxVisitor<TResult, TState>
 {
-    TResult VisitDocument(Document document, TState state);
-    TResult VisitText(Text text, TState state);
-    TResult VisitParagraph(Paragraph paragraph, TState state);
+    TResult VisitDocument(DocumentSyntax document, TState state);
+    TResult VisitText(TextSyntax text, TState state);
+    TResult VisitParagraph(ParagraphSyntax paragraph, TState state);
 }

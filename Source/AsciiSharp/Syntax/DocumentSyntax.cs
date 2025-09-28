@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AsciiSharp.Syntaxes;
+namespace AsciiSharp.Syntax;
 
 public sealed class DocumentSyntax : BlockSyntax
 {

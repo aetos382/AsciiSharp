@@ -1,14 +1,14 @@
 ﻿using System;
 
-using AsciiSharp.SyntaxNodes;
+using AsciiSharp.Syntax;
 
 namespace AsciiSharp;
 
 public class SyntaxTree
 {
-    public Document Root { get; init; }
+    public DocumentSyntax Root { get; init; }
 
-    private SyntaxTree(Document root)
+    private SyntaxTree(DocumentSyntax root)
     {
         this.Root = root;
     }

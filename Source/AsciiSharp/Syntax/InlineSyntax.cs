@@ -1,4 +1,4 @@
-﻿namespace AsciiSharp.Syntaxes;
+﻿namespace AsciiSharp.Syntax;
 
 public abstract class InlineSyntax : SyntaxNode
 {
