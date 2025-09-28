@@ -17,48 +17,48 @@ public sealed class ParserStepDefinitions
     [Given(@"AsciiDoc文書 ""(.*)"" が与えられている")]
     public void AsciiDoc文書が与えられている(string document)
     {
-        _inputDocument = document;
+        this._inputDocument = document;
     }
 
     [Given(@"空のAsciiDoc文書が与えられている")]
     public void 空のAsciiDoc文書が与えられている()
     {
-        _inputDocument = string.Empty;
+        this._inputDocument = string.Empty;
     }
 
     [When(@"文書をパースする")]
     public void 文書をパースする()
     {
-        _parsedTree = SyntaxTree.Parse(_inputDocument.AsSpan());
+        this._parsedTree = SyntaxTree.Parse(this._inputDocument.AsSpan());
     }
 
     [Then(@"構文木のルートは ""(.*)"" ノードである")]
     public void 構文木のルートはノードである(string expectedNodeName)
     {
-        Assert.IsNotNull(_parsedTree);
+        Assert.IsNotNull(this._parsedTree);
         var expectedKind = SyntaxNodeKind.Parse(expectedNodeName);
-        Assert.AreEqual(expectedKind, _parsedTree.Root.Kind);
+        Assert.AreEqual(expectedKind, this._parsedTree.Root.Kind);
     }
 
     [Then(@"(\d+)つの ""(.*)"" ブロックを含む")]
     public void ブロックを含む(int count, string blockType)
     {
-        Assert.IsNotNull(_parsedTree);
-        Assert.AreEqual(count, _parsedTree.Root.Blocks.Count);
+        Assert.IsNotNull(this._parsedTree);
+        Assert.AreEqual(count, this._parsedTree.Root.Blocks.Count);
         if (count > 0)
         {
             var expectedKind = SyntaxNodeKind.Parse(blockType);
-            Assert.AreEqual(expectedKind, _parsedTree.Root.Blocks[0].Kind);
+            Assert.AreEqual(expectedKind, this._parsedTree.Root.Blocks[0].Kind);
         }
     }
 
     [Then(@"パラグラフは (\d+)つの ""(.*)"" インラインを含む")]
     public void パラグラフはインラインを含む(int count, string inlineType)
     {
-        Assert.IsNotNull(_parsedTree);
-        Assert.AreEqual(1, _parsedTree.Root.Blocks.Count);
+        Assert.IsNotNull(this._parsedTree);
+        Assert.AreEqual(1, this._parsedTree.Root.Blocks.Count);
 
-        var paragraph = _parsedTree.Root.Blocks[0] as Paragraph;
+        var paragraph = this._parsedTree.Root.Blocks[0] as Paragraph;
         Assert.IsNotNull(paragraph);
         Assert.AreEqual(count, paragraph.Inlines.Count);
 
@@ -72,8 +72,8 @@ public sealed class ParserStepDefinitions
     [Then(@"テキストの値は ""(.*)"" である")]
     public void テキストの値はである(string expectedValue)
     {
-        Assert.IsNotNull(_parsedTree);
-        var paragraph = _parsedTree.Root.Blocks[0] as Paragraph;
+        Assert.IsNotNull(this._parsedTree);
+        var paragraph = this._parsedTree.Root.Blocks[0] as Paragraph;
         Assert.IsNotNull(paragraph);
 
         var text = paragraph.Inlines[0] as Text;
@@ -84,24 +84,24 @@ public sealed class ParserStepDefinitions
     [Then(@"位置情報が正しく設定されている")]
     public void 位置情報が正しく設定されている()
     {
-        Assert.IsNotNull(_parsedTree);
-        var paragraph = _parsedTree.Root.Blocks[0] as Paragraph;
+        Assert.IsNotNull(this._parsedTree);
+        var paragraph = this._parsedTree.Root.Blocks[0] as Paragraph;
         Assert.IsNotNull(paragraph);
 
         var text = paragraph.Inlines[0] as Text;
         Assert.IsNotNull(text);
 
-        var endColumn = _inputDocument.Length == 0 ? 1 : _inputDocument.Length;
+        var endColumn = this._inputDocument.Length == 0 ? 1 : this._inputDocument.Length;
         var expectedLocation = new Location(new Position(1, 1), new Position(1, endColumn));
         Assert.AreEqual(expectedLocation, text.Location);
         Assert.AreEqual(expectedLocation, paragraph.Location);
-        Assert.AreEqual(expectedLocation, _parsedTree.Root.Location);
+        Assert.AreEqual(expectedLocation, this._parsedTree.Root.Location);
     }
 
     [Then(@"ブロックを含まない")]
     public void ブロックを含まない()
     {
-        Assert.IsNotNull(_parsedTree);
-        Assert.AreEqual(0, _parsedTree.Root.Blocks.Count);
+        Assert.IsNotNull(this._parsedTree);
+        Assert.AreEqual(0, this._parsedTree.Root.Blocks.Count);
     }
 }

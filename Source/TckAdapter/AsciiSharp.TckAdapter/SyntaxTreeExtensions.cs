@@ -1,14 +1,15 @@
-﻿using AsciiSharp.SyntaxNodes;
-
-namespace AsciiSharp.TckAdapter;
+﻿namespace AsciiSharp.TckAdapter;
 
 public static class SyntaxTreeExtensions
 {
     extension(SyntaxTree syntaxTree)
     {
-        public Document ToDocument()
+        public IAsgElement ToAsg()
         {
-            return new Document();
+            var visitor = new AsgConverter();
+            var asg = syntaxTree.Root.Accept(visitor, Unit.Instance);
+
+            return asg;
         }
     }
 }

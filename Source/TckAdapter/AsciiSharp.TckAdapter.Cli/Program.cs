@@ -18,7 +18,7 @@ if (input is null)
 }
 
 var syntaxTree = SyntaxTree.Parse(input.Contents);
-var asgDocument = syntaxTree.ToDocument();
+var asgDocument = syntaxTree.ToAsg();
 
 var output = JsonSerializer.Serialize(asgDocument, AsgSerializerContext.Default.Document);
 

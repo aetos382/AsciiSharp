@@ -10,7 +10,7 @@ public class SyntaxTree
 
     private SyntaxTree(Document root)
     {
-        Root = root;
+        this.Root = root;
     }
 
     public static SyntaxTree Parse(ReadOnlySpan<char> source)

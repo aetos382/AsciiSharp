@@ -6,5 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Reqnroll.MsTest" Version="3.0.3" />
+    <PackageVersion Include="ZLinq" Version="1.5.2" />
   </ItemGroup>
 </Project>

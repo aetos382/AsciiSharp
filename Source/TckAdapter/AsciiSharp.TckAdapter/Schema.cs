@@ -4,7 +4,9 @@ using System.Text.Json.Serialization;
 namespace AsciiSharp.TckAdapter;
 
 // Root document class
-public class Document
+public interface IAsgElement;
+
+public class Document : IAsgElement
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = "document";
