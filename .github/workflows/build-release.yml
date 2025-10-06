@@ -15,7 +15,7 @@ jobs:
       NUGET_XMLDOC_MODE: ''
 
     steps:
-      - uses: actions/Checkout@v4
+      - uses: actions/Checkout@v5
       
       - uses: actions/setup-dotnet@v4
         with:
