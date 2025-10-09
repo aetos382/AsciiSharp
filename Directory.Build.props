@@ -5,7 +5,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <ArtifactsPath>$(MSBuildThisFileDirectory)\artifacts</ArtifactsPath>
-    <DebugType>embedded</DebugType>
+    <DebugType>portable</DebugType>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AnalysisLevel>latest-all</AnalysisLevel>
@@ -14,7 +14,6 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CA1303</NoWarn>
     <IsAotCompatible>true</IsAotCompatible>
-    <EnablePackageValidation>false</EnablePackageValidation>
     <DefaultItemExcludesInProjectFolder>
       $(DefaultItemExcludesInProjectFolder);
       packages.lock.json;

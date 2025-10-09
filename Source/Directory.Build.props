@@ -1,9 +1,8 @@
 <Project>
   <Import Project="$(MSBuildThisFileDirectory)../$(MSBuildThisFile)" />
 
-  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
+  <PropertyGroup>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <PackageLicenseExpression>BlueOak-1.0.0</PackageLicenseExpression>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -11,12 +10,13 @@
     <PackageProjectUrl>https://github.com/aetos382/AsciiSharp</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>asciidoc</PackageTags>
+    <PackageLicenseExpression>BlueOak-1.0.0</PackageLicenseExpression>
     <ApiCompatValidateAssemblies>false</ApiCompatValidateAssemblies>
     <EnablePackageValidation>true</EnablePackageValidation>
     <ApiCompatEnableRuleCannotChangeParameterName>true</ApiCompatEnableRuleCannotChangeParameterName>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+  <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\README.md" Link="README.md">
       <Pack>true</Pack>
       <PackagePath>\</PackagePath>
