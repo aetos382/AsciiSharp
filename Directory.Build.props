@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>14</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <UseArtifactsOutput>true</UseArtifactsOutput>
