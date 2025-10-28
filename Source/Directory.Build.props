@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/aetos382/AsciiSharp</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>asciidoc</PackageTags>
-    <PackageLicenseExpression>BlueOak-1.0.0</PackageLicenseExpression>
+    <PackageLicenseExpression>BSD-2-Clause-Patent</PackageLicenseExpression>
     <ApiCompatValidateAssemblies>false</ApiCompatValidateAssemblies>
     <EnablePackageValidation>true</EnablePackageValidation>
     <ApiCompatEnableRuleCannotChangeParameterName>true</ApiCompatEnableRuleCannotChangeParameterName>
