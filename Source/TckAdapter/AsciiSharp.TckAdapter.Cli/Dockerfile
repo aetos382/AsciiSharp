@@ -1,11 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.100-rc.1-noble AS adapter-build
-
-RUN --mount=type=cache,target=/var/cache/apt \
-  apt-get update && \
-  apt-get upgrade --yes --no-install-recommends --auto-remove --purge && \
-  apt-get install --yes --no-install-recommends \
-    clang \
-    zlib1g-dev
+FROM mcr.microsoft.com/dotnet/sdk:10.0.100-rc.2-noble-aot AS adapter-build
 
 ENV NUGET_PACKAGES=/var/cache/nuget
 
