@@ -44,7 +44,7 @@ public sealed class ParserStepDefinitions
     public void ブロックを含む(int count, string blockType)
     {
         Assert.IsNotNull(this._parsedTree);
-        Assert.AreEqual(count, this._parsedTree.Root.Blocks.Count);
+        Assert.HasCount(count, this._parsedTree.Root.Blocks);
         if (count > 0)
         {
             var expectedKind = SyntaxNodeKind.Parse(blockType);
@@ -56,11 +56,11 @@ public sealed class ParserStepDefinitions
     public void パラグラフはインラインを含む(int count, string inlineType)
     {
         Assert.IsNotNull(this._parsedTree);
-        Assert.AreEqual(1, this._parsedTree.Root.Blocks.Count);
+        Assert.HasCount(1, this._parsedTree.Root.Blocks);
 
         var paragraph = this._parsedTree.Root.Blocks[0] as ParagraphSyntax;
         Assert.IsNotNull(paragraph);
-        Assert.AreEqual(count, paragraph.Inlines.Count);
+        Assert.HasCount(count, paragraph.Inlines);
 
         if (count > 0)
         {
@@ -98,10 +98,10 @@ public sealed class ParserStepDefinitions
         Assert.AreEqual(expectedLocation, this._parsedTree.Root.Location);
     }
 
-    [Then(@"ブロックを含まない")]
+    [Then("ブロックを含まない")]
     public void ブロックを含まない()
     {
         Assert.IsNotNull(this._parsedTree);
-        Assert.AreEqual(0, this._parsedTree.Root.Blocks.Count);
+        Assert.IsEmpty(this._parsedTree.Root.Blocks);
     }
 }

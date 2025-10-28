@@ -17,13 +17,13 @@ public class BodyOnlyTest
         Assert.IsNotNull(tree.Root);
         Assert.AreEqual(SyntaxNodeKind.Document, tree.Root.Kind);
         Assert.AreEqual(SyntaxNodeType.Block, tree.Root.NodeType);
-        Assert.AreEqual(1, tree.Root.Blocks.Count);
+        Assert.HasCount(1, tree.Root.Blocks);
 
         var paragraph = tree.Root.Blocks[0] as ParagraphSyntax;
         Assert.IsNotNull(paragraph);
         Assert.AreEqual(SyntaxNodeKind.Paragraph, paragraph.Kind);
         Assert.AreEqual(SyntaxNodeType.Block, paragraph.NodeType);
-        Assert.AreEqual(1, paragraph.Inlines.Count);
+        Assert.HasCount(1, paragraph.Inlines);
 
         var text = paragraph.Inlines[0] as TextSyntax;
         Assert.IsNotNull(text);
