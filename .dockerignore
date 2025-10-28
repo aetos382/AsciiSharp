@@ -5,7 +5,6 @@
 
 /.editorconfig
 /.gitignore
-/AsciiSharp.slnx
 /CLAUDE.md
 /docker-bake.hcl
 

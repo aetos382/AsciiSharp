@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.100-rc.2-noble-aot AS adapter-build
+# syntax=docker/dockerfile:latest
+FROM mcr.microsoft.com/dotnet/sdk:10.0.100-rc.2-noble-aot-amd64 AS adapter-build
 
 ENV NUGET_PACKAGES=/var/cache/nuget
 
@@ -26,7 +27,8 @@ COPY [ \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/" \
 ]
 
-RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \
+RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
+[ \
   "dotnet", "restore", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--locked-mode", \
@@ -35,12 +37,12 @@ RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \
 
 COPY ["Source", "Source/"]
 
-RUN --mount=type=cache,id=nuget,target=/var/cache/nuget [ \ 
+RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
+[ \ 
   "dotnet", "publish", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--configuration", "Release", \
   "--runtime", "linux-x64", \
-  "-p:PublishAot=true", \
   "--output", "/workspace/publish", \
   "--no-restore", \
   "--nologo" \
