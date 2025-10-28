@@ -1,15 +1,6 @@
 <Solution>
-  <Folder Name="/Design/">
-    <Project Path="Design/AsciiSharp.Concept/AsciiSharp.Concept.csproj" />
-  </Folder>
   <Folder Name="/Source/">
     <Project Path="Source/AsciiSharp/AsciiSharp.csproj" />
-  </Folder>
-  <Folder Name="/Source/Converter/">
-    <Project Path="Source/Converter/AsciiSharp.Converter.Cli/AsciiSharp.Converter.Cli.csproj" />
-    <Project Path="Source/Converter/AsciiSharp.Converter.DocBook/AsciiSharp.Converter.DocBook.csproj" />
-    <Project Path="Source/Converter/AsciiSharp.Converter.Html/AsciiSharp.Converter.Html.csproj" />
-    <Project Path="Source/Converter/AsciiSharp.Converter/AsciiSharp.Converter.csproj" />
   </Folder>
   <Folder Name="/Source/TckAdapter/">
     <Project Path="Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj" />
