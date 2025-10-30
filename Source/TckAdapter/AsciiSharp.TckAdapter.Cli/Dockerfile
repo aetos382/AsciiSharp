@@ -27,14 +27,6 @@ COPY [ \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/" \
 ]
 
-RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
-[ \
-  "dotnet", "restore", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
-  "--locked-mode", \
-  "--nologo" \
-]
-
 COPY ["Source", "Source/"]
 
 RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
@@ -44,7 +36,6 @@ RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
   "--configuration", "Release", \
   "--runtime", "linux-x64", \
   "--output", "/workspace/publish", \
-  "--no-restore", \
   "--nologo" \
 ]
 
