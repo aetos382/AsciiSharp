@@ -16,8 +16,11 @@
     "ghcr.io/devcontainers-extra/features/npm-packages:1": {
       "packages": "@anthropic-ai/claude-code"
     },
-    "ghcr.io/devcontainers/features/python:1": {},
-    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {}
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": false
+    },
+    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "overrideFeatureInstallOrder": [
     "ghcr.io/devcontainers/features/node",
