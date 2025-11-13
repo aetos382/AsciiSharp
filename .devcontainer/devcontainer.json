@@ -55,8 +55,6 @@
       "extensions": [
         "Anthropic.claude-code",
         "EditorConfig.EditorConfig",
-        "GitHub.codespaces",
-        "GitHub.copilot-chat",
         "eamodio.gitlens",
         "ms-dotnettools.csdevkit",
         "ms-dotnettools.vscodeintellicode-csharp",
