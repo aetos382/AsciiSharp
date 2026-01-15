@@ -48,6 +48,7 @@
       "extensions": [
         "Anthropic.claude-code",
         "asciidoctor.asciidoctor-vscode",
+        "docker.docker",
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
         "GitHub.copilot-chat",
