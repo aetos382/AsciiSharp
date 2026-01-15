@@ -6,4 +6,4 @@ add_safe_directory() {
 add_safe_directory '/workspaces/AsciiSharp/submodules/asciidoc-lang'
 add_safe_directory '/workspaces/AsciiSharp/submodules/asciidoc-tck'
 
-git submodule update --init --remote
+git submodule update --init
