@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:latest
-FROM mcr.microsoft.com/dotnet/sdk:10.0.100-rc.2-noble-aot-amd64 AS adapter-build
+FROM mcr.microsoft.com/dotnet/sdk:10.0.102-noble-aot-amd64 AS adapter-build
 
 ENV NUGET_PACKAGES=/var/cache/nuget
 
@@ -30,7 +30,7 @@ COPY [ \
 COPY ["Source", "Source/"]
 
 RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
-[ \ 
+[ \
   "dotnet", "publish", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--configuration", "Release", \
