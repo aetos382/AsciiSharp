@@ -1,13 +1,13 @@
 [submodule "submodules/asciidoc-lang"]
-	path = submodules/asciidoc-lang
-	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang.git
-	branch = main
+  path = submodules/asciidoc-lang
+  url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang.git
+  branch = main
   update = checkout
   shallow = true
 
 [submodule "submodules/asciidoc-tck"]
-	path = submodules/asciidoc-tck
-	url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git
-	branch = main
+  path = submodules/asciidoc-tck
+  url = https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git
+  branch = main
   update = checkout
   shallow = true
