@@ -1,26 +1,19 @@
 {
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": "."
-  },
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "overrideCommand": true,
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "features": {
-    "ghcr.io/devcontainers/features/dotnet:2": {
-      "version": "10.0.100"
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/powershell:1": {
-      "modules": "Microsoft.PowerShell.PSResourceGet"
-    },
-    "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers-extra/features/npm-packages:1": {
-      "packages": "@anthropic-ai/claude-code"
-    },
+    "ghcr.io/devcontainers-extra/features/claude-code:1": {},
     "ghcr.io/devcontainers/features/python:1": {
       "installTools": false,
       "optimize": true
     },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
   },
   "overrideFeatureInstallOrder": [
     "ghcr.io/devcontainers/features/node",
@@ -54,16 +47,34 @@
     "vscode": {
       "extensions": [
         "Anthropic.claude-code",
-        "EditorConfig.EditorConfig",
-        "eamodio.gitlens",
-        "ms-dotnettools.csdevkit",
-        "ms-dotnettools.vscodeintellicode-csharp",
         "asciidoctor.asciidoctor-vscode",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "GitHub.copilot-chat",
+        "ms-dotnettools.csdevkit",
+        "shuworks.vscode-table-formatter",
         "-dbaeumer.vscode-eslint",
         "-ms-python.python",
         "-ms-python.vscode-pylance",
         "-ms-python.autopep8"
-      ]
+      ],
+      "settings": {
+        "chat.promptFilesRecommendations": {
+          "speckit.constitution": true,
+          "speckit.specify": true,
+          "speckit.plan": true,
+          "speckit.tasks": true,
+          "speckit.implement": true
+        },
+        "chat.tools.terminal.autoApprove": {
+          ".specify/scripts/bash/": true,
+          ".specify/scripts/powershell/": true
+        },
+        "asciidoc.extensions.enableKroki": true,
+        "asciidoc.preview.asciidoctorAttributes": {
+          "kroki-server-url": "http://localhost:8000"
+        }
+      }
     }
   }
 }

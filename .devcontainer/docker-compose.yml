@@ -1,0 +1,34 @@
+name: asciisharp
+
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    depends_on:
+      - kroki
+    networks:
+      - kroki
+
+  kroki:
+    image: yuzutech/kroki
+    environment:
+      KROKI_MERMAID_HOST: kroki-mermaid
+    networks:
+      - kroki
+      - kroki-internal
+    expose:
+      - 8000
+
+  kroki-mermaid:
+    image: yuzutech/kroki-mermaid
+    networks:
+      - kroki-internal
+    expose:
+      - 8002
+
+networks:
+  kroki:
+  kroki-internal:
+    internal: true
