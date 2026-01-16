@@ -15,9 +15,6 @@
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
     "ghcr.io/va-h/devcontainers-features/uv:1": {}
   },
-  "overrideFeatureInstallOrder": [
-    "ghcr.io/devcontainers/features/python"
-  ],
   "remoteUser": "vscode",
   "containerEnv": {
     "TZ": "Asia/Tokyo",
