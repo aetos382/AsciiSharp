@@ -24,3 +24,9 @@ end_of_line = lf
 [*.diff]
 insert_final_newline = false
 trim_trailing_whitespace = false
+
+[Dockerfile]
+end_of_line = lf
+
+[.dockerignore]
+end_of_line = lf
