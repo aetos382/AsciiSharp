@@ -31,8 +31,6 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
-      exclude:
-        - "mcr.microsoft.com/*"
 
   - package-ecosystem: "docker-compose"
     directory: "/.devcontainer"
@@ -40,8 +38,6 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
-      exclude:
-        - "mcr.microsoft.com/*"
 
   - package-ecosystem: "devcontainers"
     directory: "/"
