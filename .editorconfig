@@ -20,3 +20,7 @@ spelling_use_default_exclusion_dictionary = true
 
 [*.sh]
 end_of_line = lf
+
+[*.diff]
+insert_final_newline = false
+trim_trailing_whitespace = false
