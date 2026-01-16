@@ -1,7 +1,5 @@
-* text=auto eol=crlf
+* text=auto eol=lf
 
-*.md text eol=crlf diff=markdown
-*.cs text eol=crlf diff=csharp
-*.sh text eol=lf diff=bash
-Dockerfile text eol=lf
-.dockerignore text eol=lf
+*.md text diff=markdown
+*.cs text diff=csharp
+*.sh text diff=bash
