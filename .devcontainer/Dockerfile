@@ -6,3 +6,4 @@ RUN dotnet workload update
 USER vscode
 
 RUN mkdir -p /home/vscode/.claude
+RUN mkdir -p /home/vscode/.nuget/packages
