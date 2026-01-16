@@ -5,16 +5,6 @@
 
 version: 2
 
-multi-ecosystem-groups:
-  docker:
-    schedule:
-      interval: "weekly"
-    cooldown:
-    cooldown:
-      default-days: 7
-      exclude:
-        - "mcr.microsoft.com/*"
-
 updates:
   - package-ecosystem: "nuget"
     directory: "/" # Location of package manifests
@@ -42,11 +32,21 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/"
-    multi-ecosystem-group: docker
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      exclude:
+        - "mcr.microsoft.com/*"
 
   - package-ecosystem: "docker-compose"
     directory: "/"
-    multi-ecosystem-group: docker
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      exclude:
+        - "mcr.microsoft.com/*"
 
   - package-ecosystem: "devcontainers"
     directory: "/"
