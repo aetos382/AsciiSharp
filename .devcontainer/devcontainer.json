@@ -26,8 +26,8 @@
   "remoteEnv": {
     "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}"
   },
-  "postCreateCommand": ".devcontainer/postCreate.sh",
-  "postStartCommand": ".devcontainer/postStart.sh",
+  "postCreateCommand": "bash .devcontainer/postCreate.sh",
+  "postStartCommand": "bash .devcontainer/postStart.sh",
   "mounts": [
     {
       "type": "volume",
