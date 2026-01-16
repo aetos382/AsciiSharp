@@ -3,26 +3,28 @@
   "service": "devcontainer",
   "overrideCommand": true,
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "init": true,
   "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/python:1": {
       "installTools": false,
       "optimize": true
     },
-    "ghcr.io/devcontainers-extra/features/claude-code:1": {},
+    "ghcr.io/stu-bell/devcontainer-features/claude-code:0": {},
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
-    "ghcr.io/va-h/devcontainers-features/uv:1": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/va-h/devcontainers-features/uv:1": {}
   },
   "overrideFeatureInstallOrder": [
-    "ghcr.io/devcontainers/features/node",
     "ghcr.io/devcontainers/features/python"
   ],
   "remoteUser": "vscode",
   "containerEnv": {
     "TZ": "Asia/Tokyo",
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+  },
+  "remoteEnv": {
+    "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}"
   },
   "postCreateCommand": ".devcontainer/postCreate.sh",
   "postStartCommand": ".devcontainer/postStart.sh",

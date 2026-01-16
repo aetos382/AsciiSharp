@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    init: true
     depends_on:
       - kroki
     networks:
