@@ -4,6 +4,17 @@
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
+
+multi-ecosystem-groups:
+  docker:
+    schedule:
+      interval: "weekly"
+    cooldown:
+    cooldown:
+      default-days: 7
+      exclude:
+        - "mcr.microsoft.com/*"
+
 updates:
   - package-ecosystem: "nuget"
     directory: "/" # Location of package manifests
@@ -31,21 +42,11 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-      excludes:
-        - "mcr.microsoft.com/*"
+    multi-ecosystem-group: docker
 
   - package-ecosystem: "docker-compose"
     directory: "/"
-    schedule:
-      interval: "weekly"
-    cooldown:
-      default-days: 7
-      excludes:
-        - "mcr.microsoft.com/*"
+    multi-ecosystem-group: docker
 
   - package-ecosystem: "devcontainers"
     directory: "/"
