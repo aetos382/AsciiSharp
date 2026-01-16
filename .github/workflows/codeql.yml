@@ -37,10 +37,7 @@ jobs:
         build-mode: manual
         queries: security-and-quality
 
-    - run: |
-        dotnet build AsciiSharp.slnx
-        /p:ContinuousIntegrationBuild=true
-        /p:EmitSarifFile=true
+    - run: dotnet build AsciiSharp.slnx /p:EmitSarifFile=true
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@cdefb33c0f6224e58673d9004f47f7cb3e328b89
