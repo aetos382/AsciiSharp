@@ -1,5 +1,5 @@
-# syntax=docker/dockerfile:latest
-FROM mcr.microsoft.com/dotnet/sdk:10.0.102-noble-aot-amd64 AS adapter-build
+# syntax=docker/dockerfile:latest@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+FROM mcr.microsoft.com/dotnet/sdk:10.0.102-noble-aot-amd64@sha256:dd57b0d2ace6310fc99b141d82925960b489fade10b9045bb668b6ea7b22e439 AS adapter-build
 
 ENV NUGET_PACKAGES=/var/cache/nuget
 
@@ -39,7 +39,7 @@ RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
   "--nologo" \
 ]
 
-FROM node:22-trixie AS tck-build
+FROM node:lts-trixie@sha256:bea2f8264c42f56e253295ebd89db8e7c4ff96a03339adeb4a7628bd548d9476 AS tck-build
 
 WORKDIR /workspace
 
@@ -56,7 +56,7 @@ RUN \
   --mount=type=cache,target=/workspace/asciidoc-tck/node_modules \
   npm ci && npm install -D postject && npm run dist
 
-FROM debian:trixie-slim
+FROM debian:trixie-slim@sha256:77ba0164de17b88dd0bf6cdc8f65569e6e5fa6cd256562998b62553134a00ef0
 
 WORKDIR /workspace
 
