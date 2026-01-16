@@ -43,11 +43,7 @@ FROM node:lts-trixie@sha256:bea2f8264c42f56e253295ebd89db8e7c4ff96a03339adeb4a76
 
 WORKDIR /workspaces
 
-RUN git clone \
-  -b main \
-  --single-branch \
-  --depth 1 \
-  https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git
+COPY --from=asciidoc-tck . /workspaces/asciidoc-tck/
 
 WORKDIR /workspaces/asciidoc-tck
 
