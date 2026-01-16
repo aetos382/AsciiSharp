@@ -9,4 +9,10 @@
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(EmitSarifFile)' == 'true'">
+    <SarifPath Condition="'$(SarifPath)' == ''">$(OutputPath)$(AssemblyName).sarif</SarifPath>
+    <SarifVersion Condition="'$(SarifVersion)' == ''">2.1</SarifVersion>
+    <ErrorLog>$(SarifPath);Version=$(SarifVersion)</ErrorLog>
+  </PropertyGroup>
+
 </Project>

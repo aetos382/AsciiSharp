@@ -20,7 +20,8 @@
   "remoteUser": "vscode",
   "containerEnv": {
     "TZ": "Asia/Tokyo",
-    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "NUGET_PACKAGES": "/home/vscode/.nuget/packages"
   },
   "remoteEnv": {
     "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}"
@@ -53,6 +54,7 @@
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
         "GitHub.copilot-chat",
+        "github.vscode-github-actions",
         "ms-dotnettools.csdevkit",
         "shuworks.vscode-table-formatter",
         "-dbaeumer.vscode-eslint",
