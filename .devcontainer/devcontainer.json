@@ -38,11 +38,6 @@
       "type": "volume",
       "source": "claude-code-config-${devcontainerId}",
       "target": "/home/vscode/.claude"
-    },
-    {
-      "type": "bind",
-      "source": "${localEnv:USERPROFILE}/.claude/CLAUDE.md",
-      "target": "/home/vscode/.claude/CLAUDE.md"
     }
   ],
   "customizations": {

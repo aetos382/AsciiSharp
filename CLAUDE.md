@@ -1,6 +1,14 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## 一般的な原則
+
+- 日本語で受け答えしてください。
+- コードを書く際も、コード内のコメントやドキュメントは日本語で書いてください。
+- Web を検索する際は、適宜、英語での検索も行ってください。結果を表示する際は日本語にしてください。
+- Web 検索して見つけた情報については、出典となる URL を教えてください。
+- ファイルを書き換える際は、何のための変更なのか、簡潔な日本語の説明を表示してください。
+- CLI コマンドを実行する際は、何をするコマンドなのか、簡潔な日本語の説明を表示してください。
+- コミット メッセージも日本語で記述してください。
 
 ## プロジェクト概要
 
@@ -10,10 +18,8 @@ AsciiSharpは.NET 10.0をターゲットとするAsciiDoc処理ライブラリ�
 
 ### ソリューション構成
 - `Source/AsciiSharp/` - AsciiDoc処理のコアライブラリ
-- `Source/Converter/` - 出力形式コンバーター（CLI、DocBook、HTML、Core）
 - `Source/TckAdapter/` - Technology Compatibility Kit アダプター
 - `Test/AsciiSharp.Tests/` - MSTestベースの単体テスト
-- `Design/AsciiSharp.Concept/` - コンセプト・設計検討プロジェクト
 
 ### ビルドシステム
 - .NET 10.0 SDK、C# 14言語機能を使用
@@ -66,7 +72,7 @@ dotnet test --filter "TestMethodName"
 - AOT（Ahead of Time）コンパイル対応
 - トリミング対応
 - CLS準拠
-- Apache-2.0ライセンス
+- BSD+Patent ライセンス
 
 ## コンセプト
 - パーサーは Roslyn をモデルとする。
