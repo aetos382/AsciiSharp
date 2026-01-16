@@ -54,16 +54,12 @@
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
         "GitHub.copilot-chat",
-        "GitHub.vscode-codeql",
-        "github.vscode-github-actions",
         "ms-dotnettools.csdevkit",
-        "MS-SarifVSCode.sarif-viewer",
         "shuworks.vscode-table-formatter",
         "-dbaeumer.vscode-eslint",
         "-ms-python.python",
         "-ms-python.vscode-pylance",
-        "-ms-python.autopep8",
-        "ozzafar.debugmcpextension"
+        "-ms-python.autopep8"
       ],
       "settings": {
         "chat.promptFilesRecommendations": {
