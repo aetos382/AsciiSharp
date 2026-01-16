@@ -37,6 +37,11 @@
       "type": "volume",
       "source": "claude-code-config-${devcontainerId}",
       "target": "/home/vscode/.claude"
+    },
+    {
+      "type": "volume",
+      "source": "nuget-package-cache-${devcontainerId}",
+      "target": "/home/vscode/.nuget/packages"
     }
   ],
   "customizations": {
