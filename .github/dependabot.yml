@@ -19,7 +19,7 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "gitsubmodule"
-    directory: "submodules"
+    directory: "/"
     schedule:
       interval: "weekly"
 
@@ -31,7 +31,9 @@ updates:
       default-days: 7
 
   - package-ecosystem: "docker"
-    directory: "/"
+    directories:
+      - "/.devcontainer/"
+      - "/Source/TckAdapter/AsciiSharp.TckAdapter.Cli/"
     schedule:
       interval: "weekly"
     cooldown:
@@ -40,7 +42,7 @@ updates:
         - "mcr.microsoft.com/*"
 
   - package-ecosystem: "docker-compose"
-    directory: "/"
+    directory: "/.devcontainer"
     schedule:
       interval: "weekly"
     cooldown:
