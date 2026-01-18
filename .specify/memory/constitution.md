@@ -1,50 +1,155 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version: [初期作成] → 1.0.0
+- 変更された原則: なし（初期作成）
+- 追加されたセクション:
+  - Core Principles (5つの原則)
+  - 開発ワークフロー
+  - 品質ゲート
+  - Governance
+- 削除されたセクション: なし
+- テンプレート更新状況:
+  - plan-template.md: ✅ Constitution Checkセクション確認済み
+  - spec-template.md: ✅ 要件定義との整合性確認済み
+  - tasks-template.md: ✅ タスク分類との整合性確認済み
+- フォローアップTODO: なし
+-->
+
+# AsciiSharp Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. コード品質ファースト
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+**必須事項**:
+- すべてのコードは可読性を最優先とする
+- メンテナンス性を確保するため、適切な命名規則と構造化を行う
+- テスト可能性を考慮した設計を行う
+- パフォーマンスを意識した実装を行う
+- セキュリティベストプラクティスに従う
+- 可観測性（ログ、メトリクス、トレース）を組み込む
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**根拠**: 長期的なプロジェクトの成功には、コード品質の維持が不可欠である。品質を後回しにすると、技術的負債が蓄積し、開発速度が低下する。
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. モジュール設計
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+**必須事項**:
+- 適切な単位でプロジェクトを分割する
+- 各モジュールは明確な責務を持つ
+- モジュール間の依存関係を最小化する
+- 再利用可能なコンポーネントとして設計する
+- 疎結合・高凝集の原則に従う
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**根拠**: モジュール化により、コードの再利用性、テスト容易性、並行開発が可能になる。適切な分割は、変更の影響範囲を限定し、保守性を向上させる。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. BDD必須 (NON-NEGOTIABLE)
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**必須事項**:
+- すべての機能開発において Behavior Driven Development (BDD) を実施する
+- Red-Green-Refactor サイクルを厳格に遵守する
+- Given-When-Then 形式で振る舞いを記述する
+- ユーザーストーリーから受け入れシナリオを導出する
+- 実装前にテストを記述し、テストが失敗することを確認する
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**根拠**: BDD は要件と実装の乖離を防ぎ、ビジネス価値とテストを直結させる。テストファーストにより、設計品質が向上し、リグレッションを防止できる。
+
+### IV. 継続的品質保証
+
+**必須事項**:
+- BDD の Green ステップ（テスト成功）後、必ずビルドとすべてのテストを実行する
+- BDD の Refactoring ステップ後、必ずビルドとすべてのテストを実行する
+- テストが失敗した場合、成功するまで修正を継続する
+- すべてのコミット前にビルドとテストを実行する
+- 継続的インテグレーション（CI）パイプラインを維持する
+
+**根拠**: 継続的な検証により、問題の早期発見と迅速な修正が可能になる。自動化されたフィードバックループは、品質の一貫性を保証する。
+
+### V. 警告ゼロポリシー
+
+**必須事項**:
+- BDD の Refactoring ステップ中に、すべてのコンパイラ警告とリンター警告を解消する
+- 正当な理由がある場合のみ、明示的な抑制（suppression）を行う
+- 抑制する場合は、コメントで理由を明記する
+- 新しい警告が発生しないように、CI で警告をエラーとして扱う
+
+**根拠**: 警告は潜在的な問題の兆候である。警告を放置すると、重要な問題が見逃される可能性がある。警告ゼロを維持することで、コードベースの健全性を保つ。
+
+## 開発ワークフロー
+
+### BDD サイクル
+
+1. **Red（レッド）**: 失敗するテストを書く
+   - ユーザーストーリーから受け入れシナリオを作成
+   - Given-When-Then 形式でテストケースを記述
+   - テストを実行し、失敗することを確認
+
+2. **Green（グリーン）**: テストを通す最小限の実装
+   - テストを成功させるコードを実装
+   - 実装完了後、**必ずビルドとすべてのテストを実行**
+   - すべてのテストが成功することを確認
+
+3. **Refactor（リファクタリング）**: コードを改善
+   - 重複を排除し、可読性を向上
+   - 設計を改善
+   - リファクタリング完了後、**必ずビルドとすべてのテストを実行**
+   - すべての警告を解消または無効化
+   - すべてのテストが成功することを確認
+
+### コミットとプッシュ
+
+- 各 BDD サイクル完了後にコミット
+- コミット前に必ずビルドとテストを実行
+- コミットメッセージは日本語で明確に記述
+- プッシュ前に CI パイプラインの成功を確認
+
+## 品質ゲート
+
+### ビルド成功
+
+- すべてのプロジェクトがエラーなしでビルドできる
+- 警告がゼロである（または正当な理由で抑制されている）
+
+### テスト成功
+
+- すべてのユニットテストが成功する
+- すべての統合テストが成功する
+- すべての受け入れテストが成功する
+- テストカバレッジが維持または向上している
+
+### コード品質
+
+- コードレビューが完了している
+- 静的解析ツールがパスしている
+- セキュリティスキャンがパスしている
+- パフォーマンステストが基準を満たしている
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+### 憲章の位置づけ
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- この憲章は、すべての開発プラクティスに優先する
+- 憲章に違反する実装は、正当化されない限り却下される
+- 複雑性の導入は、憲章の原則と照らし合わせて正当化が必要
+
+### 改訂手順
+
+1. 改訂提案を文書化
+2. 影響分析を実施（影響を受けるコード、テンプレート、ワークフローを特定）
+3. レビューと承認
+4. バージョン番号を更新（セマンティックバージョニング）
+   - MAJOR: 後方互換性のない変更、原則の削除または再定義
+   - MINOR: 新しい原則またはセクションの追加、ガイダンスの大幅な拡張
+   - PATCH: 明確化、文言修正、タイポ修正、非セマンティックな改善
+5. 依存テンプレートと文書を更新
+6. Sync Impact Report を作成
+
+### コンプライアンス
+
+- すべてのプルリクエストは、憲章への準拠を確認する
+- コードレビューでは、憲章の原則を基準とする
+- CI パイプラインで、品質ゲートを自動検証する
+- 定期的に憲章の遵守状況をレビューする
+
+---
+
+**Version**: 1.0.0 | **Ratified**: 2026-01-18 | **Last Amended**: 2026-01-18
