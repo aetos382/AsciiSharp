@@ -83,7 +83,9 @@ specs/001-asciidoc-parser/
 ├── research.md          # Phase 0: 技術調査
 ├── data-model.md        # Phase 1: データモデル
 ├── quickstart.md        # Phase 1: クイックスタートガイド
-└── tasks.md             # Phase 2: タスク分解（/speckit.tasks で生成）
+├── tasks.md             # Phase 2: タスク分解（/speckit.tasks で生成）
+└── grammar/             # PEG 文法定義（参照仕様、パーサー実装ガイド）
+    └── asciidoc.peg     # AsciiDoc の PEG 文法
 ```
 
 ### Source Code (repository root)
@@ -143,3 +145,4 @@ Benchmark/
 | 二層構文木構造 | 増分解析と構造共有に必須 | 単一構造では編集時のパフォーマンスが悪化 |
 | .NET Standard 2.0 制約 | 広範な互換性が必要 | 最新 .NET のみでは .NET Framework ユーザーを排除 |
 | 手書きパーサー | エラー回復と増分解析の細かい制御が必要 | パーサージェネレーターでは柔軟性が不足 |
+| PEG 文法定義（参照用） | 文法の正式な仕様として実装ガイドに使用 | 口頭説明のみでは仕様の曖昧さが残る。ただしパーサージェネレーターは使用しない |
