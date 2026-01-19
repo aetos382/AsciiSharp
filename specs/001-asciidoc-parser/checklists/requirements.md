@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-01-18
-**Last Updated**: 2026-01-19 (FR-002 更新)
+**Last Updated**: 2026-01-20 (analyze 修正)
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -39,6 +39,12 @@
 - [x] plan.md の Complexity Tracking に記録
 - [x] plan.md の Project Structure に grammar/ ディレクトリを追加
 - [x] タスク番号を T008-T139 に再番号付け（総タスク数: 139）
+
+## Analyze Remediation (2026-01-20)
+
+- [x] DescriptionListSyntax, DelimitedBlockSyntax タスク追加（T126-T130）
+- [x] 空の文書テストタスク追加（T137）
+- [x] タスク番号を T008-T145 に再番号付け（総タスク数: 145）
 
 ## Notes
 

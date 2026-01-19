@@ -358,14 +358,15 @@
 - [ ] T134 [P] BOM（Byte Order Mark）処理を SourceText に実装
 - [ ] T135 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
 - [ ] T136 [P] ネストレベル制限を Parser に実装（無限ループ防止）
-- [ ] T137 パフォーマンステストを Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs に追加（SC-003 検証: 100KB 文書 500ms 以内）
-- [ ] T138 ベンチマークを実行し、パフォーマンス目標を検証
-- [ ] T139 [P] XML ドキュメントコメントを公開 API に追加
-- [ ] T140 [P] README.md を作成（クイックスタート、API 概要）
-- [ ] T141 全体のコードレビューとリファクタリング
-- [ ] T142 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
-- [ ] T143 quickstart.md の検証シナリオを実行
-- [ ] T144 最終ビルドと警告ゼロの確認
+- [ ] T137 空の文書（空文字列）の解析テストを追加（Edge Case: 空のドキュメントノードを持つ有効な構文木が生成されることを検証）
+- [ ] T138 パフォーマンステストを Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs に追加（SC-003 検証: 100KB 文書 500ms 以内）
+- [ ] T139 ベンチマークを実行し、パフォーマンス目標を検証
+- [ ] T140 [P] XML ドキュメントコメントを公開 API に追加
+- [ ] T141 [P] README.md を作成（クイックスタート、API 概要）
+- [ ] T142 全体のコードレビューとリファクタリング
+- [ ] T143 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
+- [ ] T144 quickstart.md の検証シナリオを実行
+- [ ] T145 最終ビルドと警告ゼロの確認
 
 ---
 
@@ -460,7 +461,7 @@ Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に�
 
 ## タスク要約
 
-- **総タスク数**: 144
+- **総タスク数**: 145
 - **Phase 1 (Setup)**: 7 タスク
 - **Phase 2 (Foundational)**: 19 タスク（PEG 文法定義含む）
 - **User Story 1**: 23 タスク（BDD テスト含む）
@@ -469,7 +470,7 @@ Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に�
 - **User Story 4**: 14 タスク（BDD テスト含む）
 - **User Story 5**: 15 タスク（BDD テスト含む）
 - **User Story 6**: 16 タスク（BDD テスト含む）
-- **Phase 9 (Polish)**: 19 タスク（DescriptionList, DelimitedBlock 含む）
+- **Phase 9 (Polish)**: 20 タスク（DescriptionList, DelimitedBlock, Edge Case 含む）
 
 ### 並列実行機会
 
