@@ -5,7 +5,7 @@
 
 ## 概要
 
-本データモデルは Roslyn スタイルの赤緑木（Red-Green Tree）アーキテクチャに基づく。内部構造（Green Tree）と外部 API（Red Tree）の二層で構成される。
+本データモデルは Roslyn スタイルの二層構文木アーキテクチャに基づく。内部構文木（InternalSyntax）と外部構文木（Syntax）の二層で構成される。Roslyn では Red-Green Tree と呼ばれるパターンである。
 
 ---
 
@@ -98,21 +98,21 @@ Diagnostic (class, immutable)
 
 ---
 
-## 2. Green Tree（内部構造）
+## 2. 内部構文木（InternalSyntax）
 
 ユーザーからは直接アクセスできない内部実装。
 
-### 2.1 GreenNode（内部ノード基底）
+### 2.1 InternalNode（内部ノード基底）
 
 ```text
-GreenNode (abstract class, immutable)
+InternalNode (abstract class, immutable)
 ├── Kind: SyntaxKind              # ノード種別
 ├── Width: int                    # 幅（バイト単位で内部管理可）
 ├── FullWidth: int                # トリビア含む全幅
 ├── SlotCount: int                # 子スロット数
 ├── IsMissing: bool               # 欠落ノードか
 ├── ContainsDiagnostics: bool     # 診断情報を含むか
-└── GetSlot(index: int): GreenNode?  # 子ノード取得
+└── GetSlot(index: int): InternalNode?  # 子ノード取得
 
 特性:
 - 完全に不変（Immutable）
@@ -120,36 +120,36 @@ GreenNode (abstract class, immutable)
 - 絶対位置を持たない（幅のみ）
 ```
 
-### 2.2 GreenToken（内部トークン）
+### 2.2 InternalToken（内部トークン）
 
 ```text
-GreenToken (class, sealed, immutable)
+InternalToken (class, sealed, immutable)
 ├── Kind: SyntaxKind
 ├── Text: string                  # トークンテキスト
 ├── Width: int                    # テキスト幅
 ├── LeadingTriviaWidth: int       # 先行トリビア幅
 ├── TrailingTriviaWidth: int      # 後続トリビア幅
-├── LeadingTrivia: GreenTrivia[]  # 先行トリビア配列
-└── TrailingTrivia: GreenTrivia[] # 後続トリビア配列
+├── LeadingTrivia: InternalTrivia[]  # 先行トリビア配列
+└── TrailingTrivia: InternalTrivia[] # 後続トリビア配列
 ```
 
-### 2.3 GreenTrivia（内部トリビア）
+### 2.3 InternalTrivia（内部トリビア）
 
 ```text
-GreenTrivia (struct, immutable)
+InternalTrivia (struct, immutable)
 ├── Kind: SyntaxKind              # トリビア種別
 ├── Text: string                  # トリビアテキスト
 └── Width: int                    # 幅
 ```
 
-### 2.4 GreenNodeCache（ノードキャッシュ）
+### 2.4 InternalNodeCache（ノードキャッシュ）
 
 同一内容のノードを共有するためのキャッシュ。
 
 ```text
-GreenNodeCache (class)
-├── TryGetNode(kind, children): GreenNode?
-└── AddNode(node: GreenNode): void
+InternalNodeCache (class)
+├── TryGetNode(kind, children): InternalNode?
+└── AddNode(node: InternalNode): void
 
 実装詳細:
 - WeakReference を使用してメモリ圧迫を回避
@@ -158,7 +158,7 @@ GreenNodeCache (class)
 
 ---
 
-## 3. Red Tree（外部 API）
+## 3. 外部構文木（Syntax）
 
 ユーザーが操作する公開 API。
 
@@ -166,7 +166,7 @@ GreenNodeCache (class)
 
 ```text
 SyntaxNode (abstract class)
-├── [internal] Green: GreenNode   # 対応する Green ノード
+├── [internal] Internal: InternalNode   # 対応する内部ノード
 ├── Parent: SyntaxNode?           # 親ノード（オンデマンド計算）
 ├── SyntaxTree: SyntaxTree?       # 所属する構文木
 ├── Kind: SyntaxKind              # ノード種別
@@ -190,7 +190,7 @@ SyntaxNode (abstract class)
 
 ```text
 SyntaxToken (struct)
-├── [internal] Green: GreenToken
+├── [internal] Internal: InternalToken
 ├── Parent: SyntaxNode?
 ├── Kind: SyntaxKind
 ├── Text: string
@@ -400,9 +400,9 @@ SourceText (abstract class)
     ↓ Lexer
 [Token Stream]
     ↓ Parser
-[Green Tree]
+[内部構文木]
     ↓ SyntaxTree.Create
-[SyntaxTree + Red Tree Root]
+[SyntaxTree + 外部構文木ルート]
 ```
 
 ### 6.2 増分更新フロー
@@ -410,9 +410,9 @@ SourceText (abstract class)
 ```text
 [Existing SyntaxTree] + [TextChange]
     ↓ IncrementalParser
-[New Green Tree] (構造共有)
+[新しい内部構文木] (構造共有)
     ↓ SyntaxTree.WithChanges
-[New SyntaxTree] (新しい Red Tree Root)
+[New SyntaxTree] (新しい外部構文木ルート)
 ```
 
 ---
@@ -422,7 +422,7 @@ SourceText (abstract class)
 | エンティティ | 規則 |
 |-------------|------|
 | TextSpan | Start >= 0, Length >= 0 |
-| GreenNode | Width >= 0, SlotCount >= 0 |
+| InternalNode | Width >= 0, SlotCount >= 0 |
 | SyntaxKind | 有効な列挙値のみ |
 | Diagnostic | Code と Message は空でない |
 | SectionSyntax | Level は 0-5 の範囲 |

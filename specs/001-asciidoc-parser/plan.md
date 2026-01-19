@@ -5,7 +5,7 @@
 
 ## Summary
 
-AsciiDoc 文書を解析し、Roslyn スタイルの赤緑木（Red-Green Tree）構造を持つロスレス構文木（Concrete Syntax Tree）を生成するパーサーを実装する。文法は PEG で定義するが、パーサー自体は手書きで実装する（パーサージェネレーターは使用しない）。エラー耐性解析、不変構文木、増分解析をサポートする。
+AsciiDoc 文書を解析し、Roslyn スタイルの二層構文木構造を持つロスレス構文木（Concrete Syntax Tree）を生成するパーサーを実装する。文法は PEG で定義するが、パーサー自体は手書きで実装する（パーサージェネレーターは使用しない）。エラー耐性解析、不変構文木、増分解析をサポートする。
 
 ## Technical Context
 
@@ -44,7 +44,7 @@ AsciiDoc 文書を解析し、Roslyn スタイルの赤緑木（Red-Green Tree�
 
 ### I. コード品質ファースト ✅
 
-- 可読性: 赤緑木モデルは Roslyn の実績あるパターンに従う
+- 可読性: 二層構文木モデルは Roslyn の実績あるパターンに従う
 - テスト可能性: 不変構文木により状態管理が単純化
 - パフォーマンス: 増分解析、構造共有によりメモリ効率を確保
 - 可観測性: Diagnostic エンティティで構文エラーを追跡
@@ -92,11 +92,11 @@ specs/001-asciidoc-parser/
 Source/
 └── AsciiSharp/                          # コアライブラリ (.NET Standard 2.0)
     ├── AsciiSharp.csproj
-    ├── InternalSyntax/                  # Green Tree（内部構造）
-    │   ├── GreenNode.cs
-    │   ├── GreenToken.cs
-    │   └── GreenTrivia.cs
-    ├── Syntax/                          # Red Tree（外部 API）
+    ├── InternalSyntax/                  # 内部構文木
+    │   ├── InternalNode.cs
+    │   ├── InternalToken.cs
+    │   └── InternalTrivia.cs
+    ├── Syntax/                          # 外部構文木（公開 API）
     │   ├── SyntaxNode.cs
     │   ├── SyntaxToken.cs
     │   ├── SyntaxTrivia.cs
@@ -134,12 +134,12 @@ Benchmark/
     └── ParserBenchmarks.cs
 ```
 
-**Structure Decision**: 既存の Source/Test 構造を維持し、赤緑木アーキテクチャに基づいて InternalSyntax（Green Tree）と Syntax（Red Tree）を分離する。
+**Structure Decision**: 既存の Source/Test 構造を維持し、二層構文木アーキテクチャに基づいて InternalSyntax（内部構文木）と Syntax（外部構文木）を分離する。
 
 ## Complexity Tracking
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| 赤緑木の二層構造 | 増分解析と構造共有に必須 | 単一構造では編集時のパフォーマンスが悪化 |
+| 二層構文木構造 | 増分解析と構造共有に必須 | 単一構造では編集時のパフォーマンスが悪化 |
 | .NET Standard 2.0 制約 | 広範な互換性が必要 | 最新 .NET のみでは .NET Framework ユーザーを排除 |
 | 手書きパーサー | エラー回復と増分解析の細かい制御が必要 | パーサージェネレーターでは柔軟性が不足 |

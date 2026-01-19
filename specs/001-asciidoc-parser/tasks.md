@@ -48,18 +48,18 @@
 - [ ] T010 [P] DiagnosticSeverity 列挙型と Diagnostic クラスを Source/AsciiSharp/Diagnostics/Diagnostic.cs に実装
 - [ ] T011 [P] SourceText 抽象クラスを Source/AsciiSharp/Text/SourceText.cs に実装
 - [ ] T012 [P] StringText クラス（SourceText の実装）を Source/AsciiSharp/Text/StringText.cs に実装
-- [ ] T013 GreenNode 抽象クラスを Source/AsciiSharp/InternalSyntax/GreenNode.cs に実装
-- [ ] T014 [P] GreenToken クラスを Source/AsciiSharp/InternalSyntax/GreenToken.cs に実装
-- [ ] T015 [P] GreenTrivia 構造体を Source/AsciiSharp/InternalSyntax/GreenTrivia.cs に実装
-- [ ] T016 [P] GreenNodeCache クラスを Source/AsciiSharp/InternalSyntax/GreenNodeCache.cs に実装（WeakReference ベース）
-- [ ] T017 SyntaxNode 抽象クラスを Source/AsciiSharp/Syntax/SyntaxNode.cs に実装（Red Tree の基底）
+- [ ] T013 InternalNode 抽象クラスを Source/AsciiSharp/InternalSyntax/InternalNode.cs に実装
+- [ ] T014 [P] InternalToken クラスを Source/AsciiSharp/InternalSyntax/InternalToken.cs に実装
+- [ ] T015 [P] InternalTrivia 構造体を Source/AsciiSharp/InternalSyntax/InternalTrivia.cs に実装
+- [ ] T016 [P] InternalNodeCache クラスを Source/AsciiSharp/InternalSyntax/InternalNodeCache.cs に実装（WeakReference ベース）
+- [ ] T017 SyntaxNode 抽象クラスを Source/AsciiSharp/Syntax/SyntaxNode.cs に実装（外部構文木の基底）
 - [ ] T018 [P] SyntaxToken 構造体を Source/AsciiSharp/Syntax/SyntaxToken.cs に実装
 - [ ] T019 [P] SyntaxTrivia 構造体を Source/AsciiSharp/Syntax/SyntaxTrivia.cs に実装
 - [ ] T020 [P] SyntaxList<T> 構造体を Source/AsciiSharp/Syntax/SyntaxList.cs に実装
 - [ ] T021 [P] SyntaxNodeOrToken 構造体を Source/AsciiSharp/Syntax/SyntaxNodeOrToken.cs に実装
-- [ ] T022 SyntaxTree クラスを Source/AsciiSharp/Syntax/SyntaxTree.cs に実装（Green から Red への変換を含む）
+- [ ] T022 SyntaxTree クラスを Source/AsciiSharp/Syntax/SyntaxTree.cs に実装（内部構文木から外部構文木への変換を含む）
 - [ ] T023 ITreeSink インターフェースを Source/AsciiSharp/Parser/ITreeSink.cs に実装（イベントベースパーサー用）
-- [ ] T024 GreenTreeBuilder クラスを Source/AsciiSharp/InternalSyntax/GreenTreeBuilder.cs に実装（ITreeSink 実装）
+- [ ] T024 InternalTreeBuilder クラスを Source/AsciiSharp/InternalSyntax/InternalTreeBuilder.cs に実装（ITreeSink 実装）
 - [ ] T025 .NET Standard 2.0 用 Polyfill を Source/AsciiSharp/Polyfills/ に追加（IsExternalInit, RequiredMemberAttribute など）
 
 **Checkpoint**: 基盤完了 - ユーザーストーリーの実装を並列開始可能
@@ -267,7 +267,7 @@
 - [ ] T098 [P] [US5] SourceText.WithChanges メソッドを実装（変更を適用した新しい SourceText を返す）
 - [ ] T099 [US5] IncrementalParser クラスを Source/AsciiSharp/Parser/IncrementalParser.cs に実装
 - [ ] T100 [US5] 変更範囲に基づく再解析範囲の特定ロジックを実装（影響を受けるブロック境界の検出）
-- [ ] T101 [US5] Green Tree の構造共有（変更されていない部分のノードを再利用）を実装
+- [ ] T101 [US5] 内部構文木の構造共有（変更されていない部分のノードを再利用）を実装
 - [ ] T102 [US5] SyntaxTree.WithChanges メソッドを実装（増分解析のエントリーポイント）
 
 **パフォーマンス検証**:

@@ -5,15 +5,15 @@
 
 ## 1. Roslyn Red-Green Tree アーキテクチャ
 
-### Decision: Roslyn スタイルの赤緑木を採用
+### Decision: Roslyn スタイルの二層構文木を採用
 
 ### Rationale
 
-Roslyn の Red-Green Tree は、IDE 向けパーサーで実績のある二層アーキテクチャである。不変性、構造共有、増分解析を効率的に実現できる。
+Roslyn の Red-Green Tree は、IDE 向けパーサーで実績のある二層アーキテクチャである。不変性、構造共有、増分解析を効率的に実現できる。本プロジェクトでは、この構造を「内部構文木（InternalSyntax）」と「外部構文木（Syntax）」として実装する。
 
 ### アーキテクチャ概要
 
-#### Green Tree（内部構造）
+#### Green Tree（内部構文木 → 本プロジェクトでは InternalSyntax）
 
 - **不変で永続的**な低レベルデータ構造
 - **親参照を持たない**: 複数バージョン間でノードを安全に再利用可能
@@ -21,7 +21,7 @@ Roslyn の Red-Green Tree は、IDE 向けパーサーで実績のある二層�
 - **構造共有**: 同一内容のノードは複数バージョン間で共有
 
 ```csharp
-// 概念的な構造
+// Roslyn の概念的な構造（本プロジェクトでは InternalNode として実装）
 internal abstract class GreenNode
 {
     public abstract int Width { get; }
@@ -30,7 +30,7 @@ internal abstract class GreenNode
 }
 ```
 
-#### Red Tree（外部 API）
+#### Red Tree（外部構文木 → 本プロジェクトでは Syntax）
 
 - Green Tree を包むイミュータブルなファサード
 - **オンデマンド構築**: アクセス時に動的生成、編集後は破棄
@@ -38,7 +38,7 @@ internal abstract class GreenNode
 - **計算によるポジション**: 絶対位置は幅を累積して算出
 
 ```csharp
-// 概念的な構造
+// Roslyn の概念的な構造（本プロジェクトでは SyntaxNode として実装）
 public abstract class SyntaxNode
 {
     internal GreenNode Green { get; }
@@ -102,9 +102,10 @@ class Parser
 }
 ```
 
-#### ボトムアップ Green Tree 構築
+#### ボトムアップ内部構文木構築
 
 ```csharp
+// 本プロジェクトでは InternalTreeBuilder として実装
 class GreenTreeBuilder : ITreeSink
 {
     private readonly Stack<List<GreenNode>> _children = new();
@@ -219,8 +220,8 @@ class GreenTreeBuilder : ITreeSink
 
 ### 最適化戦略
 
-1. **Green ノードのキャッシング**: 同一内容のノードは共有
-2. **遅延 Red ノード生成**: アクセスされるまで生成しない
+1. **内部ノードのキャッシング**: 同一内容のノードは共有
+2. **遅延外部ノード生成**: アクセスされるまで生成しない
 3. **位置計算の最適化**: 走査中に累積計算
 4. **文字列インターニング**: 頻出トークン文字列の共有
 
@@ -228,8 +229,8 @@ class GreenTreeBuilder : ITreeSink
 
 | 項目 | 戦略 |
 |------|------|
-| Green ノード | 最小限のフィールド（Kind, Width, Children） |
-| Red ノード | 3フィールドのみ（Green, Parent, Position） |
+| 内部ノード | 最小限のフィールド（Kind, Width, Children） |
+| 外部ノード | 3フィールドのみ（Internal, Parent, Position） |
 | Trivia | 配列で一括保持（個別オブジェクト化を避ける） |
 
 ---
