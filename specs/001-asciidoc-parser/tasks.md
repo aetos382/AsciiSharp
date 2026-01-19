@@ -19,7 +19,7 @@
 - コアライブラリ: `Source/AsciiSharp/`
 - ユニットテスト: `Test/AsciiSharp.Tests/`
 - BDD テスト: `Test/AsciiSharp.Specs/`
-- ベンチマーク: `Test/AsciiSharp.Benchmarks/`
+- ベンチマーク: `Benchmark/AsciiSharp.Benchmarks/`
 
 ---
 
@@ -27,7 +27,7 @@
 
 **目的**: プロジェクトの初期化と基本構造の構築
 
-- [ ] T001 プロジェクト構造を作成（Source/AsciiSharp/, Test/AsciiSharp.Tests/, Test/AsciiSharp.Specs/, Test/AsciiSharp.Benchmarks/）
+- [ ] T001 プロジェクト構造を作成（Source/AsciiSharp/, Test/AsciiSharp.Tests/, Test/AsciiSharp.Specs/, Benchmark/AsciiSharp.Benchmarks/）
 - [ ] T002 AsciiSharp.csproj を作成（TargetFrameworks: netstandard2.0;net10.0）
 - [ ] T003 [P] AsciiSharp.Tests.csproj を作成（TargetFrameworks: net10.0;net481, MSTest.Sdk 参照）
 - [ ] T004 [P] AsciiSharp.Specs.csproj を作成（TargetFramework: net10.0, Reqnroll パッケージ参照）
@@ -272,7 +272,7 @@
 
 **パフォーマンス検証**:
 
-- [ ] T103 [US5] Test/AsciiSharp.Benchmarks/ParserBenchmarks.cs にベンチマークを追加（初回解析 vs 増分解析）
+- [ ] T103 [US5] Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs にベンチマークを追加（初回解析 vs 増分解析）
 - [ ] T104 [US5] BDD テストを再実行し、Green を確認
 - [ ] T105 [US5] ベンチマークを実行し、SC-004（増分解析が 10% 以下の時間）を検証
 - [ ] T106 [US5] ビルドを実行し、警告ゼロを確認
@@ -342,7 +342,7 @@
 - [ ] T128 [P] BOM（Byte Order Mark）処理を SourceText に実装
 - [ ] T129 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
 - [ ] T130 [P] ネストレベル制限を Parser に実装（無限ループ防止）
-- [ ] T131 パフォーマンステストを Test/AsciiSharp.Benchmarks/ParserBenchmarks.cs に追加（SC-003 検証: 100KB 文書 500ms 以内）
+- [ ] T131 パフォーマンステストを Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs に追加（SC-003 検証: 100KB 文書 500ms 以内）
 - [ ] T132 ベンチマークを実行し、パフォーマンス目標を検証
 - [ ] T133 [P] XML ドキュメントコメントを公開 API に追加
 - [ ] T134 [P] README.md を作成（クイックスタート、API 概要）

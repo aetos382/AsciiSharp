@@ -51,10 +51,10 @@ AsciiDoc 文書を解析し、Roslyn スタイルの赤緑木（Red-Green Tree�
 
 ### II. モジュール設計 ✅
 
-- **AsciiSharp**: コアパーサーライブラリ（.NET Standard 2.0）
-- **AsciiSharp.Tests**: ユニットテスト（.NET 10 / .NET Framework 4.8.1）
-- **AsciiSharp.Specs**: BDD 受け入れテスト（.NET 10）
-- **AsciiSharp.Benchmarks**: パフォーマンステスト（.NET 10）
+- **AsciiSharp**: コアパーサーライブラリ（.NET Standard 2.0）- Source/ フォルダ
+- **AsciiSharp.Tests**: ユニットテスト（.NET 10 / .NET Framework 4.8.1）- Test/ フォルダ
+- **AsciiSharp.Specs**: BDD 受け入れテスト（.NET 10）- Test/ フォルダ
+- **AsciiSharp.Benchmarks**: パフォーマンステスト（.NET 10）- Benchmark/ フォルダ
 
 ### III. BDD 必須 ✅
 
@@ -121,13 +121,14 @@ Test/
 │   ├── Parser/
 │   └── Text/
 │
-├── AsciiSharp.Specs/                    # BDD テスト (Reqnroll)
-│   ├── AsciiSharp.Specs.csproj          # TargetFramework: net10.0
-│   └── Features/
-│       ├── BasicParsing.feature
-│       ├── ErrorRecovery.feature
-│       └── [User Story ごとの .feature]
-│
+└── AsciiSharp.Specs/                    # BDD テスト (Reqnroll)
+    ├── AsciiSharp.Specs.csproj          # TargetFramework: net10.0
+    └── Features/
+        ├── BasicParsing.feature
+        ├── ErrorRecovery.feature
+        └── [User Story ごとの .feature]
+
+Benchmark/
 └── AsciiSharp.Benchmarks/               # ベンチマーク
     ├── AsciiSharp.Benchmarks.csproj     # TargetFramework: net10.0
     └── ParserBenchmarks.cs
