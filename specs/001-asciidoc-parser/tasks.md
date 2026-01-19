@@ -342,20 +342,30 @@
 
 **目的**: 複数のユーザーストーリーにまたがる改善
 
-- [ ] T126 [P] DocumentHeaderSyntax に AuthorLine, RevisionLine, AttributeEntry のサポートを追加（Source/AsciiSharp/Syntax/）
-- [ ] T127 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
-- [ ] T128 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加（実際のファイル読み込みは行わない）
-- [ ] T129 [P] BOM（Byte Order Mark）処理を SourceText に実装
-- [ ] T130 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
-- [ ] T131 [P] ネストレベル制限を Parser に実装（無限ループ防止）
-- [ ] T132 パフォーマンステストを Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs に追加（SC-003 検証: 100KB 文書 500ms 以内）
-- [ ] T133 ベンチマークを実行し、パフォーマンス目標を検証
-- [ ] T134 [P] XML ドキュメントコメントを公開 API に追加
-- [ ] T135 [P] README.md を作成（クイックスタート、API 概要）
-- [ ] T136 全体のコードレビューとリファクタリング
-- [ ] T137 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
-- [ ] T138 quickstart.md の検証シナリオを実行
-- [ ] T139 最終ビルドと警告ゼロの確認
+### DescriptionList と DelimitedBlock のサポート
+
+- [ ] T126 [P] DescriptionListSyntax クラスを Source/AsciiSharp/Syntax/DescriptionListSyntax.cs に実装（Items: SyntaxList<DescriptionListItemSyntax>）
+- [ ] T127 [P] DescriptionListItemSyntax クラスを Source/AsciiSharp/Syntax/DescriptionListItemSyntax.cs に実装（Term, Delimiter, Description）
+- [ ] T128 [P] DelimitedBlockSyntax クラスを Source/AsciiSharp/Syntax/DelimitedBlockSyntax.cs に実装（BlockStyle, OpenDelimiter, Content, CloseDelimiter）
+- [ ] T129 Parser に DescriptionList 解析ロジックを追加（term:: description 形式）
+- [ ] T130 Parser に DelimitedBlock 解析ロジックを追加（----,====,****,____,++++ 等の区切り文字）
+
+### その他の改善
+
+- [ ] T131 [P] DocumentHeaderSyntax に AuthorLine, RevisionLine, AttributeEntry のサポートを追加（Source/AsciiSharp/Syntax/）
+- [ ] T132 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
+- [ ] T133 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加（実際のファイル読み込みは行わない）
+- [ ] T134 [P] BOM（Byte Order Mark）処理を SourceText に実装
+- [ ] T135 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
+- [ ] T136 [P] ネストレベル制限を Parser に実装（無限ループ防止）
+- [ ] T137 パフォーマンステストを Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs に追加（SC-003 検証: 100KB 文書 500ms 以内）
+- [ ] T138 ベンチマークを実行し、パフォーマンス目標を検証
+- [ ] T139 [P] XML ドキュメントコメントを公開 API に追加
+- [ ] T140 [P] README.md を作成（クイックスタート、API 概要）
+- [ ] T141 全体のコードレビューとリファクタリング
+- [ ] T142 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
+- [ ] T143 quickstart.md の検証シナリオを実行
+- [ ] T144 最終ビルドと警告ゼロの確認
 
 ---
 
@@ -450,7 +460,7 @@ Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に�
 
 ## タスク要約
 
-- **総タスク数**: 139
+- **総タスク数**: 144
 - **Phase 1 (Setup)**: 7 タスク
 - **Phase 2 (Foundational)**: 19 タスク（PEG 文法定義含む）
 - **User Story 1**: 23 タスク（BDD テスト含む）
@@ -459,7 +469,7 @@ Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に�
 - **User Story 4**: 14 タスク（BDD テスト含む）
 - **User Story 5**: 15 タスク（BDD テスト含む）
 - **User Story 6**: 16 タスク（BDD テスト含む）
-- **Phase 9 (Polish)**: 14 タスク
+- **Phase 9 (Polish)**: 19 タスク（DescriptionList, DelimitedBlock 含む）
 
 ### 並列実行機会
 
