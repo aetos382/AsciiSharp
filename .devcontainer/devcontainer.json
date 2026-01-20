@@ -28,7 +28,8 @@
     "NUGET_PACKAGES": "/home/vscode/.nuget/packages"
   },
   "remoteEnv": {
-    "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}"
+    "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}",
+    "DOCKER_API_VERSION": "1.43"
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "postStartCommand": "bash .devcontainer/postStart.sh",
