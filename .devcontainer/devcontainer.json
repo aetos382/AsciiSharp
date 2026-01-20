@@ -5,6 +5,7 @@
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "init": true,
   "features": {
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "installDockerComposeSwitch": false
     },
@@ -12,12 +13,12 @@
       "version": "10.0.102"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/powershell:1": {},
     "ghcr.io/devcontainers/features/python:1": {
       "installTools": false,
       "optimize": true
     },
-    "ghcr.io/stu-bell/devcontainer-features/claude-code:0": {},
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
     "ghcr.io/va-h/devcontainers-features/uv:1": {}
   },
@@ -36,24 +37,18 @@
   "mounts": [
     {
       "type": "volume",
-      "source": "claude-code-bashhistory-${devcontainerId}",
-      "target": "/commandhistory"
-    },
-    {
-      "type": "volume",
-      "source": "claude-code-config-${devcontainerId}",
+      "source": "asciisharp-claude-code-config",
       "target": "/home/vscode/.claude"
     },
     {
       "type": "volume",
-      "source": "nuget-package-cache-${devcontainerId}",
+      "source": "asciisharp-nuget-package-cache",
       "target": "/home/vscode/.nuget/packages"
     }
   ],
   "customizations": {
     "vscode": {
       "extensions": [
-        "Anthropic.claude-code",
         "asciidoctor.asciidoctor-vscode",
         "docker.docker",
         "eamodio.gitlens",
