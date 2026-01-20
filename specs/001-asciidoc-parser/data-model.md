@@ -2,10 +2,13 @@
 
 **Feature**: 001-asciidoc-parser
 **Date**: 2026-01-18
+**Updated**: 2026-01-20 (MVP スコープ縮小)
 
 ## 概要
 
 本データモデルは Roslyn スタイルの二層構文木アーキテクチャに基づく。内部構文木（InternalSyntax）と外部構文木（Syntax）の二層で構成される。Roslyn では Red-Green Tree と呼ばれるパターンである。
+
+**MVP スコープ**: ドキュメントヘッダー（タイトル、著者行）、セクション、段落、リンク、コメントのみ。リスト、テーブル、書式マークアップ、マクロは後続イテレーションで実装。
 
 ---
 
@@ -23,45 +26,40 @@ SyntaxKind (enum)
 │   ├── Whitespace
 │   ├── Text
 │   ├── EqualsToken (=)
-│   ├── AsteriskToken (*)
-│   ├── UnderscoreToken (_)
-│   ├── BacktickToken (`)
-│   ├── PipeToken (|)
 │   ├── ColonToken (:)
+│   ├── SlashToken (/)
 │   ├── OpenBracketToken ([)
 │   ├── CloseBracketToken (])
-│   └── ...
+│   └── ... (MVP: リンク解析に必要なトークンのみ)
 ├── Trivia
 │   ├── WhitespaceTrivia
 │   ├── EndOfLineTrivia
 │   ├── SingleLineCommentTrivia (//)
 │   └── MultiLineCommentTrivia (////...////)
-├── Nodes (Blocks)
+├── Nodes (Blocks) - MVP スコープ
 │   ├── Document
 │   ├── DocumentHeader
 │   ├── DocumentBody
 │   ├── Section
 │   ├── SectionTitle
 │   ├── Paragraph
-│   ├── UnorderedList
-│   ├── OrderedList
-│   ├── ListItem
-│   ├── DescriptionList
-│   ├── DelimitedBlock
-│   ├── Table
-│   ├── TableRow
-│   ├── TableCell
-│   └── ...
-└── Nodes (Inlines)
+│   ├── (UnorderedList)      # 後続イテレーション
+│   ├── (OrderedList)        # 後続イテレーション
+│   ├── (ListItem)           # 後続イテレーション
+│   ├── (DescriptionList)    # 後続イテレーション
+│   ├── (DelimitedBlock)     # 後続イテレーション
+│   ├── (Table)              # 後続イテレーション
+│   ├── (TableRow)           # 後続イテレーション
+│   └── (TableCell)          # 後続イテレーション
+└── Nodes (Inlines) - MVP スコープ
     ├── TextSpan
-    ├── BoldText
-    ├── ItalicText
-    ├── MonospaceText
-    ├── Link
-    ├── CrossReference
-    ├── InlineMacro
-    ├── AttributeReference
-    └── ...
+    ├── Link                  # MVP
+    ├── (BoldText)           # 後続イテレーション
+    ├── (ItalicText)         # 後続イテレーション
+    ├── (MonospaceText)      # 後続イテレーション
+    ├── (CrossReference)     # 後続イテレーション
+    ├── (InlineMacro)        # 後続イテレーション
+    └── (AttributeReference) # 後続イテレーション
 ```
 
 ### 1.2 TextSpan（テキスト範囲）
@@ -231,7 +229,9 @@ SyntaxTree (class)
 
 ## 4. AsciiDoc ドメインノード
 
-### 4.1 Document（文書）
+> **MVP スコープ注記**: 括弧 `()` で囲まれた項目は後続イテレーションで実装
+
+### 4.1 Document（文書）- MVP
 
 ```text
 DocumentSyntax (class) : SyntaxNode
@@ -240,17 +240,17 @@ DocumentSyntax (class) : SyntaxNode
 └── EndOfFileToken: SyntaxToken
 ```
 
-### 4.2 DocumentHeader（文書ヘッダー）
+### 4.2 DocumentHeader（文書ヘッダー）- MVP
 
 ```text
 DocumentHeaderSyntax (class) : SyntaxNode
 ├── Title: SectionTitleSyntax?
-├── AuthorLine: AuthorLineSyntax?
-├── RevisionLine: RevisionLineSyntax?
-└── Attributes: SyntaxList<AttributeEntrySyntax>
+├── AuthorLine: AuthorLineSyntax?       # MVP
+├── (RevisionLine: RevisionLineSyntax?) # 後続イテレーション
+└── (Attributes: SyntaxList<AttributeEntrySyntax>) # 後続イテレーション
 ```
 
-### 4.3 Section（セクション）
+### 4.3 Section（セクション）- MVP
 
 ```text
 SectionSyntax (class) : BlockSyntax
@@ -260,7 +260,7 @@ SectionSyntax (class) : BlockSyntax
 └── Subsections: SyntaxList<SectionSyntax>
 ```
 
-### 4.4 Paragraph（段落）
+### 4.4 Paragraph（段落）- MVP
 
 ```text
 ParagraphSyntax (class) : BlockSyntax
@@ -268,43 +268,49 @@ ParagraphSyntax (class) : BlockSyntax
 └── TrailingBlankLines: int       # メタ情報として
 ```
 
-### 4.5 List（リスト）
+### 4.5 List（リスト）- 後続イテレーション
+
+> **注**: リストは MVP スコープ外
 
 ```text
-UnorderedListSyntax (class) : BlockSyntax
+(UnorderedListSyntax) (class) : BlockSyntax
 └── Items: SyntaxList<ListItemSyntax>
 
-OrderedListSyntax (class) : BlockSyntax
+(OrderedListSyntax) (class) : BlockSyntax
 └── Items: SyntaxList<ListItemSyntax>
 
-ListItemSyntax (class) : SyntaxNode
+(ListItemSyntax) (class) : SyntaxNode
 ├── Marker: SyntaxToken           # *, -, .など
 ├── Content: SyntaxList<BlockSyntax>
 └── NestedList: ListSyntax?
 ```
 
-### 4.6 DelimitedBlock（区切りブロック）
+### 4.6 DelimitedBlock（区切りブロック）- 後続イテレーション
+
+> **注**: 区切りブロックは MVP スコープ外
 
 ```text
-DelimitedBlockSyntax (class) : BlockSyntax
+(DelimitedBlockSyntax) (class) : BlockSyntax
 ├── BlockStyle: SyntaxKind        # Listing, Example, Sidebar, etc.
 ├── OpenDelimiter: SyntaxToken
 ├── Content: SyntaxList<SyntaxNode>
 └── CloseDelimiter: SyntaxToken   # IsMissing の場合あり
 ```
 
-### 4.7 Table（テーブル）
+### 4.7 Table（テーブル）- 後続イテレーション
+
+> **注**: テーブルは MVP スコープ外
 
 ```text
-TableSyntax (class) : BlockSyntax
+(TableSyntax) (class) : BlockSyntax
 ├── OpenDelimiter: SyntaxToken    # |===
 ├── Rows: SyntaxList<TableRowSyntax>
 └── CloseDelimiter: SyntaxToken
 
-TableRowSyntax (class) : SyntaxNode
+(TableRowSyntax) (class) : SyntaxNode
 └── Cells: SyntaxList<TableCellSyntax>
 
-TableCellSyntax (class) : SyntaxNode
+(TableCellSyntax) (class) : SyntaxNode
 ├── Separator: SyntaxToken        # |
 ├── Content: SyntaxList<InlineSyntax>
 ├── ColSpan: int?
@@ -316,23 +322,25 @@ TableCellSyntax (class) : SyntaxNode
 ```text
 InlineSyntax (abstract class) : SyntaxNode
 
-TextSyntax (class) : InlineSyntax
+TextSyntax (class) : InlineSyntax      # MVP
 └── Text: SyntaxToken
 
-FormattedTextSyntax (class) : InlineSyntax
-├── Style: SyntaxKind             # Bold, Italic, Monospace
-├── OpenMarker: SyntaxToken
-├── Content: SyntaxList<InlineSyntax>
-└── CloseMarker: SyntaxToken
-
-LinkSyntax (class) : InlineSyntax
+LinkSyntax (class) : InlineSyntax      # MVP
 ├── Scheme: SyntaxToken?          # https:, mailto:, etc.
 ├── Target: SyntaxToken
 ├── OpenBracket: SyntaxToken
 ├── Text: SyntaxList<InlineSyntax>?
 └── CloseBracket: SyntaxToken
 
-MacroSyntax (class) : InlineSyntax
+# 以下は後続イテレーションで実装
+
+(FormattedTextSyntax) (class) : InlineSyntax
+├── Style: SyntaxKind             # Bold, Italic, Monospace
+├── OpenMarker: SyntaxToken
+├── Content: SyntaxList<InlineSyntax>
+└── CloseMarker: SyntaxToken
+
+(MacroSyntax) (class) : InlineSyntax
 ├── Name: SyntaxToken
 ├── Colon: SyntaxToken
 ├── Target: SyntaxToken?
@@ -340,7 +348,7 @@ MacroSyntax (class) : InlineSyntax
 ├── Attributes: AttributeListSyntax?
 └── CloseBracket: SyntaxToken
 
-AttributeReferenceSyntax (class) : InlineSyntax
+(AttributeReferenceSyntax) (class) : InlineSyntax
 ├── OpenBrace: SyntaxToken        # {
 ├── Name: SyntaxToken
 └── CloseBrace: SyntaxToken       # }

@@ -74,7 +74,9 @@
 
 ## Phase 3: User Story 1 - 基本的な AsciiDoc 文書の解析 (Priority: P1) 🎯 MVP
 
-**Goal**: セクション、段落、リストなどの基本構造を含む AsciiDoc 文書を解析し、ロスレスな構文木を生成する
+**Goal**: セクションと段落を含む AsciiDoc 文書を解析し、ロスレスな構文木を生成する
+
+**MVP スコープ**: リストは後続イテレーションで実装
 
 **Independent Test**: 単一の AsciiDoc 文書を解析し、構文木から元のテキストを再構築してラウンドトリップ検証を実行
 
@@ -96,9 +98,9 @@
 - [ ] T033 [P] [US1] SectionSyntax クラスを Source/AsciiSharp/Syntax/SectionSyntax.cs に実装
 - [ ] T034 [P] [US1] SectionTitleSyntax クラスを Source/AsciiSharp/Syntax/SectionTitleSyntax.cs に実装
 - [ ] T035 [P] [US1] ParagraphSyntax クラスを Source/AsciiSharp/Syntax/ParagraphSyntax.cs に実装
-- [ ] T036 [P] [US1] UnorderedListSyntax クラスを Source/AsciiSharp/Syntax/UnorderedListSyntax.cs に実装
-- [ ] T037 [P] [US1] OrderedListSyntax クラスを Source/AsciiSharp/Syntax/OrderedListSyntax.cs に実装
-- [ ] T038 [P] [US1] ListItemSyntax クラスを Source/AsciiSharp/Syntax/ListItemSyntax.cs に実装
+- ~~[ ] T036 [P] [US1] UnorderedListSyntax クラスを実装~~ *(延期: 後続イテレーション)*
+- ~~[ ] T037 [P] [US1] OrderedListSyntax クラスを実装~~ *(延期: 後続イテレーション)*
+- ~~[ ] T038 [P] [US1] ListItemSyntax クラスを実装~~ *(延期: 後続イテレーション)*
 - [ ] T039 [P] [US1] TextSyntax クラス（インライン要素）を Source/AsciiSharp/Syntax/TextSyntax.cs に実装（基本テキストのみ）
 
 **Lexer 実装**:
@@ -108,7 +110,7 @@
 
 **Parser 実装**:
 
-- [ ] T042 [US1] Parser クラスを Source/AsciiSharp/Parser/Parser.cs に実装（イベントベース再帰下降パーサー、Document/Section/Paragraph/List をサポート）
+- [ ] T042 [US1] Parser クラスを Source/AsciiSharp/Parser/Parser.cs に実装（イベントベース再帰下降パーサー、Document/Section/Paragraph をサポート）
 - [ ] T043 [US1] Parser に ロスレス解析（空白・改行の完全保持）を実装
 - [ ] T044 [US1] SyntaxTree.ParseText() メソッドを実装（エントリーポイント）
 
@@ -165,16 +167,18 @@
 
 ---
 
-## Phase 5: User Story 3 - インラインマークアップの解析 (Priority: P2)
+## Phase 5: User Story 3 - リンクの解析 (Priority: P2)
 
-**Goal**: 太字、斜体、等幅、リンク、マクロなどのインライン要素を解析し、各書式の開始・終了位置を正確に把握
+**Goal**: URL リンクを解析し、リンクの位置とターゲットを正確に把握する
 
-**Independent Test**: 様々なインラインマークアップを含む段落を解析し、各要素の種類と位置が正確に識別されることを検証
+**MVP スコープ**: リンクのみ。書式マークアップ（太字、斜体等）、マクロ、属性参照は後続イテレーションで実装
+
+**Independent Test**: URL リンクを含む段落を解析し、リンクの位置とターゲットが正確に識別されることを検証
 
 ### BDD テスト for User Story 3（Red フェーズ）
 
-- [ ] T064 [P] [US3] InlineMarkup.feature を Test/AsciiSharp.Specs/Features/InlineMarkup.feature に作成（Acceptance Scenarios 1-3）
-- [ ] T065 [US3] InlineMarkupSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/InlineMarkupSteps.cs に作成
+- [ ] T064 [P] [US3] LinkParsing.feature を Test/AsciiSharp.Specs/Features/LinkParsing.feature に作成（Acceptance Scenarios 1-3）
+- [ ] T065 [US3] LinkParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/LinkParsingSteps.cs に作成
 - [ ] T066 [US3] BDD テストを実行し、Red を確認
 
 ### Implementation for User Story 3（Green フェーズ）
@@ -182,31 +186,31 @@
 **インライン要素ノードの実装**:
 
 - [ ] T067 [P] [US3] InlineSyntax 抽象クラスを Source/AsciiSharp/Syntax/InlineSyntax.cs に実装
-- [ ] T068 [P] [US3] FormattedTextSyntax クラス（太字・斜体・等幅）を Source/AsciiSharp/Syntax/FormattedTextSyntax.cs に実装
+- ~~[ ] T068 [P] [US3] FormattedTextSyntax クラス（太字・斜体・等幅）を実装~~ *(延期: 後続イテレーション)*
 - [ ] T069 [P] [US3] LinkSyntax クラスを Source/AsciiSharp/Syntax/LinkSyntax.cs に実装
-- [ ] T070 [P] [US3] MacroSyntax クラスを Source/AsciiSharp/Syntax/MacroSyntax.cs に実装
-- [ ] T071 [P] [US3] AttributeReferenceSyntax クラスを Source/AsciiSharp/Syntax/AttributeReferenceSyntax.cs に実装
+- ~~[ ] T070 [P] [US3] MacroSyntax クラスを実装~~ *(延期: 後続イテレーション)*
+- ~~[ ] T071 [P] [US3] AttributeReferenceSyntax クラスを実装~~ *(延期: 後続イテレーション)*
 
 **Lexer 拡張**:
 
-- [ ] T072 [US3] Lexer にインラインマークアップトークンを追加（*, _, `, [, ], {, } など）
+- [ ] T072 [US3] Lexer にリンク関連トークンを追加（[, ], :, / など）
 
 **Parser 拡張**:
 
-- [ ] T073 [US3] Parser にインライン解析ロジックを追加（ParseInlines メソッド）
-- [ ] T074 [US3] ネストしたインライン書式の解析を実装
-- [ ] T075 [US3] URL マクロ、相互参照、脚注マクロの解析を実装
+- [ ] T073 [US3] Parser にリンク解析ロジックを追加（ParseLink メソッド）
+- ~~[ ] T074 [US3] ネストしたインライン書式の解析を実装~~ *(延期: 後続イテレーション)*
+- ~~[ ] T075 [US3] URL マクロ、相互参照、脚注マクロの解析を実装~~ *(延期: 後続イテレーション)*
 
 **検証**:
 
 - [ ] T076 [US3] BDD テストを再実行し、Green を確認
-- [ ] T077 [US3] ネストした書式のエッジケースをテスト
+- [ ] T077 [US3] 複数リンクと表示テキスト付きリンクのテスト
 - [ ] T078 [US3] ビルドを実行し、警告ゼロを確認
 
 ### Refactor for User Story 3
 
-- [ ] T079 [US3] インライン解析ロジックの最適化
-- [ ] T080 [US3] 共通インラインパターンのリファクタリング
+- [ ] T079 [US3] リンク解析ロジックの最適化
+- [ ] T080 [US3] インライン解析の共通パターンをリファクタリング
 
 **Checkpoint**: User Stories 1, 2, 3 が独立して機能
 
@@ -292,49 +296,16 @@
 
 ---
 
-## Phase 8: User Story 6 - テーブルの解析 (Priority: P3)
+## ~~Phase 8: User Story 6 - テーブルの解析~~ (延期: 後続イテレーション)
 
-**Goal**: AsciiDoc のテーブル構文（区切り文字、列指定、ヘッダー行、セル書式など）を正しく解析する
+> **注**: テーブル解析は MVP スコープ外。後続イテレーションで実装予定。
 
-**Independent Test**: 様々なテーブル形式（基本、CSV、DSV、複雑なセル）を解析し、行・列・セルの構造が正しく認識されることを検証
+~~**Goal**: AsciiDoc のテーブル構文（区切り文字、列指定、ヘッダー行、セル書式など）を正しく解析する~~
 
-### BDD テスト for User Story 6（Red フェーズ）
+以下のタスクはすべて延期:
+- ~~T110-T125: テーブル関連タスク~~
 
-- [ ] T110 [P] [US6] TableParsing.feature を Test/AsciiSharp.Specs/Features/TableParsing.feature に作成（Acceptance Scenarios 1-3）
-- [ ] T111 [US6] TableParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/TableParsingSteps.cs に作成
-- [ ] T112 [US6] BDD テストを実行し、Red を確認
-
-### Implementation for User Story 6（Green フェーズ）
-
-**テーブルノードの実装**:
-
-- [ ] T113 [P] [US6] TableSyntax クラスを Source/AsciiSharp/Syntax/TableSyntax.cs に実装
-- [ ] T114 [P] [US6] TableRowSyntax クラスを Source/AsciiSharp/Syntax/TableRowSyntax.cs に実装
-- [ ] T115 [P] [US6] TableCellSyntax クラスを Source/AsciiSharp/Syntax/TableCellSyntax.cs に実装
-
-**Lexer 拡張**:
-
-- [ ] T116 [US6] Lexer にテーブル区切りトークンを追加（|===, |, , など）
-
-**Parser 拡張**:
-
-- [ ] T117 [US6] Parser にテーブル解析ロジックを追加（ParseTable メソッド）
-- [ ] T118 [US6] CSV 形式のデータ解析を実装
-- [ ] T119 [US6] セルのスパン情報（ColSpan, RowSpan）解析を実装
-- [ ] T120 [US6] テーブルヘッダーの識別を実装
-
-**検証**:
-
-- [ ] T121 [US6] BDD テストを再実行し、Green を確認
-- [ ] T122 [US6] 複雑なテーブル（結合セル、CSV）のエッジケースをテスト
-- [ ] T123 [US6] ビルドを実行し、警告ゼロを確認
-
-### Refactor for User Story 6
-
-- [ ] T124 [US6] テーブル解析ロジックの最適化
-- [ ] T125 [US6] CSV パーサーのリファクタリング
-
-**Checkpoint**: すべてのユーザーストーリーが独立して機能
+**Checkpoint**: MVP では User Stories 1-5 が独立して機能
 
 ---
 
@@ -342,19 +313,18 @@
 
 **目的**: 複数のユーザーストーリーにまたがる改善
 
-### DescriptionList と DelimitedBlock のサポート
+### ~~DescriptionList と DelimitedBlock のサポート~~ (延期: 後続イテレーション)
 
-- [ ] T126 [P] DescriptionListSyntax クラスを Source/AsciiSharp/Syntax/DescriptionListSyntax.cs に実装（Items: SyntaxList<DescriptionListItemSyntax>）
-- [ ] T127 [P] DescriptionListItemSyntax クラスを Source/AsciiSharp/Syntax/DescriptionListItemSyntax.cs に実装（Term, Delimiter, Description）
-- [ ] T128 [P] DelimitedBlockSyntax クラスを Source/AsciiSharp/Syntax/DelimitedBlockSyntax.cs に実装（BlockStyle, OpenDelimiter, Content, CloseDelimiter）
-- [ ] T129 Parser に DescriptionList 解析ロジックを追加（term:: description 形式）
-- [ ] T130 Parser に DelimitedBlock 解析ロジックを追加（----,====,****,____,++++ 等の区切り文字）
+> **注**: リスト系と区切りブロックは MVP スコープ外
+
+- ~~[ ] T126-T130: DescriptionList, DelimitedBlock 関連タスク~~ *(延期)*
 
 ### その他の改善
 
-- [ ] T131 [P] DocumentHeaderSyntax に AuthorLine, RevisionLine, AttributeEntry のサポートを追加（Source/AsciiSharp/Syntax/）
+- [ ] T131 [P] DocumentHeaderSyntax に AuthorLine のサポートを追加（Source/AsciiSharp/Syntax/）
+  - **注**: RevisionLine, AttributeEntry は後続イテレーションで実装
 - [ ] T132 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
-- [ ] T133 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加（実際のファイル読み込みは行わない）
+- ~~[ ] T133 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加~~ *(延期: 後続イテレーション)*
 - [ ] T134 [P] BOM（Byte Order Mark）処理を SourceText に実装
 - [ ] T135 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
 - [ ] T136 [P] ネストレベル制限を Parser に実装（無限ループ防止）
@@ -407,19 +377,17 @@
 
 ---
 
-## 並列実行例: User Story 1
+## 並列実行例: User Story 1 (MVP)
 
 ```bash
-# User Story 1 のすべてのドメインノードを同時起動:
+# User Story 1 のすべてのドメインノードを同時起動（MVP スコープ）:
 Task: "[US1] DocumentSyntax を Source/AsciiSharp/Syntax/DocumentSyntax.cs に実装"
 Task: "[US1] DocumentHeaderSyntax を Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs に実装"
 Task: "[US1] DocumentBodySyntax を Source/AsciiSharp/Syntax/DocumentBodySyntax.cs に実装"
 Task: "[US1] SectionSyntax を Source/AsciiSharp/Syntax/SectionSyntax.cs に実装"
 Task: "[US1] SectionTitleSyntax を Source/AsciiSharp/Syntax/SectionTitleSyntax.cs に実装"
 Task: "[US1] ParagraphSyntax を Source/AsciiSharp/Syntax/ParagraphSyntax.cs に実装"
-Task: "[US1] UnorderedListSyntax を Source/AsciiSharp/Syntax/UnorderedListSyntax.cs に実装"
-Task: "[US1] OrderedListSyntax を Source/AsciiSharp/Syntax/OrderedListSyntax.cs に実装"
-Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に実装"
+# 注: リスト関連（UnorderedListSyntax, OrderedListSyntax, ListItemSyntax）は後続イテレーションで実装
 ```
 
 ---
@@ -435,7 +403,7 @@ Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に�
 5. **停止して検証**: User Story 1 と 2 を独立してテスト
 6. 準備ができたらデプロイ/デモ
 
-### 段階的デリバリー
+### 段階的デリバリー（MVP スコープ）
 
 1. Setup + Foundational を完了 → 基盤完成
 2. User Story 1 を追加 → 独立してテスト → デプロイ/デモ（MVP!）
@@ -443,7 +411,7 @@ Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に�
 4. User Story 3 を追加 → 独立してテスト → デプロイ/デモ
 5. User Story 4 を追加 → 独立してテスト → デプロイ/デモ
 6. User Story 5 を追加 → 独立してテスト → デプロイ/デモ
-7. User Story 6 を追加 → 独立してテスト → デプロイ/デモ
+7. ~~User Story 6 を追加~~ *(延期: 後続イテレーション)*
 8. 各ストーリーは前のストーリーを壊さずに価値を追加
 
 ### 並列チーム戦略
@@ -459,43 +427,59 @@ Task: "[US1] ListItemSyntax を Source/AsciiSharp/Syntax/ListItemSyntax.cs に�
 
 ---
 
-## タスク要約
+## タスク要約（MVP スコープ）
 
-- **総タスク数**: 145
+- **MVP 総タスク数**: 約 100（延期タスク除く）
 - **Phase 1 (Setup)**: 7 タスク
 - **Phase 2 (Foundational)**: 19 タスク（PEG 文法定義含む）
-- **User Story 1**: 23 タスク（BDD テスト含む）
+- **User Story 1**: 20 タスク（リスト関連 3 タスク延期）
 - **User Story 2**: 14 タスク（BDD テスト含む）
-- **User Story 3**: 17 タスク（BDD テスト含む）
+- **User Story 3**: 11 タスク（書式/マクロ関連 6 タスク延期）
 - **User Story 4**: 14 タスク（BDD テスト含む）
 - **User Story 5**: 15 タスク（BDD テスト含む）
-- **User Story 6**: 16 タスク（BDD テスト含む）
-- **Phase 9 (Polish)**: 20 タスク（DescriptionList, DelimitedBlock, Edge Case 含む）
+- ~~**User Story 6**: 16 タスク~~ *(延期: 後続イテレーション)*
+- **Phase 9 (Polish)**: 約 10 タスク（DescriptionList, DelimitedBlock 等延期）
+
+### 延期されたタスク（後続イテレーション）
+
+- リスト関連: T036-T038
+- 書式マークアップ: T068, T074
+- マクロ/属性参照: T070, T071, T075
+- テーブル: T110-T125
+- DescriptionList/DelimitedBlock: T126-T130
+- ディレクティブ: T133
 
 ### 並列実行機会
 
 - Phase 1: 5 タスク並列可能
 - Phase 2: 15 タスク並列可能（PEG 文法定義含む）
-- User Story 1: 9 タスク並列可能（ドメインノード）
+- User Story 1: 6 タスク並列可能（ドメインノード、リスト除く）
 - User Story 2: 2 タスク並列可能
 - User Story 3: 5 タスク並列可能（インラインノード）
 - User Story 4: 2 タスク並列可能
 - User Story 5: 2 タスク並列可能
-- User Story 6: 3 タスク並列可能
-- Phase 9: 8 タスク並列可能
+- ~~User Story 6: 3 タスク並列可能~~ *(延期)*
+- Phase 9: 約 5 タスク並列可能（延期タスク除く）
 
-### 各ストーリーの独立テスト基準
+### 各ストーリーの独立テスト基準（MVP スコープ）
 
-- **US1**: 単一の AsciiDoc 文書を解析し、ラウンドトリップ検証が成功
+- **US1**: 単一の AsciiDoc 文書（セクション、段落）を解析し、ラウンドトリップ検証が成功
 - **US2**: エラーを含む文書で正常部分が 95% 以上解析される
-- **US3**: インライン要素の種類と位置が正確に識別される
+- **US3**: リンクの位置とターゲットが正確に識別される
 - **US4**: 構文木変更後に元のインスタンスが変更されていない
 - **US5**: 増分解析が全体解析の 10% 以下の時間で完了
-- **US6**: 複雑なテーブルの行・列・セル構造が正しく認識される
+- ~~**US6**: テーブル解析~~ *(延期: 後続イテレーション)*
 
-### 推奨 MVP スコープ
+### MVP スコープ
 
-**User Story 1 と 2**（基本解析 + エラー耐性）- これだけで実用的なパーサーとして機能し、インタラクティブエディタの基盤となる
+**User Story 1-5** を MVP スコープとする：
+- **US1**: 基本解析（セクション、段落、ヘッダー）
+- **US2**: エラー耐性解析
+- **US3**: リンク解析
+- **US4**: 不変性とクエリ
+- **US5**: 増分解析
+
+これにより、インタラクティブエディタの基盤として機能するパーサーが提供される
 
 ---
 

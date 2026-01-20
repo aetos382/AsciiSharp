@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-01-18
-**Last Updated**: 2026-01-20 (analyze 修正)
+**Last Updated**: 2026-01-20 (MVP スコープ縮小)
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -45,6 +45,19 @@
 - [x] DescriptionListSyntax, DelimitedBlockSyntax タスク追加（T126-T130）
 - [x] 空の文書テストタスク追加（T137）
 - [x] タスク番号を T008-T145 に再番号付け（総タスク数: 145）
+
+## MVP Scope Reduction (2026-01-20)
+
+- [x] FR-009 を縮小（ドキュメントヘッダー: 著者行、ブロック: 段落、インライン: リンク、コメントのみ）
+- [x] SC-006 から割合ベースの数値目標（90%）を削除し、MVP スコープの明示的なリストに変更
+- [x] User Story 1 からリストを対象外に変更
+- [x] User Story 3 をリンクのみに縮小（書式マークアップ、マクロは対象外）
+- [x] User Story 6（テーブル）を後続イテレーションに延期
+- [x] Key Entities を MVP スコープに合わせて更新
+- [x] Clarifications セクションに変更理由を記録
+- [x] plan.md を MVP スコープに合わせて更新（Summary, Scale/Scope）
+- [x] tasks.md を MVP スコープに合わせて更新（リスト、書式マークアップ、マクロ、テーブル関連タスク延期）
+- [x] data-model.md を MVP スコープに合わせて更新（延期項目にマーク）
 
 ## Notes
 
