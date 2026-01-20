@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-01-18
-**Last Updated**: 2026-01-20 (MVP スコープ縮小)
+**Last Updated**: 2026-01-20 (パフォーマンス数値目標削除)
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -58,6 +58,13 @@
 - [x] plan.md を MVP スコープに合わせて更新（Summary, Scale/Scope）
 - [x] tasks.md を MVP スコープに合わせて更新（リスト、書式マークアップ、マクロ、テーブル関連タスク延期）
 - [x] data-model.md を MVP スコープに合わせて更新（延期項目にマーク）
+
+## Performance Numeric Targets Removal (2026-01-20)
+
+- [x] SC-003（初回解析 500ms 以内）を削除
+- [x] SC-004（増分再解析が全体の 10% 以下）を削除
+- [x] 旧 SC-005 → SC-003、旧 SC-006 → SC-004 に繰り上げ
+- [x] Clarifications セクションに変更理由を記録
 
 ## Notes
 
