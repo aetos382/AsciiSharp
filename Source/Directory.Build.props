@@ -2,7 +2,7 @@
   <Import Project="$(MSBuildThisFileDirectory)../$(MSBuildThisFile)" />
 
   <PropertyGroup>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
