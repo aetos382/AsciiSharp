@@ -3,6 +3,5 @@
 
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1515;CA1707</NoWarn>
-    <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
   </PropertyGroup>
 </Project>
