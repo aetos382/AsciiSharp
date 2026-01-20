@@ -1,0 +1,255 @@
+namespace AsciiSharp.Syntax;
+
+using System;
+using System.Collections.Generic;
+using AsciiSharp.Diagnostics;
+using AsciiSharp.InternalSyntax;
+using AsciiSharp.Text;
+
+/// <summary>
+/// AsciiDoc 文書の構文木を表すクラス。
+/// </summary>
+public sealed class SyntaxTree
+{
+    private readonly InternalNode _internalRoot;
+    private readonly List<Diagnostic> _diagnostics;
+    private SyntaxNode? _root;
+
+    /// <summary>
+    /// ソーステキスト。
+    /// </summary>
+    public SourceText Text { get; }
+
+    /// <summary>
+    /// ファイルパス（オプション）。
+    /// </summary>
+    public string? FilePath { get; }
+
+    /// <summary>
+    /// 構文木のルートノード。
+    /// </summary>
+    public SyntaxNode Root
+    {
+        get
+        {
+            if (_root is null)
+            {
+                _root = CreateRootNode(_internalRoot, this);
+            }
+
+            return _root;
+        }
+    }
+
+    /// <summary>
+    /// 診断情報のリスト。
+    /// </summary>
+    public IReadOnlyList<Diagnostic> Diagnostics => _diagnostics;
+
+    /// <summary>
+    /// 構文エラーがあるかどうか。
+    /// </summary>
+    public bool HasErrors
+    {
+        get
+        {
+            foreach (var diagnostic in _diagnostics)
+            {
+                if (diagnostic.Severity == DiagnosticSeverity.Error)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 内部ルートノード、ソーステキスト、診断情報から SyntaxTree を作成する。
+    /// </summary>
+    /// <param name="internalRoot">内部ルートノード。</param>
+    /// <param name="text">ソーステキスト。</param>
+    /// <param name="diagnostics">診断情報のリスト。</param>
+    /// <param name="filePath">ファイルパス（オプション）。</param>
+    internal SyntaxTree(
+        InternalNode internalRoot,
+        SourceText text,
+        List<Diagnostic> diagnostics,
+        string? filePath = null)
+    {
+        _internalRoot = internalRoot ?? throw new ArgumentNullException(nameof(internalRoot));
+        Text = text ?? throw new ArgumentNullException(nameof(text));
+        _diagnostics = diagnostics ?? new List<Diagnostic>();
+        FilePath = filePath;
+    }
+
+    /// <summary>
+    /// 文字列から構文木を解析する。
+    /// </summary>
+    /// <param name="text">ソーステキスト。</param>
+    /// <param name="filePath">ファイルパス（オプション）。</param>
+    /// <returns>解析された構文木。</returns>
+    public static SyntaxTree ParseText(string text, string? filePath = null)
+    {
+        if (text is null)
+        {
+            throw new ArgumentNullException(nameof(text));
+        }
+
+        return ParseText(SourceText.From(text), filePath);
+    }
+
+    /// <summary>
+    /// SourceText から構文木を解析する。
+    /// </summary>
+    /// <param name="text">ソーステキスト。</param>
+    /// <param name="filePath">ファイルパス（オプション）。</param>
+    /// <returns>解析された構文木。</returns>
+    public static SyntaxTree ParseText(SourceText text, string? filePath = null)
+    {
+        if (text is null)
+        {
+            throw new ArgumentNullException(nameof(text));
+        }
+
+        // Parser が実装されたらここでパースを行う
+        // 現時点では空のドキュメントを返す
+        var emptyRoot = CreateEmptyDocument();
+        return new SyntaxTree(emptyRoot, text, new List<Diagnostic>(), filePath);
+    }
+
+    /// <summary>
+    /// 指定されたノードの診断情報を取得する。
+    /// </summary>
+    /// <param name="node">ノード。</param>
+    /// <returns>診断情報のシーケンス。</returns>
+    public IEnumerable<Diagnostic> GetDiagnostics(SyntaxNode node)
+    {
+        if (node is null)
+        {
+            yield break;
+        }
+
+        var span = node.FullSpan;
+        foreach (var diagnostic in _diagnostics)
+        {
+            if (span.Contains(diagnostic.Location))
+            {
+                yield return diagnostic;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 変更を適用した新しい構文木を返す。
+    /// </summary>
+    /// <param name="changes">適用する変更のリスト。</param>
+    /// <returns>変更後の新しい構文木。</returns>
+    public SyntaxTree WithChanges(IEnumerable<TextChange> changes)
+    {
+        if (changes is null)
+        {
+            throw new ArgumentNullException(nameof(changes));
+        }
+
+        var newText = Text.WithChanges(changes);
+        return ParseText(newText, FilePath);
+    }
+
+    /// <summary>
+    /// 単一の変更を適用した新しい構文木を返す。
+    /// </summary>
+    /// <param name="change">適用する変更。</param>
+    /// <returns>変更後の新しい構文木。</returns>
+    public SyntaxTree WithChanges(TextChange change)
+    {
+        return WithChanges(new[] { change });
+    }
+
+    /// <summary>
+    /// 新しいルートノードを持つ構文木を作成する。
+    /// </summary>
+    /// <param name="root">新しいルートノード。</param>
+    /// <returns>新しい構文木。</returns>
+    public SyntaxTree WithRootAndOptions(SyntaxNode root)
+    {
+        if (root is null)
+        {
+            throw new ArgumentNullException(nameof(root));
+        }
+
+        return new SyntaxTree(root.Internal, Text, new List<Diagnostic>(_diagnostics), FilePath);
+    }
+
+    /// <summary>
+    /// 内部ルートノードから外部ルートノードを作成する。
+    /// </summary>
+    /// <param name="internalRoot">内部ルートノード。</param>
+    /// <param name="tree">構文木。</param>
+    /// <returns>外部ルートノード。</returns>
+    private static SyntaxNode CreateRootNode(InternalNode internalRoot, SyntaxTree tree)
+    {
+        // DocumentSyntax が実装されたら、適切なノードを作成する
+        // 現時点ではプレースホルダーとして PlaceholderSyntax を使用
+        return new PlaceholderSyntax(internalRoot, null, 0, tree);
+    }
+
+    /// <summary>
+    /// 空のドキュメントの内部ノードを作成する。
+    /// </summary>
+    /// <returns>空のドキュメントの内部ノード。</returns>
+    private static InternalNode CreateEmptyDocument()
+    {
+        var eofToken = new InternalToken(SyntaxKind.EndOfFileToken, string.Empty);
+        return new InternalSyntaxNode(SyntaxKind.Document, eofToken);
+    }
+
+    /// <summary>
+    /// プレースホルダー構文ノード（DocumentSyntax 実装前の一時的なクラス）。
+    /// </summary>
+    private sealed class PlaceholderSyntax : SyntaxNode
+    {
+        public PlaceholderSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree tree)
+            : base(internalNode, parent, position, tree)
+        {
+        }
+
+        public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
+        {
+            for (var i = 0; i < Internal.SlotCount; i++)
+            {
+                var child = Internal.GetSlot(i);
+                if (child is InternalToken token)
+                {
+                    yield return new SyntaxToken(token, this, CalculateChildPosition(i), i);
+                }
+                else if (child is not null)
+                {
+                    yield return new PlaceholderSyntax(child, this, CalculateChildPosition(i), SyntaxTree!);
+                }
+            }
+        }
+
+        protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
+        {
+            // 置換ロジックは後で実装
+            throw new NotImplementedException("ノードの置換は未実装です。");
+        }
+
+        private int CalculateChildPosition(int index)
+        {
+            var position = Position;
+            for (var i = 0; i < index; i++)
+            {
+                var child = Internal.GetSlot(i);
+                if (child is not null)
+                {
+                    position += child.FullWidth;
+                }
+            }
+
+            return position;
+        }
+    }
+}

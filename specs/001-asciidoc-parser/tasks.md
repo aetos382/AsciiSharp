@@ -27,13 +27,13 @@
 
 **目的**: プロジェクトの初期化と基本構造の構築
 
-- [ ] T001 プロジェクト構造を作成（Source/AsciiSharp/, Test/AsciiSharp.Tests/, Test/AsciiSharp.Specs/, Benchmark/AsciiSharp.Benchmarks/）
-- [ ] T002 AsciiSharp.csproj を作成（TargetFrameworks: netstandard2.0;net10.0）
-- [ ] T003 [P] AsciiSharp.Tests.csproj を作成（TargetFrameworks: net10.0;net481, MSTest.Sdk 参照）
-- [ ] T004 [P] AsciiSharp.Specs.csproj を作成（TargetFramework: net10.0, Reqnroll パッケージ参照）
-- [ ] T005 [P] AsciiSharp.Benchmarks.csproj を作成（TargetFramework: net10.0, BenchmarkDotNet 参照）
-- [ ] T006 Directory.Build.props を作成（WarningLevel=9999, AnalysisLevel=latest-all, .NET Standard 2.0 用 Polyfill 設定）
-- [ ] T007 [P] .editorconfig を作成（コードスタイル統一）
+- [x] T001 プロジェクト構造を作成（Source/AsciiSharp/, Test/AsciiSharp.Tests/, Test/AsciiSharp.Specs/, Benchmark/AsciiSharp.Benchmarks/）
+- [x] T002 AsciiSharp.csproj を作成（TargetFrameworks: netstandard2.0;net10.0）
+- [x] T003 [P] AsciiSharp.Tests.csproj を作成（TargetFrameworks: net10.0;net481, MSTest.Sdk 参照）
+- [x] T004 [P] AsciiSharp.Specs.csproj を作成（TargetFramework: net10.0, Reqnroll パッケージ参照）
+- [x] T005 [P] AsciiSharp.Benchmarks.csproj を作成（TargetFramework: net10.0, BenchmarkDotNet 参照）
+- [x] T006 Directory.Build.props を作成（WarningLevel=9999, AnalysisLevel=latest-all, .NET Standard 2.0 用 Polyfill 設定）
+- [x] T007 [P] .editorconfig を作成（コードスタイル統一）
 
 ---
 
@@ -49,7 +49,7 @@
 
 ### コアインフラストラクチャ
 
-- [ ] T009 SyntaxKind 列挙型を Source/AsciiSharp/SyntaxKind.cs に実装（Tokens, Trivia, Nodes 定義）
+- [x] T009 SyntaxKind 列挙型を Source/AsciiSharp/SyntaxKind.cs に実装（Tokens, Trivia, Nodes 定義）
 - [ ] T010 [P] TextSpan 構造体を Source/AsciiSharp/Text/TextSpan.cs に実装
 - [ ] T011 [P] DiagnosticSeverity 列挙型と Diagnostic クラスを Source/AsciiSharp/Diagnostics/Diagnostic.cs に実装
 - [ ] T012 [P] SourceText 抽象クラスを Source/AsciiSharp/Text/SourceText.cs に実装
