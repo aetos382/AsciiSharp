@@ -65,6 +65,10 @@
 - [x] SC-004（増分再解析が全体の 10% 以下）を削除
 - [x] 旧 SC-005 → SC-003、旧 SC-006 → SC-004 に繰り上げ
 - [x] Clarifications セクションに変更理由を記録
+- [x] plan.md の Performance Goals を更新
+- [x] tasks.md のパフォーマンス関連タスク（T106, T138, T139）を削除
+- [x] tasks.md の独立テスト基準（US5）を更新
+- [x] タスク番号を T001-T125 に再番号付け
 
 ## Notes
 

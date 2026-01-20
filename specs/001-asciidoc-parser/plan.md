@@ -29,9 +29,7 @@ AsciiDoc 文書を解析し、Roslyn スタイルの二層構文木構造を持�
 **AOT Compatibility**:
 - .NET 10 ターゲットで `IsAotCompatible=true` を有効化
 - CI で AOT 互換性警告を検出
-**Performance Goals**:
-- 100KB 以下の文書: 初回解析 500ms 以内
-- 増分解析: 全体解析の 10% 以下（変更が 5% 以下の場合）
+**Performance Goals**: MVP では数値目標を設けない（後続イテレーションで最適化）
 **Constraints**:
 - .NET Standard 2.0 互換（ランタイム依存の C# 機能は使用不可）
 - AOT 互換（リフレクション最小化、.NET 10 でチェック）

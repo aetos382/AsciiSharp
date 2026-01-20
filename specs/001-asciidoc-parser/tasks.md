@@ -280,17 +280,15 @@
 - [ ] T102 [US5] 内部構文木の構造共有（変更されていない部分のノードを再利用）を実装
 - [ ] T103 [US5] SyntaxTree.WithChanges メソッドを実装（増分解析のエントリーポイント）
 
-**パフォーマンス検証**:
+**検証**:
 
-- [ ] T104 [US5] Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs にベンチマークを追加（初回解析 vs 増分解析）
-- [ ] T105 [US5] BDD テストを再実行し、Green を確認
-- [ ] T106 [US5] ベンチマークを実行し、SC-004（増分解析が 10% 以下の時間）を検証
-- [ ] T107 [US5] ビルドを実行し、警告ゼロを確認
+- [ ] T104 [US5] BDD テストを再実行し、Green を確認
+- [ ] T105 [US5] ビルドを実行し、警告ゼロを確認
 
 ### Refactor for User Story 5
 
-- [ ] T108 [US5] 増分解析ロジックの最適化
-- [ ] T109 [US5] 構造共有のメモリ効率改善
+- [ ] T106 [US5] 増分解析ロジックの最適化
+- [ ] T107 [US5] 構造共有のメモリ効率改善
 
 **Checkpoint**: User Stories 1-5 が独立して機能
 
@@ -317,26 +315,24 @@
 
 > **注**: リスト系と区切りブロックは MVP スコープ外
 
-- ~~[ ] T126-T130: DescriptionList, DelimitedBlock 関連タスク~~ *(延期)*
+- ~~[ ] T108-T112: DescriptionList, DelimitedBlock 関連タスク~~ *(延期)*
 
 ### その他の改善
 
-- [ ] T131 [P] DocumentHeaderSyntax に AuthorLine のサポートを追加（Source/AsciiSharp/Syntax/）
+- [ ] T113 [P] DocumentHeaderSyntax に AuthorLine のサポートを追加（Source/AsciiSharp/Syntax/）
   - **注**: RevisionLine, AttributeEntry は後続イテレーションで実装
-- [ ] T132 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
-- ~~[ ] T133 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加~~ *(延期: 後続イテレーション)*
-- [ ] T134 [P] BOM（Byte Order Mark）処理を SourceText に実装
-- [ ] T135 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
-- [ ] T136 [P] ネストレベル制限を Parser に実装（無限ループ防止）
-- [ ] T137 空の文書（空文字列）の解析テストを追加（Edge Case: 空のドキュメントノードを持つ有効な構文木が生成されることを検証）
-- [ ] T138 パフォーマンステストを Benchmark/AsciiSharp.Benchmarks/ParserBenchmarks.cs に追加（SC-003 検証: 100KB 文書 500ms 以内）
-- [ ] T139 ベンチマークを実行し、パフォーマンス目標を検証
-- [ ] T140 [P] XML ドキュメントコメントを公開 API に追加
-- [ ] T141 [P] README.md を作成（クイックスタート、API 概要）
-- [ ] T142 全体のコードレビューとリファクタリング
-- [ ] T143 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
-- [ ] T144 quickstart.md の検証シナリオを実行
-- [ ] T145 最終ビルドと警告ゼロの確認
+- [ ] T114 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
+- ~~[ ] T115 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加~~ *(延期: 後続イテレーション)*
+- [ ] T116 [P] BOM（Byte Order Mark）処理を SourceText に実装
+- [ ] T117 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
+- [ ] T118 [P] ネストレベル制限を Parser に実装（無限ループ防止）
+- [ ] T119 空の文書（空文字列）の解析テストを追加（Edge Case: 空のドキュメントノードを持つ有効な構文木が生成されることを検証）
+- [ ] T120 [P] XML ドキュメントコメントを公開 API に追加
+- [ ] T121 [P] README.md を作成（クイックスタート、API 概要）
+- [ ] T122 全体のコードレビューとリファクタリング
+- [ ] T123 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
+- [ ] T124 quickstart.md の検証シナリオを実行
+- [ ] T125 最終ビルドと警告ゼロの確認
 
 ---
 
@@ -429,14 +425,14 @@ Task: "[US1] ParagraphSyntax を Source/AsciiSharp/Syntax/ParagraphSyntax.cs に
 
 ## タスク要約（MVP スコープ）
 
-- **MVP 総タスク数**: 約 100（延期タスク除く）
+- **MVP 総タスク数**: 約 95（延期タスク除く）
 - **Phase 1 (Setup)**: 7 タスク
 - **Phase 2 (Foundational)**: 19 タスク（PEG 文法定義含む）
 - **User Story 1**: 20 タスク（リスト関連 3 タスク延期）
 - **User Story 2**: 14 タスク（BDD テスト含む）
 - **User Story 3**: 11 タスク（書式/マクロ関連 6 タスク延期）
 - **User Story 4**: 14 タスク（BDD テスト含む）
-- **User Story 5**: 15 タスク（BDD テスト含む）
+- **User Story 5**: 13 タスク（BDD テスト含む、パフォーマンス検証タスク削除）
 - ~~**User Story 6**: 16 タスク~~ *(延期: 後続イテレーション)*
 - **Phase 9 (Polish)**: 約 10 タスク（DescriptionList, DelimitedBlock 等延期）
 
@@ -445,9 +441,9 @@ Task: "[US1] ParagraphSyntax を Source/AsciiSharp/Syntax/ParagraphSyntax.cs に
 - リスト関連: T036-T038
 - 書式マークアップ: T068, T074
 - マクロ/属性参照: T070, T071, T075
-- テーブル: T110-T125
-- DescriptionList/DelimitedBlock: T126-T130
-- ディレクティブ: T133
+- テーブル: 延期
+- DescriptionList/DelimitedBlock: T108-T112
+- ディレクティブ: T115
 
 ### 並列実行機会
 
@@ -467,7 +463,7 @@ Task: "[US1] ParagraphSyntax を Source/AsciiSharp/Syntax/ParagraphSyntax.cs に
 - **US2**: エラーを含む文書で正常部分が 95% 以上解析される
 - **US3**: リンクの位置とターゲットが正確に識別される
 - **US4**: 構文木変更後に元のインスタンスが変更されていない
-- **US5**: 増分解析が全体解析の 10% 以下の時間で完了
+- **US5**: 増分解析により変更部分のみが再解析される
 - ~~**US6**: テーブル解析~~ *(延期: 後続イテレーション)*
 
 ### MVP スコープ
