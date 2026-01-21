@@ -14,6 +14,7 @@
 - CLI コマンドを実行する際は、何をするコマンドなのか、簡潔な日本語の説明を表示してください。
 
 ## プロジェクト構造について
+
 ```
 AsciiSharp.slnx
 ├─ Source
@@ -46,17 +47,20 @@ AsciiSharp.slnx
 - パフォーマンス
 
 ### 可観測性について
+
 AsciiSharp コア ライブラリでは以下の方針に従います。
 - [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource) を用いたアクティビティ トレースと、[Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) を用いたメトリクス出力を行うことができます。
 - ログは出力しません。
 
 ## コードの修正について
+
 - コードを修正した場合、次のステップに進む前にビルドとテストを行います。
 - BDD の Green または Refactor ステップで、ビルドまたはテストに失敗した場合、修正してビルドとテストが通るようにしてから、次のステップに進みます。
 - ビルド警告は、Refactor ステップ中に修正または無効化します。次の Red ステップに進む際には警告ゼロの状態です。
 - ビルドとテストが通ったら一度コミットし、`dotnet format` で整形してからプッシュします。
 
 ## 多言語対応について
+
 - 仕様書や技術的ドキュメントは日本語で記述してください。
 - コードを書く際も、コード内のコメントやドキュメントは日本語で書いてください。
 - コミット メッセージも日本語で記述してください。
@@ -73,6 +77,7 @@ AsciiSharp コア ライブラリでは以下の方針に従います。
   - `Test/AsciiSharp.Tests` は .NET 10.0 と .NET Framework 4.8.1 です。
 
 ### .NET Standard 2.0 対応について
+
 - .NET Standard 2.0 で標準的にサポートされない言語機能（例：`init` プロパティ アクセッサ）については、Polyfill を使用することで対応します。
 - .NET Standard 2.0 でサポートされない特定のランタイム機能が必要な言語機能（例：`allows ref struct`）については、原則として使用を控えます。
 - .NET Standard 2.0 で標準的にサポートされないライブラリ機能については、追加のライブラリ（例：[System.Threading.Tasks.Extensions](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/)）を導入することで、同じコードにできる場合、ライブラリを用いて対応します。
@@ -113,6 +118,7 @@ if (parameter == null) { throw new ArgumentNullException(nameof(parameter)); }
 - GitHub Actions を用いた継続的インテグレーション (CI) を実施します。
 
 ## パッケージングについて
+
 - AsciiSharp コア ライブラリはビルド時に NuGet パッケージを生成します。
 - 当面、生成されたパッケージは NuGet リポジトリに push しません。
 
