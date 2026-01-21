@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
+using AsciiSharp.Parser;
 using AsciiSharp.Text;
 
 /// <summary>
@@ -113,10 +114,15 @@ public sealed class SyntaxTree
             throw new ArgumentNullException(nameof(text));
         }
 
-        // Parser が実装されたらここでパースを行う
-        // 現時点では空のドキュメントを返す
-        var emptyRoot = CreateEmptyDocument();
-        return new SyntaxTree(emptyRoot, text, new List<Diagnostic>(), filePath);
+        var lexer = new Lexer(text);
+        var treeBuilder = new InternalTreeBuilder();
+        var parser = new AsciiDocParser(lexer, treeBuilder);
+        parser.ParseDocument();
+
+        var internalRoot = treeBuilder.BuildRoot();
+        var diagnostics = new List<Diagnostic>(parser.Diagnostics);
+
+        return new SyntaxTree(internalRoot, text, diagnostics, filePath);
     }
 
     /// <summary>
@@ -190,8 +196,12 @@ public sealed class SyntaxTree
     /// <returns>外部ルートノード。</returns>
     private static SyntaxNode CreateRootNode(InternalNode internalRoot, SyntaxTree tree)
     {
-        // DocumentSyntax が実装されたら、適切なノードを作成する
-        // 現時点ではプレースホルダーとして PlaceholderSyntax を使用
+        if (internalRoot.Kind == SyntaxKind.Document)
+        {
+            return new DocumentSyntax(internalRoot, null, 0, tree);
+        }
+
+        // フォールバック: プレースホルダーを使用
         return new PlaceholderSyntax(internalRoot, null, 0, tree);
     }
 

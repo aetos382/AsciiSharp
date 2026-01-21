@@ -177,6 +177,22 @@ internal sealed class InternalTreeBuilder : ITreeSink
     }
 
     /// <summary>
+    /// 構築されたルートノードを取得する（非 null）。
+    /// </summary>
+    /// <returns>ルートノード。</returns>
+    /// <exception cref="InvalidOperationException">ルートノードが構築されていない場合。</exception>
+    public InternalNode BuildRoot()
+    {
+        var root = GetRoot();
+        if (root is null)
+        {
+            throw new InvalidOperationException("ルートノードが構築されていません。ParseDocument を呼び出してください。");
+        }
+
+        return root;
+    }
+
+    /// <summary>
     /// ビルダーをリセットする。
     /// </summary>
     public void Reset()

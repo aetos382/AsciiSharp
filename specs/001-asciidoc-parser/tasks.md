@@ -45,28 +45,28 @@
 
 ### PEG 文法定義（参照仕様）
 
-- [ ] T008 [P] PEG 文法定義ファイルを specs/001-asciidoc-parser/grammar/ に作成（FR-002 に基づく参照仕様、パーサー実装のガイドとして使用）
+- [x] T008 [P] PEG 文法定義ファイルを specs/001-asciidoc-parser/grammar/ に作成（FR-002 に基づく参照仕様、パーサー実装のガイドとして使用）
 
 ### コアインフラストラクチャ
 
 - [x] T009 SyntaxKind 列挙型を Source/AsciiSharp/SyntaxKind.cs に実装（Tokens, Trivia, Nodes 定義）
-- [ ] T010 [P] TextSpan 構造体を Source/AsciiSharp/Text/TextSpan.cs に実装
-- [ ] T011 [P] DiagnosticSeverity 列挙型と Diagnostic クラスを Source/AsciiSharp/Diagnostics/Diagnostic.cs に実装
-- [ ] T012 [P] SourceText 抽象クラスを Source/AsciiSharp/Text/SourceText.cs に実装
-- [ ] T013 [P] StringText クラス（SourceText の実装）を Source/AsciiSharp/Text/StringText.cs に実装
-- [ ] T014 InternalNode 抽象クラスを Source/AsciiSharp/InternalSyntax/InternalNode.cs に実装
-- [ ] T015 [P] InternalToken クラスを Source/AsciiSharp/InternalSyntax/InternalToken.cs に実装
-- [ ] T016 [P] InternalTrivia 構造体を Source/AsciiSharp/InternalSyntax/InternalTrivia.cs に実装
-- [ ] T017 [P] InternalNodeCache クラスを Source/AsciiSharp/InternalSyntax/InternalNodeCache.cs に実装（WeakReference ベース）
-- [ ] T018 SyntaxNode 抽象クラスを Source/AsciiSharp/Syntax/SyntaxNode.cs に実装（外部構文木の基底）
-- [ ] T019 [P] SyntaxToken 構造体を Source/AsciiSharp/Syntax/SyntaxToken.cs に実装
-- [ ] T020 [P] SyntaxTrivia 構造体を Source/AsciiSharp/Syntax/SyntaxTrivia.cs に実装
-- [ ] T021 [P] SyntaxList<T> 構造体を Source/AsciiSharp/Syntax/SyntaxList.cs に実装
-- [ ] T022 [P] SyntaxNodeOrToken 構造体を Source/AsciiSharp/Syntax/SyntaxNodeOrToken.cs に実装
-- [ ] T023 SyntaxTree クラスを Source/AsciiSharp/Syntax/SyntaxTree.cs に実装（内部構文木から外部構文木への変換を含む）
-- [ ] T024 ITreeSink インターフェースを Source/AsciiSharp/Parser/ITreeSink.cs に実装（イベントベースパーサー用）
-- [ ] T025 InternalTreeBuilder クラスを Source/AsciiSharp/InternalSyntax/InternalTreeBuilder.cs に実装（ITreeSink 実装）
-- [ ] T026 .NET Standard 2.0 用 Polyfill を Source/AsciiSharp/Polyfills/ に追加（IsExternalInit, RequiredMemberAttribute など）
+- [x] T010 [P] TextSpan 構造体を Source/AsciiSharp/Text/TextSpan.cs に実装
+- [x] T011 [P] DiagnosticSeverity 列挙型と Diagnostic クラスを Source/AsciiSharp/Diagnostics/Diagnostic.cs に実装
+- [x] T012 [P] SourceText 抽象クラスを Source/AsciiSharp/Text/SourceText.cs に実装
+- [x] T013 [P] StringText クラス（SourceText の実装）を Source/AsciiSharp/Text/StringText.cs に実装
+- [x] T014 InternalNode 抽象クラスを Source/AsciiSharp/InternalSyntax/InternalNode.cs に実装
+- [x] T015 [P] InternalToken クラスを Source/AsciiSharp/InternalSyntax/InternalToken.cs に実装
+- [x] T016 [P] InternalTrivia 構造体を Source/AsciiSharp/InternalSyntax/InternalTrivia.cs に実装
+- [x] T017 [P] InternalNodeCache クラスを Source/AsciiSharp/InternalSyntax/InternalNodeCache.cs に実装（WeakReference ベース）
+- [x] T018 SyntaxNode 抽象クラスを Source/AsciiSharp/Syntax/SyntaxNode.cs に実装（外部構文木の基底）
+- [x] T019 [P] SyntaxToken 構造体を Source/AsciiSharp/Syntax/SyntaxToken.cs に実装
+- [x] T020 [P] SyntaxTrivia 構造体を Source/AsciiSharp/Syntax/SyntaxTrivia.cs に実装
+- [x] T021 [P] SyntaxList<T> 構造体を Source/AsciiSharp/Syntax/SyntaxList.cs に実装
+- [x] T022 [P] SyntaxNodeOrToken 構造体を Source/AsciiSharp/Syntax/SyntaxNodeOrToken.cs に実装
+- [x] T023 SyntaxTree クラスを Source/AsciiSharp/Syntax/SyntaxTree.cs に実装（内部構文木から外部構文木への変換を含む）
+- [x] T024 ITreeSink インターフェースを Source/AsciiSharp/Parser/ITreeSink.cs に実装（イベントベースパーサー用）
+- [x] T025 InternalTreeBuilder クラスを Source/AsciiSharp/InternalSyntax/InternalTreeBuilder.cs に実装（ITreeSink 実装）
+- [x] T026 .NET Standard 2.0 用 Polyfill を Polyfills/ に追加（IsExternalInit, RequiredMemberAttribute など）
 
 **Checkpoint**: 基盤完了 - ユーザーストーリーの実装を並列開始可能
 

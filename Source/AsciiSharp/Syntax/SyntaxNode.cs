@@ -72,7 +72,7 @@ public abstract class SyntaxNode
     /// <param name="parent">親ノード。</param>
     /// <param name="position">絶対位置。</param>
     /// <param name="syntaxTree">所属する構文木。</param>
-    protected SyntaxNode(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
+    private protected SyntaxNode(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
     {
         Internal = internalNode ?? throw new ArgumentNullException(nameof(internalNode));
         Parent = parent;

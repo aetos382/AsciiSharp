@@ -53,4 +53,10 @@ public interface ITreeSink
     /// </summary>
     /// <param name="kind">期待されるトークンの種別。</param>
     void MissingToken(SyntaxKind kind);
+
+    /// <summary>
+    /// トリビア付きトークンを追加する。
+    /// </summary>
+    /// <param name="token">追加するトークン。</param>
+    void EmitToken(AsciiSharp.InternalSyntax.InternalToken token);
 }

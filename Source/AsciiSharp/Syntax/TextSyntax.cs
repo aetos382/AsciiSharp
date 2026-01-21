@@ -1,0 +1,36 @@
+namespace AsciiSharp.Syntax;
+
+using System.Collections.Generic;
+using AsciiSharp.InternalSyntax;
+
+/// <summary>
+/// プレーンテキストを表す構文ノード。
+/// </summary>
+public sealed class TextSyntax : SyntaxNode
+{
+    /// <summary>
+    /// テキストの内容。
+    /// </summary>
+    public string Text => Internal.ToFullString();
+
+    /// <summary>
+    /// TextSyntax を作成する。
+    /// </summary>
+    internal TextSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
+        : base(internalNode, parent, position, syntaxTree)
+    {
+    }
+
+    /// <inheritdoc />
+    public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
+    {
+        yield break;
+    }
+
+    /// <inheritdoc />
+    protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
+    {
+        // TODO: 実装
+        throw new System.NotImplementedException();
+    }
+}

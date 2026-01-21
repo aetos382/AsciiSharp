@@ -130,6 +130,9 @@ public enum SyntaxKind
     /// <summary>テキストスパンノード。</summary>
     TextSpan = 400,
 
+    /// <summary>テキストノード。</summary>
+    Text,
+
     /// <summary>リンクノード。</summary>
     Link,
 }
