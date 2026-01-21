@@ -1,3 +1,20 @@
 {
-    "dotnet.solution.autoOpen": "AsciiSharp.slnx"
+  "cucumber.glue": [
+    "Test/AsciiSharp.Specs/**/*.cs"
+  ],
+  "cucumber.features": [
+    "Test/AsciiSharp.Specs/**/*.feature"
+  ],
+
+  "dotnet.solution.autoOpen": "AsciiSharp.slnx",
+
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.feature": "${capture}.feature.cs"
+  },
+
+  "files.exclude": {
+    "**/obj/": true,
+    "**/bin/": true
+  }
 }
