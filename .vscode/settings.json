@@ -1,9 +1,9 @@
 {
   "cucumber.glue": [
-    "Test/AsciiSharp.Specs/**/*.cs",
+    "Test/AsciiSharp.Specs/**/*.cs"
   ],
   "cucumber.features": [
-    "Test/AsciiSharp.Specs/**/*.feature",
+    "Test/AsciiSharp.Specs/**/*.feature"
   ],
 
   "dotnet.solution.autoOpen": "AsciiSharp.slnx",
@@ -15,6 +15,6 @@
 
   "files.exclude": {
     "**/obj/": true,
-    "**/bin/": true,
+    "**/bin/": true
   }
 }
