@@ -13,6 +13,8 @@ namespace AsciiSharp.Syntax;
 /// </remarks>
 public sealed class SectionTitleSyntax : SyntaxNode
 {
+    private readonly List<SyntaxToken> _tokens = [];
+
     /// <summary>
     /// セクションレベル（= の数、1-6）。
     /// </summary>
@@ -52,111 +54,47 @@ public sealed class SectionTitleSyntax : SyntaxNode
                 continue;
             }
 
-            switch (slot.Kind)
+            // すべてのトークンをリストに追加
+            if (slot is InternalToken internalToken)
             {
-                case SyntaxKind.EqualsToken:
-                    level++;
-                    this.Marker ??= new SyntaxToken((InternalToken)slot, this, currentPosition, i);
-                    break;
+                var token = new SyntaxToken(internalToken, this, currentPosition, i);
+                this._tokens.Add(token);
 
-                case SyntaxKind.WhitespaceToken:
-                    if (markerAndSpaceFinished)
-                    {
-                        // タイトル内の空白
-                        var wsToken = (InternalToken)slot;
-                        titleBuilder.Append(wsToken.Text);
-                    }
-                    else
-                    {
-                        // マーカー後の最初の空白
+                // 種別ごとの処理
+                switch (slot.Kind)
+                {
+                    case SyntaxKind.EqualsToken:
+                        level++;
+                        this.Marker ??= token;
+                        break;
+
+                    case SyntaxKind.WhitespaceToken:
+                        if (markerAndSpaceFinished)
+                        {
+                            titleBuilder.Append(internalToken.Text);
+                        }
+                        else
+                        {
+                            markerAndSpaceFinished = true;
+                        }
+
+                        break;
+
+                    case SyntaxKind.TextToken:
                         markerAndSpaceFinished = true;
-                    }
+                        titleBuilder.Append(internalToken.Text);
+                        this.TitleText ??= token;
+                        break;
 
-                    break;
+                    default:
+                        // その他のトークンもタイトルの一部として扱う
+                        if (markerAndSpaceFinished)
+                        {
+                            titleBuilder.Append(internalToken.Text);
+                        }
 
-                case SyntaxKind.TextToken:
-                    markerAndSpaceFinished = true;
-                    var textToken = (InternalToken)slot;
-                    titleBuilder.Append(textToken.Text);
-                    this.TitleText ??= new SyntaxToken(textToken, this, currentPosition, i);
-                    break;
-
-                case SyntaxKind.NewLineToken:
-                case SyntaxKind.EndOfFileToken:
-                    // 改行やEOFはタイトルに含めない
-                    break;
-                case SyntaxKind.None:
-                    break;
-                case SyntaxKind.MissingToken:
-                    break;
-                case SyntaxKind.SkippedTokensTrivia:
-                    break;
-                case SyntaxKind.ColonToken:
-                    break;
-                case SyntaxKind.SlashToken:
-                    break;
-                case SyntaxKind.OpenBracketToken:
-                    break;
-                case SyntaxKind.CloseBracketToken:
-                    break;
-                case SyntaxKind.OpenBraceToken:
-                    break;
-                case SyntaxKind.CloseBraceToken:
-                    break;
-                case SyntaxKind.HashToken:
-                    break;
-                case SyntaxKind.AsteriskToken:
-                    break;
-                case SyntaxKind.UnderscoreToken:
-                    break;
-                case SyntaxKind.BacktickToken:
-                    break;
-                case SyntaxKind.DotToken:
-                    break;
-                case SyntaxKind.CommaToken:
-                    break;
-                case SyntaxKind.PipeToken:
-                    break;
-                case SyntaxKind.LessThanToken:
-                    break;
-                case SyntaxKind.GreaterThanToken:
-                    break;
-                case SyntaxKind.WhitespaceTrivia:
-                    break;
-                case SyntaxKind.EndOfLineTrivia:
-                    break;
-                case SyntaxKind.SingleLineCommentTrivia:
-                    break;
-                case SyntaxKind.MultiLineCommentTrivia:
-                    break;
-                case SyntaxKind.Document:
-                    break;
-                case SyntaxKind.DocumentHeader:
-                    break;
-                case SyntaxKind.DocumentBody:
-                    break;
-                case SyntaxKind.Section:
-                    break;
-                case SyntaxKind.SectionTitle:
-                    break;
-                case SyntaxKind.Paragraph:
-                    break;
-                case SyntaxKind.AuthorLine:
-                    break;
-                case SyntaxKind.TextSpan:
-                    break;
-                case SyntaxKind.Text:
-                    break;
-                case SyntaxKind.Link:
-                    break;
-                default:
-                    // その他のトークンもタイトルの一部として扱う
-                    if (markerAndSpaceFinished && slot is InternalToken otherToken)
-                    {
-                        titleBuilder.Append(otherToken.Text);
-                    }
-
-                    break;
+                        break;
+                }
             }
 
             currentPosition += slot.FullWidth;
@@ -169,14 +107,9 @@ public sealed class SectionTitleSyntax : SyntaxNode
     /// <inheritdoc />
     public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
     {
-        if (this.Marker is not null)
+        foreach (var token in this._tokens)
         {
-            yield return new SyntaxNodeOrToken(this.Marker.Value);
-        }
-
-        if (this.TitleText is not null)
-        {
-            yield return new SyntaxNodeOrToken(this.TitleText.Value);
+            yield return new SyntaxNodeOrToken(token);
         }
     }
 

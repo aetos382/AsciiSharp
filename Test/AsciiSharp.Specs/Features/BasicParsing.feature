@@ -1,3 +1,4 @@
+# language: en
 @US1
 Feature: 基本的な AsciiDoc 文書の解析
     ライブラリユーザーとして、

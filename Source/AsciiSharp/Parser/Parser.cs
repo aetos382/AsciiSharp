@@ -200,6 +200,8 @@ internal sealed class AsciiDocParser
     {
         this._sink.StartNode(SyntaxKind.SectionTitle);
 
+        var startPosition = this._lexer.Position - this.Current.FullWidth;
+
         // = を読み取る
         while (this.Current.Kind == SyntaxKind.EqualsToken)
         {
@@ -213,9 +215,23 @@ internal sealed class AsciiDocParser
         }
 
         // タイトルテキストを読み取る
+        var hasTitleText = false;
         while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
         {
+            hasTitleText = true;
             this.EmitCurrentToken();
+        }
+
+        // タイトルテキストがない場合はエラーを報告
+        if (!hasTitleText)
+        {
+            this._sink.MissingToken(SyntaxKind.TextToken);
+            var errorPosition = this._lexer.Position - (this.Current.Kind == SyntaxKind.NewLineToken ? this.Current.FullWidth : 0);
+            this._diagnostics.Add(new Diagnostic(
+                "ADS0002",
+                "セクションタイトルにテキストがありません。",
+                DiagnosticSeverity.Error,
+                new TextSpan(startPosition, errorPosition - startPosition)));
         }
 
         // 改行を読み取る

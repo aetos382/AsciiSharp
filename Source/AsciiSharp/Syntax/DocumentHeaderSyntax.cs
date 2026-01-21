@@ -12,6 +12,8 @@ namespace AsciiSharp.Syntax;
 /// </remarks>
 public sealed class DocumentHeaderSyntax : SyntaxNode
 {
+    private readonly List<SyntaxNodeOrToken> _children = [];
+
     /// <summary>
     /// 文書タイトル。
     /// </summary>
@@ -38,86 +40,25 @@ public sealed class DocumentHeaderSyntax : SyntaxNode
                 continue;
             }
 
+            // トークンの場合は SyntaxToken としてラップ
+            if (slot is InternalToken token)
+            {
+                this._children.Add(new SyntaxToken(token, this, currentPosition, i));
+                currentPosition += slot.FullWidth;
+                continue;
+            }
+
+            // ノードの場合は適切な型に変換
             switch (slot.Kind)
             {
                 case SyntaxKind.SectionTitle:
                     this.Title = new SectionTitleSyntax(slot, this, currentPosition, syntaxTree);
+                    this._children.Add(new SyntaxNodeOrToken(this.Title));
                     break;
 
                 case SyntaxKind.AuthorLine:
                     this.AuthorLine = new AuthorLineSyntax(slot, this, currentPosition, syntaxTree);
-                    break;
-                case SyntaxKind.None:
-                    break;
-                case SyntaxKind.MissingToken:
-                    break;
-                case SyntaxKind.SkippedTokensTrivia:
-                    break;
-                case SyntaxKind.EndOfFileToken:
-                    break;
-                case SyntaxKind.NewLineToken:
-                    break;
-                case SyntaxKind.WhitespaceToken:
-                    break;
-                case SyntaxKind.TextToken:
-                    break;
-                case SyntaxKind.EqualsToken:
-                    break;
-                case SyntaxKind.ColonToken:
-                    break;
-                case SyntaxKind.SlashToken:
-                    break;
-                case SyntaxKind.OpenBracketToken:
-                    break;
-                case SyntaxKind.CloseBracketToken:
-                    break;
-                case SyntaxKind.OpenBraceToken:
-                    break;
-                case SyntaxKind.CloseBraceToken:
-                    break;
-                case SyntaxKind.HashToken:
-                    break;
-                case SyntaxKind.AsteriskToken:
-                    break;
-                case SyntaxKind.UnderscoreToken:
-                    break;
-                case SyntaxKind.BacktickToken:
-                    break;
-                case SyntaxKind.DotToken:
-                    break;
-                case SyntaxKind.CommaToken:
-                    break;
-                case SyntaxKind.PipeToken:
-                    break;
-                case SyntaxKind.LessThanToken:
-                    break;
-                case SyntaxKind.GreaterThanToken:
-                    break;
-                case SyntaxKind.WhitespaceTrivia:
-                    break;
-                case SyntaxKind.EndOfLineTrivia:
-                    break;
-                case SyntaxKind.SingleLineCommentTrivia:
-                    break;
-                case SyntaxKind.MultiLineCommentTrivia:
-                    break;
-                case SyntaxKind.Document:
-                    break;
-                case SyntaxKind.DocumentHeader:
-                    break;
-                case SyntaxKind.DocumentBody:
-                    break;
-                case SyntaxKind.Section:
-                    break;
-                case SyntaxKind.Paragraph:
-                    break;
-                case SyntaxKind.TextSpan:
-                    break;
-                case SyntaxKind.Text:
-                    break;
-                case SyntaxKind.Link:
-                    break;
-                default:
+                    this._children.Add(new SyntaxNodeOrToken(this.AuthorLine));
                     break;
             }
 
@@ -128,14 +69,9 @@ public sealed class DocumentHeaderSyntax : SyntaxNode
     /// <inheritdoc />
     public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
     {
-        if (this.Title is not null)
+        foreach (var child in this._children)
         {
-            yield return new SyntaxNodeOrToken(this.Title);
-        }
-
-        if (this.AuthorLine is not null)
-        {
-            yield return new SyntaxNodeOrToken(this.AuthorLine);
+            yield return child;
         }
     }
 

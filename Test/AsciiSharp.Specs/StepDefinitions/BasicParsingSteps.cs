@@ -16,6 +16,18 @@ public sealed class BasicParsingSteps
     private SyntaxTree? _syntaxTree;
     private string _reconstructedText = string.Empty;
 
+    /// <summary>
+    /// 現在の構文木を取得する（他のステップ定義から使用）。
+    /// </summary>
+    /// <returns>構文木。</returns>
+    public SyntaxTree? GetSyntaxTree() => this._syntaxTree;
+
+    /// <summary>
+    /// 現在のソーステキストを取得する（他のステップ定義から使用）。
+    /// </summary>
+    /// <returns>ソーステキスト。</returns>
+    public string GetSourceText() => this._sourceText;
+
     [Given(@"AsciiDoc パーサーが初期化されている")]
     public static void Givenパーサーが初期化されている()
     {
