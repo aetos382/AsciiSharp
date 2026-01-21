@@ -12,3 +12,4 @@ launchSettings.json
 
 *.local.*
 
+*.feature.cs
