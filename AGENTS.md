@@ -101,7 +101,7 @@ ArgumentNullException.ThrowIfNull(parameter);
 
 以下のようなスタイルは使用しません。
 ```cs
-if (parameter == null) { throw new ArgumentNullException(nameof(parameter); }
+if (parameter == null) { throw new ArgumentNullException(nameof(parameter)); }
 ```
 
 ## 継続的インテグレーションについて
