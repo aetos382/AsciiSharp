@@ -80,7 +80,7 @@ public sealed class SyntaxTree
     {
         this._internalRoot = internalRoot ?? throw new ArgumentNullException(nameof(internalRoot));
         this.Text = text ?? throw new ArgumentNullException(nameof(text));
-        this._diagnostics = diagnostics ?? new List<Diagnostic>();
+        this._diagnostics = diagnostics ?? [];
         this.FilePath = filePath;
     }
 

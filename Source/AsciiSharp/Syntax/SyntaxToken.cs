@@ -179,10 +179,17 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
 
     private static string EscapeText(string text)
     {
+#if NETSTANDARD
         return text
             .Replace("\r", "\\r")
             .Replace("\n", "\\n")
             .Replace("\t", "\\t");
+#else
+        return text
+            .Replace("\r", "\\r", StringComparison.Ordinal)
+            .Replace("\n", "\\n", StringComparison.Ordinal)
+            .Replace("\t", "\\t", StringComparison.Ordinal);
+#endif
     }
 }
 
@@ -341,11 +348,13 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
         }
     }
 
-    public override bool Equals(object obj)
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         throw new NotImplementedException();

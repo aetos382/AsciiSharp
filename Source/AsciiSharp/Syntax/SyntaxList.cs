@@ -27,7 +27,10 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     {
         get
         {
-            if (this._nodes is null || index < 0 || index >= this._nodes.Length)
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, this._nodes.Length);
+
+            if (this._nodes is null)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }

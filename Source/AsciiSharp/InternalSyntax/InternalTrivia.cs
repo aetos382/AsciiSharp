@@ -102,7 +102,7 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
+#if NETSTANDARD
         unchecked
         {
             return ((int)this.Kind * 397) ^ (this.Text?.GetHashCode() ?? 0);
@@ -136,9 +136,16 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
 
     private static string EscapeText(string text)
     {
+#if NETSTANDARD
+        return text
+            .Replace("\r", "\\r")
+            .Replace("\n", "\\n")
+            .Replace("\t", "\\t");
+#else
         return text
             .Replace("\r", "\\r", StringComparison.Ordinal)
             .Replace("\n", "\\n", StringComparison.Ordinal)
             .Replace("\t", "\\t", StringComparison.Ordinal);
+#endif
     }
 }

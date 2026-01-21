@@ -173,9 +173,16 @@ internal sealed class InternalToken : InternalNode
 
     private static string EscapeText(string text)
     {
+#if NETSTANDARD
         return text
             .Replace("\r", "\\r")
             .Replace("\n", "\\n")
             .Replace("\t", "\\t");
+#else
+        return text
+            .Replace("\r", "\\r", StringComparison.Ordinal)
+            .Replace("\n", "\\n", StringComparison.Ordinal)
+            .Replace("\t", "\\t", StringComparison.Ordinal);
+#endif
     }
 }

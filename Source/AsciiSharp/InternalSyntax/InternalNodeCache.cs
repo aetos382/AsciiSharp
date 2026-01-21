@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace AsciiSharp.InternalSyntax;
@@ -17,7 +16,12 @@ internal sealed class InternalNodeCache
     private const int DefaultCapacity = 1024;
     private const int MaxCacheableWidth = 256;
 
+#if NETSTANDARD
     private readonly object _lock = new();
+#else
+    private readonly Lock _lock = new();
+#endif
+
     private readonly Dictionary<CacheKey, WeakReference<InternalNode>> _cache;
 
     /// <summary>
@@ -139,6 +143,7 @@ internal sealed class InternalNodeCache
     /// <returns>ハッシュコード。</returns>
     private static int ComputeHashCode(InternalNode node)
     {
+#if NETSTANDARD
         unchecked
         {
             var hash = (int)node.Kind;
@@ -146,7 +151,7 @@ internal sealed class InternalNodeCache
 
             if (node is InternalToken token)
             {
-                hash = (hash * 397) ^ (token.Text?.GetHashCode(StringComparison.Ordinal) ?? 0);
+                hash = (hash * 397) ^ token.Text.GetHashCode();
             }
             else
             {
@@ -162,6 +167,30 @@ internal sealed class InternalNodeCache
 
             return hash;
         }
+#else
+        var hash = new HashCode();
+
+        hash.Add(node.Kind);
+        hash.Add(node.FullWidth);
+
+        if (node is InternalToken token)
+        {
+            hash.Add(token.Text);
+        }
+        else
+        {
+            for (var i = 0; i < node.SlotCount; i++)
+            {
+                var child = node.GetSlot(i);
+                if (child is not null)
+                {
+                    hash.Add(ComputeHashCode(child));
+                }
+            }
+        }
+
+        return hash.ToHashCode();
+#endif
     }
 
     /// <summary>
