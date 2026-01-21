@@ -279,13 +279,7 @@ public readonly struct TextChange : IEquatable<TextChange>
     /// <exception cref="ArgumentNullException">newText が null の場合。</exception>
     public TextChange(TextSpan span, string newText)
     {
-        
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        Span = span;
-=======
-        this.Span = span;
->>>>>>> After
-ArgumentNullException.ThrowIfNull(newText);
+        ArgumentNullException.ThrowIfNull(newText);
 
         this.Span = span;
         this.NewText = newText;

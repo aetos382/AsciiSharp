@@ -72,53 +72,18 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// <inheritdoc />
     public void Token(SyntaxKind kind, string text)
     {
-        
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        var leadingTrivia = _pendingLeadingTrivia.Count > 0
-            ? _pendingLeadingTrivia.ToArray()
-=======
-        var leadingTrivia = this._pendingLeadingTrivia.Count > 0
-            ? [.. this._pendingLeadingTrivia]
->>>>>>> After
+        ArgumentNullException.ThrowIfNull(text);
 
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        _pendingLeadingTrivia.Clear();
-=======
-        this._pendingLeadingTrivia.Clear();
->>>>>>> After
+        var leadingTrivia = this._pendingLeadingTrivia.ToArray();
 
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        var trailingTrivia = _pendingTrailingTrivia.Count > 0
-            ? _pendingTrailingTrivia.ToArray()
-=======
-        var trailingTrivia = this._pendingTrailingTrivia.Count > 0
-            ? [.. this._pendingTrailingTrivia]
->>>>>>> After
-
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        _pendingTrailingTrivia.Clear();
-=======
-        this._pendingTrailingTrivia.Clear();
->>>>>>> After
-ArgumentNullException.ThrowIfNull(text);
-
-        var leadingTrivia = this._pendingLeadingTrivia.Count > 0
-            ? [.. this._pendingLeadingTrivia]
-            : Array.Empty<InternalTrivia>();
-
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        _position += token.FullWidth;
-=======
-        this._position += token.FullWidth;
->>>>>>> After
         this._pendingLeadingTrivia.Clear();
 
-        var trailingTrivia = this._pendingTrailingTrivia.Count > 0
-            ? [.. this._pendingTrailingTrivia]
-            : Array.Empty<InternalTrivia>();
+        var trailingTrivia = this._pendingTrailingTrivia.ToArray();
+
         this._pendingTrailingTrivia.Clear();
 
         var token = new InternalToken(kind, text, leadingTrivia, trailingTrivia);
+
         this._position += token.FullWidth;
 
         if (this._frames.Count > 0)
@@ -134,13 +99,7 @@ ArgumentNullException.ThrowIfNull(text);
     /// <inheritdoc />
     public void LeadingTrivia(SyntaxKind kind, string text)
     {
-        
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        _pendingLeadingTrivia.Add(trivia);
-=======
-        this._pendingLeadingTrivia.Add(trivia);
->>>>>>> After
-ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(text);
 
         var trivia = new InternalTrivia(kind, text);
         this._pendingLeadingTrivia.Add(trivia);
@@ -149,13 +108,7 @@ ArgumentNullException.ThrowIfNull(text);
     /// <inheritdoc />
     public void TrailingTrivia(SyntaxKind kind, string text)
     {
-        
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        _pendingTrailingTrivia.Add(trivia);
-=======
-        this._pendingTrailingTrivia.Add(trivia);
->>>>>>> After
-ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(text);
 
         var trivia = new InternalTrivia(kind, text);
         this._pendingTrailingTrivia.Add(trivia);

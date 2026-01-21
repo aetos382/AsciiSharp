@@ -39,13 +39,9 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
     /// <exception cref="ArgumentNullException">text が null の場合。</exception>
     public InternalTrivia(SyntaxKind kind, string text)
     {
-        
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-        Kind = kind;
-=======
+        ArgumentNullException.ThrowIfNull(text);
+
         this.Kind = kind;
->>>>>>> After
-ArgumentNullException.ThrowIfNull(text);
 
         this.Kind = kind;
         this.Text = text;
@@ -141,8 +137,8 @@ ArgumentNullException.ThrowIfNull(text);
     private static string EscapeText(string text)
     {
         return text
-            .Replace("\r", "\\r")
-            .Replace("\n", "\\n")
-            .Replace("\t", "\\t");
+            .Replace("\r", "\\r", StringComparison.Ordinal)
+            .Replace("\n", "\\n", StringComparison.Ordinal)
+            .Replace("\t", "\\t", StringComparison.Ordinal);
     }
 }

@@ -1,20 +1,10 @@
-
-<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
-namespace AsciiSharp.InternalSyntax;
-=======
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-
-namespace AsciiSharp.InternalSyntax;
->>>>>>> After
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace AsciiSharp.InternalSyntax;
+
 /// <summary>
 /// 同一内容の内部ノードを共有するためのキャッシュ。
 /// </summary>
@@ -27,7 +17,7 @@ internal sealed class InternalNodeCache
     private const int DefaultCapacity = 1024;
     private const int MaxCacheableWidth = 256;
 
-    private readonly Lock _lock = new();
+    private readonly object _lock = new();
     private readonly Dictionary<CacheKey, WeakReference<InternalNode>> _cache;
 
     /// <summary>
@@ -156,7 +146,7 @@ internal sealed class InternalNodeCache
 
             if (node is InternalToken token)
             {
-                hash = (hash * 397) ^ (token.Text?.GetHashCode() ?? 0);
+                hash = (hash * 397) ^ (token.Text?.GetHashCode(StringComparison.Ordinal) ?? 0);
             }
             else
             {
