@@ -29,7 +29,7 @@ AsciiSharp.slnx
 ├─ Test
 │  ├─ AsciiSharp.Specs: BDD によるテスト プロジェクトです。
 │  └─ AsciiSharp.Tests: ユニット テスト プロジェクトです。
-├─ Benchmarks: ベンチマーク プロジェクトです。
+├─ Benchmark: ベンチマーク プロジェクトです。
 └─ submodules: Git サブ モジュールが格納されます。
    ├─ asciidoc-lang: AsciiDoc 言語仕様のリポジトリです。
    └─ asciidoc-tck: AsciiDoc Technology Compatibility Kit (TCK) のリポジトリです。
@@ -51,7 +51,7 @@ AsciiSharp.slnx
 
 ### 可観測性について
 AsciiSharp コア ライブラリでは以下の方針に従います。
-- [ActicitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource) を用いたアクティビティ トレースと、[Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) を用いたメトリクス出力を行うことができます。
+- [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource) を用いたアクティビティ トレースと、[Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) を用いたメトリクス出力を行うことができます。
 - ログは出力しません。
 
 ## コードの修正について
