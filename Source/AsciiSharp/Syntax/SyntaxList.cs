@@ -1,9 +1,9 @@
-namespace AsciiSharp.Syntax;
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// 構文ノードのリストを表す不変の構造体。
 /// </summary>
@@ -16,7 +16,7 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <summary>
     /// リスト内のノード数。
     /// </summary>
-    public int Count => _nodes?.Length ?? 0;
+    public int Count => this._nodes?.Length ?? 0;
 
     /// <summary>
     /// 指定されたインデックスのノードを取得する。
@@ -27,26 +27,26 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     {
         get
         {
-            if (_nodes is null || index < 0 || index >= _nodes.Length)
+            if (this._nodes is null || index < 0 || index >= this._nodes.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            return _nodes[index];
+            return this._nodes[index];
         }
     }
 
     /// <summary>
     /// リストが空かどうか。
     /// </summary>
-    public bool IsEmpty => _nodes is null || _nodes.Length == 0;
+    public bool IsEmpty => this._nodes is null || this._nodes.Length == 0;
 
     /// <summary>
     /// 空の SyntaxList を作成する。
     /// </summary>
     public SyntaxList()
     {
-        _nodes = Array.Empty<TNode>();
+        this._nodes = [];
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <param name="node">単一のノード。</param>
     public SyntaxList(TNode node)
     {
-        _nodes = node is null ? Array.Empty<TNode>() : new[] { node };
+        this._nodes = node is null ? [] : [node];
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <param name="nodes">ノードの配列。</param>
     public SyntaxList(TNode[] nodes)
     {
-        _nodes = nodes ?? Array.Empty<TNode>();
+        this._nodes = nodes ?? [];
     }
 
     /// <summary>
@@ -75,12 +75,12 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     {
         if (nodes is null)
         {
-            _nodes = Array.Empty<TNode>();
+            this._nodes = [];
         }
         else
         {
             var list = new List<TNode>(nodes);
-            _nodes = list.ToArray();
+            this._nodes = [.. list];
         }
     }
 
@@ -90,7 +90,7 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <returns>要素がある場合は true。</returns>
     public bool Any()
     {
-        return Count > 0;
+        return this.Count > 0;
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <returns>最初のノード。リストが空の場合は null。</returns>
     public TNode? FirstOrDefault()
     {
-        return Count > 0 ? _nodes[0] : default;
+        return this.Count > 0 ? this._nodes[0] : default;
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <returns>最後のノード。リストが空の場合は null。</returns>
     public TNode? LastOrDefault()
     {
-        return Count > 0 ? _nodes[Count - 1] : default;
+        return this.Count > 0 ? this._nodes[this.Count - 1] : default;
     }
 
     /// <summary>
@@ -118,12 +118,12 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <returns>インデックス。見つからない場合は -1。</returns>
     public int IndexOf(TNode node)
     {
-        if (_nodes is null || node is null)
+        if (this._nodes is null || node is null)
         {
             return -1;
         }
 
-        return Array.IndexOf(_nodes, node);
+        return Array.IndexOf(this._nodes, node);
     }
 
     /// <summary>
@@ -137,35 +137,35 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
 
     IEnumerator<TNode> IEnumerable<TNode>.GetEnumerator()
     {
-        return GetEnumerator();
+        return this.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return GetEnumerator();
+        return this.GetEnumerator();
     }
 
     /// <inheritdoc />
     public bool Equals(SyntaxList<TNode> other)
     {
-        if (_nodes is null && other._nodes is null)
+        if (this._nodes is null && other._nodes is null)
         {
             return true;
         }
 
-        if (_nodes is null || other._nodes is null)
+        if (this._nodes is null || other._nodes is null)
         {
             return false;
         }
 
-        if (_nodes.Length != other._nodes.Length)
+        if (this._nodes.Length != other._nodes.Length)
         {
             return false;
         }
 
-        for (var i = 0; i < _nodes.Length; i++)
+        for (var i = 0; i < this._nodes.Length; i++)
         {
-            if (!ReferenceEquals(_nodes[i], other._nodes[i]))
+            if (!ReferenceEquals(this._nodes[i], other._nodes[i]))
             {
                 return false;
             }
@@ -177,13 +177,13 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is SyntaxList<TNode> other && Equals(other);
+        return obj is SyntaxList<TNode> other && this.Equals(other);
     }
 
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        if (_nodes is null)
+        if (this._nodes is null)
         {
             return 0;
         }
@@ -191,7 +191,7 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
         unchecked
         {
             var hash = 17;
-            foreach (var node in _nodes)
+            foreach (var node in this._nodes)
             {
                 hash = (hash * 31) + (node?.GetHashCode() ?? 0);
             }
@@ -227,14 +227,14 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
         /// <summary>
         /// 現在のノード。
         /// </summary>
-        public TNode Current => _list[_index];
+        public readonly TNode Current => this._list[this._index];
 
-        object IEnumerator.Current => Current;
+        readonly object IEnumerator.Current => this.Current;
 
         internal Enumerator(SyntaxList<TNode> list)
         {
-            _list = list;
-            _index = -1;
+            this._list = list;
+            this._index = -1;
         }
 
         /// <summary>
@@ -243,8 +243,8 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
         /// <returns>次のノードが存在する場合は true。</returns>
         public bool MoveNext()
         {
-            _index++;
-            return _index < _list.Count;
+            this._index++;
+            return this._index < this._list.Count;
         }
 
         /// <summary>
@@ -252,13 +252,13 @@ public readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<Synt
         /// </summary>
         public void Reset()
         {
-            _index = -1;
+            this._index = -1;
         }
 
         /// <summary>
         /// リソースを解放する。
         /// </summary>
-        public void Dispose()
+        public readonly void Dispose()
         {
         }
     }

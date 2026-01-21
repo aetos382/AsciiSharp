@@ -1,7 +1,7 @@
-namespace AsciiSharp.Text;
 
 using System;
 
+namespace AsciiSharp.Text;
 /// <summary>
 /// ソーステキスト内の位置と長さを表す不変の構造体。
 /// </summary>
@@ -24,12 +24,12 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <summary>
     /// 終了位置（Start + Length）。
     /// </summary>
-    public int End => Start + Length;
+    public int End => this.Start + this.Length;
 
     /// <summary>
     /// スパンが空かどうか。
     /// </summary>
-    public bool IsEmpty => Length == 0;
+    public bool IsEmpty => this.Length == 0;
 
     /// <summary>
     /// 指定された開始位置と長さで TextSpan を作成する。
@@ -49,8 +49,8 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
             throw new ArgumentOutOfRangeException(nameof(length), length, "長さは0以上でなければなりません。");
         }
 
-        Start = start;
-        Length = length;
+        this.Start = start;
+        this.Length = length;
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <returns>位置がスパン内に含まれる場合は true。</returns>
     public bool Contains(int position)
     {
-        return position >= Start && position < End;
+        return position >= this.Start && position < this.End;
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <returns>スパンが完全に含まれる場合は true。</returns>
     public bool Contains(TextSpan span)
     {
-        return span.Start >= Start && span.End <= End;
+        return span.Start >= this.Start && span.End <= this.End;
     }
 
     /// <summary>
@@ -102,8 +102,8 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <returns>重なる場合は true。</returns>
     public bool OverlapsWith(TextSpan span)
     {
-        var overlapStart = Math.Max(Start, span.Start);
-        var overlapEnd = Math.Min(End, span.End);
+        var overlapStart = Math.Max(this.Start, span.Start);
+        var overlapEnd = Math.Min(this.End, span.End);
         return overlapStart < overlapEnd;
     }
 
@@ -114,8 +114,8 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <returns>重なり部分。重ならない場合は null。</returns>
     public TextSpan? Overlap(TextSpan span)
     {
-        var overlapStart = Math.Max(Start, span.Start);
-        var overlapEnd = Math.Min(End, span.End);
+        var overlapStart = Math.Max(this.Start, span.Start);
+        var overlapEnd = Math.Min(this.End, span.End);
 
         if (overlapStart < overlapEnd)
         {
@@ -132,7 +132,7 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <returns>交差する場合は true。</returns>
     public bool IntersectsWith(TextSpan span)
     {
-        return span.Start <= End && span.End >= Start;
+        return span.Start <= this.End && span.End >= this.Start;
     }
 
     /// <summary>
@@ -142,8 +142,8 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <returns>交差部分。交差しない場合は null。</returns>
     public TextSpan? Intersection(TextSpan span)
     {
-        var intersectStart = Math.Max(Start, span.Start);
-        var intersectEnd = Math.Min(End, span.End);
+        var intersectStart = Math.Max(this.Start, span.Start);
+        var intersectEnd = Math.Min(this.End, span.End);
 
         if (intersectStart <= intersectEnd)
         {
@@ -156,13 +156,13 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <inheritdoc />
     public bool Equals(TextSpan other)
     {
-        return Start == other.Start && Length == other.Length;
+        return this.Start == other.Start && this.Length == other.Length;
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is TextSpan other && Equals(other);
+        return obj is TextSpan other && this.Equals(other);
     }
 
     /// <inheritdoc />
@@ -171,18 +171,18 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
 #if NETSTANDARD2_0
         unchecked
         {
-            return (Start * 397) ^ Length;
+            return (this.Start * 397) ^ this.Length;
         }
 #else
-        return HashCode.Combine(Start, Length);
+        return HashCode.Combine(this.Start, this.Length);
 #endif
     }
 
     /// <inheritdoc />
     public int CompareTo(TextSpan other)
     {
-        var startComparison = Start.CompareTo(other.Start);
-        return startComparison != 0 ? startComparison : Length.CompareTo(other.Length);
+        var startComparison = this.Start.CompareTo(other.Start);
+        return startComparison != 0 ? startComparison : this.Length.CompareTo(other.Length);
     }
 
     /// <summary>
@@ -204,6 +204,26 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"[{Start}..{End})";
+        return $"[{this.Start}..{this.End})";
+    }
+
+    public static bool operator <(TextSpan left, TextSpan right)
+    {
+        return left.CompareTo(right) < 0;
+    }
+
+    public static bool operator <=(TextSpan left, TextSpan right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
+
+    public static bool operator >(TextSpan left, TextSpan right)
+    {
+        return left.CompareTo(right) > 0;
+    }
+
+    public static bool operator >=(TextSpan left, TextSpan right)
+    {
+        return left.CompareTo(right) >= 0;
     }
 }

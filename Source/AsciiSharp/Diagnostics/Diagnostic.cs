@@ -1,8 +1,9 @@
-namespace AsciiSharp.Diagnostics;
 
 using System;
+
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Diagnostics;
 /// <summary>
 /// 診断情報の重大度。
 /// </summary>
@@ -65,31 +66,25 @@ public sealed class Diagnostic : IEquatable<Diagnostic>
         TextSpan location,
         params object?[] arguments)
     {
-        if (code is null)
-        {
-            throw new ArgumentNullException(nameof(code));
-        }
+        ArgumentNullException.ThrowIfNull(code);
 
         if (string.IsNullOrWhiteSpace(code))
         {
             throw new ArgumentException("診断コードは空にできません。", nameof(code));
         }
 
-        if (message is null)
-        {
-            throw new ArgumentNullException(nameof(message));
-        }
+        ArgumentNullException.ThrowIfNull(message);
 
         if (string.IsNullOrWhiteSpace(message))
         {
             throw new ArgumentException("診断メッセージは空にできません。", nameof(message));
         }
 
-        Code = code;
-        Message = message;
-        Severity = severity;
-        Location = location;
-        Arguments = arguments ?? Array.Empty<object?>();
+        this.Code = code;
+        this.Message = message;
+        this.Severity = severity;
+        this.Location = location;
+        this.Arguments = arguments ?? [];
     }
 
     /// <summary>
@@ -144,16 +139,16 @@ public sealed class Diagnostic : IEquatable<Diagnostic>
             return true;
         }
 
-        return Code == other.Code
-            && Message == other.Message
-            && Severity == other.Severity
-            && Location == other.Location;
+        return this.Code == other.Code
+            && this.Message == other.Message
+            && this.Severity == other.Severity
+            && this.Location == other.Location;
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return Equals(obj as Diagnostic);
+        return this.Equals(obj as Diagnostic);
     }
 
     /// <inheritdoc />
@@ -162,20 +157,20 @@ public sealed class Diagnostic : IEquatable<Diagnostic>
 #if NETSTANDARD2_0
         unchecked
         {
-            var hashCode = Code.GetHashCode();
-            hashCode = (hashCode * 397) ^ Message.GetHashCode();
-            hashCode = (hashCode * 397) ^ (int)Severity;
-            hashCode = (hashCode * 397) ^ Location.GetHashCode();
+            var hashCode = this.Code.GetHashCode();
+            hashCode = (hashCode * 397) ^ this.Message.GetHashCode();
+            hashCode = (hashCode * 397) ^ (int)this.Severity;
+            hashCode = (hashCode * 397) ^ this.Location.GetHashCode();
             return hashCode;
         }
 #else
-        return HashCode.Combine(Code, Message, Severity, Location);
+        return HashCode.Combine(this.Code, this.Message, this.Severity, this.Location);
 #endif
     }
 
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"{Severity} {Code}: {Message} at {Location}";
+        return $"{this.Severity} {this.Code}: {this.Message} at {this.Location}";
     }
 }

@@ -1,8 +1,9 @@
-namespace AsciiSharp.Syntax;
 
 using System;
+
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// 構文ノードまたはトークンを表す構造体。
 /// </summary>
@@ -15,37 +16,37 @@ public readonly struct SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     /// <summary>
     /// これがノードかどうか。
     /// </summary>
-    public bool IsNode => !_isToken && _node is not null;
+    public bool IsNode => !this._isToken && this._node is not null;
 
     /// <summary>
     /// これがトークンかどうか。
     /// </summary>
-    public bool IsToken => _isToken;
+    public bool IsToken => this._isToken;
 
     /// <summary>
     /// 種別。
     /// </summary>
-    public SyntaxKind Kind => _isToken ? _token.Kind : (_node?.Kind ?? SyntaxKind.None);
+    public SyntaxKind Kind => this._isToken ? this._token.Kind : (this._node?.Kind ?? SyntaxKind.None);
 
     /// <summary>
     /// スパン（トリビアを除く）。
     /// </summary>
-    public TextSpan Span => _isToken ? _token.Span : (_node?.Span ?? default);
+    public TextSpan Span => this._isToken ? this._token.Span : (this._node?.Span ?? default);
 
     /// <summary>
     /// フルスパン（トリビアを含む）。
     /// </summary>
-    public TextSpan FullSpan => _isToken ? _token.FullSpan : (_node?.FullSpan ?? default);
+    public TextSpan FullSpan => this._isToken ? this._token.FullSpan : (this._node?.FullSpan ?? default);
 
     /// <summary>
     /// 親ノード。
     /// </summary>
-    public SyntaxNode? Parent => _isToken ? _token.Parent : _node?.Parent;
+    public SyntaxNode? Parent => this._isToken ? this._token.Parent : this._node?.Parent;
 
     /// <summary>
     /// 欠落しているかどうか。
     /// </summary>
-    public bool IsMissing => _isToken ? _token.IsMissing : (_node?.IsMissing ?? true);
+    public bool IsMissing => this._isToken ? this._token.IsMissing : (this._node?.IsMissing ?? true);
 
     /// <summary>
     /// ノードから SyntaxNodeOrToken を作成する。
@@ -53,9 +54,9 @@ public readonly struct SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     /// <param name="node">ノード。</param>
     public SyntaxNodeOrToken(SyntaxNode node)
     {
-        _node = node;
-        _token = default;
-        _isToken = false;
+        this._node = node;
+        this._token = default;
+        this._isToken = false;
     }
 
     /// <summary>
@@ -64,9 +65,9 @@ public readonly struct SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     /// <param name="token">トークン。</param>
     public SyntaxNodeOrToken(SyntaxToken token)
     {
-        _node = null;
-        _token = token;
-        _isToken = true;
+        this._node = null;
+        this._token = token;
+        this._isToken = true;
     }
 
     /// <summary>
@@ -75,7 +76,7 @@ public readonly struct SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     /// <returns>ノード。トークンの場合は null。</returns>
     public SyntaxNode? AsNode()
     {
-        return _isToken ? null : _node;
+        return this._isToken ? null : this._node;
     }
 
     /// <summary>
@@ -84,7 +85,7 @@ public readonly struct SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     /// <returns>トークン。ノードの場合は既定値。</returns>
     public SyntaxToken AsToken()
     {
-        return _isToken ? _token : default;
+        return this._isToken ? this._token : default;
     }
 
     /// <summary>
@@ -108,34 +109,34 @@ public readonly struct SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     /// <inheritdoc />
     public bool Equals(SyntaxNodeOrToken other)
     {
-        if (_isToken != other._isToken)
+        if (this._isToken != other._isToken)
         {
             return false;
         }
 
-        if (_isToken)
+        if (this._isToken)
         {
-            return _token.Equals(other._token);
+            return this._token.Equals(other._token);
         }
 
-        return ReferenceEquals(_node, other._node);
+        return ReferenceEquals(this._node, other._node);
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is SyntaxNodeOrToken other && Equals(other);
+        return obj is SyntaxNodeOrToken other && this.Equals(other);
     }
 
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        if (_isToken)
+        if (this._isToken)
         {
-            return _token.GetHashCode();
+            return this._token.GetHashCode();
         }
 
-        return _node?.GetHashCode() ?? 0;
+        return this._node?.GetHashCode() ?? 0;
     }
 
     /// <summary>
@@ -157,11 +158,16 @@ public readonly struct SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     /// <inheritdoc />
     public override string ToString()
     {
-        if (_isToken)
+        if (this._isToken)
         {
-            return _token.ToString();
+            return this._token.ToString();
         }
 
-        return _node?.ToString() ?? string.Empty;
+        return this._node?.ToString() ?? string.Empty;
+    }
+
+    public SyntaxNodeOrToken ToSyntaxNodeOrToken()
+    {
+        throw new NotImplementedException();
     }
 }

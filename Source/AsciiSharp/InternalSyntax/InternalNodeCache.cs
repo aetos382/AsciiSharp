@@ -1,9 +1,20 @@
-namespace AsciiSharp.InternalSyntax;
 
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
+namespace AsciiSharp.InternalSyntax;
+=======
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+namespace AsciiSharp.InternalSyntax;
+>>>>>>> After
+
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+
+namespace AsciiSharp.InternalSyntax;
 /// <summary>
 /// 同一内容の内部ノードを共有するためのキャッシュ。
 /// </summary>
@@ -16,7 +27,7 @@ internal sealed class InternalNodeCache
     private const int DefaultCapacity = 1024;
     private const int MaxCacheableWidth = 256;
 
-    private readonly object _lock = new object();
+    private readonly Lock _lock = new();
     private readonly Dictionary<CacheKey, WeakReference<InternalNode>> _cache;
 
     /// <summary>
@@ -33,7 +44,7 @@ internal sealed class InternalNodeCache
     /// <param name="capacity">初期容量。</param>
     public InternalNodeCache(int capacity)
     {
-        _cache = new Dictionary<CacheKey, WeakReference<InternalNode>>(capacity);
+        this._cache = new Dictionary<CacheKey, WeakReference<InternalNode>>(capacity);
     }
 
     /// <summary>
@@ -47,9 +58,9 @@ internal sealed class InternalNodeCache
     {
         var key = new CacheKey(kind, hashCode);
 
-        lock (_lock)
+        lock (this._lock)
         {
-            if (_cache.TryGetValue(key, out var weakRef) && weakRef.TryGetTarget(out var cachedNode))
+            if (this._cache.TryGetValue(key, out var weakRef) && weakRef.TryGetTarget(out var cachedNode))
             {
                 node = cachedNode;
                 return true;
@@ -83,16 +94,16 @@ internal sealed class InternalNodeCache
         var hashCode = ComputeHashCode(node);
         var key = new CacheKey(node.Kind, hashCode);
 
-        lock (_lock)
+        lock (this._lock)
         {
             // 既存エントリをチェック
-            if (_cache.TryGetValue(key, out var weakRef) && weakRef.TryGetTarget(out _))
+            if (this._cache.TryGetValue(key, out var weakRef) && weakRef.TryGetTarget(out _))
             {
                 // 既にキャッシュされている
                 return;
             }
 
-            _cache[key] = new WeakReference<InternalNode>(node);
+            this._cache[key] = new WeakReference<InternalNode>(node);
         }
     }
 
@@ -101,9 +112,9 @@ internal sealed class InternalNodeCache
     /// </summary>
     public void Clear()
     {
-        lock (_lock)
+        lock (this._lock)
         {
-            _cache.Clear();
+            this._cache.Clear();
         }
     }
 
@@ -112,11 +123,11 @@ internal sealed class InternalNodeCache
     /// </summary>
     public void Compact()
     {
-        lock (_lock)
+        lock (this._lock)
         {
             var keysToRemove = new List<CacheKey>();
 
-            foreach (var kvp in _cache)
+            foreach (var kvp in this._cache)
             {
                 if (!kvp.Value.TryGetTarget(out _))
                 {
@@ -126,7 +137,7 @@ internal sealed class InternalNodeCache
 
             foreach (var key in keysToRemove)
             {
-                _cache.Remove(key);
+                this._cache.Remove(key);
             }
         }
     }
@@ -173,18 +184,18 @@ internal sealed class InternalNodeCache
 
         public CacheKey(SyntaxKind kind, int hashCode)
         {
-            Kind = kind;
-            HashCode = hashCode;
+            this.Kind = kind;
+            this.HashCode = hashCode;
         }
 
         public bool Equals(CacheKey other)
         {
-            return Kind == other.Kind && HashCode == other.HashCode;
+            return this.Kind == other.Kind && this.HashCode == other.HashCode;
         }
 
         public override bool Equals(object? obj)
         {
-            return obj is CacheKey other && Equals(other);
+            return obj is CacheKey other && this.Equals(other);
         }
 
         public override int GetHashCode()
@@ -192,10 +203,10 @@ internal sealed class InternalNodeCache
 #if NETSTANDARD2_0
             unchecked
             {
-                return ((int)Kind * 397) ^ HashCode;
+                return ((int)this.Kind * 397) ^ this.HashCode;
             }
 #else
-            return System.HashCode.Combine(Kind, HashCode);
+            return System.HashCode.Combine(this.Kind, this.HashCode);
 #endif
         }
     }

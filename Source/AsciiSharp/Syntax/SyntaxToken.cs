@@ -1,10 +1,11 @@
-namespace AsciiSharp.Syntax;
 
 using System;
 using System.Collections.Generic;
+
 using AsciiSharp.InternalSyntax;
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// 外部構文木のトークンを表す構造体。
 /// </summary>
@@ -33,12 +34,12 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
     /// <summary>
     /// トークンの種別。
     /// </summary>
-    public SyntaxKind Kind => Internal?.Kind ?? SyntaxKind.None;
+    public SyntaxKind Kind => this.Internal?.Kind ?? SyntaxKind.None;
 
     /// <summary>
     /// トークンのテキスト。
     /// </summary>
-    public string Text => Internal?.Text ?? string.Empty;
+    public string Text => this.Internal?.Text ?? string.Empty;
 
     /// <summary>
     /// トークンのスパン（トリビアを除く）。
@@ -47,12 +48,12 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
     {
         get
         {
-            if (Internal is null)
+            if (this.Internal is null)
             {
-                return new TextSpan(Position, 0);
+                return new TextSpan(this.Position, 0);
             }
 
-            return new TextSpan(Position + Internal.LeadingTriviaWidth, Internal.Width);
+            return new TextSpan(this.Position + this.Internal.LeadingTriviaWidth, this.Internal.Width);
         }
     }
 
@@ -63,44 +64,44 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
     {
         get
         {
-            if (Internal is null)
+            if (this.Internal is null)
             {
-                return new TextSpan(Position, 0);
+                return new TextSpan(this.Position, 0);
             }
 
-            return new TextSpan(Position, Internal.FullWidth);
+            return new TextSpan(this.Position, this.Internal.FullWidth);
         }
     }
 
     /// <summary>
     /// トークンの幅（トリビアを除く）。
     /// </summary>
-    public int Width => Internal?.Width ?? 0;
+    public int Width => this.Internal?.Width ?? 0;
 
     /// <summary>
     /// トークンの全幅（トリビアを含む）。
     /// </summary>
-    public int FullWidth => Internal?.FullWidth ?? 0;
+    public int FullWidth => this.Internal?.FullWidth ?? 0;
 
     /// <summary>
     /// このトークンが欠落トークン（エラー回復で挿入されたもの）かどうか。
     /// </summary>
-    public bool IsMissing => Internal?.IsMissing ?? true;
+    public bool IsMissing => this.Internal?.IsMissing ?? true;
 
     /// <summary>
     /// このトークンに診断情報が含まれるかどうか。
     /// </summary>
-    public bool ContainsDiagnostics => Internal?.ContainsDiagnostics ?? false;
+    public bool ContainsDiagnostics => this.Internal?.ContainsDiagnostics ?? false;
 
     /// <summary>
     /// 先行トリビアのリスト。
     /// </summary>
-    public SyntaxTriviaList LeadingTrivia => new SyntaxTriviaList(this, isLeading: true);
+    public SyntaxTriviaList LeadingTrivia => new(this, isLeading: true);
 
     /// <summary>
     /// 後続トリビアのリスト。
     /// </summary>
-    public SyntaxTriviaList TrailingTrivia => new SyntaxTriviaList(this, isLeading: false);
+    public SyntaxTriviaList TrailingTrivia => new(this, isLeading: false);
 
     /// <summary>
     /// SyntaxToken を作成する。
@@ -111,10 +112,10 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
     /// <param name="index">スロットインデックス。</param>
     internal SyntaxToken(InternalToken? internalToken, SyntaxNode? parent, int position, int index)
     {
-        Internal = internalToken;
-        Parent = parent;
-        Position = position;
-        Index = index;
+        this.Internal = internalToken;
+        this.Parent = parent;
+        this.Position = position;
+        this.Index = index;
     }
 
     /// <summary>
@@ -123,20 +124,20 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
     /// <returns>トリビアを含む完全なテキスト。</returns>
     public string ToFullString()
     {
-        return Internal?.ToFullString() ?? string.Empty;
+        return this.Internal?.ToFullString() ?? string.Empty;
     }
 
     /// <inheritdoc />
     public bool Equals(SyntaxToken other)
     {
-        return Position == other.Position
-            && ReferenceEquals(Internal, other.Internal);
+        return this.Position == other.Position
+            && ReferenceEquals(this.Internal, other.Internal);
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is SyntaxToken other && Equals(other);
+        return obj is SyntaxToken other && this.Equals(other);
     }
 
     /// <inheritdoc />
@@ -145,10 +146,10 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
 #if NETSTANDARD2_0
         unchecked
         {
-            return (Position * 397) ^ (Internal?.GetHashCode() ?? 0);
+            return (this.Position * 397) ^ (this.Internal?.GetHashCode() ?? 0);
         }
 #else
-        return HashCode.Combine(Position, Internal);
+        return HashCode.Combine(this.Position, this.Internal);
 #endif
     }
 
@@ -171,9 +172,9 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
     /// <inheritdoc />
     public override string ToString()
     {
-        var text = Internal?.Text ?? string.Empty;
-        var missing = IsMissing ? " (missing)" : string.Empty;
-        return $"{Kind}: \"{EscapeText(text)}\"{missing}";
+        var text = this.Internal?.Text ?? string.Empty;
+        var missing = this.IsMissing ? " (missing)" : string.Empty;
+        return $"{this.Kind}: \"{EscapeText(text)}\"{missing}";
     }
 
     private static string EscapeText(string text)
@@ -200,14 +201,14 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
     {
         get
         {
-            if (_token.Internal is null)
+            if (this._token.Internal is null)
             {
                 return 0;
             }
 
-            return _isLeading
-                ? _token.Internal.LeadingTrivia.Count
-                : _token.Internal.TrailingTrivia.Count;
+            return this._isLeading
+                ? this._token.Internal.LeadingTrivia.Count
+                : this._token.Internal.TrailingTrivia.Count;
         }
     }
 
@@ -220,17 +221,17 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
     {
         get
         {
-            if (_token.Internal is null || index < 0 || index >= Count)
+            if (this._token.Internal is null || index < 0 || index >= this.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            var internalTrivia = _isLeading
-                ? _token.Internal.LeadingTrivia[index]
-                : _token.Internal.TrailingTrivia[index];
+            var internalTrivia = this._isLeading
+                ? this._token.Internal.LeadingTrivia[index]
+                : this._token.Internal.TrailingTrivia[index];
 
-            var position = CalculatePosition(index);
-            return new SyntaxTrivia(internalTrivia, _token, position, index);
+            var position = this.CalculatePosition(index);
+            return new SyntaxTrivia(internalTrivia, this._token, position, index);
         }
     }
 
@@ -241,33 +242,33 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
     /// <param name="isLeading">先行トリビアかどうか。</param>
     internal SyntaxTriviaList(SyntaxToken token, bool isLeading)
     {
-        _token = token;
-        _isLeading = isLeading;
+        this._token = token;
+        this._isLeading = isLeading;
     }
 
     private int CalculatePosition(int index)
     {
-        if (_token.Internal is null)
+        if (this._token.Internal is null)
         {
-            return _token.Position;
+            return this._token.Position;
         }
 
-        if (_isLeading)
+        if (this._isLeading)
         {
-            var position = _token.Position;
+            var position = this._token.Position;
             for (var i = 0; i < index; i++)
             {
-                position += _token.Internal.LeadingTrivia[i].Width;
+                position += this._token.Internal.LeadingTrivia[i].Width;
             }
 
             return position;
         }
         else
         {
-            var position = _token.Position + _token.Internal.LeadingTriviaWidth + _token.Internal.Width;
+            var position = this._token.Position + this._token.Internal.LeadingTriviaWidth + this._token.Internal.Width;
             for (var i = 0; i < index; i++)
             {
-                position += _token.Internal.TrailingTrivia[i].Width;
+                position += this._token.Internal.TrailingTrivia[i].Width;
             }
 
             return position;
@@ -285,12 +286,12 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
 
     IEnumerator<SyntaxTrivia> IEnumerable<SyntaxTrivia>.GetEnumerator()
     {
-        return GetEnumerator();
+        return this.GetEnumerator();
     }
 
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
     {
-        return GetEnumerator();
+        return this.GetEnumerator();
     }
 
     /// <summary>
@@ -304,14 +305,14 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
         /// <summary>
         /// 現在のトリビア。
         /// </summary>
-        public SyntaxTrivia Current => _list[_index];
+        public readonly SyntaxTrivia Current => this._list[this._index];
 
-        object System.Collections.IEnumerator.Current => Current;
+        readonly object System.Collections.IEnumerator.Current => this.Current;
 
         internal Enumerator(SyntaxTriviaList list)
         {
-            _list = list;
-            _index = -1;
+            this._list = list;
+            this._index = -1;
         }
 
         /// <summary>
@@ -320,8 +321,8 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
         /// <returns>次のトリビアが存在する場合は true。</returns>
         public bool MoveNext()
         {
-            _index++;
-            return _index < _list.Count;
+            this._index++;
+            return this._index < this._list.Count;
         }
 
         /// <summary>
@@ -329,14 +330,34 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
         /// </summary>
         public void Reset()
         {
-            _index = -1;
+            this._index = -1;
         }
 
         /// <summary>
         /// リソースを解放する。
         /// </summary>
-        public void Dispose()
+        public readonly void Dispose()
         {
         }
+    }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(SyntaxTriviaList left, SyntaxTriviaList right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(SyntaxTriviaList left, SyntaxTriviaList right)
+    {
+        return !(left == right);
     }
 }

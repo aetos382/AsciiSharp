@@ -1,8 +1,9 @@
-namespace AsciiSharp.Syntax;
 
 using System.Collections.Generic;
+
 using AsciiSharp.InternalSyntax;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// プレーンテキストを表す構文ノード。
 /// </summary>
@@ -11,7 +12,7 @@ public sealed class TextSyntax : SyntaxNode
     /// <summary>
     /// テキストの内容。
     /// </summary>
-    public string Text => Internal.ToFullString();
+    public string Text => this.Internal.ToFullString();
 
     /// <summary>
     /// TextSyntax を作成する。

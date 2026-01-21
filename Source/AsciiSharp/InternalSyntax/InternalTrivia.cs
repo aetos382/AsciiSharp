@@ -1,7 +1,7 @@
-namespace AsciiSharp.InternalSyntax;
 
 using System;
 
+namespace AsciiSharp.InternalSyntax;
 /// <summary>
 /// 内部トリビアを表す不変の構造体。
 /// </summary>
@@ -24,12 +24,12 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
     /// <summary>
     /// トリビアの幅（テキストの長さ）。
     /// </summary>
-    public int Width => Text.Length;
+    public int Width => this.Text.Length;
 
     /// <summary>
     /// トリビアが空かどうか。
     /// </summary>
-    public bool IsEmpty => Text.Length == 0;
+    public bool IsEmpty => this.Text.Length == 0;
 
     /// <summary>
     /// 指定された種別とテキストで InternalTrivia を作成する。
@@ -39,13 +39,16 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
     /// <exception cref="ArgumentNullException">text が null の場合。</exception>
     public InternalTrivia(SyntaxKind kind, string text)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
-
+        
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
         Kind = kind;
-        Text = text;
+=======
+        this.Kind = kind;
+>>>>>>> After
+ArgumentNullException.ThrowIfNull(text);
+
+        this.Kind = kind;
+        this.Text = text;
     }
 
     /// <summary>
@@ -91,13 +94,13 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
     /// <inheritdoc />
     public bool Equals(InternalTrivia other)
     {
-        return Kind == other.Kind && Text == other.Text;
+        return this.Kind == other.Kind && this.Text == other.Text;
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is InternalTrivia other && Equals(other);
+        return obj is InternalTrivia other && this.Equals(other);
     }
 
     /// <inheritdoc />
@@ -106,10 +109,10 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
 #if NETSTANDARD2_0
         unchecked
         {
-            return ((int)Kind * 397) ^ (Text?.GetHashCode() ?? 0);
+            return ((int)this.Kind * 397) ^ (this.Text?.GetHashCode() ?? 0);
         }
 #else
-        return HashCode.Combine(Kind, Text);
+        return HashCode.Combine(this.Kind, this.Text);
 #endif
     }
 
@@ -132,7 +135,7 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"{Kind}: \"{EscapeText(Text)}\"";
+        return $"{this.Kind}: \"{EscapeText(this.Text)}\"";
     }
 
     private static string EscapeText(string text)

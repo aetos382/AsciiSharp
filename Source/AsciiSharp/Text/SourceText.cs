@@ -1,8 +1,8 @@
-namespace AsciiSharp.Text;
 
 using System;
 using System.Collections.Generic;
 
+namespace AsciiSharp.Text;
 /// <summary>
 /// ソーステキストを表す抽象基底クラス。
 /// </summary>
@@ -32,7 +32,7 @@ public abstract class SourceText
     /// <summary>
     /// 行の数。
     /// </summary>
-    public int LineCount => Lines.Count;
+    public int LineCount => this.Lines.Count;
 
     /// <summary>
     /// 指定された範囲のテキストを取得する。
@@ -49,14 +49,14 @@ public abstract class SourceText
     /// <returns>指定された範囲のテキスト。</returns>
     public string GetText(int start, int length)
     {
-        return GetText(new TextSpan(start, length));
+        return this.GetText(new TextSpan(start, length));
     }
 
     /// <summary>
     /// テキスト全体を文字列として取得する。
     /// </summary>
     /// <returns>テキスト全体。</returns>
-    public override abstract string ToString();
+    public abstract override string ToString();
 
     /// <summary>
     /// 指定された位置の行・列番号を取得する。
@@ -66,13 +66,13 @@ public abstract class SourceText
     /// <exception cref="ArgumentOutOfRangeException">位置が範囲外の場合。</exception>
     public (int Line, int Column) GetLineAndColumn(int position)
     {
-        if (position < 0 || position > Length)
+        if (position < 0 || position > this.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(position), position, "位置がテキストの範囲外です。");
         }
 
-        var lineIndex = GetLineIndexFromPosition(position);
-        var line = Lines[lineIndex];
+        var lineIndex = this.GetLineIndexFromPosition(position);
+        var line = this.Lines[lineIndex];
         var column = position - line.Start;
         return (lineIndex, column);
     }
@@ -85,12 +85,12 @@ public abstract class SourceText
     /// <exception cref="ArgumentOutOfRangeException">行番号が範囲外の場合。</exception>
     public TextLine GetLine(int lineNumber)
     {
-        if (lineNumber < 0 || lineNumber >= Lines.Count)
+        if (lineNumber < 0 || lineNumber >= this.Lines.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(lineNumber), lineNumber, "行番号が範囲外です。");
         }
 
-        return Lines[lineNumber];
+        return this.Lines[lineNumber];
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public abstract class SourceText
     /// <returns>行インデックス。</returns>
     protected int GetLineIndexFromPosition(int position)
     {
-        var lines = Lines;
+        var lines = this.Lines;
         var low = 0;
         var high = lines.Count - 1;
 
@@ -133,10 +133,7 @@ public abstract class SourceText
     /// <returns>新しい SourceText インスタンス。</returns>
     public static SourceText From(string text)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         return new StringText(text);
     }
@@ -155,7 +152,7 @@ public abstract class SourceText
     /// <returns>変更後の新しい SourceText。</returns>
     public SourceText WithChanges(TextChange change)
     {
-        return WithChanges(new[] { change });
+        return this.WithChanges([change]);
     }
 }
 
@@ -182,22 +179,22 @@ public readonly struct TextLine : IEquatable<TextLine>
     /// <summary>
     /// 行の終了位置（改行を除く）。
     /// </summary>
-    public int End => Start + Length;
+    public int End => this.Start + this.Length;
 
     /// <summary>
     /// 行の終了位置（改行を含む）。
     /// </summary>
-    public int EndIncludingLineBreak => Start + Length + LineBreakLength;
+    public int EndIncludingLineBreak => this.Start + this.Length + this.LineBreakLength;
 
     /// <summary>
     /// 行のスパン（改行を除く）。
     /// </summary>
-    public TextSpan Span => new TextSpan(Start, Length);
+    public TextSpan Span => new(this.Start, this.Length);
 
     /// <summary>
     /// 行のスパン（改行を含む）。
     /// </summary>
-    public TextSpan SpanIncludingLineBreak => new TextSpan(Start, Length + LineBreakLength);
+    public TextSpan SpanIncludingLineBreak => new(this.Start, this.Length + this.LineBreakLength);
 
     /// <summary>
     /// TextLine を作成する。
@@ -207,23 +204,23 @@ public readonly struct TextLine : IEquatable<TextLine>
     /// <param name="lineBreakLength">改行の長さ。</param>
     public TextLine(int start, int length, int lineBreakLength)
     {
-        Start = start;
-        Length = length;
-        LineBreakLength = lineBreakLength;
+        this.Start = start;
+        this.Length = length;
+        this.LineBreakLength = lineBreakLength;
     }
 
     /// <inheritdoc />
     public bool Equals(TextLine other)
     {
-        return Start == other.Start
-            && Length == other.Length
-            && LineBreakLength == other.LineBreakLength;
+        return this.Start == other.Start
+            && this.Length == other.Length
+            && this.LineBreakLength == other.LineBreakLength;
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is TextLine other && Equals(other);
+        return obj is TextLine other && this.Equals(other);
     }
 
     /// <inheritdoc />
@@ -232,13 +229,13 @@ public readonly struct TextLine : IEquatable<TextLine>
 #if NETSTANDARD2_0
         unchecked
         {
-            var hashCode = Start;
-            hashCode = (hashCode * 397) ^ Length;
-            hashCode = (hashCode * 397) ^ LineBreakLength;
+            var hashCode = this.Start;
+            hashCode = (hashCode * 397) ^ this.Length;
+            hashCode = (hashCode * 397) ^ this.LineBreakLength;
             return hashCode;
         }
 #else
-        return HashCode.Combine(Start, Length, LineBreakLength);
+        return HashCode.Combine(this.Start, this.Length, this.LineBreakLength);
 #endif
     }
 
@@ -282,25 +279,28 @@ public readonly struct TextChange : IEquatable<TextChange>
     /// <exception cref="ArgumentNullException">newText が null の場合。</exception>
     public TextChange(TextSpan span, string newText)
     {
-        if (newText is null)
-        {
-            throw new ArgumentNullException(nameof(newText));
-        }
-
+        
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
         Span = span;
-        NewText = newText;
+=======
+        this.Span = span;
+>>>>>>> After
+ArgumentNullException.ThrowIfNull(newText);
+
+        this.Span = span;
+        this.NewText = newText;
     }
 
     /// <inheritdoc />
     public bool Equals(TextChange other)
     {
-        return Span == other.Span && NewText == other.NewText;
+        return this.Span == other.Span && this.NewText == other.NewText;
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is TextChange other && Equals(other);
+        return obj is TextChange other && this.Equals(other);
     }
 
     /// <inheritdoc />
@@ -309,10 +309,10 @@ public readonly struct TextChange : IEquatable<TextChange>
 #if NETSTANDARD2_0
         unchecked
         {
-            return (Span.GetHashCode() * 397) ^ (NewText?.GetHashCode() ?? 0);
+            return (this.Span.GetHashCode() * 397) ^ (this.NewText?.GetHashCode() ?? 0);
         }
 #else
-        return HashCode.Combine(Span, NewText);
+        return HashCode.Combine(this.Span, this.NewText);
 #endif
     }
 
@@ -335,6 +335,6 @@ public readonly struct TextChange : IEquatable<TextChange>
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"TextChange({Span}, \"{NewText}\")";
+        return $"TextChange({this.Span}, \"{this.NewText}\")";
     }
 }

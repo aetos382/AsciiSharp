@@ -1,9 +1,10 @@
-namespace AsciiSharp.Syntax;
 
 using System;
+
 using AsciiSharp.InternalSyntax;
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// 外部構文木のトリビア（空白、コメント等）を表す構造体。
 /// </summary>
@@ -17,37 +18,37 @@ public readonly struct SyntaxTrivia : IEquatable<SyntaxTrivia>
     /// <summary>
     /// トリビアの種別。
     /// </summary>
-    public SyntaxKind Kind => _internal.Kind;
+    public SyntaxKind Kind => this._internal.Kind;
 
     /// <summary>
     /// トリビアのテキスト。
     /// </summary>
-    public string Text => _internal.Text;
+    public string Text => this._internal.Text;
 
     /// <summary>
     /// 所属するトークン。
     /// </summary>
-    public SyntaxToken Token => _token;
+    public SyntaxToken Token => this._token;
 
     /// <summary>
     /// トリビアのスパン。
     /// </summary>
-    public TextSpan Span => new TextSpan(_position, _internal.Width);
+    public TextSpan Span => new(this._position, this._internal.Width);
 
     /// <summary>
     /// トリビアのフルスパン（Span と同じ）。
     /// </summary>
-    public TextSpan FullSpan => Span;
+    public TextSpan FullSpan => this.Span;
 
     /// <summary>
     /// トリビアの幅。
     /// </summary>
-    public int Width => _internal.Width;
+    public int Width => this._internal.Width;
 
     /// <summary>
     /// トリビアリスト内のインデックス。
     /// </summary>
-    public int Index => _index;
+    public int Index => this._index;
 
     /// <summary>
     /// SyntaxTrivia を作成する。
@@ -58,10 +59,10 @@ public readonly struct SyntaxTrivia : IEquatable<SyntaxTrivia>
     /// <param name="index">トリビアリスト内のインデックス。</param>
     internal SyntaxTrivia(InternalTrivia internalTrivia, SyntaxToken token, int position, int index)
     {
-        _internal = internalTrivia;
-        _token = token;
-        _position = position;
-        _index = index;
+        this._internal = internalTrivia;
+        this._token = token;
+        this._position = position;
+        this._index = index;
     }
 
     /// <summary>
@@ -70,21 +71,21 @@ public readonly struct SyntaxTrivia : IEquatable<SyntaxTrivia>
     /// <returns>トリビアのテキスト。</returns>
     public string ToFullString()
     {
-        return _internal.Text;
+        return this._internal.Text;
     }
 
     /// <inheritdoc />
     public bool Equals(SyntaxTrivia other)
     {
-        return _position == other._position
-            && _internal.Kind == other._internal.Kind
-            && _internal.Text == other._internal.Text;
+        return this._position == other._position
+            && this._internal.Kind == other._internal.Kind
+            && this._internal.Text == other._internal.Text;
     }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is SyntaxTrivia other && Equals(other);
+        return obj is SyntaxTrivia other && this.Equals(other);
     }
 
     /// <inheritdoc />
@@ -93,13 +94,13 @@ public readonly struct SyntaxTrivia : IEquatable<SyntaxTrivia>
 #if NETSTANDARD2_0
         unchecked
         {
-            var hash = _position;
-            hash = (hash * 397) ^ (int)_internal.Kind;
-            hash = (hash * 397) ^ (_internal.Text?.GetHashCode() ?? 0);
+            var hash = this._position;
+            hash = (hash * 397) ^ (int)this._internal.Kind;
+            hash = (hash * 397) ^ (this._internal.Text?.GetHashCode() ?? 0);
             return hash;
         }
 #else
-        return HashCode.Combine(_position, _internal.Kind, _internal.Text);
+        return HashCode.Combine(this._position, this._internal.Kind, this._internal.Text);
 #endif
     }
 
@@ -122,7 +123,7 @@ public readonly struct SyntaxTrivia : IEquatable<SyntaxTrivia>
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"{Kind}: \"{EscapeText(_internal.Text)}\"";
+        return $"{this.Kind}: \"{EscapeText(this._internal.Text)}\"";
     }
 
     private static string EscapeText(string text)

@@ -1,11 +1,12 @@
-namespace AsciiSharp.InternalSyntax;
 
 using System;
 using System.Collections.Generic;
+
 using AsciiSharp.Diagnostics;
 using AsciiSharp.Parser;
 using AsciiSharp.Text;
 
+namespace AsciiSharp.InternalSyntax;
 /// <summary>
 /// ITreeSink を実装し、内部構文木を構築するクラス。
 /// </summary>
@@ -23,75 +24,106 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// <summary>
     /// 構築された診断情報のリスト。
     /// </summary>
-    public IReadOnlyList<Diagnostic> Diagnostics => _diagnostics;
+    public IReadOnlyList<Diagnostic> Diagnostics => this._diagnostics;
 
     /// <summary>
     /// InternalTreeBuilder を作成する。
     /// </summary>
     public InternalTreeBuilder()
     {
-        _frames = new Stack<BuilderFrame>();
-        _diagnostics = new List<Diagnostic>();
-        _pendingLeadingTrivia = new List<InternalTrivia>();
-        _pendingTrailingTrivia = new List<InternalTrivia>();
-        _position = 0;
+        this._frames = new Stack<BuilderFrame>();
+        this._diagnostics = new List<Diagnostic>();
+        this._pendingLeadingTrivia = new List<InternalTrivia>();
+        this._pendingTrailingTrivia = new List<InternalTrivia>();
+        this._position = 0;
     }
 
     /// <inheritdoc />
     public void StartNode(SyntaxKind kind)
     {
         var frame = new BuilderFrame(kind);
-        _frames.Push(frame);
+        this._frames.Push(frame);
     }
 
     /// <inheritdoc />
     public void FinishNode()
     {
-        if (_frames.Count == 0)
+        if (this._frames.Count == 0)
         {
             throw new InvalidOperationException("StartNode が呼び出されていません。");
         }
 
-        var frame = _frames.Pop();
+        var frame = this._frames.Pop();
         var children = frame.Children.ToArray();
         var node = new InternalSyntaxNode(frame.Kind, children);
 
-        if (_frames.Count > 0)
+        if (this._frames.Count > 0)
         {
-            _frames.Peek().Children.Add(node);
+            this._frames.Peek().Children.Add(node);
         }
         else
         {
             // ルートノードの場合は特別に保持
-            _frames.Push(new BuilderFrame(frame.Kind));
-            _frames.Peek().Children.Add(node);
+            this._frames.Push(new BuilderFrame(frame.Kind));
+            this._frames.Peek().Children.Add(node);
         }
     }
 
     /// <inheritdoc />
     public void Token(SyntaxKind kind, string text)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
-
+        
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
         var leadingTrivia = _pendingLeadingTrivia.Count > 0
             ? _pendingLeadingTrivia.ToArray()
-            : Array.Empty<InternalTrivia>();
-        _pendingLeadingTrivia.Clear();
+=======
+        var leadingTrivia = this._pendingLeadingTrivia.Count > 0
+            ? [.. this._pendingLeadingTrivia]
+>>>>>>> After
 
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
+        _pendingLeadingTrivia.Clear();
+=======
+        this._pendingLeadingTrivia.Clear();
+>>>>>>> After
+
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
         var trailingTrivia = _pendingTrailingTrivia.Count > 0
             ? _pendingTrailingTrivia.ToArray()
-            : Array.Empty<InternalTrivia>();
+=======
+        var trailingTrivia = this._pendingTrailingTrivia.Count > 0
+            ? [.. this._pendingTrailingTrivia]
+>>>>>>> After
+
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
         _pendingTrailingTrivia.Clear();
+=======
+        this._pendingTrailingTrivia.Clear();
+>>>>>>> After
+ArgumentNullException.ThrowIfNull(text);
+
+        var leadingTrivia = this._pendingLeadingTrivia.Count > 0
+            ? [.. this._pendingLeadingTrivia]
+            : Array.Empty<InternalTrivia>();
+
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
+        _position += token.FullWidth;
+=======
+        this._position += token.FullWidth;
+>>>>>>> After
+        this._pendingLeadingTrivia.Clear();
+
+        var trailingTrivia = this._pendingTrailingTrivia.Count > 0
+            ? [.. this._pendingTrailingTrivia]
+            : Array.Empty<InternalTrivia>();
+        this._pendingTrailingTrivia.Clear();
 
         var token = new InternalToken(kind, text, leadingTrivia, trailingTrivia);
-        _position += token.FullWidth;
+        this._position += token.FullWidth;
 
-        if (_frames.Count > 0)
+        if (this._frames.Count > 0)
         {
-            _frames.Peek().Children.Add(token);
+            this._frames.Peek().Children.Add(token);
         }
         else
         {
@@ -102,25 +134,31 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// <inheritdoc />
     public void LeadingTrivia(SyntaxKind kind, string text)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
+        _pendingLeadingTrivia.Add(trivia);
+=======
+        this._pendingLeadingTrivia.Add(trivia);
+>>>>>>> After
+ArgumentNullException.ThrowIfNull(text);
 
         var trivia = new InternalTrivia(kind, text);
-        _pendingLeadingTrivia.Add(trivia);
+        this._pendingLeadingTrivia.Add(trivia);
     }
 
     /// <inheritdoc />
     public void TrailingTrivia(SyntaxKind kind, string text)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        
+<<<<<<< TODO: Unmerged change from project 'AsciiSharp(netstandard2.0)', Before:
+        _pendingTrailingTrivia.Add(trivia);
+=======
+        this._pendingTrailingTrivia.Add(trivia);
+>>>>>>> After
+ArgumentNullException.ThrowIfNull(text);
 
         var trivia = new InternalTrivia(kind, text);
-        _pendingTrailingTrivia.Add(trivia);
+        this._pendingTrailingTrivia.Add(trivia);
     }
 
     /// <inheritdoc />
@@ -136,9 +174,9 @@ internal sealed class InternalTreeBuilder : ITreeSink
             throw new ArgumentException("エラーメッセージは空にできません。", nameof(message));
         }
 
-        var location = new TextSpan(_position, 0);
+        var location = new TextSpan(this._position, 0);
         var diagnostic = Diagnostic.Error(code, message, location);
-        _diagnostics.Add(diagnostic);
+        this._diagnostics.Add(diagnostic);
     }
 
     /// <inheritdoc />
@@ -146,13 +184,30 @@ internal sealed class InternalTreeBuilder : ITreeSink
     {
         var token = InternalToken.Missing(kind);
 
-        if (_frames.Count > 0)
+        if (this._frames.Count > 0)
         {
-            _frames.Peek().Children.Add(token);
+            this._frames.Peek().Children.Add(token);
         }
         else
         {
             throw new InvalidOperationException("MissingToken は StartNode の後に呼び出す必要があります。");
+        }
+    }
+
+    /// <inheritdoc />
+    public void EmitToken(InternalToken token)
+    {
+        ArgumentNullException.ThrowIfNull(token);
+
+        this._position += token.FullWidth;
+
+        if (this._frames.Count > 0)
+        {
+            this._frames.Peek().Children.Add(token);
+        }
+        else
+        {
+            throw new InvalidOperationException("EmitToken は StartNode の後に呼び出す必要があります。");
         }
     }
 
@@ -162,12 +217,12 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// <returns>ルートノード。ノードが構築されていない場合は null。</returns>
     public InternalNode? GetRoot()
     {
-        if (_frames.Count == 0)
+        if (this._frames.Count == 0)
         {
             return null;
         }
 
-        var frame = _frames.Peek();
+        var frame = this._frames.Peek();
         if (frame.Children.Count == 0)
         {
             return null;
@@ -183,7 +238,7 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// <exception cref="InvalidOperationException">ルートノードが構築されていない場合。</exception>
     public InternalNode BuildRoot()
     {
-        var root = GetRoot();
+        var root = this.GetRoot();
         if (root is null)
         {
             throw new InvalidOperationException("ルートノードが構築されていません。ParseDocument を呼び出してください。");
@@ -197,11 +252,11 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// </summary>
     public void Reset()
     {
-        _frames.Clear();
-        _diagnostics.Clear();
-        _pendingLeadingTrivia.Clear();
-        _pendingTrailingTrivia.Clear();
-        _position = 0;
+        this._frames.Clear();
+        this._diagnostics.Clear();
+        this._pendingLeadingTrivia.Clear();
+        this._pendingTrailingTrivia.Clear();
+        this._position = 0;
     }
 
     /// <summary>
@@ -214,8 +269,8 @@ internal sealed class InternalTreeBuilder : ITreeSink
 
         public BuilderFrame(SyntaxKind kind)
         {
-            Kind = kind;
-            Children = new List<InternalNode>();
+            this.Kind = kind;
+            this.Children = new List<InternalNode>();
         }
     }
 }

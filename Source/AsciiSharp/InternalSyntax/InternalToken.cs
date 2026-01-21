@@ -1,9 +1,9 @@
-namespace AsciiSharp.InternalSyntax;
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 
+namespace AsciiSharp.InternalSyntax;
 /// <summary>
 /// 内部トークンを表すクラス。
 /// </summary>
@@ -13,7 +13,7 @@ using System.Text;
 /// </remarks>
 internal sealed class InternalToken : InternalNode
 {
-    private static readonly InternalTrivia[] EmptyTriviaArray = Array.Empty<InternalTrivia>();
+    private static readonly InternalTrivia[] EmptyTriviaArray = [];
 
     /// <summary>
     /// トークンのテキスト。
@@ -35,22 +35,22 @@ internal sealed class InternalToken : InternalNode
     private readonly bool _isMissing;
 
     /// <inheritdoc />
-    public override int Width => Text.Length;
+    public override int Width => this.Text.Length;
 
     /// <inheritdoc />
-    public override int FullWidth => _leadingTriviaWidth + Text.Length + _trailingTriviaWidth;
+    public override int FullWidth => this._leadingTriviaWidth + this.Text.Length + this._trailingTriviaWidth;
 
     /// <inheritdoc />
     public override int SlotCount => 0;
 
     /// <inheritdoc />
-    public override bool IsMissing => _isMissing;
+    public override bool IsMissing => this._isMissing;
 
     /// <inheritdoc />
-    public override int LeadingTriviaWidth => _leadingTriviaWidth;
+    public override int LeadingTriviaWidth => this._leadingTriviaWidth;
 
     /// <inheritdoc />
-    public override int TrailingTriviaWidth => _trailingTriviaWidth;
+    public override int TrailingTriviaWidth => this._trailingTriviaWidth;
 
     /// <summary>
     /// 指定された種別とテキストで InternalToken を作成する。
@@ -80,22 +80,22 @@ internal sealed class InternalToken : InternalNode
         bool containsDiagnostics = false)
         : base(kind)
     {
-        Text = text ?? throw new ArgumentNullException(nameof(text));
-        LeadingTrivia = leadingTrivia ?? EmptyTriviaArray;
-        TrailingTrivia = trailingTrivia ?? EmptyTriviaArray;
-        _isMissing = isMissing;
-        ContainsDiagnostics = containsDiagnostics;
+        this.Text = text ?? throw new ArgumentNullException(nameof(text));
+        this.LeadingTrivia = leadingTrivia ?? EmptyTriviaArray;
+        this.TrailingTrivia = trailingTrivia ?? EmptyTriviaArray;
+        this._isMissing = isMissing;
+        this.ContainsDiagnostics = containsDiagnostics;
 
-        _leadingTriviaWidth = 0;
-        foreach (var trivia in LeadingTrivia)
+        this._leadingTriviaWidth = 0;
+        foreach (var trivia in this.LeadingTrivia)
         {
-            _leadingTriviaWidth += trivia.Width;
+            this._leadingTriviaWidth += trivia.Width;
         }
 
-        _trailingTriviaWidth = 0;
-        foreach (var trivia in TrailingTrivia)
+        this._trailingTriviaWidth = 0;
+        foreach (var trivia in this.TrailingTrivia)
         {
-            _trailingTriviaWidth += trivia.Width;
+            this._trailingTriviaWidth += trivia.Width;
         }
     }
 
@@ -124,12 +124,12 @@ internal sealed class InternalToken : InternalNode
     public InternalToken WithTrivia(IReadOnlyList<InternalTrivia>? leadingTrivia, IReadOnlyList<InternalTrivia>? trailingTrivia)
     {
         return new InternalToken(
-            Kind,
-            Text,
-            leadingTrivia ?? LeadingTrivia,
-            trailingTrivia ?? TrailingTrivia,
-            _isMissing,
-            ContainsDiagnostics);
+            this.Kind,
+            this.Text,
+            leadingTrivia ?? this.LeadingTrivia,
+            trailingTrivia ?? this.TrailingTrivia,
+            this._isMissing,
+            this.ContainsDiagnostics);
     }
 
     /// <inheritdoc />
@@ -142,21 +142,21 @@ internal sealed class InternalToken : InternalNode
     /// <inheritdoc />
     public override string ToFullString()
     {
-        if (LeadingTrivia.Count == 0 && TrailingTrivia.Count == 0)
+        if (this.LeadingTrivia.Count == 0 && this.TrailingTrivia.Count == 0)
         {
-            return Text;
+            return this.Text;
         }
 
-        var builder = new StringBuilder(FullWidth);
+        var builder = new StringBuilder(this.FullWidth);
 
-        foreach (var trivia in LeadingTrivia)
+        foreach (var trivia in this.LeadingTrivia)
         {
             builder.Append(trivia.Text);
         }
 
-        builder.Append(Text);
+        builder.Append(this.Text);
 
-        foreach (var trivia in TrailingTrivia)
+        foreach (var trivia in this.TrailingTrivia)
         {
             builder.Append(trivia.Text);
         }
@@ -167,8 +167,8 @@ internal sealed class InternalToken : InternalNode
     /// <inheritdoc />
     public override string ToString()
     {
-        var missing = _isMissing ? " (missing)" : string.Empty;
-        return $"{Kind}: \"{EscapeText(Text)}\"{missing} [{FullWidth}]";
+        var missing = this._isMissing ? " (missing)" : string.Empty;
+        return $"{this.Kind}: \"{EscapeText(this.Text)}\"{missing} [{this.FullWidth}]";
     }
 
     private static string EscapeText(string text)

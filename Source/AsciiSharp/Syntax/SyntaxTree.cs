@@ -1,12 +1,13 @@
-namespace AsciiSharp.Syntax;
 
 using System;
 using System.Collections.Generic;
+
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
 using AsciiSharp.Parser;
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// AsciiDoc 文書の構文木を表すクラス。
 /// </summary>
@@ -14,7 +15,6 @@ public sealed class SyntaxTree
 {
     private readonly InternalNode _internalRoot;
     private readonly List<Diagnostic> _diagnostics;
-    private SyntaxNode? _root;
 
     /// <summary>
     /// ソーステキスト。
@@ -33,19 +33,18 @@ public sealed class SyntaxTree
     {
         get
         {
-            if (_root is null)
-            {
-                _root = CreateRootNode(_internalRoot, this);
-            }
+            field ??= CreateRootNode(this._internalRoot, this);
 
-            return _root;
+            return field;
         }
+
+        private set;
     }
 
     /// <summary>
     /// 診断情報のリスト。
     /// </summary>
-    public IReadOnlyList<Diagnostic> Diagnostics => _diagnostics;
+    public IReadOnlyList<Diagnostic> Diagnostics => this._diagnostics;
 
     /// <summary>
     /// 構文エラーがあるかどうか。
@@ -54,7 +53,7 @@ public sealed class SyntaxTree
     {
         get
         {
-            foreach (var diagnostic in _diagnostics)
+            foreach (var diagnostic in this._diagnostics)
             {
                 if (diagnostic.Severity == DiagnosticSeverity.Error)
                 {
@@ -79,10 +78,10 @@ public sealed class SyntaxTree
         List<Diagnostic> diagnostics,
         string? filePath = null)
     {
-        _internalRoot = internalRoot ?? throw new ArgumentNullException(nameof(internalRoot));
-        Text = text ?? throw new ArgumentNullException(nameof(text));
-        _diagnostics = diagnostics ?? new List<Diagnostic>();
-        FilePath = filePath;
+        this._internalRoot = internalRoot ?? throw new ArgumentNullException(nameof(internalRoot));
+        this.Text = text ?? throw new ArgumentNullException(nameof(text));
+        this._diagnostics = diagnostics ?? new List<Diagnostic>();
+        this.FilePath = filePath;
     }
 
     /// <summary>
@@ -93,10 +92,7 @@ public sealed class SyntaxTree
     /// <returns>解析された構文木。</returns>
     public static SyntaxTree ParseText(string text, string? filePath = null)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         return ParseText(SourceText.From(text), filePath);
     }
@@ -109,10 +105,7 @@ public sealed class SyntaxTree
     /// <returns>解析された構文木。</returns>
     public static SyntaxTree ParseText(SourceText text, string? filePath = null)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         var lexer = new Lexer(text);
         var treeBuilder = new InternalTreeBuilder();
@@ -138,7 +131,7 @@ public sealed class SyntaxTree
         }
 
         var span = node.FullSpan;
-        foreach (var diagnostic in _diagnostics)
+        foreach (var diagnostic in this._diagnostics)
         {
             if (span.Contains(diagnostic.Location))
             {
@@ -154,13 +147,10 @@ public sealed class SyntaxTree
     /// <returns>変更後の新しい構文木。</returns>
     public SyntaxTree WithChanges(IEnumerable<TextChange> changes)
     {
-        if (changes is null)
-        {
-            throw new ArgumentNullException(nameof(changes));
-        }
+        ArgumentNullException.ThrowIfNull(changes);
 
-        var newText = Text.WithChanges(changes);
-        return ParseText(newText, FilePath);
+        var newText = this.Text.WithChanges(changes);
+        return ParseText(newText, this.FilePath);
     }
 
     /// <summary>
@@ -170,7 +160,7 @@ public sealed class SyntaxTree
     /// <returns>変更後の新しい構文木。</returns>
     public SyntaxTree WithChanges(TextChange change)
     {
-        return WithChanges(new[] { change });
+        return this.WithChanges([change]);
     }
 
     /// <summary>
@@ -180,12 +170,9 @@ public sealed class SyntaxTree
     /// <returns>新しい構文木。</returns>
     public SyntaxTree WithRootAndOptions(SyntaxNode root)
     {
-        if (root is null)
-        {
-            throw new ArgumentNullException(nameof(root));
-        }
+        ArgumentNullException.ThrowIfNull(root);
 
-        return new SyntaxTree(root.Internal, Text, new List<Diagnostic>(_diagnostics), FilePath);
+        return new SyntaxTree(root.Internal, this.Text, [.. this._diagnostics], this.FilePath);
     }
 
     /// <summary>
@@ -206,16 +193,6 @@ public sealed class SyntaxTree
     }
 
     /// <summary>
-    /// 空のドキュメントの内部ノードを作成する。
-    /// </summary>
-    /// <returns>空のドキュメントの内部ノード。</returns>
-    private static InternalNode CreateEmptyDocument()
-    {
-        var eofToken = new InternalToken(SyntaxKind.EndOfFileToken, string.Empty);
-        return new InternalSyntaxNode(SyntaxKind.Document, eofToken);
-    }
-
-    /// <summary>
     /// プレースホルダー構文ノード（DocumentSyntax 実装前の一時的なクラス）。
     /// </summary>
     private sealed class PlaceholderSyntax : SyntaxNode
@@ -227,16 +204,16 @@ public sealed class SyntaxTree
 
         public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
         {
-            for (var i = 0; i < Internal.SlotCount; i++)
+            for (var i = 0; i < this.Internal.SlotCount; i++)
             {
-                var child = Internal.GetSlot(i);
+                var child = this.Internal.GetSlot(i);
                 if (child is InternalToken token)
                 {
-                    yield return new SyntaxToken(token, this, CalculateChildPosition(i), i);
+                    yield return new SyntaxToken(token, this, this.CalculateChildPosition(i), i);
                 }
                 else if (child is not null)
                 {
-                    yield return new PlaceholderSyntax(child, this, CalculateChildPosition(i), SyntaxTree!);
+                    yield return new PlaceholderSyntax(child, this, this.CalculateChildPosition(i), this.SyntaxTree!);
                 }
             }
         }
@@ -249,10 +226,10 @@ public sealed class SyntaxTree
 
         private int CalculateChildPosition(int index)
         {
-            var position = Position;
+            var position = this.Position;
             for (var i = 0; i < index; i++)
             {
-                var child = Internal.GetSlot(i);
+                var child = this.Internal.GetSlot(i);
                 if (child is not null)
                 {
                     position += child.FullWidth;

@@ -84,46 +84,46 @@
 
 > **注意: 実装前にこれらのテストを書き、FAIL することを確認する**
 
-- [ ] T027 [P] [US1] BasicParsing.feature を Test/AsciiSharp.Specs/Features/BasicParsing.feature に作成（Acceptance Scenarios 1-3 を Given-When-Then 形式で記述）
-- [ ] T028 [US1] BasicParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs に作成（ステップ定義の実装）
-- [ ] T029 [US1] BDD テストを実行し、Red（失敗）を確認
+- [x] T027 [P] [US1] BasicParsing.feature を Test/AsciiSharp.Specs/Features/BasicParsing.feature に作成（Acceptance Scenarios 1-3 を Given-When-Then 形式で記述）
+- [x] T028 [US1] BasicParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs に作成（ステップ定義の実装）
+- [x] T029 [US1] BDD テストを実行し、Red（失敗）を確認
 
 ### Implementation for User Story 1（Green フェーズ）
 
 **ドメインノードの実装**:
 
-- [ ] T030 [P] [US1] DocumentSyntax クラスを Source/AsciiSharp/Syntax/DocumentSyntax.cs に実装
-- [ ] T031 [P] [US1] DocumentHeaderSyntax クラスを Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs に実装
-- [ ] T032 [P] [US1] DocumentBodySyntax クラスを Source/AsciiSharp/Syntax/DocumentBodySyntax.cs に実装
-- [ ] T033 [P] [US1] SectionSyntax クラスを Source/AsciiSharp/Syntax/SectionSyntax.cs に実装
-- [ ] T034 [P] [US1] SectionTitleSyntax クラスを Source/AsciiSharp/Syntax/SectionTitleSyntax.cs に実装
-- [ ] T035 [P] [US1] ParagraphSyntax クラスを Source/AsciiSharp/Syntax/ParagraphSyntax.cs に実装
+- [x] T030 [P] [US1] DocumentSyntax クラスを Source/AsciiSharp/Syntax/DocumentSyntax.cs に実装
+- [x] T031 [P] [US1] DocumentHeaderSyntax クラスを Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs に実装
+- [x] T032 [P] [US1] DocumentBodySyntax クラスを Source/AsciiSharp/Syntax/DocumentBodySyntax.cs に実装
+- [x] T033 [P] [US1] SectionSyntax クラスを Source/AsciiSharp/Syntax/SectionSyntax.cs に実装
+- [x] T034 [P] [US1] SectionTitleSyntax クラスを Source/AsciiSharp/Syntax/SectionTitleSyntax.cs に実装
+- [x] T035 [P] [US1] ParagraphSyntax クラスを Source/AsciiSharp/Syntax/ParagraphSyntax.cs に実装
 - ~~[ ] T036 [P] [US1] UnorderedListSyntax クラスを実装~~ *(延期: 後続イテレーション)*
 - ~~[ ] T037 [P] [US1] OrderedListSyntax クラスを実装~~ *(延期: 後続イテレーション)*
 - ~~[ ] T038 [P] [US1] ListItemSyntax クラスを実装~~ *(延期: 後続イテレーション)*
-- [ ] T039 [P] [US1] TextSyntax クラス（インライン要素）を Source/AsciiSharp/Syntax/TextSyntax.cs に実装（基本テキストのみ）
+- [x] T039 [P] [US1] TextSyntax クラス（インライン要素）を Source/AsciiSharp/Syntax/TextSyntax.cs に実装（基本テキストのみ）
 
 **Lexer 実装**:
 
-- [ ] T040 [US1] Lexer クラスを Source/AsciiSharp/Parser/Lexer.cs に実装（基本トークン: Text, NewLine, Whitespace, Equals, Asterisk, Dash をサポート）
-- [ ] T041 [US1] Lexer に Trivia サポート（先行/後続トリビアの割り当て）を実装
+- [x] T040 [US1] Lexer クラスを Source/AsciiSharp/Parser/Lexer.cs に実装（基本トークン: Text, NewLine, Whitespace, Equals, Asterisk, Dash をサポート）
+- [x] T041 [US1] Lexer に Trivia サポート（先行/後続トリビアの割り当て）を実装
 
 **Parser 実装**:
 
-- [ ] T042 [US1] Parser クラスを Source/AsciiSharp/Parser/Parser.cs に実装（イベントベース再帰下降パーサー、Document/Section/Paragraph をサポート）
-- [ ] T043 [US1] Parser に ロスレス解析（空白・改行の完全保持）を実装
-- [ ] T044 [US1] SyntaxTree.ParseText() メソッドを実装（エントリーポイント）
+- [x] T042 [US1] Parser クラスを Source/AsciiSharp/Parser/Parser.cs に実装（イベントベース再帰下降パーサー、Document/Section/Paragraph をサポート）
+- [x] T043 [US1] Parser に ロスレス解析（空白・改行の完全保持）を実装
+- [x] T044 [US1] SyntaxTree.ParseText() メソッドを実装（エントリーポイント）
 
 **検証**:
 
-- [ ] T045 [US1] BDD テストを再実行し、Green（成功）を確認
-- [ ] T046 [US1] ラウンドトリップ検証（構文木 → テキスト再構築）をテスト
-- [ ] T047 [US1] ビルドを実行し、警告ゼロを確認
+- [x] T045 [US1] BDD テストを再実行し、Green（成功）を確認
+- [x] T046 [US1] ラウンドトリップ検証（構文木 → テキスト再構築）をテスト
+- [x] T047 [US1] ビルドを実行し、警告ゼロを確認
 
 ### Refactor for User Story 1
 
-- [ ] T048 [US1] コードレビューと警告解消
-- [ ] T049 [US1] Lexer/Parser の共通パターンをリファクタリング
+- [x] T048 [US1] コードレビューと警告解消
+- [x] T049 [US1] Lexer/Parser の共通パターンをリファクタリング
 
 **Checkpoint**: この時点で User Story 1 が完全に機能し、独立してテスト可能
 

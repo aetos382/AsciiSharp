@@ -1,11 +1,12 @@
-namespace AsciiSharp.Parser;
 
 using System;
 using System.Collections.Generic;
+
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Parser;
 /// <summary>
 /// AsciiDoc 文書の構文解析を行うクラス。
 /// </summary>
@@ -14,7 +15,6 @@ internal sealed class AsciiDocParser
     private readonly Lexer _lexer;
     private readonly ITreeSink _sink;
     private readonly List<Diagnostic> _diagnostics = [];
-    private InternalToken _currentToken;
     private InternalToken? _peekedToken;
 
     /// <summary>
@@ -24,32 +24,29 @@ internal sealed class AsciiDocParser
     /// <param name="sink">構文木構築用のシンク。</param>
     public AsciiDocParser(Lexer lexer, ITreeSink sink)
     {
-        _lexer = lexer ?? throw new ArgumentNullException(nameof(lexer));
-        _sink = sink ?? throw new ArgumentNullException(nameof(sink));
-        _currentToken = _lexer.NextToken();
+        this._lexer = lexer ?? throw new ArgumentNullException(nameof(lexer));
+        this._sink = sink ?? throw new ArgumentNullException(nameof(sink));
+        this.Current = this._lexer.NextToken();
     }
 
     /// <summary>
     /// 診断情報のリスト。
     /// </summary>
-    public IReadOnlyList<Diagnostic> Diagnostics => _diagnostics;
+    public IReadOnlyList<Diagnostic> Diagnostics => this._diagnostics;
 
     /// <summary>
     /// 現在のトークン。
     /// </summary>
-    private InternalToken Current => _currentToken;
+    private InternalToken Current { get; set; }
 
     /// <summary>
     /// 次のトークンを先読みする。
     /// </summary>
     private InternalToken Peek()
     {
-        if (_peekedToken is null)
-        {
-            _peekedToken = _lexer.NextToken();
-        }
+        this._peekedToken ??= this._lexer.NextToken();
 
-        return _peekedToken;
+        return this._peekedToken;
     }
 
     /// <summary>
@@ -57,14 +54,14 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void Advance()
     {
-        if (_peekedToken is not null)
+        if (this._peekedToken is not null)
         {
-            _currentToken = _peekedToken;
-            _peekedToken = null;
+            this.Current = this._peekedToken;
+            this._peekedToken = null;
         }
         else
         {
-            _currentToken = _lexer.NextToken();
+            this.Current = this._lexer.NextToken();
         }
     }
 
@@ -73,21 +70,21 @@ internal sealed class AsciiDocParser
     /// </summary>
     public void ParseDocument()
     {
-        _sink.StartNode(SyntaxKind.Document);
+        this._sink.StartNode(SyntaxKind.Document);
 
         // ヘッダーの解析を試みる
-        if (IsAtDocumentTitle())
+        if (this.IsAtDocumentTitle())
         {
-            ParseDocumentHeader();
+            this.ParseDocumentHeader();
         }
 
         // ボディの解析
-        ParseDocumentBody();
+        this.ParseDocumentBody();
 
         // EOF トークン
-        EmitToken(SyntaxKind.EndOfFileToken);
+        this.EmitToken(SyntaxKind.EndOfFileToken);
 
-        _sink.FinishNode();
+        this._sink.FinishNode();
     }
 
     /// <summary>
@@ -95,21 +92,21 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void ParseDocumentHeader()
     {
-        _sink.StartNode(SyntaxKind.DocumentHeader);
+        this._sink.StartNode(SyntaxKind.DocumentHeader);
 
         // タイトル行を解析
-        ParseSectionTitle();
+        this.ParseSectionTitle();
 
         // 著者行があれば解析
-        if (!IsAtEnd() && !IsBlankLine() && !IsAtSectionTitle())
+        if (!this.IsAtEnd() && !this.IsBlankLine() && !this.IsAtSectionTitle())
         {
-            ParseAuthorLine();
+            this.ParseAuthorLine();
         }
 
         // 空行をスキップ
-        SkipBlankLines();
+        this.SkipBlankLines();
 
-        _sink.FinishNode();
+        this._sink.FinishNode();
     }
 
     /// <summary>
@@ -117,21 +114,21 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void ParseAuthorLine()
     {
-        _sink.StartNode(SyntaxKind.AuthorLine);
+        this._sink.StartNode(SyntaxKind.AuthorLine);
 
         // 行末まで読み取る
-        while (!IsAtEnd() && Current.Kind != SyntaxKind.NewLineToken && Current.Kind != SyntaxKind.EndOfFileToken)
+        while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
         {
-            EmitCurrentToken();
+            this.EmitCurrentToken();
         }
 
         // 改行を含める
-        if (Current.Kind == SyntaxKind.NewLineToken)
+        if (this.Current.Kind == SyntaxKind.NewLineToken)
         {
-            EmitCurrentToken();
+            this.EmitCurrentToken();
         }
 
-        _sink.FinishNode();
+        this._sink.FinishNode();
     }
 
     /// <summary>
@@ -139,25 +136,25 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void ParseDocumentBody()
     {
-        _sink.StartNode(SyntaxKind.DocumentBody);
+        this._sink.StartNode(SyntaxKind.DocumentBody);
 
-        while (!IsAtEnd())
+        while (!this.IsAtEnd())
         {
-            if (IsBlankLine())
+            if (this.IsBlankLine())
             {
-                SkipBlankLines();
+                this.SkipBlankLines();
             }
-            else if (IsAtSectionTitle())
+            else if (this.IsAtSectionTitle())
             {
-                ParseSection();
+                this.ParseSection();
             }
             else
             {
-                ParseParagraph();
+                this.ParseParagraph();
             }
         }
 
-        _sink.FinishNode();
+        this._sink.FinishNode();
     }
 
     /// <summary>
@@ -165,35 +162,35 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void ParseSection()
     {
-        _sink.StartNode(SyntaxKind.Section);
+        this._sink.StartNode(SyntaxKind.Section);
 
-        var currentLevel = CountEqualsAtLineStart();
+        var currentLevel = this.CountEqualsAtLineStart();
 
         // セクションタイトルを解析
-        ParseSectionTitle();
+        this.ParseSectionTitle();
 
         // 空行をスキップ
-        SkipBlankLines();
+        this.SkipBlankLines();
 
         // セクションの内容を解析
-        while (!IsAtEnd() && !IsAtSectionTitleOfLevelOrHigher(currentLevel))
+        while (!this.IsAtEnd() && !this.IsAtSectionTitleOfLevelOrHigher(currentLevel))
         {
-            if (IsBlankLine())
+            if (this.IsBlankLine())
             {
-                SkipBlankLines();
+                this.SkipBlankLines();
             }
-            else if (IsAtSectionTitle())
+            else if (this.IsAtSectionTitle())
             {
                 // サブセクション
-                ParseSection();
+                this.ParseSection();
             }
             else
             {
-                ParseParagraph();
+                this.ParseParagraph();
             }
         }
 
-        _sink.FinishNode();
+        this._sink.FinishNode();
     }
 
     /// <summary>
@@ -201,33 +198,33 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void ParseSectionTitle()
     {
-        _sink.StartNode(SyntaxKind.SectionTitle);
+        this._sink.StartNode(SyntaxKind.SectionTitle);
 
         // = を読み取る
-        while (Current.Kind == SyntaxKind.EqualsToken)
+        while (this.Current.Kind == SyntaxKind.EqualsToken)
         {
-            EmitCurrentToken();
+            this.EmitCurrentToken();
         }
 
         // 空白を読み取る
-        if (Current.Kind == SyntaxKind.WhitespaceToken)
+        if (this.Current.Kind == SyntaxKind.WhitespaceToken)
         {
-            EmitCurrentToken();
+            this.EmitCurrentToken();
         }
 
         // タイトルテキストを読み取る
-        while (!IsAtEnd() && Current.Kind != SyntaxKind.NewLineToken && Current.Kind != SyntaxKind.EndOfFileToken)
+        while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
         {
-            EmitCurrentToken();
+            this.EmitCurrentToken();
         }
 
         // 改行を読み取る
-        if (Current.Kind == SyntaxKind.NewLineToken)
+        if (this.Current.Kind == SyntaxKind.NewLineToken)
         {
-            EmitCurrentToken();
+            this.EmitCurrentToken();
         }
 
-        _sink.FinishNode();
+        this._sink.FinishNode();
     }
 
     /// <summary>
@@ -235,25 +232,25 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void ParseParagraph()
     {
-        _sink.StartNode(SyntaxKind.Paragraph);
+        this._sink.StartNode(SyntaxKind.Paragraph);
 
         // 段落の行を読み取る（空行またはセクションタイトルまで）
-        while (!IsAtEnd() && !IsBlankLine() && !IsAtSectionTitle())
+        while (!this.IsAtEnd() && !this.IsBlankLine() && !this.IsAtSectionTitle())
         {
             // 行の内容を読み取る
-            while (!IsAtEnd() && Current.Kind != SyntaxKind.NewLineToken && Current.Kind != SyntaxKind.EndOfFileToken)
+            while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
             {
-                EmitCurrentToken();
+                this.EmitCurrentToken();
             }
 
             // 改行を読み取る
-            if (Current.Kind == SyntaxKind.NewLineToken)
+            if (this.Current.Kind == SyntaxKind.NewLineToken)
             {
-                EmitCurrentToken();
+                this.EmitCurrentToken();
             }
         }
 
-        _sink.FinishNode();
+        this._sink.FinishNode();
     }
 
     /// <summary>
@@ -261,18 +258,18 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void SkipBlankLines()
     {
-        while (IsBlankLine())
+        while (this.IsBlankLine())
         {
             // 空白をスキップ
-            while (Current.Kind == SyntaxKind.WhitespaceToken)
+            while (this.Current.Kind == SyntaxKind.WhitespaceToken)
             {
-                EmitCurrentToken();
+                this.EmitCurrentToken();
             }
 
             // 改行をスキップ
-            if (Current.Kind == SyntaxKind.NewLineToken)
+            if (this.Current.Kind == SyntaxKind.NewLineToken)
             {
-                EmitCurrentToken();
+                this.EmitCurrentToken();
             }
         }
     }
@@ -282,20 +279,9 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void EmitCurrentToken()
     {
-        _sink.Token(Current.Kind, Current.Text);
-
-        // トリビアを出力
-        foreach (var trivia in Current.LeadingTrivia)
-        {
-            _sink.LeadingTrivia(trivia.Kind, trivia.Text);
-        }
-
-        foreach (var trivia in Current.TrailingTrivia)
-        {
-            _sink.TrailingTrivia(trivia.Kind, trivia.Text);
-        }
-
-        Advance();
+        // トリビア付きのトークンをそのまま出力
+        this._sink.EmitToken(this.Current);
+        this.Advance();
     }
 
     /// <summary>
@@ -303,24 +289,24 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void EmitToken(SyntaxKind expectedKind)
     {
-        if (Current.Kind == expectedKind)
+        if (this.Current.Kind == expectedKind)
         {
-            EmitCurrentToken();
+            this.EmitCurrentToken();
         }
-        else if (expectedKind == SyntaxKind.EndOfFileToken && IsAtEnd())
+        else if (expectedKind == SyntaxKind.EndOfFileToken && this.IsAtEnd())
         {
-            _sink.Token(SyntaxKind.EndOfFileToken, string.Empty);
+            this._sink.Token(SyntaxKind.EndOfFileToken, string.Empty);
         }
         else
         {
             // エラー: 期待されるトークンがない
-            _sink.MissingToken(expectedKind);
-            _sink.Error("ADS0001", $"期待されるトークン '{expectedKind}' がありません。実際: '{Current.Kind}'");
-            _diagnostics.Add(new Diagnostic(
+            this._sink.MissingToken(expectedKind);
+            this._sink.Error("ADS0001", $"期待されるトークン '{expectedKind}' がありません。実際: '{this.Current.Kind}'");
+            this._diagnostics.Add(new Diagnostic(
                 "ADS0001",
                 $"期待されるトークン '{expectedKind}' がありません。",
                 DiagnosticSeverity.Error,
-                new TextSpan(_lexer.Position, 0)));
+                new TextSpan(this._lexer.Position, 0)));
         }
     }
 
@@ -329,7 +315,7 @@ internal sealed class AsciiDocParser
     /// </summary>
     private bool IsAtEnd()
     {
-        return Current.Kind == SyntaxKind.EndOfFileToken;
+        return this.Current.Kind == SyntaxKind.EndOfFileToken;
     }
 
     /// <summary>
@@ -337,7 +323,7 @@ internal sealed class AsciiDocParser
     /// </summary>
     private bool IsAtDocumentTitle()
     {
-        return Current.Kind == SyntaxKind.EqualsToken && Peek().Kind != SyntaxKind.EqualsToken;
+        return this.Current.Kind == SyntaxKind.EqualsToken && this.Peek().Kind != SyntaxKind.EqualsToken;
     }
 
     /// <summary>
@@ -345,7 +331,7 @@ internal sealed class AsciiDocParser
     /// </summary>
     private bool IsAtSectionTitle()
     {
-        return Current.Kind == SyntaxKind.EqualsToken;
+        return this.Current.Kind == SyntaxKind.EqualsToken;
     }
 
     /// <summary>
@@ -353,12 +339,12 @@ internal sealed class AsciiDocParser
     /// </summary>
     private bool IsAtSectionTitleOfLevelOrHigher(int level)
     {
-        if (Current.Kind != SyntaxKind.EqualsToken)
+        if (this.Current.Kind != SyntaxKind.EqualsToken)
         {
             return false;
         }
 
-        var equalsCount = CountEqualsAtLineStart();
+        var equalsCount = this.CountEqualsAtLineStart();
         return equalsCount <= level;
     }
 
@@ -367,13 +353,13 @@ internal sealed class AsciiDocParser
     /// </summary>
     private int CountEqualsAtLineStart()
     {
-        if (Current.Kind != SyntaxKind.EqualsToken)
+        if (this.Current.Kind != SyntaxKind.EqualsToken)
         {
             return 0;
         }
 
         var count = 1;
-        var token = Peek();
+        var token = this.Peek();
         while (token.Kind == SyntaxKind.EqualsToken)
         {
             count++;
@@ -389,7 +375,7 @@ internal sealed class AsciiDocParser
     /// </summary>
     private bool IsBlankLine()
     {
-        return Current.Kind == SyntaxKind.NewLineToken ||
-               (Current.Kind == SyntaxKind.WhitespaceToken && Peek().Kind == SyntaxKind.NewLineToken);
+        return this.Current.Kind == SyntaxKind.NewLineToken ||
+               (this.Current.Kind == SyntaxKind.WhitespaceToken && this.Peek().Kind == SyntaxKind.NewLineToken);
     }
 }

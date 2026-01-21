@@ -1,7 +1,7 @@
-namespace AsciiSharp.InternalSyntax;
 
 using System;
 
+namespace AsciiSharp.InternalSyntax;
 /// <summary>
 /// 内部構文木のノードを表す抽象基底クラス。
 /// </summary>
@@ -62,7 +62,7 @@ internal abstract class InternalNode
     /// <param name="kind">ノードの種別。</param>
     protected InternalNode(SyntaxKind kind)
     {
-        Kind = kind;
+        this.Kind = kind;
     }
 
     /// <summary>
@@ -84,9 +84,9 @@ internal abstract class InternalNode
     /// <returns>トリビアを除いたテキスト。</returns>
     public virtual string ToTrimmedString()
     {
-        var fullString = ToFullString();
-        var leadingWidth = LeadingTriviaWidth;
-        var trailingWidth = TrailingTriviaWidth;
+        var fullString = this.ToFullString();
+        var leadingWidth = this.LeadingTriviaWidth;
+        var trailingWidth = this.TrailingTriviaWidth;
         var width = fullString.Length - leadingWidth - trailingWidth;
 
         if (width <= 0)
@@ -100,7 +100,7 @@ internal abstract class InternalNode
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"{Kind} [{FullWidth}]";
+        return $"{this.Kind} [{this.FullWidth}]";
     }
 }
 
@@ -116,19 +116,19 @@ internal sealed class InternalSyntaxNode : InternalNode
     private readonly int _trailingTriviaWidth;
 
     /// <inheritdoc />
-    public override int Width => _width;
+    public override int Width => this._width;
 
     /// <inheritdoc />
-    public override int FullWidth => _fullWidth;
+    public override int FullWidth => this._fullWidth;
 
     /// <inheritdoc />
-    public override int SlotCount => _children.Length;
+    public override int SlotCount => this._children.Length;
 
     /// <inheritdoc />
-    public override int LeadingTriviaWidth => _leadingTriviaWidth;
+    public override int LeadingTriviaWidth => this._leadingTriviaWidth;
 
     /// <inheritdoc />
-    public override int TrailingTriviaWidth => _trailingTriviaWidth;
+    public override int TrailingTriviaWidth => this._trailingTriviaWidth;
 
     /// <summary>
     /// 指定された種別と子ノードで InternalSyntaxNode を作成する。
@@ -138,12 +138,12 @@ internal sealed class InternalSyntaxNode : InternalNode
     public InternalSyntaxNode(SyntaxKind kind, params InternalNode?[] children)
         : base(kind)
     {
-        _children = children ?? Array.Empty<InternalNode?>();
+        this._children = children ?? [];
 
         var fullWidth = 0;
         var containsDiagnostics = false;
 
-        foreach (var child in _children)
+        foreach (var child in this._children)
         {
             if (child is not null)
             {
@@ -156,61 +156,61 @@ internal sealed class InternalSyntaxNode : InternalNode
             }
         }
 
-        _fullWidth = fullWidth;
-        ContainsDiagnostics = containsDiagnostics;
+        this._fullWidth = fullWidth;
+        this.ContainsDiagnostics = containsDiagnostics;
 
         // 先行トリビア幅は最初の非 null 子ノードの先行トリビア幅
-        _leadingTriviaWidth = 0;
-        foreach (var child in _children)
+        this._leadingTriviaWidth = 0;
+        foreach (var child in this._children)
         {
             if (child is not null)
             {
-                _leadingTriviaWidth = child.LeadingTriviaWidth;
+                this._leadingTriviaWidth = child.LeadingTriviaWidth;
                 break;
             }
         }
 
         // 後続トリビア幅は最後の非 null 子ノードの後続トリビア幅
-        _trailingTriviaWidth = 0;
-        for (var i = _children.Length - 1; i >= 0; i--)
+        this._trailingTriviaWidth = 0;
+        for (var i = this._children.Length - 1; i >= 0; i--)
         {
-            var child = _children[i];
+            var child = this._children[i];
             if (child is not null)
             {
-                _trailingTriviaWidth = child.TrailingTriviaWidth;
+                this._trailingTriviaWidth = child.TrailingTriviaWidth;
                 break;
             }
         }
 
-        _width = _fullWidth - _leadingTriviaWidth - _trailingTriviaWidth;
+        this._width = this._fullWidth - this._leadingTriviaWidth - this._trailingTriviaWidth;
     }
 
     /// <inheritdoc />
     public override InternalNode? GetSlot(int index)
     {
-        if (index < 0 || index >= _children.Length)
+        if (index < 0 || index >= this._children.Length)
         {
             return null;
         }
 
-        return _children[index];
+        return this._children[index];
     }
 
     /// <inheritdoc />
     public override string ToFullString()
     {
-        if (_children.Length == 0)
+        if (this._children.Length == 0)
         {
             return string.Empty;
         }
 
-        if (_children.Length == 1 && _children[0] is not null)
+        if (this._children.Length == 1 && this._children[0] is not null)
         {
-            return _children[0]!.ToFullString();
+            return this._children[0]!.ToFullString();
         }
 
-        var builder = new System.Text.StringBuilder(_fullWidth);
-        foreach (var child in _children)
+        var builder = new System.Text.StringBuilder(this._fullWidth);
+        foreach (var child in this._children)
         {
             if (child is not null)
             {

@@ -1,9 +1,9 @@
-namespace AsciiSharp.Text;
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 
+namespace AsciiSharp.Text;
 /// <summary>
 /// 文字列ベースの SourceText 実装。
 /// </summary>
@@ -13,24 +13,24 @@ internal sealed class StringText : SourceText
     private readonly IReadOnlyList<TextLine> _lines;
 
     /// <inheritdoc />
-    public override int Length => _text.Length;
+    public override int Length => this._text.Length;
 
     /// <inheritdoc />
     public override char this[int index]
     {
         get
         {
-            if (index < 0 || index >= _text.Length)
+            if (index < 0 || index >= this._text.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(index), index, "インデックスがテキストの範囲外です。");
             }
 
-            return _text[index];
+            return this._text[index];
         }
     }
 
     /// <inheritdoc />
-    protected override IReadOnlyList<TextLine> Lines => _lines;
+    protected override IReadOnlyList<TextLine> Lines => this._lines;
 
     /// <summary>
     /// 文字列から StringText を作成する。
@@ -38,40 +38,37 @@ internal sealed class StringText : SourceText
     /// <param name="text">ソーステキスト。</param>
     public StringText(string text)
     {
-        _text = text ?? throw new ArgumentNullException(nameof(text));
-        _lines = ParseLines(text);
+        this._text = text ?? throw new ArgumentNullException(nameof(text));
+        this._lines = ParseLines(text);
     }
 
     /// <inheritdoc />
     public override string GetText(TextSpan span)
     {
-        if (span.Start < 0 || span.End > _text.Length)
+        if (span.Start < 0 || span.End > this._text.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(span), span, "スパンがテキストの範囲外です。");
         }
 
-        return _text.Substring(span.Start, span.Length);
+        return this._text.Substring(span.Start, span.Length);
     }
 
     /// <inheritdoc />
     public override string ToString()
     {
-        return _text;
+        return this._text;
     }
 
     /// <inheritdoc />
     public override SourceText WithChanges(IEnumerable<TextChange> changes)
     {
-        if (changes is null)
-        {
-            throw new ArgumentNullException(nameof(changes));
-        }
+        ArgumentNullException.ThrowIfNull(changes);
 
         // 変更を位置の降順でソートして適用（後ろから適用することで位置のずれを防ぐ）
         var sortedChanges = new List<TextChange>(changes);
         sortedChanges.Sort((a, b) => b.Span.Start.CompareTo(a.Span.Start));
 
-        var builder = new StringBuilder(_text);
+        var builder = new StringBuilder(this._text);
 
         foreach (var change in sortedChanges)
         {

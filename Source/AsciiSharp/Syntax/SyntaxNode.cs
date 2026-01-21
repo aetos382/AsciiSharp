@@ -1,11 +1,12 @@
-namespace AsciiSharp.Syntax;
 
 using System;
 using System.Collections.Generic;
+
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// 外部構文木のノードを表す抽象基底クラス。
 /// </summary>
@@ -43,27 +44,27 @@ public abstract class SyntaxNode
     /// <summary>
     /// ノードの種別。
     /// </summary>
-    public SyntaxKind Kind => Internal.Kind;
+    public SyntaxKind Kind => this.Internal.Kind;
 
     /// <summary>
     /// ノードの位置（トリビアを除く）。
     /// </summary>
-    public TextSpan Span => new TextSpan(Position + Internal.LeadingTriviaWidth, Internal.Width);
+    public TextSpan Span => new(this.Position + this.Internal.LeadingTriviaWidth, this.Internal.Width);
 
     /// <summary>
     /// ノードの位置（トリビアを含む）。
     /// </summary>
-    public TextSpan FullSpan => new TextSpan(Position, Internal.FullWidth);
+    public TextSpan FullSpan => new(this.Position, this.Internal.FullWidth);
 
     /// <summary>
     /// このノードが欠落ノード（エラー回復で挿入されたもの）かどうか。
     /// </summary>
-    public bool IsMissing => Internal.IsMissing;
+    public bool IsMissing => this.Internal.IsMissing;
 
     /// <summary>
     /// このノードまたは子孫に診断情報が含まれるかどうか。
     /// </summary>
-    public bool ContainsDiagnostics => Internal.ContainsDiagnostics;
+    public bool ContainsDiagnostics => this.Internal.ContainsDiagnostics;
 
     /// <summary>
     /// 指定された内部ノード、親、位置で SyntaxNode を作成する。
@@ -74,10 +75,10 @@ public abstract class SyntaxNode
     /// <param name="syntaxTree">所属する構文木。</param>
     private protected SyntaxNode(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
     {
-        Internal = internalNode ?? throw new ArgumentNullException(nameof(internalNode));
-        Parent = parent;
-        Position = position;
-        SyntaxTree = syntaxTree ?? parent?.SyntaxTree;
+        this.Internal = internalNode ?? throw new ArgumentNullException(nameof(internalNode));
+        this.Parent = parent;
+        this.Position = position;
+        this.SyntaxTree = syntaxTree ?? parent?.SyntaxTree;
     }
 
     /// <summary>
@@ -93,7 +94,7 @@ public abstract class SyntaxNode
     /// <returns>子孫ノードのシーケンス。</returns>
     public IEnumerable<SyntaxNode> DescendantNodes(Func<SyntaxNode, bool>? descendIntoChildren = null)
     {
-        foreach (var childOrToken in ChildNodesAndTokens())
+        foreach (var childOrToken in this.ChildNodesAndTokens())
         {
             if (childOrToken.IsNode)
             {
@@ -118,7 +119,7 @@ public abstract class SyntaxNode
     /// <returns>子孫ノードとトークンのシーケンス。</returns>
     public IEnumerable<SyntaxNodeOrToken> DescendantNodesAndTokens(Func<SyntaxNode, bool>? descendIntoChildren = null)
     {
-        foreach (var childOrToken in ChildNodesAndTokens())
+        foreach (var childOrToken in this.ChildNodesAndTokens())
         {
             yield return childOrToken;
 
@@ -143,7 +144,7 @@ public abstract class SyntaxNode
     /// <returns>子孫トークンのシーケンス。</returns>
     public IEnumerable<SyntaxToken> DescendantTokens()
     {
-        foreach (var childOrToken in DescendantNodesAndTokens())
+        foreach (var childOrToken in this.DescendantNodesAndTokens())
         {
             if (childOrToken.IsToken)
             {
@@ -159,7 +160,7 @@ public abstract class SyntaxNode
     /// <returns>祖先ノードのシーケンス。</returns>
     public IEnumerable<SyntaxNode> Ancestors(bool includeSelf = false)
     {
-        var node = includeSelf ? this : Parent;
+        var node = includeSelf ? this : this.Parent;
         while (node is not null)
         {
             yield return node;
@@ -173,12 +174,12 @@ public abstract class SyntaxNode
     /// <returns>診断情報のシーケンス。</returns>
     public IEnumerable<Diagnostic> GetDiagnostics()
     {
-        if (!ContainsDiagnostics)
+        if (!this.ContainsDiagnostics)
         {
             yield break;
         }
 
-        var tree = SyntaxTree;
+        var tree = this.SyntaxTree;
         if (tree is not null)
         {
             foreach (var diagnostic in tree.GetDiagnostics(this))
@@ -194,7 +195,7 @@ public abstract class SyntaxNode
     /// <returns>完全なテキスト。</returns>
     public string ToFullString()
     {
-        return Internal.ToFullString();
+        return this.Internal.ToFullString();
     }
 
     /// <summary>
@@ -203,7 +204,7 @@ public abstract class SyntaxNode
     /// <returns>トリビアを除いたテキスト。</returns>
     public override string ToString()
     {
-        return Internal.ToTrimmedString();
+        return this.Internal.ToTrimmedString();
     }
 
     /// <summary>
@@ -216,17 +217,11 @@ public abstract class SyntaxNode
     public SyntaxNode ReplaceNode<TNode>(TNode oldNode, TNode newNode)
         where TNode : SyntaxNode
     {
-        if (oldNode is null)
-        {
-            throw new ArgumentNullException(nameof(oldNode));
-        }
+        ArgumentNullException.ThrowIfNull(oldNode);
 
-        if (newNode is null)
-        {
-            throw new ArgumentNullException(nameof(newNode));
-        }
+        ArgumentNullException.ThrowIfNull(newNode);
 
-        return ReplaceNodeCore(oldNode, newNode);
+        return this.ReplaceNodeCore(oldNode, newNode);
     }
 
     /// <summary>

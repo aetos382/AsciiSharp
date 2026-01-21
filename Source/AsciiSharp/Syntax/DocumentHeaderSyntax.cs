@@ -1,8 +1,9 @@
-namespace AsciiSharp.Syntax;
 
 using System.Collections.Generic;
+
 using AsciiSharp.InternalSyntax;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// AsciiDoc 文書のヘッダー部分を表す構文ノード。
 /// </summary>
@@ -40,11 +41,83 @@ public sealed class DocumentHeaderSyntax : SyntaxNode
             switch (slot.Kind)
             {
                 case SyntaxKind.SectionTitle:
-                    Title = new SectionTitleSyntax(slot, this, currentPosition, syntaxTree);
+                    this.Title = new SectionTitleSyntax(slot, this, currentPosition, syntaxTree);
                     break;
 
                 case SyntaxKind.AuthorLine:
-                    AuthorLine = new AuthorLineSyntax(slot, this, currentPosition, syntaxTree);
+                    this.AuthorLine = new AuthorLineSyntax(slot, this, currentPosition, syntaxTree);
+                    break;
+                case SyntaxKind.None:
+                    break;
+                case SyntaxKind.MissingToken:
+                    break;
+                case SyntaxKind.SkippedTokensTrivia:
+                    break;
+                case SyntaxKind.EndOfFileToken:
+                    break;
+                case SyntaxKind.NewLineToken:
+                    break;
+                case SyntaxKind.WhitespaceToken:
+                    break;
+                case SyntaxKind.TextToken:
+                    break;
+                case SyntaxKind.EqualsToken:
+                    break;
+                case SyntaxKind.ColonToken:
+                    break;
+                case SyntaxKind.SlashToken:
+                    break;
+                case SyntaxKind.OpenBracketToken:
+                    break;
+                case SyntaxKind.CloseBracketToken:
+                    break;
+                case SyntaxKind.OpenBraceToken:
+                    break;
+                case SyntaxKind.CloseBraceToken:
+                    break;
+                case SyntaxKind.HashToken:
+                    break;
+                case SyntaxKind.AsteriskToken:
+                    break;
+                case SyntaxKind.UnderscoreToken:
+                    break;
+                case SyntaxKind.BacktickToken:
+                    break;
+                case SyntaxKind.DotToken:
+                    break;
+                case SyntaxKind.CommaToken:
+                    break;
+                case SyntaxKind.PipeToken:
+                    break;
+                case SyntaxKind.LessThanToken:
+                    break;
+                case SyntaxKind.GreaterThanToken:
+                    break;
+                case SyntaxKind.WhitespaceTrivia:
+                    break;
+                case SyntaxKind.EndOfLineTrivia:
+                    break;
+                case SyntaxKind.SingleLineCommentTrivia:
+                    break;
+                case SyntaxKind.MultiLineCommentTrivia:
+                    break;
+                case SyntaxKind.Document:
+                    break;
+                case SyntaxKind.DocumentHeader:
+                    break;
+                case SyntaxKind.DocumentBody:
+                    break;
+                case SyntaxKind.Section:
+                    break;
+                case SyntaxKind.Paragraph:
+                    break;
+                case SyntaxKind.TextSpan:
+                    break;
+                case SyntaxKind.Text:
+                    break;
+                case SyntaxKind.Link:
+                    break;
+                default:
                     break;
             }
 
@@ -55,14 +128,14 @@ public sealed class DocumentHeaderSyntax : SyntaxNode
     /// <inheritdoc />
     public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
     {
-        if (Title is not null)
+        if (this.Title is not null)
         {
-            yield return new SyntaxNodeOrToken(Title);
+            yield return new SyntaxNodeOrToken(this.Title);
         }
 
-        if (AuthorLine is not null)
+        if (this.AuthorLine is not null)
         {
-            yield return new SyntaxNodeOrToken(AuthorLine);
+            yield return new SyntaxNodeOrToken(this.AuthorLine);
         }
     }
 
@@ -82,7 +155,7 @@ public sealed class AuthorLineSyntax : SyntaxNode
     /// <summary>
     /// 著者行のテキスト。
     /// </summary>
-    public string Text => Internal.ToFullString();
+    public string Text => this.Internal.ToFullString();
 
     /// <summary>
     /// AuthorLineSyntax を作成する。

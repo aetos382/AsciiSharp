@@ -7,7 +7,7 @@ namespace AsciiSharp.Parser;
 /// <para>このインターフェースは rust-analyzer の Rowan ライブラリのパターンに従い、</para>
 /// <para>パーサー本体とツリー構築を分離することで、テスト容易性と柔軟性を確保する。</para>
 /// </remarks>
-public interface ITreeSink
+internal interface ITreeSink
 {
     /// <summary>
     /// 新しいノードの開始を通知する。

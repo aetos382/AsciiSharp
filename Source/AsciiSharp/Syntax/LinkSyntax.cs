@@ -1,8 +1,9 @@
-namespace AsciiSharp.Syntax;
 
 using System.Collections.Generic;
+
 using AsciiSharp.InternalSyntax;
 
+namespace AsciiSharp.Syntax;
 /// <summary>
 /// リンクを表す構文ノード。
 /// </summary>

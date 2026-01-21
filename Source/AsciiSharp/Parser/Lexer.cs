@@ -1,19 +1,18 @@
-namespace AsciiSharp.Parser;
 
 using System;
 using System.Collections.Generic;
+
 using AsciiSharp.InternalSyntax;
 using AsciiSharp.Text;
 
+namespace AsciiSharp.Parser;
 /// <summary>
 /// AsciiDoc 文書の字句解析を行うクラス。
 /// </summary>
 internal sealed class Lexer
 {
     private readonly SourceText _text;
-    private int _position;
     private readonly List<InternalTrivia> _leadingTrivia = [];
-    private readonly List<InternalTrivia> _trailingTrivia = [];
 
     /// <summary>
     /// Lexer を作成する。
@@ -21,29 +20,32 @@ internal sealed class Lexer
     /// <param name="text">ソーステキスト。</param>
     public Lexer(SourceText text)
     {
-        _text = text ?? throw new ArgumentNullException(nameof(text));
-        _position = 0;
+        this._text = text ?? throw new ArgumentNullException(nameof(text));
+        this.Position = 0;
     }
 
     /// <summary>
     /// 現在位置の文字。
     /// </summary>
-    private char Current => _position < _text.Length ? _text[_position] : '\0';
+    private char Current => this.Position < this._text.Length ? this._text[this.Position] : '\0';
 
     /// <summary>
     /// 次の位置の文字。
     /// </summary>
-    private char Peek(int offset = 1) => _position + offset < _text.Length ? _text[_position + offset] : '\0';
+    private char Peek(int offset = 1)
+    {
+        return this.Position + offset < this._text.Length ? this._text[this.Position + offset] : '\0';
+    }
 
     /// <summary>
     /// ファイル終端に達したかどうか。
     /// </summary>
-    public bool IsAtEnd => _position >= _text.Length;
+    public bool IsAtEnd => this.Position >= this._text.Length;
 
     /// <summary>
     /// 現在位置。
     /// </summary>
-    public int Position => _position;
+    public int Position { get; private set; }
 
     /// <summary>
     /// 次のトークンを読み取る。
@@ -51,44 +53,40 @@ internal sealed class Lexer
     /// <returns>読み取ったトークン。</returns>
     public InternalToken NextToken()
     {
-        _leadingTrivia.Clear();
-        _trailingTrivia.Clear();
+        this._leadingTrivia.Clear();
 
         // 先行トリビアを収集
-        ScanLeadingTrivia();
+        this.ScanLeadingTrivia();
 
-        var leadingTrivia = _leadingTrivia.Count > 0 ? _leadingTrivia.ToArray() : null;
+        var leadingTrivia = this._leadingTrivia.Count > 0 ? this._leadingTrivia.ToArray() : null;
 
         // トークンをスキャン
-        var token = ScanToken();
+        var token = this.ScanToken();
 
         // 後続トリビアを収集
         ScanTrailingTrivia();
 
-        var trailingTrivia = _trailingTrivia.Count > 0 ? _trailingTrivia.ToArray() : null;
-
         // トリビアを設定したトークンを返す
-        return token.WithTrivia(leadingTrivia, trailingTrivia);
+        return token.WithTrivia(leadingTrivia, trailingTrivia: null);
     }
 
     /// <summary>
     /// 先行トリビアをスキャンする。
     /// </summary>
+    /// <remarks>
+    /// AsciiDoc では空白が意味を持つため、空白はトークンとして扱う。
+    /// コメントのみを先行トリビアとして扱う。
+    /// </remarks>
     private void ScanLeadingTrivia()
     {
-        while (!IsAtEnd)
+        while (!this.IsAtEnd)
         {
-            switch (Current)
+            switch (this.Current)
             {
-                case ' ':
-                case '\t':
-                    ScanWhitespaceTrivia(_leadingTrivia);
-                    break;
-
                 case '/':
-                    if (Peek() == '/')
+                    if (this.Peek() == '/')
                     {
-                        ScanCommentTrivia(_leadingTrivia);
+                        this.ScanCommentTrivia(this._leadingTrivia);
                     }
                     else
                     {
@@ -104,66 +102,15 @@ internal sealed class Lexer
     }
 
     /// <summary>
-    /// 後続トリビアをスキャンする（改行まで）。
+    /// 後続トリビアをスキャンする。
     /// </summary>
-    private void ScanTrailingTrivia()
+    /// <remarks>
+    /// AsciiDoc では空白と改行が意味を持つため、トークンとして扱う。
+    /// 現時点では後続トリビアとして収集するものはない。
+    /// </remarks>
+    private static void ScanTrailingTrivia()
     {
-        while (!IsAtEnd)
-        {
-            switch (Current)
-            {
-                case ' ':
-                case '\t':
-                    ScanWhitespaceTrivia(_trailingTrivia);
-                    break;
-
-                case '\r':
-                case '\n':
-                    ScanEndOfLineTrivia(_trailingTrivia);
-                    return; // 改行で後続トリビアは終了
-
-                default:
-                    return;
-            }
-        }
-    }
-
-    /// <summary>
-    /// 空白トリビアをスキャンする。
-    /// </summary>
-    private void ScanWhitespaceTrivia(List<InternalTrivia> triviaList)
-    {
-        var start = _position;
-        while (!IsAtEnd && (Current == ' ' || Current == '\t'))
-        {
-            _position++;
-        }
-
-        var text = _text.GetText(start, _position - start);
-        triviaList.Add(InternalTrivia.Whitespace(text));
-    }
-
-    /// <summary>
-    /// 行末トリビアをスキャンする。
-    /// </summary>
-    private void ScanEndOfLineTrivia(List<InternalTrivia> triviaList)
-    {
-        var start = _position;
-        if (Current == '\r')
-        {
-            _position++;
-            if (Current == '\n')
-            {
-                _position++;
-            }
-        }
-        else if (Current == '\n')
-        {
-            _position++;
-        }
-
-        var text = _text.GetText(start, _position - start);
-        triviaList.Add(InternalTrivia.EndOfLine(text));
+        // 現時点では後続トリビアとして収集するものはない
     }
 
     /// <summary>
@@ -171,44 +118,44 @@ internal sealed class Lexer
     /// </summary>
     private void ScanCommentTrivia(List<InternalTrivia> triviaList)
     {
-        var start = _position;
+        var start = this.Position;
 
         // ブロックコメントか単一行コメントか判定
-        if (_position + 3 < _text.Length &&
-            _text[_position] == '/' &&
-            _text[_position + 1] == '/' &&
-            _text[_position + 2] == '/' &&
-            _text[_position + 3] == '/')
+        if (this.Position + 3 < this._text.Length &&
+            this._text[this.Position] == '/' &&
+            this._text[this.Position + 1] == '/' &&
+            this._text[this.Position + 2] == '/' &&
+            this._text[this.Position + 3] == '/')
         {
             // ブロックコメント
-            _position += 4;
-            while (!IsAtEnd)
+            this.Position += 4;
+            while (!this.IsAtEnd)
             {
-                if (_position + 3 < _text.Length &&
-                    _text[_position] == '/' &&
-                    _text[_position + 1] == '/' &&
-                    _text[_position + 2] == '/' &&
-                    _text[_position + 3] == '/')
+                if (this.Position + 3 < this._text.Length &&
+                    this._text[this.Position] == '/' &&
+                    this._text[this.Position + 1] == '/' &&
+                    this._text[this.Position + 2] == '/' &&
+                    this._text[this.Position + 3] == '/')
                 {
-                    _position += 4;
+                    this.Position += 4;
                     break;
                 }
 
-                _position++;
+                this.Position++;
             }
 
-            var text = _text.GetText(start, _position - start);
+            var text = this._text.GetText(start, this.Position - start);
             triviaList.Add(InternalTrivia.MultiLineComment(text));
         }
         else
         {
             // 単一行コメント
-            while (!IsAtEnd && Current != '\r' && Current != '\n')
+            while (!this.IsAtEnd && this.Current != '\r' && this.Current != '\n')
             {
-                _position++;
+                this.Position++;
             }
 
-            var text = _text.GetText(start, _position - start);
+            var text = this._text.GetText(start, this.Position - start);
             triviaList.Add(InternalTrivia.SingleLineComment(text));
         }
     }
@@ -218,115 +165,114 @@ internal sealed class Lexer
     /// </summary>
     private InternalToken ScanToken()
     {
-        if (IsAtEnd)
+        if (this.IsAtEnd)
         {
             return new InternalToken(SyntaxKind.EndOfFileToken, string.Empty);
         }
 
-        var start = _position;
-        var kind = SyntaxKind.None;
-
-        switch (Current)
+        var start = this.Position;
+        SyntaxKind kind;
+        switch (this.Current)
         {
             case '=':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.EqualsToken;
                 break;
 
             case ':':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.ColonToken;
                 break;
 
             case '/':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.SlashToken;
                 break;
 
             case '[':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.OpenBracketToken;
                 break;
 
             case ']':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.CloseBracketToken;
                 break;
 
             case '{':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.OpenBraceToken;
                 break;
 
             case '}':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.CloseBraceToken;
                 break;
 
             case '#':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.HashToken;
                 break;
 
             case '*':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.AsteriskToken;
                 break;
 
             case '_':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.UnderscoreToken;
                 break;
 
             case '`':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.BacktickToken;
                 break;
 
             case '.':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.DotToken;
                 break;
 
             case ',':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.CommaToken;
                 break;
 
             case '|':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.PipeToken;
                 break;
 
             case '<':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.LessThanToken;
                 break;
 
             case '>':
-                _position++;
+                this.Position++;
                 kind = SyntaxKind.GreaterThanToken;
                 break;
 
             case '\r':
             case '\n':
-                ScanNewLine();
+                this.ScanNewLine();
                 kind = SyntaxKind.NewLineToken;
                 break;
 
             case ' ':
             case '\t':
-                ScanWhitespace();
+                this.ScanWhitespace();
                 kind = SyntaxKind.WhitespaceToken;
                 break;
 
             default:
-                ScanText();
+                this.ScanText();
                 kind = SyntaxKind.TextToken;
                 break;
         }
 
-        var text = _text.GetText(start, _position - start);
+        var text = this._text.GetText(start, this.Position - start);
         return new InternalToken(kind, text);
     }
 
@@ -335,17 +281,17 @@ internal sealed class Lexer
     /// </summary>
     private void ScanNewLine()
     {
-        if (Current == '\r')
+        if (this.Current == '\r')
         {
-            _position++;
-            if (Current == '\n')
+            this.Position++;
+            if (this.Current == '\n')
             {
-                _position++;
+                this.Position++;
             }
         }
-        else if (Current == '\n')
+        else if (this.Current == '\n')
         {
-            _position++;
+            this.Position++;
         }
     }
 
@@ -354,9 +300,9 @@ internal sealed class Lexer
     /// </summary>
     private void ScanWhitespace()
     {
-        while (!IsAtEnd && (Current == ' ' || Current == '\t'))
+        while (!this.IsAtEnd && (this.Current == ' ' || this.Current == '\t'))
         {
-            _position++;
+            this.Position++;
         }
     }
 
@@ -365,9 +311,9 @@ internal sealed class Lexer
     /// </summary>
     private void ScanText()
     {
-        while (!IsAtEnd && !IsSpecialCharacter(Current))
+        while (!this.IsAtEnd && !IsSpecialCharacter(this.Current))
         {
-            _position++;
+            this.Position++;
         }
     }
 
