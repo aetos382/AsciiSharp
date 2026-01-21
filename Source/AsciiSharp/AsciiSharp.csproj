@@ -19,8 +19,4 @@
     <InternalsVisibleTo Include="AsciiSharp.Tests" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="InternalSyntax\" />
-  </ItemGroup>
-
 </Project>
