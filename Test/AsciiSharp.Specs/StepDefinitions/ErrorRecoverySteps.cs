@@ -49,16 +49,19 @@ public sealed class ErrorRecoverySteps
     {
         var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
         Assert.IsNotNull(syntaxTree);
-        Assert.IsTrue(syntaxTree.Diagnostics.Count > 0, "診断情報が含まれていません");
+        Assert.IsNotEmpty(syntaxTree.Diagnostics, "診断情報が含まれていません");
     }
 
     [Then(@"診断情報の数は (\d+) 以上である")]
     public void Then診断情報の数は以上である(int minCount)
     {
         var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+
         Assert.IsNotNull(syntaxTree);
-        Assert.IsTrue(
-            syntaxTree.Diagnostics.Count >= minCount,
+
+        Assert.IsGreaterThanOrEqualTo(
+            minCount,
+            syntaxTree.Diagnostics.Count,
             $"診断情報の数が {minCount} 未満です。実際: {syntaxTree.Diagnostics.Count}");
     }
 
@@ -89,9 +92,9 @@ public sealed class ErrorRecoverySteps
         Assert.IsNotNull(syntaxTree);
         var paragraphs = syntaxTree.Root.DescendantNodes().OfType<ParagraphSyntax>();
         var count = paragraphs.Count();
-        Assert.IsTrue(
-            count >= minCount,
-            $"正常な段落の数が {minCount} 未満です。実際: {count}");
+        Assert.IsGreaterThanOrEqualTo(
+minCount,
+            count, $"正常な段落の数が {minCount} 未満です。実際: {count}");
     }
 
     [Then(@"構文木からテキストを再構築できる")]
@@ -111,9 +114,9 @@ public sealed class ErrorRecoverySteps
         Assert.IsNotNull(syntaxTree);
         foreach (var diagnostic in syntaxTree.Diagnostics)
         {
-            Assert.IsTrue(
-                diagnostic.Location.Length >= 0,
-                "診断情報に位置情報が含まれていません");
+            Assert.IsGreaterThanOrEqualTo(
+0,
+                diagnostic.Location.Length, "診断情報に位置情報が含まれていません");
         }
     }
 
@@ -149,7 +152,7 @@ public sealed class ErrorRecoverySteps
         var missingNodes = syntaxTree.Root.DescendantNodesAndTokens()
             .Where(n => n.IsMissing)
             .ToList();
-        Assert.IsTrue(missingNodes.Count > 0, "欠落ノードが見つかりません");
+        Assert.IsNotEmpty(missingNodes, "欠落ノードが見つかりません");
         foreach (var node in missingNodes)
         {
             Assert.IsTrue(node.IsMissing, "IsMissing プロパティが true ではありません");
