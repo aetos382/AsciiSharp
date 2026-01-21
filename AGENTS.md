@@ -112,7 +112,9 @@ ArgumentNullException.ThrowIfNull(parameter);
 ```cs
 if (parameter == null) { throw new ArgumentNullException(nameof(parameter)); }
 ```
-
+```cs
+this._field = parameter ?? throw new ArgumentNullException(nameof(parameter));
+```
 ## 継続的インテグレーションについて
 
 - GitHub Actions を用いた継続的インテグレーション (CI) を実施します。
