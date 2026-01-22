@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-01-18
-**Last Updated**: 2026-01-20 (パフォーマンス数値目標削除)
+**Last Updated**: 2026-01-22 (AGENTS.md との整合性検証)
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -79,3 +79,10 @@
 - include ディレクティブやプリプロセッサの実際の処理はスコープ外として明確化されている
 - すべてのチェック項目がパスしており、`/speckit.plan` へ進む準備が整っている
 - 2026-01-19: FR-002 を更新し、PEG 文法定義が参照仕様として使用され、パーサージェネレーターは使用しないことを明確化
+
+## AGENTS.md Consistency Check (2026-01-22)
+
+- [x] plan.md の Polyfills パスを修正（`Source/AsciiSharp/Polyfills/` → `Polyfills/`）
+- [x] plan.md に TckAdapter プロジェクト構造を追加
+- [x] tasks.md の T026 は正しいパス（`Polyfills/`）で記載されていることを確認
+- [x] 実際のプロジェクト構造と AGENTS.md の記述が一致していることを確認

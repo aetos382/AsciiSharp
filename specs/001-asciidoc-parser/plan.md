@@ -92,28 +92,32 @@ specs/001-asciidoc-parser/
 
 ```text
 Source/
-└── AsciiSharp/                          # コアライブラリ (.NET Standard 2.0)
-    ├── AsciiSharp.csproj
-    ├── InternalSyntax/                  # 内部構文木
-    │   ├── InternalNode.cs
-    │   ├── InternalToken.cs
-    │   └── InternalTrivia.cs
-    ├── Syntax/                          # 外部構文木（公開 API）
-    │   ├── SyntaxNode.cs
-    │   ├── SyntaxToken.cs
-    │   ├── SyntaxTrivia.cs
-    │   └── [AsciiDoc 要素ごとのノード]
-    ├── Parser/                          # 手書きパーサー
-    │   ├── Lexer.cs                     # 字句解析
-    │   ├── Parser.cs                    # 構文解析
-    │   └── ParserRecovery.cs            # エラー回復
-    ├── Text/                            # テキスト処理
-    │   ├── SourceText.cs
-    │   └── TextSpan.cs
-    ├── Diagnostics/                     # 診断情報
-    │   └── Diagnostic.cs
-    └── Polyfills/                       # .NET Standard 2.0 用 Polyfill
-        └── [必要に応じて追加]
+├── AsciiSharp/                          # コアライブラリ (.NET Standard 2.0)
+│   ├── AsciiSharp.csproj
+│   ├── InternalSyntax/                  # 内部構文木
+│   │   ├── InternalNode.cs
+│   │   ├── InternalToken.cs
+│   │   └── InternalTrivia.cs
+│   ├── Syntax/                          # 外部構文木（公開 API）
+│   │   ├── SyntaxNode.cs
+│   │   ├── SyntaxToken.cs
+│   │   ├── SyntaxTrivia.cs
+│   │   └── [AsciiDoc 要素ごとのノード]
+│   ├── Parser/                          # 手書きパーサー
+│   │   ├── Lexer.cs                     # 字句解析
+│   │   ├── Parser.cs                    # 構文解析
+│   │   └── ParserRecovery.cs            # エラー回復
+│   ├── Text/                            # テキスト処理
+│   │   ├── SourceText.cs
+│   │   └── TextSpan.cs
+│   └── Diagnostics/                     # 診断情報
+│       └── Diagnostic.cs
+└── TckAdapter/                          # TCK 連携用プロジェクト
+    ├── AsciiSharp.TckAdapter/           # SyntaxTree を ASG 形式に変換
+    └── AsciiSharp.TckAdapter.Cli/       # TCK 準拠テスト用 CLI
+
+Polyfills/                               # .NET Standard 2.0 用 Polyfill（ルート直下）
+└── [IsExternalInit, RequiredMemberAttribute など]
 
 Test/
 ├── AsciiSharp.Tests/                    # ユニットテスト
