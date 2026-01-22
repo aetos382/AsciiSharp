@@ -327,6 +327,9 @@
 - [ ] T117 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
 - [ ] T118 [P] ネストレベル制限を Parser に実装（無限ループ防止）
 - [ ] T119 空の文書（空文字列）の解析テストを追加（Edge Case: 空のドキュメントノードを持つ有効な構文木が生成されることを検証）
+- [ ] T119a [US1] BasicParsing.feature の「本文のみを含む文章の解析」シナリオを補完（段落数検証、段落テキスト検証、ラウンドトリップ検証を追加）
+- [ ] T119b [US1] BasicParsingSteps.cs に「段落のテキストは "..." である」ステップ定義を追加（Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs）
+- [ ] T119c [US1] ヘッダーなし文書のテストを実行し、Green を確認
 - [ ] T120 [P] XML ドキュメントコメントを公開 API に追加
 - [ ] T121 [P] README.md を作成（クイックスタート、API 概要）
 - [ ] T122 全体のコードレビューとリファクタリング
