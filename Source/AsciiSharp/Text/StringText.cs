@@ -20,10 +20,8 @@ internal sealed class StringText : SourceText
     {
         get
         {
-            if (index < 0 || index >= this._text.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, "インデックスがテキストの範囲外です。");
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, this._text.Length);
 
             return this._text[index];
         }
@@ -38,17 +36,17 @@ internal sealed class StringText : SourceText
     /// <param name="text">ソーステキスト。</param>
     public StringText(string text)
     {
-        this._text = text ?? throw new ArgumentNullException(nameof(text));
+        ArgumentNullException.ThrowIfNull(text);
+
+        this._text = text;
         this._lines = ParseLines(text);
     }
 
     /// <inheritdoc />
     public override string GetText(TextSpan span)
     {
-        if (span.Start < 0 || span.End > this._text.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(span), span, "スパンがテキストの範囲外です。");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(span.Start);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(span.End, this._text.Length);
 
         return this._text.Substring(span.Start, span.Length);
     }
@@ -72,10 +70,8 @@ internal sealed class StringText : SourceText
 
         foreach (var change in sortedChanges)
         {
-            if (change.Span.Start < 0 || change.Span.End > builder.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(changes), "変更範囲がテキストの範囲外です。");
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(change.Span.Start);
+            ArgumentOutOfRangeException.ThrowIfGreaterThan(change.Span.End, builder.Length);
 
             builder.Remove(change.Span.Start, change.Span.Length);
             builder.Insert(change.Span.Start, change.NewText);

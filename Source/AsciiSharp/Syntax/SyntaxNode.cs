@@ -75,7 +75,9 @@ public abstract class SyntaxNode
     /// <param name="syntaxTree">所属する構文木。</param>
     private protected SyntaxNode(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
     {
-        this.Internal = internalNode ?? throw new ArgumentNullException(nameof(internalNode));
+        ArgumentNullException.ThrowIfNull(internalNode);
+
+        this.Internal = internalNode;
         this.Parent = parent;
         this.Position = position;
         this.SyntaxTree = syntaxTree ?? parent?.SyntaxTree;

@@ -66,10 +66,8 @@ public abstract class SourceText
     /// <exception cref="ArgumentOutOfRangeException">位置が範囲外の場合。</exception>
     public (int Line, int Column) GetLineAndColumn(int position)
     {
-        if (position < 0 || position > this.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(position), position, "位置がテキストの範囲外です。");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(position);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(position, this.Length);
 
         var lineIndex = this.GetLineIndexFromPosition(position);
         var line = this.Lines[lineIndex];
@@ -85,10 +83,8 @@ public abstract class SourceText
     /// <exception cref="ArgumentOutOfRangeException">行番号が範囲外の場合。</exception>
     public TextLine GetLine(int lineNumber)
     {
-        if (lineNumber < 0 || lineNumber >= this.Lines.Count)
-        {
-            throw new ArgumentOutOfRangeException(nameof(lineNumber), lineNumber, "行番号が範囲外です。");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(lineNumber);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(lineNumber, this.Lines.Count);
 
         return this.Lines[lineNumber];
     }

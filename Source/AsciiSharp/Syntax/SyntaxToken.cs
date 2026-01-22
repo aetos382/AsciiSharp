@@ -228,14 +228,12 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
     {
         get
         {
-            if (this._token.Internal is null || index < 0 || index >= this.Count)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, this.Count);
 
             var internalTrivia = this._isLeading
-                ? this._token.Internal.LeadingTrivia[index]
-                : this._token.Internal.TrailingTrivia[index];
+                ? this._token.Internal!.LeadingTrivia[index]
+                : this._token.Internal!.TrailingTrivia[index];
 
             var position = this.CalculatePosition(index);
             return new SyntaxTrivia(internalTrivia, this._token, position, index);

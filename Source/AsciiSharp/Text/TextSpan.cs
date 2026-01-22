@@ -39,15 +39,8 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <exception cref="ArgumentOutOfRangeException">start または length が負の場合。</exception>
     public TextSpan(int start, int length)
     {
-        if (start < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(start), start, "開始位置は0以上でなければなりません。");
-        }
-
-        if (length < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(length), length, "長さは0以上でなければなりません。");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(start);
+        ArgumentOutOfRangeException.ThrowIfNegative(length);
 
         this.Start = start;
         this.Length = length;
@@ -62,15 +55,8 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <exception cref="ArgumentOutOfRangeException">start が負、または end が start より小さい場合。</exception>
     public static TextSpan FromBounds(int start, int end)
     {
-        if (start < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(start), start, "開始位置は0以上でなければなりません。");
-        }
-
-        if (end < start)
-        {
-            throw new ArgumentOutOfRangeException(nameof(end), end, "終了位置は開始位置以上でなければなりません。");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(start);
+        ArgumentOutOfRangeException.ThrowIfLessThan(end, start);
 
         return new TextSpan(start, end - start);
     }

@@ -20,7 +20,9 @@ internal sealed class Lexer
     /// <param name="text">ソーステキスト。</param>
     public Lexer(SourceText text)
     {
-        this._text = text ?? throw new ArgumentNullException(nameof(text));
+        ArgumentNullException.ThrowIfNull(text);
+
+        this._text = text;
         this.Position = 0;
     }
 

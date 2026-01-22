@@ -80,7 +80,9 @@ internal sealed class InternalToken : InternalNode
         bool containsDiagnostics = false)
         : base(kind)
     {
-        this.Text = text ?? throw new ArgumentNullException(nameof(text));
+        ArgumentNullException.ThrowIfNull(text);
+
+        this.Text = text;
         this.LeadingTrivia = leadingTrivia ?? EmptyTriviaArray;
         this.TrailingTrivia = trailingTrivia ?? EmptyTriviaArray;
         this._isMissing = isMissing;

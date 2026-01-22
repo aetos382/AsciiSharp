@@ -78,8 +78,11 @@ public sealed class SyntaxTree
         List<Diagnostic> diagnostics,
         string? filePath = null)
     {
-        this._internalRoot = internalRoot ?? throw new ArgumentNullException(nameof(internalRoot));
-        this.Text = text ?? throw new ArgumentNullException(nameof(text));
+        ArgumentNullException.ThrowIfNull(internalRoot);
+        ArgumentNullException.ThrowIfNull(text);
+
+        this._internalRoot = internalRoot;
+        this.Text = text;
         this._diagnostics = diagnostics ?? [];
         this.FilePath = filePath;
     }

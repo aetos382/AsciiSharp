@@ -24,8 +24,11 @@ internal sealed class AsciiDocParser
     /// <param name="sink">構文木構築用のシンク。</param>
     public AsciiDocParser(Lexer lexer, ITreeSink sink)
     {
-        this._lexer = lexer ?? throw new ArgumentNullException(nameof(lexer));
-        this._sink = sink ?? throw new ArgumentNullException(nameof(sink));
+        ArgumentNullException.ThrowIfNull(lexer);
+        ArgumentNullException.ThrowIfNull(sink);
+
+        this._lexer = lexer;
+        this._sink = sink;
         this.Current = this._lexer.NextToken();
     }
 
