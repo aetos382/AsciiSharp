@@ -70,34 +70,19 @@ internal static class ArgumentOutOfRangeExceptionExtensions
             ThrowIf(value < 0, paramName);
         }
 
-#if false
-        // .NET Standard 2.0 には INumberBase<T> がないので実装できない。
-        // 個々の数値型に対して個別にオーバーロードを設ければ可能ではあるが。
-
-        public static void ThrowIfNegative<T>(
-            T value,
+        public static void ThrowIfNegativeOrZero(
+            int value,
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
-            where T : INumberBase<T>
         {
-            ThrowIf(value.IsNegative(), paramName);
+            ThrowIf(value <= 0, paramName);
         }
 
-        public static void ThrowIfNegativeOrZero<T>(
-            T value,
+        public static void ThrowIfZero(
+            int value,
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
-            where T : INumberBase<T>
         {
-            ThrowIf(value.IsNegative() || value.IsZero(), paramName);
+            ThrowIf(value == 0, paramName);
         }
-
-        public static void ThrowIfZero<T>(
-            T value,
-            [CallerArgumentExpression(nameof(value))] string? paramName = null)
-            where T : INumberBase<T>
-        {
-            ThrowIf(value.IsZero(), paramName);
-        }
-#endif
     }
 
     private static void ThrowIf(
