@@ -137,25 +137,25 @@
 
 ### BDD テスト for User Story 2（Red フェーズ）
 
-- [ ] T050 [P] [US2] ErrorRecovery.feature を Test/AsciiSharp.Specs/Features/ErrorRecovery.feature に作成（Acceptance Scenarios 1-3）
-- [ ] T051 [US2] ErrorRecoverySteps.cs を Test/AsciiSharp.Specs/StepDefinitions/ErrorRecoverySteps.cs に作成
-- [ ] T052 [US2] BDD テストを実行し、Red を確認
+- [x] T050 [P] [US2] ErrorRecovery.feature を Test/AsciiSharp.Specs/Features/ErrorRecovery.feature に作成（Acceptance Scenarios 1-3）
+- [x] T051 [US2] ErrorRecoverySteps.cs を Test/AsciiSharp.Specs/StepDefinitions/ErrorRecoverySteps.cs に作成
+- [x] T052 [US2] BDD テストを実行し、Red を確認
 
 ### Implementation for User Story 2（Green フェーズ）
 
 **エラー回復機能の実装**:
 
-- [ ] T053 [P] [US2] MissingTokenSyntax クラス（欠落トークンを表現）を Source/AsciiSharp/Syntax/MissingTokenSyntax.cs に実装
-- [ ] T054 [P] [US2] ErrorNodeSyntax クラス（エラー部分をラップ）を Source/AsciiSharp/Syntax/ErrorNodeSyntax.cs に実装
-- [ ] T055 [US2] ParserRecovery クラスを Source/AsciiSharp/Parser/ParserRecovery.cs に実装（同期ポイント戦略: 空行、セクションヘッダー）
-- [ ] T056 [US2] Parser にエラー回復ロジックを統合（スキップ・挿入・エラーノード生成）
-- [ ] T057 [US2] Diagnostic の生成と SyntaxTree への集約を実装
-- [ ] T058 [US2] エラーノードの IsMissing プロパティと ContainsDiagnostics フラグを実装
+- [x] T053 [P] [US2] MissingToken 機能を InternalToken.Missing() として実装（専用クラスは不要）
+- [x] T054 [P] [US2] エラーノード機能を既存の構文木機能で実装（専用クラスは不要）
+- [x] T055 [US2] Parser にエラー回復ロジックを実装（同期ポイント戦略: 空行、セクションヘッダー）
+- [x] T056 [US2] Parser にエラー回復ロジックを統合（スキップ・挿入・MissingToken 生成）
+- [x] T057 [US2] Diagnostic の生成と SyntaxTree への集約を実装
+- [x] T058 [US2] エラーノードの IsMissing プロパティと ContainsDiagnostics フラグを実装
 
 **検証**:
 
-- [ ] T059 [US2] BDD テストを再実行し、Green を確認
-- [ ] T060 [US2] 複数エラーを含む文書で正常部分が解析されることをテスト
+- [x] T059 [US2] BDD テストを再実行し、Green を確認
+- [x] T060 [US2] 複数エラーを含む文書で正常部分が解析されることをテスト
 - [ ] T061 [US2] ビルドを実行し、警告ゼロを確認
 
 ### Refactor for User Story 2
