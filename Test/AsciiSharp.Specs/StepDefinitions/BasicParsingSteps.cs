@@ -66,6 +66,17 @@ public sealed class BasicParsingSteps
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
     }
 
+    [Then(@"Document ノードは Header を持たない")]
+    public void ThenDocumentノードはHeaderを持たない()
+    {
+        Assert.IsNotNull(this.CurrentSyntaxTree, "構文木が null です。");
+
+        var document = this.CurrentSyntaxTree.Root as DocumentSyntax;
+
+        Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
+        Assert.IsNull(document.Header, "Document は Header を持ちません。");
+    }
+
     [Then(@"Header のタイトルは ""(.*)"" である")]
     public void ThenHeaderのタイトルはである(string expectedTitle)
     {
