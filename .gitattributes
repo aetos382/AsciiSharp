@@ -3,3 +3,5 @@
 *.md text diff=markdown
 *.cs text diff=csharp
 *.sh text diff=bash
+
+packages.lock.json text -eol
