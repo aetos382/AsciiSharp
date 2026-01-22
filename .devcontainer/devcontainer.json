@@ -26,7 +26,8 @@
   "containerEnv": {
     "TZ": "Asia/Tokyo",
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
-    "NUGET_PACKAGES": "/home/vscode/.nuget/packages"
+    "NUGET_PACKAGES": "/home/vscode/.nuget/packages",
+    "NUGET_XMLDOC_MODE": "none"
   },
   "remoteEnv": {
     "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}",

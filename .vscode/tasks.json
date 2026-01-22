@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "husky setup",
+      "dependsOn": [ "restore tools" ],
+      "type": "process",
+      "command": "dotnet",
+      "args": [ "husky", "install" ],
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "restore tools",
+      "type": "process",
+      "command": "dotnet",
+      "args": [ "tool", "restore" ]
+    }
+  ]
+}
