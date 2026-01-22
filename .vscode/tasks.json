@@ -6,10 +6,7 @@
       "dependsOn": [ "restore tools" ],
       "type": "process",
       "command": "dotnet",
-      "args": [
-        "husky",
-        "install"
-      ],
+      "args": [ "husky", "install" ],
       "runOptions": {
         "runOn": "folderOpen"
       }
