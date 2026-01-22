@@ -1,0 +1,16 @@
+{
+  "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
+  "tasks": [
+    {
+      "name": "prevent-main-commit",
+      "group": "pre-commit",
+      "branch": "main",
+      "command": "bash",
+      "args": [ "-c", "exit 1" ],
+      "windows": {
+        "command": "cmd.exe",
+        "args": [ "/c", "exit 1" ]
+      }
+    }
+  ]
+}
