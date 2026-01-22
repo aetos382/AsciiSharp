@@ -45,13 +45,13 @@
       },
       "Reqnroll.MSTest": {
         "type": "Direct",
-        "requested": "[3.3.1, )",
-        "resolved": "3.3.1",
-        "contentHash": "w6PY5oYU1MXHOnHjsykrUEjggBTeVFOYAyrBqPernHgdQX1h4HdLvRuVF+/9kRo6NbA6sXzqTD8Rkwx81IUIkQ==",
+        "requested": "[3.3.2, )",
+        "resolved": "3.3.2",
+        "contentHash": "NdaMMkeDbi3buRogUwiG0Px0Tm7uAwTD/nKnUoaCXtEUPk0z8uptN+4pyPmSah3+0Rnfs0Zk7SeunHZ5SORFxw==",
         "dependencies": {
           "MSTest.TestFramework": "2.2.8",
-          "Reqnroll": "3.3.1",
-          "Reqnroll.Tools.MsBuild.Generation": "3.3.1"
+          "Reqnroll": "3.3.2",
+          "Reqnroll.Tools.MsBuild.Generation": "3.3.2"
         }
       },
       "Cucumber.CucumberExpressions": {
@@ -159,8 +159,8 @@
       },
       "Reqnroll": {
         "type": "Transitive",
-        "resolved": "3.3.1",
-        "contentHash": "MgjPaf12sWZKzW0XfqBsZ6EnM9Sf2rIpTWDiFhf1KzxXBKuh542WjfDCjgJYCwjMciVqM2IgW/eHUrJc4l3tGg==",
+        "resolved": "3.3.2",
+        "contentHash": "PVKVLPLCFtUlDjF12E8kwdoGEIWwFIlfYqFVFmcsA9/ylHhnOHWMgJoO4MoVH98VDZuhKoIYGZQY2NioBostoA==",
         "dependencies": {
           "Cucumber.CucumberExpressions": "17.1.0",
           "Cucumber.HtmlFormatter": "22.2.0",
@@ -172,8 +172,8 @@
       },
       "Reqnroll.Tools.MsBuild.Generation": {
         "type": "Transitive",
-        "resolved": "3.3.1",
-        "contentHash": "Z3t0AYoK9YRqB+PIMCeFZESRleagben7vsOETIFlzATpi+u91woOBQx4Vv9sMNBBvq0iTZOTb4zDBuHO7MZSmA=="
+        "resolved": "3.3.2",
+        "contentHash": "nYG5sxsXDUTfEscIp2QeGhwchaQJi6fCIvJle4ayenNj6koq4KY5zawj80E3V/eaU9Uy7A82nMY3BhoyaLY6lg=="
       },
       "asciisharp": {
         "type": "Project"

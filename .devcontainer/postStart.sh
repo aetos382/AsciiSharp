@@ -7,5 +7,3 @@ add_safe_directory '/workspaces/AsciiSharp/submodules/asciidoc-lang'
 add_safe_directory '/workspaces/AsciiSharp/submodules/asciidoc-tck'
 
 git submodule update --init
-
-dotnet restore
