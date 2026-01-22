@@ -11,10 +11,5 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "*.feature": "${capture}.feature.cs"
-  },
-
-  "files.exclude": {
-    "**/obj/": true,
-    "**/bin/": true
   }
 }
