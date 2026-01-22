@@ -6,7 +6,7 @@
       "group": "pre-commit",
       "branch": "main",
       "command": "bash",
-      "args": [ "-c", "Direct commits to main are not allowed. && exit 1" ],
+      "args": [ "-c", "echo 'Direct commits to main are not allowed.' && exit 1" ],
       "windows": {
         "command": "cmd.exe",
         "args": [ "/c", "echo Direct commits to main are not allowed. && exit 1" ]
