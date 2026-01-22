@@ -13,6 +13,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Polyfills\**\*.cs" LinkBase="Polyfills" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(TemporarilySuppressedWarning)' != ''">
     <NoWarn>$(NoWarn);$(TemporarilySuppressedWarning)</NoWarn>
   </PropertyGroup>
