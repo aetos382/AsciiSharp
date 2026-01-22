@@ -184,7 +184,7 @@ public abstract class SyntaxNode
         var tree = this.SyntaxTree;
         if (tree is not null)
         {
-            foreach (var diagnostic in tree.GetDiagnostics(this))
+            foreach (var diagnostic in tree.GetDiagnosticsForNode(this))
             {
                 yield return diagnostic;
             }

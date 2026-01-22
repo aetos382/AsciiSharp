@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 
 using AsciiSharp.Text;
 
@@ -47,7 +48,7 @@ public sealed class Diagnostic : IEquatable<Diagnostic>
     /// <summary>
     /// メッセージフォーマット用の追加引数。
     /// </summary>
-    public object?[] Arguments { get; }
+    public IReadOnlyList<object?> Arguments { get; }
 
     /// <summary>
     /// 新しい Diagnostic インスタンスを作成する。

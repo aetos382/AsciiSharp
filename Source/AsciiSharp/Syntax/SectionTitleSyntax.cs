@@ -61,6 +61,8 @@ public sealed class SectionTitleSyntax : SyntaxNode
                 this._tokens.Add(token);
 
                 // 種別ごとの処理
+                // IDE0010: SyntaxKind の全ケースを網羅する必要なし - タイトルに関連する種別のみ処理
+#pragma warning disable IDE0010
                 switch (slot.Kind)
                 {
                     case SyntaxKind.EqualsToken:
@@ -95,6 +97,7 @@ public sealed class SectionTitleSyntax : SyntaxNode
 
                         break;
                 }
+#pragma warning restore IDE0010
             }
 
             currentPosition += slot.FullWidth;

@@ -286,7 +286,12 @@ internal sealed class Lexer
         if (this.Current == '\r')
         {
             this.Position++;
+
+            // CA1508: false positive - Current は Position 依存のプロパティであり、
+            // Position++ により値が変わる。CRLF シーケンスの処理に必要。
+#pragma warning disable CA1508
             if (this.Current == '\n')
+#pragma warning restore CA1508
             {
                 this.Position++;
             }

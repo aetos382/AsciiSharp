@@ -196,7 +196,7 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
 /// <summary>
 /// トリビアのリストを表す構造体。
 /// </summary>
-public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
+public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>, IEquatable<SyntaxTriviaList>
 {
     private readonly SyntaxToken _token;
     private readonly bool _isLeading;
@@ -346,25 +346,49 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>
         }
     }
 
+    /// <summary>
+    /// 他の SyntaxTriviaList と等しいかどうかを判定する。
+    /// </summary>
+    /// <param name="other">比較対象。</param>
+    /// <returns>等しい場合は true。</returns>
+    public bool Equals(SyntaxTriviaList other)
+    {
+        return this._isLeading == other._isLeading
+            && this._token.Equals(other._token);
+    }
+
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is SyntaxTriviaList other && this.Equals(other);
     }
 
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+#if NETSTANDARD2_0
+        unchecked
+        {
+            return (this._token.GetHashCode() * 397) ^ this._isLeading.GetHashCode();
+        }
+#else
+        return HashCode.Combine(this._token, this._isLeading);
+#endif
     }
 
+    /// <summary>
+    /// 2 つの SyntaxTriviaList が等しいかどうかを判定する。
+    /// </summary>
     public static bool operator ==(SyntaxTriviaList left, SyntaxTriviaList right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// 2 つの SyntaxTriviaList が等しくないかどうかを判定する。
+    /// </summary>
     public static bool operator !=(SyntaxTriviaList left, SyntaxTriviaList right)
     {
-        return !(left == right);
+        return !left.Equals(right);
     }
 }

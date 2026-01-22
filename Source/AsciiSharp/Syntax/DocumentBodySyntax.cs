@@ -39,12 +39,15 @@ public sealed class DocumentBodySyntax : SyntaxNode
             }
 
             // ノードの場合は適切な型に変換
+            // IDE0072: SyntaxKind の全ケースを網羅する必要なし - 本体に関連する種別のみ処理
+#pragma warning disable IDE0072
             SyntaxNode? child = slot.Kind switch
             {
                 SyntaxKind.Section => new SectionSyntax(slot, this, currentPosition, syntaxTree),
                 SyntaxKind.Paragraph => new ParagraphSyntax(slot, this, currentPosition, syntaxTree),
                 _ => null
             };
+#pragma warning restore IDE0072
 
             if (child is not null)
             {

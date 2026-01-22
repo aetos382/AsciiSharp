@@ -50,6 +50,8 @@ public sealed class SectionSyntax : SyntaxNode
             }
 
             // ノードの場合は適切な型に変換
+            // IDE0010: SyntaxKind の全ケースを網羅する必要なし - セクションに関連する種別のみ処理
+#pragma warning disable IDE0010
             switch (slot.Kind)
             {
                 case SyntaxKind.SectionTitle:
@@ -68,7 +70,11 @@ public sealed class SectionSyntax : SyntaxNode
                     this._content.Add(paragraph);
                     this._children.Add(new SyntaxNodeOrToken(paragraph));
                     break;
+
+                default:
+                    break;
             }
+#pragma warning restore IDE0010
 
             currentPosition += slot.FullWidth;
         }

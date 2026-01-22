@@ -156,12 +156,12 @@
 
 - [x] T059 [US2] BDD テストを再実行し、Green を確認
 - [x] T060 [US2] 複数エラーを含む文書で正常部分が解析されることをテスト
-- [ ] T061 [US2] ビルドを実行し、警告ゼロを確認
+- [x] T061 [US2] ビルドを実行し、警告ゼロを確認
 
 ### Refactor for User Story 2
 
-- [ ] T062 [US2] エラーメッセージの多言語化対応検討（将来拡張）
-- [ ] T063 [US2] エラー回復ロジックのリファクタリング
+- [x] T062 [US2] エラーメッセージの多言語化対応（リソースファイルに英語メッセージを追加）
+- [x] T063 [US2] エラー回復ロジックのリファクタリング（AddError ヘルパーメソッド抽出）
 
 **Checkpoint**: User Stories 1 と 2 が両方とも独立して機能
 
@@ -177,9 +177,9 @@
 
 ### BDD テスト for User Story 3（Red フェーズ）
 
-- [ ] T064 [P] [US3] LinkParsing.feature を Test/AsciiSharp.Specs/Features/LinkParsing.feature に作成（Acceptance Scenarios 1-3）
-- [ ] T065 [US3] LinkParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/LinkParsingSteps.cs に作成
-- [ ] T066 [US3] BDD テストを実行し、Red を確認
+- [x] T064 [P] [US3] LinkParsing.feature を Test/AsciiSharp.Specs/Features/LinkParsing.feature に作成（Acceptance Scenarios 1-4）
+- [x] T065 [US3] LinkParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/LinkParsingSteps.cs に作成
+- [x] T066 [US3] BDD テストを実行し、Red を確認（3 テスト失敗を確認）
 
 ### Implementation for User Story 3（Green フェーズ）
 

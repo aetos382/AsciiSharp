@@ -59,5 +59,23 @@ namespace AsciiSharp.Properties {
                 resourceCulture = value;
             }
         }
+
+        /// <summary>
+        ///   Expected token '{0}' is missing. に類似したローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ADS0001_ExpectedToken {
+            get {
+                return ResourceManager.GetString("ADS0001_ExpectedToken", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Section title text is missing. に類似したローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ADS0002_MissingSectionTitleText {
+            get {
+                return ResourceManager.GetString("ADS0002_MissingSectionTitleText", resourceCulture);
+            }
+        }
     }
 }

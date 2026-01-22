@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
+using AsciiSharp.Properties;
 using AsciiSharp.Text;
 
 namespace AsciiSharp.Parser;
@@ -230,11 +231,10 @@ internal sealed class AsciiDocParser
         {
             this._sink.MissingToken(SyntaxKind.TextToken);
             var errorPosition = this._lexer.Position - (this.Current.Kind == SyntaxKind.NewLineToken ? this.Current.FullWidth : 0);
-            this._diagnostics.Add(new Diagnostic(
+            this.AddError(
                 "ADS0002",
-                "セクションタイトルにテキストがありません。",
-                DiagnosticSeverity.Error,
-                new TextSpan(startPosition, errorPosition - startPosition)));
+                Resources.ADS0002_MissingSectionTitleText,
+                new TextSpan(startPosition, errorPosition - startPosition));
         }
 
         // 改行を読み取る
@@ -259,11 +259,100 @@ internal sealed class AsciiDocParser
             // 行の内容を読み取る
             while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
             {
-                this.EmitCurrentToken();
+                if (this.IsAtLink())
+                {
+                    this.ParseLink();
+                }
+                else
+                {
+                    this.EmitCurrentToken();
+                }
             }
 
             // 改行を読み取る
             if (this.Current.Kind == SyntaxKind.NewLineToken)
+            {
+                this.EmitCurrentToken();
+            }
+        }
+
+        this._sink.FinishNode();
+    }
+
+    /// <summary>
+    /// 現在位置が URL リンクの開始位置かどうかを判定する。
+    /// </summary>
+    /// <returns>URL リンクの開始位置であれば true。</returns>
+    private bool IsAtLink()
+    {
+        // URL パターン: http:// または https://
+        if (this.Current.Kind != SyntaxKind.TextToken)
+        {
+            return false;
+        }
+
+        var text = this.Current.Text;
+        if (!string.Equals(text, "http", System.StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(text, "https", System.StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        // 次のトークンが :// かを先読み
+        var nextToken = this.Peek();
+        return nextToken.Kind == SyntaxKind.ColonToken;
+    }
+
+    /// <summary>
+    /// リンクを解析する。
+    /// </summary>
+    private void ParseLink()
+    {
+        this._sink.StartNode(SyntaxKind.Link);
+
+        // URL 部分を収集: http(s)://...
+        // スキーム部分 (http または https)
+        this.EmitCurrentToken();
+
+        // コロン (:)
+        if (this.Current.Kind == SyntaxKind.ColonToken)
+        {
+            this.EmitCurrentToken();
+        }
+
+        // スラッシュ 2 つ (//)
+        while (this.Current.Kind == SyntaxKind.SlashToken)
+        {
+            this.EmitCurrentToken();
+        }
+
+        // URL の残りの部分（空白、改行、EOF、または [ まで）
+        while (!this.IsAtEnd() &&
+               this.Current.Kind != SyntaxKind.WhitespaceToken &&
+               this.Current.Kind != SyntaxKind.NewLineToken &&
+               this.Current.Kind != SyntaxKind.EndOfFileToken &&
+               this.Current.Kind != SyntaxKind.OpenBracketToken)
+        {
+            this.EmitCurrentToken();
+        }
+
+        // 表示テキストがあれば解析 ([text])
+        if (this.Current.Kind == SyntaxKind.OpenBracketToken)
+        {
+            // [
+            this.EmitCurrentToken();
+
+            // 表示テキスト（] まで）
+            while (!this.IsAtEnd() &&
+                   this.Current.Kind != SyntaxKind.CloseBracketToken &&
+                   this.Current.Kind != SyntaxKind.NewLineToken &&
+                   this.Current.Kind != SyntaxKind.EndOfFileToken)
+            {
+                this.EmitCurrentToken();
+            }
+
+            // ]
+            if (this.Current.Kind == SyntaxKind.CloseBracketToken)
             {
                 this.EmitCurrentToken();
             }
@@ -320,13 +409,29 @@ internal sealed class AsciiDocParser
         {
             // エラー: 期待されるトークンがない
             this._sink.MissingToken(expectedKind);
-            this._sink.Error("ADS0001", $"期待されるトークン '{expectedKind}' がありません。実際: '{this.Current.Kind}'");
-            this._diagnostics.Add(new Diagnostic(
-                "ADS0001",
-                $"期待されるトークン '{expectedKind}' がありません。",
-                DiagnosticSeverity.Error,
-                new TextSpan(this._lexer.Position, 0)));
+
+            // CA1863: エラー報告はホットパスではないため CompositeFormat キャッシュは不要
+#pragma warning disable CA1863
+            var errorMessage = string.Format(
+                System.Globalization.CultureInfo.CurrentCulture,
+                Resources.ADS0001_ExpectedToken,
+                expectedKind);
+#pragma warning restore CA1863
+
+            this.AddError("ADS0001", errorMessage, new TextSpan(this._lexer.Position, 0));
         }
+    }
+
+    /// <summary>
+    /// 診断情報を追加する。
+    /// </summary>
+    /// <param name="code">エラーコード。</param>
+    /// <param name="message">エラーメッセージ。</param>
+    /// <param name="span">位置情報。</param>
+    private void AddError(string code, string message, TextSpan span)
+    {
+        this._sink.Error(code, message);
+        this._diagnostics.Add(new Diagnostic(code, message, DiagnosticSeverity.Error, span));
     }
 
     /// <summary>

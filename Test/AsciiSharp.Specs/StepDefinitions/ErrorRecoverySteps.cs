@@ -39,7 +39,7 @@ public sealed class ErrorRecoverySteps
     [Then(@"構文木が生成される")]
     public void Then構文木が生成される()
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         Assert.IsNotNull(syntaxTree.Root);
     }
@@ -47,7 +47,7 @@ public sealed class ErrorRecoverySteps
     [Then(@"構文木に診断情報が含まれる")]
     public void Then構文木に診断情報が含まれる()
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         Assert.IsNotEmpty(syntaxTree.Diagnostics, "診断情報が含まれていません");
     }
@@ -55,7 +55,7 @@ public sealed class ErrorRecoverySteps
     [Then(@"診断情報の数は (\d+) 以上である")]
     public void Then診断情報の数は以上である(int minCount)
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
 
         Assert.IsNotNull(syntaxTree);
 
@@ -68,7 +68,7 @@ public sealed class ErrorRecoverySteps
     [Then(@"""(.+)"" のセクションが正しく解析される")]
     public void Thenのセクションが正しく解析される(string sectionTitle)
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         var sections = syntaxTree.Root.DescendantNodes().OfType<SectionSyntax>();
         var matchingSection = sections.FirstOrDefault(s =>
@@ -79,7 +79,7 @@ public sealed class ErrorRecoverySteps
     [Then(@"""(.+)"" が何らかの形で認識される")]
     public void Thenが何らかの形で認識される(string text)
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         var fullText = syntaxTree.Root.ToFullString();
         Assert.IsTrue(fullText.Contains(text, StringComparison.Ordinal), $"'{text}' がテキストに含まれていません");
@@ -88,7 +88,7 @@ public sealed class ErrorRecoverySteps
     [Then(@"正常な段落の数は (\d+) 以上である")]
     public void Then正常な段落の数は以上である(int minCount)
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         var paragraphs = syntaxTree.Root.DescendantNodes().OfType<ParagraphSyntax>();
         var count = paragraphs.Count();
@@ -100,8 +100,8 @@ minCount,
     [Then(@"構文木からテキストを再構築できる")]
     public void Then構文木からテキストを再構築できる()
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
-        var sourceText = this._basicParsingSteps.GetSourceText();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
+        var sourceText = this._basicParsingSteps.CurrentSourceText;
         Assert.IsNotNull(syntaxTree);
         var reconstructed = syntaxTree.Root.ToFullString();
         Assert.AreEqual(sourceText, reconstructed, "テキストの再構築に失敗しました");
@@ -110,7 +110,7 @@ minCount,
     [Then(@"診断情報に位置情報が含まれる")]
     public void Then診断情報に位置情報が含まれる()
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         foreach (var diagnostic in syntaxTree.Diagnostics)
         {
@@ -123,7 +123,7 @@ minCount,
     [Then(@"診断情報の重大度が ""(.+)"" または ""(.+)"" である")]
     public void Then診断情報の重大度がまたはである(string severity1, string severity2)
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         foreach (var diagnostic in syntaxTree.Diagnostics)
         {
@@ -137,7 +137,7 @@ minCount,
     [Then(@"構文木に欠落ノードが含まれる")]
     public void Then構文木に欠落ノードが含まれる()
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         var hasMissing = syntaxTree.Root.DescendantNodesAndTokens()
             .Any(n => n.IsMissing);
@@ -147,7 +147,7 @@ minCount,
     [Then(@"欠落ノードの IsMissing プロパティが true である")]
     public void Then欠落ノードのIsMissingプロパティがTrueである()
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         var missingNodes = syntaxTree.Root.DescendantNodesAndTokens()
             .Where(n => n.IsMissing)
@@ -162,7 +162,7 @@ minCount,
     [Then(@"スキップされたトークンがトリビアとして保持される")]
     public void ThenスキップされたトークンがTriviasとして保持される()
     {
-        var syntaxTree = this._basicParsingSteps.GetSyntaxTree();
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
         // スキップされたトークンがなくてもテストはパスする（ロスレス解析で保持されればOK）
         // このテストは主にロスレス性を確認する

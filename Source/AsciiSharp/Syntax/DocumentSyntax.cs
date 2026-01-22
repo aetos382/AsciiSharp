@@ -46,6 +46,8 @@ public sealed class DocumentSyntax : SyntaxNode
             }
 
             // ノードの場合は適切な型に変換
+            // IDE0010: SyntaxKind の全ケースを網羅する必要なし - 文書に関連する種別のみ処理
+#pragma warning disable IDE0010
             switch (slot.Kind)
             {
                 case SyntaxKind.DocumentHeader:
@@ -57,7 +59,11 @@ public sealed class DocumentSyntax : SyntaxNode
                     this.Body = new DocumentBodySyntax(slot, this, currentPosition, syntaxTree);
                     this._children.Add(new SyntaxNodeOrToken(this.Body));
                     break;
+
+                default:
+                    break;
             }
+#pragma warning restore IDE0010
 
             currentPosition += slot.FullWidth;
         }

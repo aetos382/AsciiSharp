@@ -83,7 +83,7 @@ internal sealed class StringText : SourceText
     /// <summary>
     /// テキストから行情報を解析する。
     /// </summary>
-    private static IReadOnlyList<TextLine> ParseLines(string text)
+    private static List<TextLine> ParseLines(string text)
     {
         var lines = new List<TextLine>();
         var position = 0;

@@ -126,7 +126,7 @@ public sealed class SyntaxTree
     /// </summary>
     /// <param name="node">ノード。</param>
     /// <returns>診断情報のシーケンス。</returns>
-    public IEnumerable<Diagnostic> GetDiagnostics(SyntaxNode node)
+    public IEnumerable<Diagnostic> GetDiagnosticsForNode(SyntaxNode node)
     {
         if (node is null)
         {
