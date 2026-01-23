@@ -185,32 +185,32 @@
 
 **インライン要素ノードの実装**:
 
-- [ ] T067 [P] [US3] InlineSyntax 抽象クラスを Source/AsciiSharp/Syntax/InlineSyntax.cs に実装
+- [x] T067 [P] [US3] ~~InlineSyntax 抽象クラスを Source/AsciiSharp/Syntax/InlineSyntax.cs に実装~~ *(不要: LinkSyntax は直接 SyntaxNode を継承で十分)*
 - ~~[ ] T068 [P] [US3] FormattedTextSyntax クラス（太字・斜体・等幅）を実装~~ *(延期: 後続イテレーション)*
-- [ ] T069 [P] [US3] LinkSyntax クラスを Source/AsciiSharp/Syntax/LinkSyntax.cs に実装
+- [x] T069 [P] [US3] LinkSyntax クラスを Source/AsciiSharp/Syntax/LinkSyntax.cs に実装
 - ~~[ ] T070 [P] [US3] MacroSyntax クラスを実装~~ *(延期: 後続イテレーション)*
 - ~~[ ] T071 [P] [US3] AttributeReferenceSyntax クラスを実装~~ *(延期: 後続イテレーション)*
 
 **Lexer 拡張**:
 
-- [ ] T072 [US3] Lexer にリンク関連トークンを追加（[, ], :, / など）
+- [x] T072 [US3] Lexer にリンク関連トークンを追加（[, ], :, / など）
 
 **Parser 拡張**:
 
-- [ ] T073 [US3] Parser にリンク解析ロジックを追加（ParseLink メソッド）
+- [x] T073 [US3] Parser にリンク解析ロジックを追加（ParseLink メソッド）
 - ~~[ ] T074 [US3] ネストしたインライン書式の解析を実装~~ *(延期: 後続イテレーション)*
 - ~~[ ] T075 [US3] URL マクロ、相互参照、脚注マクロの解析を実装~~ *(延期: 後続イテレーション)*
 
 **検証**:
 
-- [ ] T076 [US3] BDD テストを再実行し、Green を確認
-- [ ] T077 [US3] 複数リンクと表示テキスト付きリンクのテスト
-- [ ] T078 [US3] ビルドを実行し、警告ゼロを確認
+- [x] T076 [US3] BDD テストを再実行し、Green を確認
+- [x] T077 [US3] 複数リンクと表示テキスト付きリンクのテスト
+- [x] T078 [US3] ビルドを実行し、警告ゼロを確認
 
 ### Refactor for User Story 3
 
-- [ ] T079 [US3] リンク解析ロジックの最適化
-- [ ] T080 [US3] インライン解析の共通パターンをリファクタリング
+- [x] T079 [US3] リンク解析ロジックの最適化 *(現状で十分、追加の最適化は不要)*
+- [x] T080 [US3] インライン解析の共通パターンをリファクタリング *(現状で十分、追加のリファクタリングは不要)*
 
 **Checkpoint**: User Stories 1, 2, 3 が独立して機能
 
@@ -327,9 +327,9 @@
 - [ ] T117 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
 - [ ] T118 [P] ネストレベル制限を Parser に実装（無限ループ防止）
 - [ ] T119 空の文書（空文字列）の解析テストを追加（Edge Case: 空のドキュメントノードを持つ有効な構文木が生成されることを検証）
-- [ ] T119a [US1] BasicParsing.feature の「本文のみを含む文章の解析」シナリオを補完（段落数検証、段落テキスト検証、ラウンドトリップ検証を追加）
-- [ ] T119b [US1] BasicParsingSteps.cs に「段落のテキストは "..." である」ステップ定義を追加（Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs）
-- [ ] T119c [US1] ヘッダーなし文書のテストを実行し、Green を確認
+- [x] T119a [US1] BasicParsing.feature の「本文のみを含む文章の解析」シナリオを補完（段落数検証、段落テキスト検証、ラウンドトリップ検証を追加）
+- [x] T119b [US1] BasicParsingSteps.cs に「段落のテキストは "..." である」ステップ定義を追加（Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs）*(既存ステップで対応可能、追加不要)*
+- [x] T119c [US1] ヘッダーなし文書のテストを実行し、Green を確認
 - [ ] T120 [P] XML ドキュメントコメントを公開 API に追加
 - [ ] T121 [P] README.md を作成（クイックスタート、API 概要）
 - [ ] T122 全体のコードレビューとリファクタリング
