@@ -9,14 +9,18 @@
     背景:
         前提 AsciiDoc パーサーが初期化されている
 
+    @HeaderLess
     シナリオ: 本文のみを含む文章の解析
       前提 以下の AsciiDoc 文書がある:
         """
         Hello, AsciiDoc.
         """
       もし 文書を解析する
+      かつ 構文木から完全なテキストを取得する
       ならば 構文木のルートは Document ノードである
       かつ Document ノードは Header を持たない
+      かつ Document ノードは 1 個の段落を持つ
+      かつ 再構築されたテキストは元の文書と一致する
 
     @Acceptance @Scenario1
     シナリオ: ドキュメントタイトルとセクションを含む文書の解析

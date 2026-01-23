@@ -34,10 +34,13 @@ internal sealed class Lexer
     /// <summary>
     /// 次の位置の文字。
     /// </summary>
+    /// <remarks>T114 (コメント解析) で使用予定。</remarks>
+#pragma warning disable IDE0051 // Remove unused private members
     private char Peek(int offset = 1)
     {
         return this.Position + offset < this._text.Length ? this._text[this.Position + offset] : '\0';
     }
+#pragma warning restore IDE0051
 
     /// <summary>
     /// ファイル終端に達したかどうか。
@@ -76,31 +79,20 @@ internal sealed class Lexer
     /// 先行トリビアをスキャンする。
     /// </summary>
     /// <remarks>
-    /// AsciiDoc では空白が意味を持つため、空白はトークンとして扱う。
-    /// コメントのみを先行トリビアとして扱う。
+    /// <para>AsciiDoc では空白が意味を持つため、空白はトークンとして扱う。</para>
+    /// <para>AsciiDoc の単一行コメント (//) は行頭でのみ有効。</para>
+    /// <para>URL 内の // をコメントとして誤認識しないよう、</para>
+    /// <para>先行トリビアとしてのコメント収集は行わない。</para>
+    /// <para>コメントは T114 で Parser レベルで処理する。</para>
     /// </remarks>
+    // CA1822: 将来の行頭判定ロジック追加のため instance メソッドとして残す
+#pragma warning disable CA1822
     private void ScanLeadingTrivia()
+#pragma warning restore CA1822
     {
-        while (!this.IsAtEnd)
-        {
-            switch (this.Current)
-            {
-                case '/':
-                    if (this.Peek() == '/')
-                    {
-                        this.ScanCommentTrivia(this._leadingTrivia);
-                    }
-                    else
-                    {
-                        return;
-                    }
-
-                    break;
-
-                default:
-                    return;
-            }
-        }
+        // AsciiDoc のコメントは行頭でのみ有効なため、
+        // Lexer レベルでのコメント検出は行わない。
+        // URL 内の // をコメントとして誤認識することを防ぐ。
     }
 
     /// <summary>
@@ -118,7 +110,10 @@ internal sealed class Lexer
     /// <summary>
     /// コメントトリビアをスキャンする。
     /// </summary>
+    /// <remarks>T114 (コメント解析) で使用予定。</remarks>
+#pragma warning disable IDE0051 // Remove unused private members
     private void ScanCommentTrivia(List<InternalTrivia> triviaList)
+#pragma warning restore IDE0051
     {
         var start = this.Position;
 
