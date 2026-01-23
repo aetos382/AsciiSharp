@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSTest.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net10.0;net481</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <TestingExtensionsProfile>None</TestingExtensionsProfile>
   </PropertyGroup>
