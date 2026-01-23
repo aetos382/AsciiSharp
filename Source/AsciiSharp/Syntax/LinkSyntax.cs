@@ -89,7 +89,7 @@ public sealed class LinkSyntax : SyntaxNode
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        // TODO: 実装
-        throw new System.NotImplementedException();
+        // リーフノードなので、子孫にターゲットノードは存在しない
+        return this;
     }
 }

@@ -81,7 +81,9 @@ public sealed class DocumentSyntax : SyntaxNode
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        // TODO: 実装
-        throw new System.NotImplementedException();
+        return this.ReplaceInDescendants(
+            oldNode,
+            newNode,
+            internalNode => new DocumentSyntax(internalNode, null, 0, null));
     }
 }

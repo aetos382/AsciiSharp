@@ -233,4 +233,98 @@ public abstract class SyntaxNode
     /// <param name="newNode">新しいノード。</param>
     /// <returns>新しい構文木のルートノード。</returns>
     protected abstract SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode);
+
+    /// <summary>
+    /// 内部ノードの子スロットを置換した新しい内部ノードを作成する。
+    /// </summary>
+    /// <param name="slotIndex">置換するスロットのインデックス。</param>
+    /// <param name="newChild">新しい子ノード。</param>
+    /// <returns>新しい内部ノード。</returns>
+    private protected InternalNode ReplaceInternalSlot(int slotIndex, InternalNode newChild)
+    {
+        var slotCount = this.Internal.SlotCount;
+        var newChildren = new InternalNode?[slotCount];
+
+        for (var i = 0; i < slotCount; i++)
+        {
+            newChildren[i] = i == slotIndex ? newChild : this.Internal.GetSlot(i);
+        }
+
+        return new InternalSyntax.InternalSyntaxNode(this.Internal.Kind, newChildren);
+    }
+
+    /// <summary>
+    /// 指定された子ノードが含まれるスロットのインデックスを検索する。
+    /// </summary>
+    /// <param name="childNode">検索する子ノード。</param>
+    /// <returns>スロットのインデックス。見つからない場合は -1。</returns>
+    private protected int FindSlotIndex(SyntaxNode childNode)
+    {
+        ArgumentNullException.ThrowIfNull(childNode);
+
+        var slotCount = this.Internal.SlotCount;
+
+        for (var i = 0; i < slotCount; i++)
+        {
+            var slot = this.Internal.GetSlot(i);
+            if (slot is not null && ReferenceEquals(slot, childNode.Internal))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// 子孫ノードに対する置換を処理する共通ロジック。
+    /// </summary>
+    /// <param name="oldNode">置換対象のノード。</param>
+    /// <param name="newNode">新しいノード。</param>
+    /// <param name="createNewNode">新しい内部ノードから構文ノードを作成するファクトリ関数。</param>
+    /// <returns>新しい構文木のルートノード。</returns>
+    private protected SyntaxNode ReplaceInDescendants(
+        SyntaxNode oldNode,
+        SyntaxNode newNode,
+        Func<InternalNode, SyntaxNode> createNewNode)
+    {
+        // 直接の子ノードかどうかを確認
+        var slotIndex = this.FindSlotIndex(oldNode);
+        if (slotIndex >= 0)
+        {
+            // 直接の子ノードを置換
+            var newInternal = this.ReplaceInternalSlot(slotIndex, newNode.Internal);
+            return createNewNode(newInternal);
+        }
+
+        // 子孫ノードを検索して再帰的に置換
+        var slotCount = this.Internal.SlotCount;
+        for (var i = 0; i < slotCount; i++)
+        {
+            var slot = this.Internal.GetSlot(i);
+            if (slot is null or InternalSyntax.InternalToken)
+            {
+                continue;
+            }
+
+            // このスロットに対応する子ノードを探す
+            foreach (var childOrToken in this.ChildNodesAndTokens())
+            {
+                if (childOrToken.IsNode)
+                {
+                    var childNode = childOrToken.AsNode()!;
+                    if (ReferenceEquals(childNode.Internal, slot) && childNode.FullSpan.Contains(oldNode.FullSpan))
+                    {
+                        // この子ノードに oldNode が含まれる
+                        var replacedChild = childNode.ReplaceNode(oldNode, newNode);
+                        var newInternal = this.ReplaceInternalSlot(i, replacedChild.Internal);
+                        return createNewNode(newInternal);
+                    }
+                }
+            }
+        }
+
+        // 見つからない場合は自身を返す（変更なし）
+        return this;
+    }
 }

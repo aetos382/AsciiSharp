@@ -84,8 +84,10 @@ public sealed class DocumentHeaderSyntax : SyntaxNode
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        // TODO: 実装
-        throw new System.NotImplementedException();
+        return this.ReplaceInDescendants(
+            oldNode,
+            newNode,
+            internalNode => new DocumentHeaderSyntax(internalNode, null, 0, null));
     }
 }
 
@@ -116,6 +118,7 @@ public sealed class AuthorLineSyntax : SyntaxNode
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        throw new System.NotImplementedException();
+        // リーフノードなので、子孫にターゲットノードは存在しない
+        return this;
     }
 }
