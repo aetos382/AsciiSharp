@@ -36,6 +36,12 @@ public sealed class BasicParsingSteps
         this.CurrentSourceText = multilineText;
     }
 
+    [Given(@"空の AsciiDoc 文書がある")]
+    public void Given空のAsciiDoc文書がある()
+    {
+        this.CurrentSourceText = string.Empty;
+    }
+
     [When(@"文書を解析する")]
     public void When文書を解析する()
     {
