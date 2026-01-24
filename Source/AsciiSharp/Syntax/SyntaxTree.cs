@@ -148,12 +148,26 @@ public sealed class SyntaxTree
     /// </summary>
     /// <param name="changes">適用する変更のリスト。</param>
     /// <returns>変更後の新しい構文木。</returns>
+    /// <remarks>
+    /// <para>増分解析を使用し、変更されていない部分の内部ノードを再利用する。</para>
+    /// </remarks>
     public SyntaxTree WithChanges(IEnumerable<TextChange> changes)
     {
         ArgumentNullException.ThrowIfNull(changes);
 
-        var newText = this.Text.WithChanges(changes);
-        return ParseText(newText, this.FilePath);
+        var changeList = changes as IReadOnlyList<TextChange> ?? [.. changes];
+
+        // 変更がない場合は同じツリーを返す
+        if (changeList.Count == 0)
+        {
+            return this;
+        }
+
+        var newText = this.Text.WithChanges(changeList);
+
+        // 増分解析を使用
+        var incrementalParser = new IncrementalParser(this, newText, changeList);
+        return incrementalParser.Parse();
     }
 
     /// <summary>
