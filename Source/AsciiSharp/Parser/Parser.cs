@@ -13,10 +13,20 @@ namespace AsciiSharp.Parser;
 /// </summary>
 internal sealed class AsciiDocParser
 {
+    /// <summary>
+    /// 許容される最大ネストレベル。
+    /// </summary>
+    /// <remarks>
+    /// AsciiDoc のセクションは通常 6 レベルまでですが、安全マージンを含めて 64 に設定。
+    /// この値を超えるネストは無限ループの兆候と見なされる。
+    /// </remarks>
+    private const int MaxNestLevel = 64;
+
     private readonly Lexer _lexer;
     private readonly ITreeSink _sink;
     private readonly List<Diagnostic> _diagnostics = [];
     private InternalToken? _peekedToken;
+    private int _nestLevel;
 
     /// <summary>
     /// AsciiDocParser を作成する。
@@ -170,39 +180,59 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void ParseSection()
     {
-        this._sink.StartNode(SyntaxKind.Section);
+        this._nestLevel++;
 
-        var currentLevel = this.CountEqualsAtLineStart();
-
-        // セクションタイトルを解析
-        this.ParseSectionTitle();
-
-        // 空行をスキップ
-        this.SkipBlankLines();
-
-        // セクションの内容を解析
-        while (!this.IsAtEnd() && !this.IsAtSectionTitleOfLevelOrHigher(currentLevel))
+        try
         {
-            if (this.IsBlankLine())
+            // ネストレベル制限のチェック
+            if (this._nestLevel > MaxNestLevel)
             {
-                this.SkipBlankLines();
-            }
-            else if (this.IsAtComment())
-            {
-                this.SkipComment();
-            }
-            else if (this.IsAtSectionTitle())
-            {
-                // サブセクション
-                this.ParseSection();
-            }
-            else
-            {
-                this.ParseParagraph();
-            }
-        }
+                this.AddError("ADS0003", Resources.Error_NestingLevelExceeded, new TextSpan(this._lexer.Position, 0));
 
-        this._sink.FinishNode();
+                // ノードを開始して即座に終了（残りのトークンを消費しない）
+                this._sink.StartNode(SyntaxKind.Section);
+                this._sink.FinishNode();
+                return;
+            }
+
+            this._sink.StartNode(SyntaxKind.Section);
+
+            var currentLevel = this.CountEqualsAtLineStart();
+
+            // セクションタイトルを解析
+            this.ParseSectionTitle();
+
+            // 空行をスキップ
+            this.SkipBlankLines();
+
+            // セクションの内容を解析
+            while (!this.IsAtEnd() && !this.IsAtSectionTitleOfLevelOrHigher(currentLevel))
+            {
+                if (this.IsBlankLine())
+                {
+                    this.SkipBlankLines();
+                }
+                else if (this.IsAtComment())
+                {
+                    this.SkipComment();
+                }
+                else if (this.IsAtSectionTitle())
+                {
+                    // サブセクション
+                    this.ParseSection();
+                }
+                else
+                {
+                    this.ParseParagraph();
+                }
+            }
+
+            this._sink.FinishNode();
+        }
+        finally
+        {
+            this._nestLevel--;
+        }
     }
 
     /// <summary>

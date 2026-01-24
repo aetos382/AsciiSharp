@@ -10,10 +10,14 @@ namespace AsciiSharp.Text;
 internal sealed class StringText : SourceText
 {
     private readonly string _text;
+    private readonly bool _hasBom;
     private readonly IReadOnlyList<TextLine> _lines;
 
     /// <inheritdoc />
     public override int Length => this._text.Length;
+
+    /// <inheritdoc />
+    public override bool HasBom => this._hasBom;
 
     /// <inheritdoc />
     public override char this[int index]
@@ -33,13 +37,42 @@ internal sealed class StringText : SourceText
     /// <summary>
     /// 文字列から StringText を作成する。
     /// </summary>
-    /// <param name="text">ソーステキスト。</param>
+    /// <param name="text">ソーステキスト。BOM が含まれている場合は自動的に検出・除去される。</param>
     public StringText(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
 
+        // BOM の検出と処理
+        if (text.Length > 0 && text[0] == ByteOrderMark)
+        {
+            this._hasBom = true;
+#if NETSTANDARD2_0
+            this._text = text.Substring(1);
+#else
+            this._text = text[1..];
+#endif
+        }
+        else
+        {
+            this._hasBom = false;
+            this._text = text;
+        }
+
+        this._lines = ParseLines(this._text);
+    }
+
+    /// <summary>
+    /// BOM 状態を維持しながら新しい StringText を作成する（内部用）。
+    /// </summary>
+    /// <param name="text">ソーステキスト（BOM を除く）。</param>
+    /// <param name="hasBom">BOM の有無。</param>
+    private StringText(string text, bool hasBom)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
         this._text = text;
-        this._lines = ParseLines(text);
+        this._hasBom = hasBom;
+        this._lines = ParseLines(this._text);
     }
 
     /// <inheritdoc />
@@ -77,7 +110,8 @@ internal sealed class StringText : SourceText
             builder.Insert(change.Span.Start, change.NewText);
         }
 
-        return new StringText(builder.ToString());
+        // BOM 状態を維持
+        return new StringText(builder.ToString(), this._hasBom);
     }
 
     /// <summary>

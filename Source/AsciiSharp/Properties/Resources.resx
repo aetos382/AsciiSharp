@@ -56,4 +56,8 @@
 		<value>Section title text is missing.</value>
 		<comment>ADS0002: Section title has no text content</comment>
 	</data>
+	<data name="Error_NestingLevelExceeded" xml:space="preserve">
+		<value>Maximum nesting level exceeded. Document structure is too deeply nested.</value>
+		<comment>Error when the parser detects excessive nesting depth, which may indicate malformed content or infinite loops</comment>
+	</data>
 </root>

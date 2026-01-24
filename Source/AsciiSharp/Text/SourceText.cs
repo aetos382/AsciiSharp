@@ -9,13 +9,31 @@ namespace AsciiSharp.Text;
 /// <remarks>
 /// <para>このクラスは不変であり、テキストの変更は新しいインスタンスを返す。</para>
 /// <para>行・列番号の計算やテキストの部分取得をサポートする。</para>
+/// <para>BOM（Byte Order Mark）を含むテキストを正しく処理し、ラウンドトリップで復元する。</para>
 /// </remarks>
 public abstract class SourceText
 {
     /// <summary>
-    /// テキストの長さ（文字数）。
+    /// BOM（Byte Order Mark）を表す Unicode 文字。
+    /// </summary>
+    /// <remarks>
+    /// UTF-8 BOM は 0xEF 0xBB 0xBF の 3 バイトで、Unicode では U+FEFF として表される。
+    /// </remarks>
+    public const char ByteOrderMark = '\uFEFF';
+
+    /// <summary>
+    /// テキストの長さ（文字数）。BOM を除いた長さ。
     /// </summary>
     public abstract int Length { get; }
+
+    /// <summary>
+    /// ソーステキストが BOM（Byte Order Mark）を含むかどうか。
+    /// </summary>
+    /// <remarks>
+    /// このプロパティが true の場合、元のテキストの先頭に BOM が存在していた。
+    /// <see cref="Length"/> や <see cref="this[int]"/> は BOM を除いたテキストに基づく。
+    /// </remarks>
+    public abstract bool HasBom { get; }
 
     /// <summary>
     /// 指定されたインデックスの文字を取得する。
@@ -53,10 +71,24 @@ public abstract class SourceText
     }
 
     /// <summary>
-    /// テキスト全体を文字列として取得する。
+    /// テキスト全体を文字列として取得する（BOM を除く）。
     /// </summary>
-    /// <returns>テキスト全体。</returns>
+    /// <returns>テキスト全体（BOM を除く）。</returns>
     public abstract override string ToString();
+
+    /// <summary>
+    /// 元のテキストを BOM を含めて取得する。
+    /// </summary>
+    /// <returns>元のテキスト（BOM が存在した場合は BOM を含む）。</returns>
+    public virtual string ToOriginalString()
+    {
+        if (this.HasBom)
+        {
+            return ByteOrderMark + this.ToString();
+        }
+
+        return this.ToString();
+    }
 
     /// <summary>
     /// 指定された位置の行・列番号を取得する。

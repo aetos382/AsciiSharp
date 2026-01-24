@@ -77,5 +77,14 @@ namespace AsciiSharp.Properties {
                 return ResourceManager.GetString("ADS0002_MissingSectionTitleText", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Maximum nesting level exceeded. Document structure is too deeply nested. に類似したローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_NestingLevelExceeded {
+            get {
+                return ResourceManager.GetString("Error_NestingLevelExceeded", resourceCulture);
+            }
+        }
     }
 }

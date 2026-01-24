@@ -1,4 +1,5 @@
 
+using System;
 using System.Linq;
 
 using AsciiSharp.Syntax;
@@ -40,6 +41,68 @@ public sealed class BasicParsingSteps
     public void Given空のAsciiDoc文書がある()
     {
         this.CurrentSourceText = string.Empty;
+    }
+
+    [Given(@"BOM 付きの以下の AsciiDoc 文書がある:")]
+    public void GivenBOM付きの以下のAsciiDoc文書がある(string multilineText)
+    {
+        // BOM (U+FEFF) を先頭に追加
+        this.CurrentSourceText = "\uFEFF" + multilineText;
+    }
+
+    [Given(@"CRLF 改行コードの以下の AsciiDoc 文書がある:")]
+    public void GivenCRLF改行コードの以下のAsciiDoc文書がある(string multilineText)
+    {
+        ArgumentNullException.ThrowIfNull(multilineText);
+
+        // 改行コードを CRLF に統一
+        this.CurrentSourceText = multilineText
+            .Replace("\r\n", "\n", StringComparison.Ordinal)
+            .Replace("\r", "\n", StringComparison.Ordinal)
+            .Replace("\n", "\r\n", StringComparison.Ordinal);
+    }
+
+    [Given(@"CR 改行コードの以下の AsciiDoc 文書がある:")]
+    public void GivenCR改行コードの以下のAsciiDoc文書がある(string multilineText)
+    {
+        ArgumentNullException.ThrowIfNull(multilineText);
+
+        // 改行コードを CR に統一
+        this.CurrentSourceText = multilineText
+            .Replace("\r\n", "\n", StringComparison.Ordinal)
+            .Replace("\n", "\r", StringComparison.Ordinal);
+    }
+
+    [Given(@"混在する改行コードの以下の AsciiDoc 文書がある:")]
+    public void Given混在する改行コードの以下のAsciiDoc文書がある(string multilineText)
+    {
+        ArgumentNullException.ThrowIfNull(multilineText);
+
+        // 改行コードを意図的に混在させる（LF, CRLF, CR の順）
+        var normalizedText = multilineText
+            .Replace("\r\n", "\n", StringComparison.Ordinal)
+            .Replace("\r", "\n", StringComparison.Ordinal);
+
+        var lines = normalizedText.Split('\n');
+        var result = new System.Text.StringBuilder();
+
+        for (var i = 0; i < lines.Length; i++)
+        {
+            result.Append(lines[i]);
+
+            if (i < lines.Length - 1)
+            {
+                // 3 種類の改行コードを順番に使う
+                result.Append((i % 3) switch
+                {
+                    0 => "\n",      // LF
+                    1 => "\r\n",    // CRLF
+                    _ => "\r"       // CR
+                });
+            }
+        }
+
+        this.CurrentSourceText = result.ToString();
     }
 
     [When(@"文書を解析する")]
@@ -178,5 +241,20 @@ public sealed class BasicParsingSteps
     {
         // ラウンドトリップが成功していれば、空白と改行も保持されている
         Assert.AreEqual(this.CurrentSourceText, this._reconstructedText, "空白または改行が保持されていません。");
+    }
+
+    [Then(@"ソーステキストは BOM を含む")]
+    public void ThenソーステキストはBOMを含む()
+    {
+        Assert.IsNotNull(this.CurrentSyntaxTree, "構文木が null です。");
+        Assert.IsTrue(this.CurrentSyntaxTree.Text.HasBom, "ソーステキストは BOM を含む必要があります。");
+    }
+
+    [Then(@"BOM を含む元のテキストを復元できる")]
+    public void ThenBOMを含む元のテキストを復元できる()
+    {
+        Assert.IsNotNull(this.CurrentSyntaxTree, "構文木が null です。");
+        var originalText = this.CurrentSyntaxTree.ToOriginalString();
+        Assert.AreEqual(this.CurrentSourceText, originalText, "BOM を含む元のテキストと一致しません。");
     }
 }

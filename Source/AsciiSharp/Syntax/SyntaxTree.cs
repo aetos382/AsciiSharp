@@ -193,6 +193,25 @@ public sealed class SyntaxTree
     }
 
     /// <summary>
+    /// 構文木から元のテキストを復元する。
+    /// </summary>
+    /// <returns>構文木から復元されたテキスト。</returns>
+    /// <remarks>
+    /// このメソッドは構文木のノードからテキストを再構築し、BOM があった場合は BOM も含めて返す。
+    /// </remarks>
+    public string ToOriginalString()
+    {
+        var fullString = this.Root.ToFullString();
+
+        if (this.Text.HasBom)
+        {
+            return SourceText.ByteOrderMark + fullString;
+        }
+
+        return fullString;
+    }
+
+    /// <summary>
     /// 内部ルートノードから外部ルートノードを作成する。
     /// </summary>
     /// <param name="internalRoot">内部ルートノード。</param>
