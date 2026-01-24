@@ -90,6 +90,10 @@ public sealed class ParagraphSyntax : SyntaxNode
                     break;
                 case SyntaxKind.GreaterThanToken:
                     break;
+                case SyntaxKind.SingleLineCommentToken:
+                    break;
+                case SyntaxKind.BlockCommentToken:
+                    break;
                 case SyntaxKind.WhitespaceTrivia:
                     break;
                 case SyntaxKind.EndOfLineTrivia:

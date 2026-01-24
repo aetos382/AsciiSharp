@@ -265,30 +265,30 @@
 
 ### BDD テスト for User Story 5（Red フェーズ）
 
-- [ ] T095 [P] [US5] IncrementalParsing.feature を Test/AsciiSharp.Specs/Features/IncrementalParsing.feature に作成（Acceptance Scenarios 1-3）
-- [ ] T096 [US5] IncrementalParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/IncrementalParsingSteps.cs に作成
-- [ ] T097 [US5] BDD テストを実行し、Red を確認
+- [x] T095 [P] [US5] IncrementalParsing.feature を Test/AsciiSharp.Specs/Features/IncrementalParsing.feature に作成（Acceptance Scenarios 1-3）
+- [x] T096 [US5] IncrementalParsingSteps.cs を Test/AsciiSharp.Specs/StepDefinitions/IncrementalParsingSteps.cs に作成
+- [x] T097 [US5] BDD テストを実行し、Red を確認
 
 ### Implementation for User Story 5（Green フェーズ）
 
 **増分解析インフラの実装**:
 
-- [ ] T098 [P] [US5] TextChange 構造体を Source/AsciiSharp/Text/TextChange.cs に実装（変更範囲と新しいテキストを表現）
-- [ ] T099 [P] [US5] SourceText.WithChanges メソッドを実装（変更を適用した新しい SourceText を返す）
-- [ ] T100 [US5] IncrementalParser クラスを Source/AsciiSharp/Parser/IncrementalParser.cs に実装
-- [ ] T101 [US5] 変更範囲に基づく再解析範囲の特定ロジックを実装（影響を受けるブロック境界の検出）
-- [ ] T102 [US5] 内部構文木の構造共有（変更されていない部分のノードを再利用）を実装
-- [ ] T103 [US5] SyntaxTree.WithChanges メソッドを実装（増分解析のエントリーポイント）
+- [x] T098 [P] [US5] TextChange 構造体を Source/AsciiSharp/Text/TextChange.cs に実装（変更範囲と新しいテキストを表現）
+- [x] T099 [P] [US5] SourceText.WithChanges メソッドを実装（変更を適用した新しい SourceText を返す）
+- [x] T100 [US5] IncrementalParser クラスを Source/AsciiSharp/Parser/IncrementalParser.cs に実装
+- [x] T101 [US5] 変更範囲に基づく再解析範囲の特定ロジックを実装（影響を受けるブロック境界の検出）
+- [x] T102 [US5] 内部構文木の構造共有（変更されていない部分のノードを再利用）を実装
+- [x] T103 [US5] SyntaxTree.WithChanges メソッドを実装（増分解析のエントリーポイント）
 
 **検証**:
 
-- [ ] T104 [US5] BDD テストを再実行し、Green を確認
-- [ ] T105 [US5] ビルドを実行し、警告ゼロを確認
+- [x] T104 [US5] BDD テストを再実行し、Green を確認
+- [x] T105 [US5] ビルドを実行し、警告ゼロを確認
 
 ### Refactor for User Story 5
 
-- [ ] T106 [US5] 増分解析ロジックの最適化
-- [ ] T107 [US5] 構造共有のメモリ効率改善
+- [x] T106 [US5] 増分解析ロジックの最適化
+- [x] T107 [US5] 構造共有のメモリ効率改善
 
 **Checkpoint**: User Stories 1-5 が独立して機能
 
@@ -321,7 +321,7 @@
 
 - [ ] T113 [P] DocumentHeaderSyntax に AuthorLine のサポートを追加（Source/AsciiSharp/Syntax/）
   - **注**: RevisionLine, AttributeEntry は後続イテレーションで実装
-- [ ] T114 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
+- [x] T114 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
 - ~~[ ] T115 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加~~ *(延期: 後続イテレーション)*
 - [ ] T116 [P] BOM（Byte Order Mark）処理を SourceText に実装
 - [ ] T117 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装

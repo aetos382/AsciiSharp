@@ -148,6 +148,10 @@ internal sealed class AsciiDocParser
             {
                 this.SkipBlankLines();
             }
+            else if (this.IsAtComment())
+            {
+                this.SkipComment();
+            }
             else if (this.IsAtSectionTitle())
             {
                 this.ParseSection();
@@ -182,6 +186,10 @@ internal sealed class AsciiDocParser
             if (this.IsBlankLine())
             {
                 this.SkipBlankLines();
+            }
+            else if (this.IsAtComment())
+            {
+                this.SkipComment();
             }
             else if (this.IsAtSectionTitle())
             {
@@ -501,5 +509,29 @@ internal sealed class AsciiDocParser
     {
         return this.Current.Kind == SyntaxKind.NewLineToken ||
                (this.Current.Kind == SyntaxKind.WhitespaceToken && this.Peek().Kind == SyntaxKind.NewLineToken);
+    }
+
+    /// <summary>
+    /// 現在位置がコメントかどうか。
+    /// </summary>
+    private bool IsAtComment()
+    {
+        return this.Current.Kind is SyntaxKind.SingleLineCommentToken
+            or SyntaxKind.BlockCommentToken;
+    }
+
+    /// <summary>
+    /// コメントをスキップする（構文木には保持する）。
+    /// </summary>
+    private void SkipComment()
+    {
+        // コメントトークンを emit（ラウンドトリップのため構文木に保持）
+        this.EmitCurrentToken();
+
+        // コメントの後の改行も emit
+        if (this.Current.Kind == SyntaxKind.NewLineToken)
+        {
+            this.EmitCurrentToken();
+        }
     }
 }

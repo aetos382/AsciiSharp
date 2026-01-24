@@ -13,6 +13,7 @@ internal sealed class Lexer
 {
     private readonly SourceText _text;
     private readonly List<InternalTrivia> _leadingTrivia = [];
+    private bool _isAtLineStart = true;
 
     /// <summary>
     /// Lexer を作成する。
@@ -32,15 +33,14 @@ internal sealed class Lexer
     private char Current => this.Position < this._text.Length ? this._text[this.Position] : '\0';
 
     /// <summary>
-    /// 次の位置の文字。
+    /// 指定されたオフセット位置の文字を取得する。
     /// </summary>
-    /// <remarks>T114 (コメント解析) で使用予定。</remarks>
-#pragma warning disable IDE0051 // Remove unused private members
+    /// <param name="offset">現在位置からのオフセット。</param>
+    /// <returns>指定位置の文字。範囲外の場合は '\0'。</returns>
     private char Peek(int offset = 1)
     {
         return this.Position + offset < this._text.Length ? this._text[this.Position + offset] : '\0';
     }
-#pragma warning restore IDE0051
 
     /// <summary>
     /// ファイル終端に達したかどうか。
@@ -61,7 +61,7 @@ internal sealed class Lexer
         this._leadingTrivia.Clear();
 
         // 先行トリビアを収集
-        this.ScanLeadingTrivia();
+        ScanLeadingTrivia();
 
         var leadingTrivia = this._leadingTrivia.Count > 0 ? this._leadingTrivia.ToArray() : null;
 
@@ -80,19 +80,12 @@ internal sealed class Lexer
     /// </summary>
     /// <remarks>
     /// <para>AsciiDoc では空白が意味を持つため、空白はトークンとして扱う。</para>
-    /// <para>AsciiDoc の単一行コメント (//) は行頭でのみ有効。</para>
-    /// <para>URL 内の // をコメントとして誤認識しないよう、</para>
-    /// <para>先行トリビアとしてのコメント収集は行わない。</para>
-    /// <para>コメントは T114 で Parser レベルで処理する。</para>
+    /// <para>AsciiDoc の単一行コメント (//) は行頭でのみ有効であり、</para>
+    /// <para>トークンとして <see cref="ScanComment"/> で処理される。</para>
     /// </remarks>
-    // CA1822: 将来の行頭判定ロジック追加のため instance メソッドとして残す
-#pragma warning disable CA1822
-    private void ScanLeadingTrivia()
-#pragma warning restore CA1822
+    private static void ScanLeadingTrivia()
     {
-        // AsciiDoc のコメントは行頭でのみ有効なため、
-        // Lexer レベルでのコメント検出は行わない。
-        // URL 内の // をコメントとして誤認識することを防ぐ。
+        // 現時点では先行トリビアとして収集するものはない
     }
 
     /// <summary>
@@ -108,56 +101,6 @@ internal sealed class Lexer
     }
 
     /// <summary>
-    /// コメントトリビアをスキャンする。
-    /// </summary>
-    /// <remarks>T114 (コメント解析) で使用予定。</remarks>
-#pragma warning disable IDE0051 // Remove unused private members
-    private void ScanCommentTrivia(List<InternalTrivia> triviaList)
-#pragma warning restore IDE0051
-    {
-        var start = this.Position;
-
-        // ブロックコメントか単一行コメントか判定
-        if (this.Position + 3 < this._text.Length &&
-            this._text[this.Position] == '/' &&
-            this._text[this.Position + 1] == '/' &&
-            this._text[this.Position + 2] == '/' &&
-            this._text[this.Position + 3] == '/')
-        {
-            // ブロックコメント
-            this.Position += 4;
-            while (!this.IsAtEnd)
-            {
-                if (this.Position + 3 < this._text.Length &&
-                    this._text[this.Position] == '/' &&
-                    this._text[this.Position + 1] == '/' &&
-                    this._text[this.Position + 2] == '/' &&
-                    this._text[this.Position + 3] == '/')
-                {
-                    this.Position += 4;
-                    break;
-                }
-
-                this.Position++;
-            }
-
-            var text = this._text.GetText(start, this.Position - start);
-            triviaList.Add(InternalTrivia.MultiLineComment(text));
-        }
-        else
-        {
-            // 単一行コメント
-            while (!this.IsAtEnd && this.Current != '\r' && this.Current != '\n')
-            {
-                this.Position++;
-            }
-
-            var text = this._text.GetText(start, this.Position - start);
-            triviaList.Add(InternalTrivia.SingleLineComment(text));
-        }
-    }
-
-    /// <summary>
     /// トークンをスキャンする。
     /// </summary>
     private InternalToken ScanToken()
@@ -167,8 +110,16 @@ internal sealed class Lexer
             return new InternalToken(SyntaxKind.EndOfFileToken, string.Empty);
         }
 
+        // 行頭でのコメント検出
+        if (this._isAtLineStart && this.Current == '/' && this.Peek() == '/')
+        {
+            return this.ScanComment();
+        }
+
         var start = this.Position;
         SyntaxKind kind;
+        var isNewLine = false;
+
         switch (this.Current)
         {
             case '=':
@@ -255,6 +206,7 @@ internal sealed class Lexer
             case '\n':
                 this.ScanNewLine();
                 kind = SyntaxKind.NewLineToken;
+                isNewLine = true;
                 break;
 
             case ' ':
@@ -269,8 +221,83 @@ internal sealed class Lexer
                 break;
         }
 
+        // 改行の後のみ行頭フラグをセット、それ以外はリセット
+        this._isAtLineStart = isNewLine;
+
         var text = this._text.GetText(start, this.Position - start);
         return new InternalToken(kind, text);
+    }
+
+    /// <summary>
+    /// コメントをスキャンする。
+    /// </summary>
+    /// <returns>コメントトークン。</returns>
+    private InternalToken ScanComment()
+    {
+        var start = this.Position;
+
+        // ブロックコメントか単一行コメントか判定
+        if (this.Peek(2) == '/' && this.Peek(3) == '/')
+        {
+            // ブロックコメント (////...////)
+            return this.ScanBlockComment(start);
+        }
+        else
+        {
+            // 単一行コメント (//)
+            return this.ScanSingleLineComment(start);
+        }
+    }
+
+    /// <summary>
+    /// 単一行コメントをスキャンする。
+    /// </summary>
+    /// <param name="start">開始位置。</param>
+    /// <returns>単一行コメントトークン。</returns>
+    private InternalToken ScanSingleLineComment(int start)
+    {
+        // 行末まで読み取る（改行は含まない）
+        while (!this.IsAtEnd && this.Current != '\r' && this.Current != '\n')
+        {
+            this.Position++;
+        }
+
+        this._isAtLineStart = false;
+
+        var text = this._text.GetText(start, this.Position - start);
+        return new InternalToken(SyntaxKind.SingleLineCommentToken, text);
+    }
+
+    /// <summary>
+    /// ブロックコメントをスキャンする。
+    /// </summary>
+    /// <param name="start">開始位置。</param>
+    /// <returns>ブロックコメントトークン。</returns>
+    private InternalToken ScanBlockComment(int start)
+    {
+        // 開始デリミタ //// を読み飛ばす
+        this.Position += 4;
+
+        // 終了デリミタ //// を探す
+        while (!this.IsAtEnd)
+        {
+            // 行頭の //// を検出
+            if (this.Current == '/' &&
+                this.Peek() == '/' &&
+                this.Peek(2) == '/' &&
+                this.Peek(3) == '/')
+            {
+                this.Position += 4;
+                break;
+            }
+
+            this.Position++;
+        }
+
+        this._isAtLineStart = false;
+
+        var text = this._text.GetText(start, this.Position - start);
+        return new InternalToken(SyntaxKind.BlockCommentToken, text);
     }
 
     /// <summary>
