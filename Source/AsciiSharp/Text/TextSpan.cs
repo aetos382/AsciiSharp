@@ -193,21 +193,33 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
         return $"[{this.Start}..{this.End})";
     }
 
+    /// <summary>
+    /// 左の TextSpan が右の TextSpan より小さいかどうかを判定する。
+    /// </summary>
     public static bool operator <(TextSpan left, TextSpan right)
     {
         return left.CompareTo(right) < 0;
     }
 
+    /// <summary>
+    /// 左の TextSpan が右の TextSpan 以下かどうかを判定する。
+    /// </summary>
     public static bool operator <=(TextSpan left, TextSpan right)
     {
         return left.CompareTo(right) <= 0;
     }
 
+    /// <summary>
+    /// 左の TextSpan が右の TextSpan より大きいかどうかを判定する。
+    /// </summary>
     public static bool operator >(TextSpan left, TextSpan right)
     {
         return left.CompareTo(right) > 0;
     }
 
+    /// <summary>
+    /// 左の TextSpan が右の TextSpan 以上かどうかを判定する。
+    /// </summary>
     public static bool operator >=(TextSpan left, TextSpan right)
     {
         return left.CompareTo(right) >= 0;

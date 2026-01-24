@@ -1,0 +1,82 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, '001-*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            framework: net10.0
+          - os: windows-latest
+            framework: net10.0
+          - os: windows-latest
+            framework: net481
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Test (.NET 10)
+      if: matrix.framework == 'net10.0'
+      run: dotnet test --no-build --configuration Release --verbosity normal --framework net10.0
+
+    - name: Test (.NET Framework 4.8.1)
+      if: matrix.framework == 'net481' && matrix.os == 'windows-latest'
+      run: dotnet test --no-build --configuration Release --verbosity normal --framework net481 Test/AsciiSharp.Tests/AsciiSharp.Tests.csproj
+
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Check formatting
+      run: dotnet format --verify-no-changes
+
+  aot-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build with AOT analysis
+      run: dotnet build Source/AsciiSharp/AsciiSharp.csproj --configuration Release -p:PublishAot=true -p:IsAotCompatible=true

@@ -330,12 +330,12 @@
 - [x] T119a [US1] BasicParsing.feature の「本文のみを含む文章の解析」シナリオを補完（段落数検証、段落テキスト検証、ラウンドトリップ検証を追加）
 - [x] T119b [US1] BasicParsingSteps.cs に「段落のテキストは "..." である」ステップ定義を追加（Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs）*(既存ステップで対応可能、追加不要)*
 - [x] T119c [US1] ヘッダーなし文書のテストを実行し、Green を確認
-- [ ] T120 [P] XML ドキュメントコメントを公開 API に追加
-- [ ] T121 [P] README.md を作成（クイックスタート、API 概要）
-- [ ] T122 全体のコードレビューとリファクタリング
-- [ ] T123 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
-- [ ] T124 quickstart.md の検証シナリオを実行
-- [ ] T125 最終ビルドと警告ゼロの確認
+- [x] T120 [P] XML ドキュメントコメントを公開 API に追加
+- [x] T121 [P] README.md を作成（クイックスタート、API 概要）
+- [x] T122 全体のコードレビューとリファクタリング
+- [x] T123 CI パイプライン設定（.NET 10 / .NET Framework 4.8.1 テスト、AOT 互換性チェック）
+- [x] T124 quickstart.md の検証シナリオを実行
+- [x] T125 最終ビルドと警告ゼロの確認
 
 ---
 
