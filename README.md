@@ -116,7 +116,3 @@ var newRoot = document.ReplaceNode(section, newSection);
 | `ParagraphSyntax` | 段落 |
 | `LinkSyntax` | リンク |
 | `TextSyntax` | プレーンテキスト |
-
-## ライセンス
-
-MIT License
