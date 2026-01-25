@@ -1,0 +1,31 @@
+{
+  "language": "Japanese",
+  "respectGitignore": true,
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet format:*)",
+      "Bash(dotnet package search:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet test:*)",
+      "Bash(find:*)",
+      "Bash(git fetch:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(pwsh .specify/scripts/powershell/check-prerequisites.ps1:*)",
+      "Skill(commit-commands:commit)",
+      "Skill(commit-commands:commit:*)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [
+      "Edit(**/packages-lock.json)",
+      "Edit(/Directory.packages.props)",
+      "Write(**/packages-lock.json)",
+      "Write(/Directory.packages.props)"
+    ]
+  }
+}
