@@ -11,5 +11,6 @@ TestResults/
 launchSettings.json
 
 *.local.*
+.env
 
 *.feature.cs
