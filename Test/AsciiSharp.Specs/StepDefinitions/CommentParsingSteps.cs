@@ -58,4 +58,37 @@ public sealed class CommentParsingSteps
                 $"段落のテキストに '{unexpectedText}' が含まれています: '{paragraphText}'");
         }
     }
+
+    [Then(@"Document ノードはタイトル ""(.*)"" を持つ")]
+    public void ThenDocumentノードはタイトルを持つ(string expectedTitle)
+    {
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
+        Assert.IsNotNull(syntaxTree, "構文木が null です。");
+
+        var document = syntaxTree.Root as Syntax.DocumentSyntax;
+        Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
+        Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
+
+        var actualTitle = document.Header.Title?.TitleContent;
+        Assert.AreEqual(expectedTitle, actualTitle, $"タイトルが一致しません。期待: '{expectedTitle}', 実際: '{actualTitle}'");
+    }
+
+    [Then(@"構文木のトリビアに ""(.*)"" が含まれる")]
+    public void Then構文木のトリビアにが含まれる(string expectedText)
+    {
+        var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
+        Assert.IsNotNull(syntaxTree, "構文木が null です。");
+
+        // すべてのトークンのトリビアを収集
+        var allTrivia = syntaxTree.Root.DescendantTokens()
+            .SelectMany(t => t.LeadingTrivia.Concat(t.TrailingTrivia))
+            .ToList();
+
+        var triviaTexts = allTrivia.Select(t => t.ToFullString()).ToList();
+        var combinedTriviaText = string.Join(string.Empty, triviaTexts);
+
+        Assert.IsTrue(
+            combinedTriviaText.Contains(expectedText, System.StringComparison.Ordinal),
+            $"トリビアに '{expectedText}' が含まれていません。トリビア全体: '{combinedTriviaText}'");
+    }
 }
