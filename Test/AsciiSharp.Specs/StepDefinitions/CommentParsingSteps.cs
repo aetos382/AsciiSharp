@@ -51,11 +51,15 @@ public sealed class CommentParsingSteps
 
         foreach (var paragraph in paragraphs)
         {
-            var paragraphText = paragraph.ToFullString();
+            // トークンのテキストのみを収集（トリビアは除外）
+            // コメントは Trivia として付加されるため、トークンテキストには含まれない
+            var tokenTexts = paragraph.DescendantTokens().Select(t => t.Text);
+            var paragraphText = string.Concat(tokenTexts);
+
             Assert.DoesNotContain(
                 unexpectedText,
                 paragraphText,
-                $"段落のテキストに '{unexpectedText}' が含まれています: '{paragraphText}'");
+                $"段落のトークンテキストに '{unexpectedText}' が含まれています: '{paragraphText}'");
         }
     }
 
@@ -98,20 +102,13 @@ public sealed class CommentParsingSteps
         var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree, "構文木が null です。");
 
-        // コメントトークンを検索（本文中のコメント）
-        var commentTokens = syntaxTree.Root.DescendantTokens()
-            .Where(t => t.Kind is SyntaxKind.SingleLineCommentToken or SyntaxKind.BlockCommentToken)
-            .ToList();
-
-        // コメントトリビアも検索（冒頭のコメント）
+        // コメントトリビアを検索（Roslyn パターンではすべてのコメントは Trivia）
         var commentTrivia = syntaxTree.Root.DescendantTokens()
             .SelectMany(t => t.LeadingTrivia.Concat(t.TrailingTrivia))
             .Where(t => t.Kind is SyntaxKind.SingleLineCommentTrivia or SyntaxKind.MultiLineCommentTrivia)
             .ToList();
 
-        var allCommentTexts = commentTokens.Select(t => t.ToFullString())
-            .Concat(commentTrivia.Select(t => t.ToFullString()))
-            .ToList();
+        var allCommentTexts = commentTrivia.Select(t => t.ToFullString()).ToList();
 
         var foundComment = allCommentTexts.Any(text => text.Contains(expectedText, System.StringComparison.Ordinal));
 
@@ -126,23 +123,16 @@ public sealed class CommentParsingSteps
         var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree, "構文木が null です。");
 
-        // 本文中の単一行コメントトークン
-        var commentTokens = syntaxTree.Root.DescendantTokens()
-            .Where(t => t.Kind == SyntaxKind.SingleLineCommentToken)
-            .ToList();
-
-        // 冒頭の単一行コメントトリビア
+        // 単一行コメントトリビア（Roslyn パターンではすべてのコメントは Trivia）
         var commentTrivia = syntaxTree.Root.DescendantTokens()
             .SelectMany(t => t.LeadingTrivia.Concat(t.TrailingTrivia))
             .Where(t => t.Kind == SyntaxKind.SingleLineCommentTrivia)
             .ToList();
 
-        var totalCount = commentTokens.Count + commentTrivia.Count;
-
         Assert.AreEqual(
             expectedCount,
-            totalCount,
-            $"単一行コメントの数が一致しません。期待: {expectedCount}, 実際: {totalCount}（トークン: {commentTokens.Count}, トリビア: {commentTrivia.Count}）");
+            commentTrivia.Count,
+            $"単一行コメントの数が一致しません。期待: {expectedCount}, 実際: {commentTrivia.Count}");
     }
 
     [Then(@"構文木に (\d+) 個のブロックコメントがある")]
@@ -151,22 +141,15 @@ public sealed class CommentParsingSteps
         var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree, "構文木が null です。");
 
-        // 本文中のブロックコメントトークン
-        var commentTokens = syntaxTree.Root.DescendantTokens()
-            .Where(t => t.Kind == SyntaxKind.BlockCommentToken)
-            .ToList();
-
-        // 冒頭のブロックコメントトリビア
+        // ブロックコメントトリビア（Roslyn パターンではすべてのコメントは Trivia）
         var commentTrivia = syntaxTree.Root.DescendantTokens()
             .SelectMany(t => t.LeadingTrivia.Concat(t.TrailingTrivia))
             .Where(t => t.Kind == SyntaxKind.MultiLineCommentTrivia)
             .ToList();
 
-        var totalCount = commentTokens.Count + commentTrivia.Count;
-
         Assert.AreEqual(
             expectedCount,
-            totalCount,
-            $"ブロックコメントの数が一致しません。期待: {expectedCount}, 実際: {totalCount}（トークン: {commentTokens.Count}, トリビア: {commentTrivia.Count}）");
+            commentTrivia.Count,
+            $"ブロックコメントの数が一致しません。期待: {expectedCount}, 実際: {commentTrivia.Count}");
     }
 }

@@ -82,12 +82,6 @@ public enum SyntaxKind
     /// <summary>大なりトークン (&gt;)。</summary>
     GreaterThanToken,
 
-    /// <summary>単一行コメントトークン (//)。</summary>
-    SingleLineCommentToken,
-
-    /// <summary>ブロックコメントトークン (////...////)。</summary>
-    BlockCommentToken,
-
     // ========================================
     // Trivia
     // ========================================

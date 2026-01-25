@@ -105,29 +105,16 @@ internal sealed class AsciiDocParser
     }
 
     /// <summary>
-    /// 文書冒頭のコメントと空行をスキップする。
+    /// 文書冒頭の空行をスキップする。
     /// </summary>
     /// <remarks>
-    /// ドキュメントタイトルの前にあるコメントと空行を処理し、
-    /// トリビアとして構文木に保持する。
+    /// <para>ドキュメントタイトルの前にある空行を処理する。</para>
+    /// <para>コメントは Lexer により Trivia として次のトークンに付加されるため、
+    /// Parser での明示的な処理は不要。</para>
     /// </remarks>
     private void SkipLeadingCommentsAndBlankLines()
     {
-        while (!this.IsAtEnd())
-        {
-            if (this.IsAtComment())
-            {
-                this.SkipComment();
-            }
-            else if (this.IsBlankLine())
-            {
-                this.SkipBlankLines();
-            }
-            else
-            {
-                break;
-            }
-        }
+        this.SkipBlankLines();
     }
 
     /// <summary>
@@ -177,6 +164,10 @@ internal sealed class AsciiDocParser
     /// <summary>
     /// ドキュメントボディを解析する。
     /// </summary>
+    /// <remarks>
+    /// コメントは Lexer により Trivia として次のトークンに付加されるため、
+    /// Parser での明示的な処理は不要。
+    /// </remarks>
     private void ParseDocumentBody()
     {
         this._sink.StartNode(SyntaxKind.DocumentBody);
@@ -186,10 +177,6 @@ internal sealed class AsciiDocParser
             if (this.IsBlankLine())
             {
                 this.SkipBlankLines();
-            }
-            else if (this.IsAtComment())
-            {
-                this.SkipComment();
             }
             else if (this.IsAtSectionTitle())
             {
@@ -235,15 +222,12 @@ internal sealed class AsciiDocParser
             this.SkipBlankLines();
 
             // セクションの内容を解析
+            // コメントは Lexer により Trivia として次のトークンに付加される
             while (!this.IsAtEnd() && !this.IsAtSectionTitleOfLevelOrHigher(currentLevel))
             {
                 if (this.IsBlankLine())
                 {
                     this.SkipBlankLines();
-                }
-                else if (this.IsAtComment())
-                {
-                    this.SkipComment();
                 }
                 else if (this.IsAtSectionTitle())
                 {
@@ -570,27 +554,4 @@ internal sealed class AsciiDocParser
                (this.Current.Kind == SyntaxKind.WhitespaceToken && this.Peek().Kind == SyntaxKind.NewLineToken);
     }
 
-    /// <summary>
-    /// 現在位置がコメントかどうか。
-    /// </summary>
-    private bool IsAtComment()
-    {
-        return this.Current.Kind is SyntaxKind.SingleLineCommentToken
-            or SyntaxKind.BlockCommentToken;
-    }
-
-    /// <summary>
-    /// コメントをスキップする（構文木には保持する）。
-    /// </summary>
-    private void SkipComment()
-    {
-        // コメントトークンを emit（ラウンドトリップのため構文木に保持）
-        this.EmitCurrentToken();
-
-        // コメントの後の改行も emit
-        if (this.Current.Kind == SyntaxKind.NewLineToken)
-        {
-            this.EmitCurrentToken();
-        }
-    }
 }
