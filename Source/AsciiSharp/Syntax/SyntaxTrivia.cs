@@ -1,4 +1,3 @@
-
 using System;
 
 using AsciiSharp.InternalSyntax;
@@ -118,7 +117,7 @@ public readonly struct SyntaxTrivia : IEquatable<SyntaxTrivia>
 
     private static string EscapeText(string text)
     {
-#if NETSTANDARD
+#if NETSTANDARD2_0
         return text
             .Replace("\r", "\\r")
             .Replace("\n", "\\n")
