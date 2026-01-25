@@ -50,10 +50,10 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
         {
             if (this.Internal is null)
             {
-                return new TextSpan(this.Position, 0);
+                return new(this.Position, 0);
             }
 
-            return new TextSpan(this.Position + this.Internal.LeadingTriviaWidth, this.Internal.Width);
+            return new(this.Position + this.Internal.LeadingTriviaWidth, this.Internal.Width);
         }
     }
 

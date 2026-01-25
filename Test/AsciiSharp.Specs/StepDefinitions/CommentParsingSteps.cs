@@ -1,9 +1,7 @@
 
-using System;
 using System.Linq;
 
 using AsciiSharp.Diagnostics;
-using AsciiSharp.Syntax;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

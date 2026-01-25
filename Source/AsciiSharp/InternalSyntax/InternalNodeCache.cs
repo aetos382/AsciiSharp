@@ -219,7 +219,7 @@ internal sealed class InternalNodeCache
 
         public override int GetHashCode()
         {
-#if NETSTANDARD2_0
+#if NETSTANDARD
             unchecked
             {
                 return ((int)this.Kind * 397) ^ this.HashCode;

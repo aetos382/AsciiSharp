@@ -47,7 +47,7 @@ public sealed class LinkParsingSteps
     // CA1054: テストステップのパラメータは feature ファイルからの文字列リテラル
 #pragma warning disable CA1054
     [Then(@"Link ノードのターゲット URL は ""(.+)"" である")]
-    public void ThenLinkノードのターゲットURLはである(string expectedUrl)
+    public void ThenLinkノードのターゲットURLは_である(string expectedUrl)
 #pragma warning restore CA1054
     {
         var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
@@ -58,7 +58,7 @@ public sealed class LinkParsingSteps
     }
 
     [Then(@"Link ノードの表示テキストは ""(.+)"" である")]
-    public void ThenLinkノードの表示テキストはである(string expectedText)
+    public void ThenLinkノードの表示テキストは_である(string expectedText)
     {
         var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;
         Assert.IsNotNull(syntaxTree);
@@ -70,7 +70,7 @@ public sealed class LinkParsingSteps
     // CA1054: テストステップのパラメータは feature ファイルからの文字列リテラル
 #pragma warning disable CA1054
     [Then(@"(\d+) 番目の Link ノードのターゲット URL は ""(.+)"" である")]
-    public void Then番目のLinkノードのターゲットURLはである(int index, string expectedUrl)
+    public void Then番目のLinkノードのターゲットURLは_である(int index, string expectedUrl)
 #pragma warning restore CA1054
     {
         var syntaxTree = this._basicParsingSteps.CurrentSyntaxTree;

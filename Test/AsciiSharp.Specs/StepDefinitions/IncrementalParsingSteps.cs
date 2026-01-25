@@ -84,9 +84,7 @@ public sealed class IncrementalParsingSteps
         Assert.IsGreaterThanOrEqualTo(0, startIndex, $"'{oldText}' が文書内に見つかりません。");
 
         // 変更後のテキストを保存
-#pragma warning disable CA1845, IDE0057 // テストコードのため文字列操作を簡潔に
         this._modifiedSourceText = sourceText[..startIndex] + newText + sourceText[(startIndex + oldText.Length)..];
-#pragma warning restore CA1845, IDE0057
 
         // 増分解析を実行
         var change = new TextChange(new TextSpan(startIndex, oldText.Length), newText);

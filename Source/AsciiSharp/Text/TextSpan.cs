@@ -105,7 +105,7 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
 
         if (overlapStart < overlapEnd)
         {
-            return TextSpan.FromBounds(overlapStart, overlapEnd);
+            return FromBounds(overlapStart, overlapEnd);
         }
 
         return null;
@@ -133,7 +133,7 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
 
         if (intersectStart <= intersectEnd)
         {
-            return TextSpan.FromBounds(intersectStart, intersectEnd);
+            return FromBounds(intersectStart, intersectEnd);
         }
 
         return null;

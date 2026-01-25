@@ -31,10 +31,10 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// </summary>
     public InternalTreeBuilder()
     {
-        this._frames = new Stack<BuilderFrame>();
-        this._diagnostics = new List<Diagnostic>();
-        this._pendingLeadingTrivia = new List<InternalTrivia>();
-        this._pendingTrailingTrivia = new List<InternalTrivia>();
+        this._frames = [];
+        this._diagnostics = [];
+        this._pendingLeadingTrivia = [];
+        this._pendingTrailingTrivia = [];
         this._position = 0;
     }
 

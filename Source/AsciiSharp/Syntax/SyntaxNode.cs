@@ -250,7 +250,7 @@ public abstract class SyntaxNode
             newChildren[i] = i == slotIndex ? newChild : this.Internal.GetSlot(i);
         }
 
-        return new InternalSyntax.InternalSyntaxNode(this.Internal.Kind, newChildren);
+        return new InternalSyntaxNode(this.Internal.Kind, newChildren);
     }
 
     /// <summary>

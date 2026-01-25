@@ -30,7 +30,10 @@ internal sealed class Lexer
     /// <summary>
     /// 現在位置の文字。
     /// </summary>
-    private char Current => this.Position < this._text.Length ? this._text[this.Position] : '\0';
+    private char GetCurrent()
+    {
+        return this.Position < this._text.Length ? this._text[this.Position] : '\0';
+    }
 
     /// <summary>
     /// 指定されたオフセット位置の文字を取得する。
@@ -111,7 +114,7 @@ internal sealed class Lexer
         }
 
         // 行頭でのコメント検出
-        if (this._isAtLineStart && this.Current == '/' && this.Peek() == '/')
+        if (this._isAtLineStart && this.GetCurrent() == '/' && this.Peek() == '/')
         {
             return this.ScanComment();
         }
@@ -120,7 +123,7 @@ internal sealed class Lexer
         SyntaxKind kind;
         var isNewLine = false;
 
-        switch (this.Current)
+        switch (this.GetCurrent())
         {
             case '=':
                 this.Position++;
@@ -257,7 +260,7 @@ internal sealed class Lexer
     private InternalToken ScanSingleLineComment(int start)
     {
         // 行末まで読み取る（改行は含まない）
-        while (!this.IsAtEnd && this.Current != '\r' && this.Current != '\n')
+        while (!this.IsAtEnd && this.GetCurrent() != '\r' && this.GetCurrent() != '\n')
         {
             this.Position++;
         }
@@ -282,7 +285,7 @@ internal sealed class Lexer
         while (!this.IsAtEnd)
         {
             // 行頭の //// を検出
-            if (this.Current == '/' &&
+            if (this.GetCurrent() == '/' &&
                 this.Peek() == '/' &&
                 this.Peek(2) == '/' &&
                 this.Peek(3) == '/')
@@ -305,20 +308,16 @@ internal sealed class Lexer
     /// </summary>
     private void ScanNewLine()
     {
-        if (this.Current == '\r')
+        if (this.GetCurrent() == '\r')
         {
             this.Position++;
 
-            // CA1508: false positive - Current は Position 依存のプロパティであり、
-            // Position++ により値が変わる。CRLF シーケンスの処理に必要。
-#pragma warning disable CA1508
-            if (this.Current == '\n')
-#pragma warning restore CA1508
+            if (this.GetCurrent() == '\n')
             {
                 this.Position++;
             }
         }
-        else if (this.Current == '\n')
+        else if (this.GetCurrent() == '\n')
         {
             this.Position++;
         }
@@ -329,7 +328,7 @@ internal sealed class Lexer
     /// </summary>
     private void ScanWhitespace()
     {
-        while (!this.IsAtEnd && (this.Current == ' ' || this.Current == '\t'))
+        while (!this.IsAtEnd && (this.GetCurrent() == ' ' || this.GetCurrent() == '\t'))
         {
             this.Position++;
         }
@@ -340,7 +339,7 @@ internal sealed class Lexer
     /// </summary>
     private void ScanText()
     {
-        while (!this.IsAtEnd && !IsSpecialCharacter(this.Current))
+        while (!this.IsAtEnd && !IsSpecialCharacter(this.GetCurrent()))
         {
             this.Position++;
         }

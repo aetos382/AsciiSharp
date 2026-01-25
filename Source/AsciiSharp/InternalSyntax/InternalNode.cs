@@ -1,6 +1,4 @@
 
-using System;
-
 namespace AsciiSharp.InternalSyntax;
 /// <summary>
 /// 内部構文木のノードを表す抽象基底クラス。

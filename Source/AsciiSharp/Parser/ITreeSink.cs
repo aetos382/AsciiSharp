@@ -58,5 +58,5 @@ internal interface ITreeSink
     /// トリビア付きトークンを追加する。
     /// </summary>
     /// <param name="token">追加するトークン。</param>
-    void EmitToken(AsciiSharp.InternalSyntax.InternalToken token);
+    void EmitToken(InternalSyntax.InternalToken token);
 }
