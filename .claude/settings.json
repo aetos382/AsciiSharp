@@ -22,9 +22,9 @@
       "WebSearch"
     ],
     "deny": [
-      "Edit(**/packages-lock.json)",
+      "Edit(**/packages.lock.json)",
       "Edit(/Directory.packages.props)",
-      "Write(**/packages-lock.json)",
+      "Write(**/packages.lock.json)",
       "Write(/Directory.packages.props)"
     ]
   }
