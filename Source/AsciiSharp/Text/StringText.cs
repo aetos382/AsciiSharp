@@ -107,7 +107,7 @@ internal sealed class StringText : SourceText
         }
 
         // BOM 状態を維持
-        return new StringText(builder.ToString(), this._hasBom);
+        return new(builder.ToString(), this._hasBom);
     }
 
     /// <summary>
@@ -133,13 +133,13 @@ internal sealed class StringText : SourceText
                     lineBreakLength = 2;
                 }
 
-                lines.Add(new TextLine(lineStart, position - lineStart, lineBreakLength));
+                lines.Add(new(lineStart, position - lineStart, lineBreakLength));
                 position += lineBreakLength;
                 lineStart = position;
             }
             else if (c == '\n')
             {
-                lines.Add(new TextLine(lineStart, position - lineStart, 1));
+                lines.Add(new(lineStart, position - lineStart, 1));
                 position++;
                 lineStart = position;
             }
@@ -150,7 +150,7 @@ internal sealed class StringText : SourceText
         }
 
         // 最後の行（改行で終わっていない場合も含む）
-        lines.Add(new TextLine(lineStart, text.Length - lineStart, 0));
+        lines.Add(new(lineStart, text.Length - lineStart, 0));
 
         return lines;
     }
