@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 ## 一般的な原則
 
