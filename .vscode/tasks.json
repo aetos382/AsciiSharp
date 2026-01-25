@@ -9,6 +9,9 @@
       "args": [ "husky", "install" ],
       "runOptions": {
         "runOn": "folderOpen"
+      },
+      "presentation": {
+        "close": true
       }
     },
     {
@@ -16,6 +19,64 @@
       "type": "process",
       "command": "dotnet",
       "args": [ "tool", "restore" ]
+    },
+    {
+      "label": "build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [ "build" ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "test",
+      "type": "process",
+      "command": "dotnet",
+      "args": [ "test" ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "build tck",
+      "type": "process",
+      "command": "docker",
+      "args": [ "buildx", "bake", "tck" ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "dependsOn": [
+        "pull tck"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "run tck",
+      "type": "process",
+      "command": "docker",
+      "args": [ "container", "run", "-it", "--rm", "asciisharp-tck:latest" ],
+      "dependsOn": [
+        "build tck"
+      ],
+      "group": "test"
+    },
+    {
+      "label": "pull tck",
+      "type": "process",
+      "command": "git",
+      "args": [ "submodule", "update", "--init", "submodules/asciidoc-tck" ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     }
   ]
 }
