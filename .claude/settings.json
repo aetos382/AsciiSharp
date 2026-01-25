@@ -7,6 +7,14 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true
   },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "Anthropic/claude-plugins-official"
+      }
+    }
+  },
   "language": "Japanese",
   "permissions": {
     "allow": [
