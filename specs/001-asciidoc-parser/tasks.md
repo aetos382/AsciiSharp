@@ -327,6 +327,26 @@
 - [x] T114c [P] 文中コメントの内容を検査するステップ定義を Test/AsciiSharp.Specs/StepDefinitions/CommentParsingSteps.cs に追加（「構文木に "..." を含むコメントがある」、「構文木に N 個の単一行/ブロックコメントがある」ステップ）
 - [x] T114d [P] 文中コメントのテストケースを Test/AsciiSharp.Specs/Features/CommentParsing.feature に追加（単一行コメント内容検査、ブロックコメント内容検査、セクション内コメント内容検査、コメント数検査）
 - [x] T114e BDD テストを実行し、Green を確認
+
+### コメント処理のリファクタリング（Roslyn パターンへの統一）
+
+> **目的**: コメントを Token として扱うのをやめ、Roslyn と同様にすべてのコメントを Trivia として統一する
+
+- [ ] T114f [P] SyntaxKind.cs から SingleLineCommentToken と BlockCommentToken を削除（Source/AsciiSharp/SyntaxKind.cs）
+- [ ] T114g Lexer.cs を修正してすべてのコメント（冒頭・本文中）を Trivia として生成（Source/AsciiSharp/Parser/Lexer.cs）
+  - `_isAtDocumentStart` フラグを削除
+  - `ScanComment()` メソッドを削除
+  - すべてのコメントを `ScanLeadingTrivia()` で処理
+- [ ] T114h Parser.cs からコメント Token 関連の処理を削除（Source/AsciiSharp/Parser/Parser.cs）
+  - `IsAtComment()` メソッドを削除
+  - `SkipComment()` メソッドを削除
+  - `SkipLeadingCommentsAndBlankLines()` メソッドを削除または簡素化
+- [ ] T114i [P] CommentParsingSteps.cs のステップ定義を更新（Test/AsciiSharp.Specs/StepDefinitions/CommentParsingSteps.cs）
+  - Token を検索する箇所を Trivia のみに変更
+  - コメント数カウントロジックを Trivia のみに統一
+- [ ] T114j BDD テストを実行し、Green を確認
+- [ ] T114k ビルドを実行し、警告ゼロを確認
+
 - ~~[ ] T115 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加~~ *(延期: 後続イテレーション)*
 - [x] T116 [P] BOM（Byte Order Mark）処理を SourceText に実装
 - [x] T117 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装
@@ -442,7 +462,7 @@ Task: "[US1] ParagraphSyntax を Source/AsciiSharp/Syntax/ParagraphSyntax.cs に
 - **User Story 4**: 14 タスク（BDD テスト含む）
 - **User Story 5**: 13 タスク（BDD テスト含む、パフォーマンス検証タスク削除）
 - ~~**User Story 6**: 16 タスク~~ *(延期: 後続イテレーション)*
-- **Phase 9 (Polish)**: 約 10 タスク（DescriptionList, DelimitedBlock 等延期）
+- **Phase 9 (Polish)**: 約 16 タスク（DescriptionList, DelimitedBlock 等延期、コメント Trivia 統一 6 タスク追加）
 
 ### 延期されたタスク（後続イテレーション）
 
