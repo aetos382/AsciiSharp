@@ -26,6 +26,8 @@
   "containerEnv": {
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "DISABLE_AUTOUPDATER": "1",
+    "LANG": "ja_JP.UTF-8",
     "NUGET_PACKAGES": "/home/vscode/.nuget/packages",
     "NUGET_XMLDOC_MODE": "none",
     "TZ": "Asia/Tokyo"
