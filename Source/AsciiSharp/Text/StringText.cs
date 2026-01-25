@@ -107,7 +107,7 @@ internal sealed class StringText : SourceText
         }
 
         // BOM 状態を維持
-        return new(builder.ToString(), this._hasBom);
+        return new StringText(builder.ToString(), this._hasBom);
     }
 
     /// <summary>
