@@ -323,7 +323,7 @@
   - **注**: RevisionLine, AttributeEntry は後続イテレーションで実装
 - [x] T114 [P] コメント解析（単一行 //, ブロック ////）を Source/AsciiSharp/Parser/Lexer.cs に実装
 - [x] T114a [P] 冒頭コメントのテストケースを Test/AsciiSharp.Specs/Features/CommentParsing.feature に追加（単一行コメント、ブロックコメント、複数コメント）
-- [ ] T114b [US1] 冒頭コメントがある場合のドキュメントヘッダー認識を Source/AsciiSharp/Parser/Parser.cs で修正（BDD Red → Green）
+- [x] T114b [US1] 冒頭コメントがある場合のドキュメントヘッダー認識を Source/AsciiSharp/Parser/Parser.cs と Source/AsciiSharp/Parser/Lexer.cs で修正（BDD Red → Green）
 - ~~[ ] T115 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加~~ *(延期: 後続イテレーション)*
 - [x] T116 [P] BOM（Byte Order Mark）処理を SourceText に実装
 - [x] T117 [P] 混在する改行コード（CR, LF, CRLF）のサポートを Lexer に実装

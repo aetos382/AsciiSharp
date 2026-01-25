@@ -86,6 +86,9 @@ internal sealed class AsciiDocParser
     {
         this._sink.StartNode(SyntaxKind.Document);
 
+        // 冒頭のコメントと空行をスキップ（トリビアとして保持）
+        this.SkipLeadingCommentsAndBlankLines();
+
         // ヘッダーの解析を試みる
         if (this.IsAtDocumentTitle())
         {
@@ -99,6 +102,32 @@ internal sealed class AsciiDocParser
         this.EmitToken(SyntaxKind.EndOfFileToken);
 
         this._sink.FinishNode();
+    }
+
+    /// <summary>
+    /// 文書冒頭のコメントと空行をスキップする。
+    /// </summary>
+    /// <remarks>
+    /// ドキュメントタイトルの前にあるコメントと空行を処理し、
+    /// トリビアとして構文木に保持する。
+    /// </remarks>
+    private void SkipLeadingCommentsAndBlankLines()
+    {
+        while (!this.IsAtEnd())
+        {
+            if (this.IsAtComment())
+            {
+                this.SkipComment();
+            }
+            else if (this.IsBlankLine())
+            {
+                this.SkipBlankLines();
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
     /// <summary>

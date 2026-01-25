@@ -14,6 +14,7 @@ internal sealed class Lexer
     private readonly SourceText _text;
     private readonly List<InternalTrivia> _leadingTrivia = [];
     private bool _isAtLineStart = true;
+    private bool _isAtDocumentStart = true;
 
     /// <summary>
     /// Lexer を作成する。
@@ -64,7 +65,7 @@ internal sealed class Lexer
         this._leadingTrivia.Clear();
 
         // 先行トリビアを収集
-        ScanLeadingTrivia();
+        this.ScanLeadingTrivia();
 
         var leadingTrivia = this._leadingTrivia.Count > 0 ? this._leadingTrivia.ToArray() : null;
 
@@ -73,6 +74,13 @@ internal sealed class Lexer
 
         // 後続トリビアを収集
         ScanTrailingTrivia();
+
+        // 最初のトークンを返した後、文書冒頭フラグをリセット
+        // EOF 以外の実際のトークンが返された場合
+        if (this._isAtDocumentStart && token.Kind != SyntaxKind.EndOfFileToken)
+        {
+            this._isAtDocumentStart = false;
+        }
 
         // トリビアを設定したトークンを返す
         return token.WithTrivia(leadingTrivia, trailingTrivia: null);
@@ -83,12 +91,108 @@ internal sealed class Lexer
     /// </summary>
     /// <remarks>
     /// <para>AsciiDoc では空白が意味を持つため、空白はトークンとして扱う。</para>
-    /// <para>AsciiDoc の単一行コメント (//) は行頭でのみ有効であり、</para>
-    /// <para>トークンとして <see cref="ScanComment"/> で処理される。</para>
+    /// <para>文書冒頭の行頭コメントはトリビアとして収集される。</para>
+    /// <para>本文中のコメントはトークンとして処理される。</para>
     /// </remarks>
-    private static void ScanLeadingTrivia()
+    private void ScanLeadingTrivia()
     {
-        // 現時点では先行トリビアとして収集するものはない
+        // 文書冒頭の行頭コメントのみトリビアとして収集
+        // 本文中のコメントはトークンとして処理（Parser が検出）
+        while (this._isAtDocumentStart && this._isAtLineStart && !this.IsAtEnd && this.GetCurrent() == '/' && this.Peek() == '/')
+        {
+            var start = this.Position;
+
+            // ブロックコメントか単一行コメントか判定
+            if (this.Peek(2) == '/' && this.Peek(3) == '/')
+            {
+                // ブロックコメント (////...////)
+                this.ScanBlockCommentAsTrivia(start);
+            }
+            else
+            {
+                // 単一行コメント (//)
+                this.ScanSingleLineCommentAsTrivia(start);
+            }
+
+            // コメントの後の改行もトリビアとして収集
+            if (!this.IsAtEnd && (this.GetCurrent() == '\r' || this.GetCurrent() == '\n'))
+            {
+                this.ScanNewLineAsTrivia();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 単一行コメントをトリビアとしてスキャンする。
+    /// </summary>
+    /// <param name="start">開始位置。</param>
+    private void ScanSingleLineCommentAsTrivia(int start)
+    {
+        // 行末まで読み取る（改行は含まない）
+        while (!this.IsAtEnd && this.GetCurrent() != '\r' && this.GetCurrent() != '\n')
+        {
+            this.Position++;
+        }
+
+        var text = this._text.GetText(start, this.Position - start);
+        this._leadingTrivia.Add(new InternalTrivia(SyntaxKind.SingleLineCommentTrivia, text));
+    }
+
+    /// <summary>
+    /// ブロックコメントをトリビアとしてスキャンする。
+    /// </summary>
+    /// <param name="start">開始位置。</param>
+    private void ScanBlockCommentAsTrivia(int start)
+    {
+        // 開始デリミタ //// を読み飛ばす
+        this.Position += 4;
+
+        // 終了デリミタ //// を探す
+        while (!this.IsAtEnd)
+        {
+            // 行頭の //// を検出
+            if (this.GetCurrent() == '/' &&
+                this.Peek() == '/' &&
+                this.Peek(2) == '/' &&
+                this.Peek(3) == '/')
+            {
+                this.Position += 4;
+                break;
+            }
+
+            this.Position++;
+        }
+
+        var text = this._text.GetText(start, this.Position - start);
+        this._leadingTrivia.Add(new InternalTrivia(SyntaxKind.MultiLineCommentTrivia, text));
+    }
+
+    /// <summary>
+    /// 改行をトリビアとしてスキャンする。
+    /// </summary>
+    private void ScanNewLineAsTrivia()
+    {
+        var start = this.Position;
+
+        if (this.GetCurrent() == '\r')
+        {
+            this.Position++;
+
+            if (!this.IsAtEnd && this.GetCurrent() == '\n')
+            {
+                this.Position++;
+            }
+        }
+        else if (this.GetCurrent() == '\n')
+        {
+            this.Position++;
+        }
+
+        var text = this._text.GetText(start, this.Position - start);
+        this._leadingTrivia.Add(new InternalTrivia(SyntaxKind.EndOfLineTrivia, text));
+
+        // 改行後は行頭フラグを設定（次のコメントを検出するため）
+        this._isAtLineStart = true;
     }
 
     /// <summary>
