@@ -152,6 +152,12 @@ this._field = parameter ?? throw new ArgumentNullException(nameof(parameter));
   - ソリューション ディレクトリまたは個別のプロジェクト ディレクトリで `dotnet test`
   - 個別のプロジェクトディレクトリで `dotnet run`
 
+### 仕様策定と .feature ファイルについて
+
+- 仕様策定（`/speckit.specify` または `/speckit.plan`）の完了時には、必ず対応する .feature ファイルを `Test/AsciiSharp.Specs/Features/` に作成します。
+- .feature ファイルが作成されるまで、実装フェーズに進みません。
+- .feature ファイルは日本語で記述し、Gherkin の Given-When-Then 形式に従います。
+
 ## コード レビューについて
 
 ### レビュー コメントの分類
