@@ -24,14 +24,15 @@
   },
   "remoteUser": "vscode",
   "containerEnv": {
-    "TZ": "Asia/Tokyo",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
     "NUGET_PACKAGES": "/home/vscode/.nuget/packages",
-    "NUGET_XMLDOC_MODE": "none"
+    "NUGET_XMLDOC_MODE": "none",
+    "TZ": "Asia/Tokyo"
   },
   "remoteEnv": {
-    "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}",
-    "DOCKER_API_VERSION": "1.43"
+    "DOCKER_API_VERSION": "1.43",
+    "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}"
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "postStartCommand": "bash .devcontainer/postStart.sh",
