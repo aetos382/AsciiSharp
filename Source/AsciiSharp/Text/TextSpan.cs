@@ -154,14 +154,7 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-        unchecked
-        {
-            return (this.Start * 397) ^ this.Length;
-        }
-#else
         return HashCode.Combine(this.Start, this.Length);
-#endif
     }
 
     /// <inheritdoc />

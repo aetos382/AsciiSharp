@@ -155,18 +155,7 @@ public sealed class Diagnostic : IEquatable<Diagnostic>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-        unchecked
-        {
-            var hashCode = this.Code.GetHashCode();
-            hashCode = (hashCode * 397) ^ this.Message.GetHashCode();
-            hashCode = (hashCode * 397) ^ (int)this.Severity;
-            hashCode = (hashCode * 397) ^ this.Location.GetHashCode();
-            return hashCode;
-        }
-#else
         return HashCode.Combine(this.Code, this.Message, this.Severity, this.Location);
-#endif
     }
 
     /// <inheritdoc />

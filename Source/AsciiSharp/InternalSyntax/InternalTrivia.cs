@@ -102,14 +102,7 @@ internal readonly struct InternalTrivia : IEquatable<InternalTrivia>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD
-        unchecked
-        {
-            return ((int)this.Kind * 397) ^ (this.Text?.GetHashCode() ?? 0);
-        }
-#else
         return HashCode.Combine(this.Kind, this.Text);
-#endif
     }
 
     /// <summary>

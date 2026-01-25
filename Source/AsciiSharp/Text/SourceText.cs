@@ -254,17 +254,7 @@ public readonly struct TextLine : IEquatable<TextLine>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-        unchecked
-        {
-            var hashCode = this.Start;
-            hashCode = (hashCode * 397) ^ this.Length;
-            hashCode = (hashCode * 397) ^ this.LineBreakLength;
-            return hashCode;
-        }
-#else
         return HashCode.Combine(this.Start, this.Length, this.LineBreakLength);
-#endif
     }
 
     /// <summary>
@@ -328,14 +318,7 @@ public readonly struct TextChange : IEquatable<TextChange>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-        unchecked
-        {
-            return (this.Span.GetHashCode() * 397) ^ (this.NewText?.GetHashCode() ?? 0);
-        }
-#else
         return HashCode.Combine(this.Span, this.NewText);
-#endif
     }
 
     /// <summary>

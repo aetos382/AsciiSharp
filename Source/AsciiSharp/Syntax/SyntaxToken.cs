@@ -143,14 +143,7 @@ public readonly struct SyntaxToken : IEquatable<SyntaxToken>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-        unchecked
-        {
-            return (this.Position * 397) ^ (this.Internal?.GetHashCode() ?? 0);
-        }
-#else
         return HashCode.Combine(this.Position, this.Internal);
-#endif
     }
 
     /// <summary>
@@ -366,14 +359,7 @@ public readonly struct SyntaxTriviaList : IReadOnlyList<SyntaxTrivia>, IEquatabl
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-        unchecked
-        {
-            return (this._token.GetHashCode() * 397) ^ this._isLeading.GetHashCode();
-        }
-#else
         return HashCode.Combine(this._token, this._isLeading);
-#endif
     }
 
     /// <summary>

@@ -91,17 +91,7 @@ public readonly struct SyntaxTrivia : IEquatable<SyntaxTrivia>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-#if NETSTANDARD2_0
-        unchecked
-        {
-            var hash = this._position;
-            hash = (hash * 397) ^ (int)this._internal.Kind;
-            hash = (hash * 397) ^ (this._internal.Text?.GetHashCode() ?? 0);
-            return hash;
-        }
-#else
         return HashCode.Combine(this._position, this._internal.Kind, this._internal.Text);
-#endif
     }
 
     /// <summary>

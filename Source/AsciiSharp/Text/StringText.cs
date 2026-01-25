@@ -46,11 +46,7 @@ internal sealed class StringText : SourceText
         if (text.Length > 0 && text[0] == ByteOrderMark)
         {
             this._hasBom = true;
-#if NETSTANDARD2_0
-            this._text = text.Substring(1);
-#else
             this._text = text[1..];
-#endif
         }
         else
         {

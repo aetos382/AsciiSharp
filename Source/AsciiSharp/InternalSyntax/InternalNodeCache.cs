@@ -16,7 +16,7 @@ internal sealed class InternalNodeCache
     private const int DefaultCapacity = 1024;
     private const int MaxCacheableWidth = 256;
 
-#if NETSTANDARD
+#if NETSTANDARD2_0
     private readonly object _lock = new();
 #else
     private readonly Lock _lock = new();
@@ -143,31 +143,6 @@ internal sealed class InternalNodeCache
     /// <returns>ハッシュコード。</returns>
     private static int ComputeHashCode(InternalNode node)
     {
-#if NETSTANDARD
-        unchecked
-        {
-            var hash = (int)node.Kind;
-            hash = (hash * 397) ^ node.FullWidth;
-
-            if (node is InternalToken token)
-            {
-                hash = (hash * 397) ^ token.Text.GetHashCode();
-            }
-            else
-            {
-                for (var i = 0; i < node.SlotCount; i++)
-                {
-                    var child = node.GetSlot(i);
-                    if (child is not null)
-                    {
-                        hash = (hash * 397) ^ ComputeHashCode(child);
-                    }
-                }
-            }
-
-            return hash;
-        }
-#else
         var hash = new HashCode();
 
         hash.Add(node.Kind);
@@ -190,7 +165,6 @@ internal sealed class InternalNodeCache
         }
 
         return hash.ToHashCode();
-#endif
     }
 
     /// <summary>
@@ -219,14 +193,7 @@ internal sealed class InternalNodeCache
 
         public override int GetHashCode()
         {
-#if NETSTANDARD
-            unchecked
-            {
-                return ((int)this.Kind * 397) ^ this.HashCode;
-            }
-#else
             return System.HashCode.Combine(this.Kind, this.HashCode);
-#endif
         }
     }
 }
