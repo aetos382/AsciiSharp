@@ -129,10 +129,7 @@ public sealed class CommentParsingSteps
             .Where(t => t.Kind == SyntaxKind.SingleLineCommentTrivia)
             .ToList();
 
-        Assert.AreEqual(
-            expectedCount,
-            commentTrivia.Count,
-            $"単一行コメントの数が一致しません。期待: {expectedCount}, 実際: {commentTrivia.Count}");
+        Assert.HasCount(expectedCount, commentTrivia, $"単一行コメントの数が一致しません。");
     }
 
     [Then(@"構文木に (\d+) 個のブロックコメントがある")]
@@ -147,9 +144,6 @@ public sealed class CommentParsingSteps
             .Where(t => t.Kind == SyntaxKind.MultiLineCommentTrivia)
             .ToList();
 
-        Assert.AreEqual(
-            expectedCount,
-            commentTrivia.Count,
-            $"ブロックコメントの数が一致しません。期待: {expectedCount}, 実際: {commentTrivia.Count}");
+        Assert.HasCount(expectedCount, commentTrivia, $"ブロックコメントの数が一致しません。");
     }
 }

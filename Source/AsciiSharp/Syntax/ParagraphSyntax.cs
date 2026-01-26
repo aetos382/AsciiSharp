@@ -13,6 +13,7 @@ namespace AsciiSharp.Syntax;
 public sealed class ParagraphSyntax : SyntaxNode
 {
     private readonly List<SyntaxNode> _inlineElements = [];
+    private readonly List<SyntaxNodeOrToken> _children = [];
 
     /// <summary>
     /// 段落内のインライン要素。
@@ -35,87 +36,29 @@ public sealed class ParagraphSyntax : SyntaxNode
                 continue;
             }
 
-            switch (slot.Kind)
+            // トークンの場合は SyntaxToken としてラップ
+            if (slot is InternalToken token)
             {
-                case SyntaxKind.Text:
-                    this._inlineElements.Add(new TextSyntax(slot, this, currentPosition, syntaxTree));
-                    break;
+                this._children.Add(new SyntaxToken(token, this, currentPosition, i));
+                currentPosition += slot.FullWidth;
+                continue;
+            }
 
-                case SyntaxKind.Link:
-                    this._inlineElements.Add(new LinkSyntax(slot, this, currentPosition, syntaxTree));
-                    break;
-                case SyntaxKind.None:
-                    break;
-                case SyntaxKind.MissingToken:
-                    break;
-                case SyntaxKind.SkippedTokensTrivia:
-                    break;
-                case SyntaxKind.EndOfFileToken:
-                    break;
-                case SyntaxKind.NewLineToken:
-                    break;
-                case SyntaxKind.WhitespaceToken:
-                    break;
-                case SyntaxKind.TextToken:
-                    break;
-                case SyntaxKind.EqualsToken:
-                    break;
-                case SyntaxKind.ColonToken:
-                    break;
-                case SyntaxKind.SlashToken:
-                    break;
-                case SyntaxKind.OpenBracketToken:
-                    break;
-                case SyntaxKind.CloseBracketToken:
-                    break;
-                case SyntaxKind.OpenBraceToken:
-                    break;
-                case SyntaxKind.CloseBraceToken:
-                    break;
-                case SyntaxKind.HashToken:
-                    break;
-                case SyntaxKind.AsteriskToken:
-                    break;
-                case SyntaxKind.UnderscoreToken:
-                    break;
-                case SyntaxKind.BacktickToken:
-                    break;
-                case SyntaxKind.DotToken:
-                    break;
-                case SyntaxKind.CommaToken:
-                    break;
-                case SyntaxKind.PipeToken:
-                    break;
-                case SyntaxKind.LessThanToken:
-                    break;
-                case SyntaxKind.GreaterThanToken:
-                    break;
-                case SyntaxKind.WhitespaceTrivia:
-                    break;
-                case SyntaxKind.EndOfLineTrivia:
-                    break;
-                case SyntaxKind.SingleLineCommentTrivia:
-                    break;
-                case SyntaxKind.MultiLineCommentTrivia:
-                    break;
-                case SyntaxKind.Document:
-                    break;
-                case SyntaxKind.DocumentHeader:
-                    break;
-                case SyntaxKind.DocumentBody:
-                    break;
-                case SyntaxKind.Section:
-                    break;
-                case SyntaxKind.SectionTitle:
-                    break;
-                case SyntaxKind.Paragraph:
-                    break;
-                case SyntaxKind.AuthorLine:
-                    break;
-                case SyntaxKind.TextSpan:
-                    break;
-                default:
-                    break;
+            // ノードの場合は適切な型に変換
+            // IDE0072: SyntaxKind の全ケースを網羅する必要なし - 段落に関連する種別のみ処理
+#pragma warning disable IDE0072
+            SyntaxNode? child = slot.Kind switch
+            {
+                SyntaxKind.Text => new TextSyntax(slot, this, currentPosition, syntaxTree),
+                SyntaxKind.Link => new LinkSyntax(slot, this, currentPosition, syntaxTree),
+                _ => null
+            };
+#pragma warning restore IDE0072
+
+            if (child is not null)
+            {
+                this._inlineElements.Add(child);
+                this._children.Add(new SyntaxNodeOrToken(child));
             }
 
             currentPosition += slot.FullWidth;
@@ -125,9 +68,9 @@ public sealed class ParagraphSyntax : SyntaxNode
     /// <inheritdoc />
     public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
     {
-        foreach (var element in this._inlineElements)
+        foreach (var child in this._children)
         {
-            yield return new SyntaxNodeOrToken(element);
+            yield return child;
         }
     }
 
