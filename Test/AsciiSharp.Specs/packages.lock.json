@@ -176,16 +176,7 @@
         "contentHash": "nYG5sxsXDUTfEscIp2QeGhwchaQJi6fCIvJle4ayenNj6koq4KY5zawj80E3V/eaU9Uy7A82nMY3BhoyaLY6lg=="
       },
       "asciisharp": {
-        "type": "Project",
-        "dependencies": {
-          "Microsoft.Bcl.Memory": "[10.0.2, )"
-        }
-      },
-      "Microsoft.Bcl.Memory": {
-        "type": "CentralTransitive",
-        "requested": "[10.0.2, )",
-        "resolved": "10.0.2",
-        "contentHash": "KLJb/zKv+zvkeSJloY0WbGbqj6qY2Gxd2s4YhzzEhO65OLup5N0SmT97lnfxuiJnqroSkT6opzVfXYGZ3P3zdw=="
+        "type": "Project"
       }
     },
     "net10.0/linux-x64": {
