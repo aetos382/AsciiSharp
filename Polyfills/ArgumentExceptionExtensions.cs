@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-using SR = AsciiSharp.Properties.Resources;
-
 namespace System;
 
 public static class ArgumentExceptionExtensions
@@ -39,7 +37,7 @@ public static class ArgumentExceptionExtensions
     private static void ThrowNullOrEmpty(string? paramName)
     {
         throw new ArgumentException(
-            SR.Error_ArgumentNullOrEmpty,
+            "Value cannot be null or empty.",
             paramName);
     }
 
@@ -47,7 +45,7 @@ public static class ArgumentExceptionExtensions
     private static void ThrowNullOrWhitespance(string? paramName)
     {
         throw new ArgumentException(
-            SR.Error_ArgumentNullOrWhiteSpace,
+            "Value cannot be null or white space.",
             paramName);
     }
 }

@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-using SR = AsciiSharp.Properties.Resources;
-
 namespace System;
 
 internal static class ArgumentOutOfRangeExceptionExtensions
@@ -119,7 +117,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentEqual);
+            "Value must not be equal to the specified value.");
     }
 
     [DoesNotReturn]
@@ -128,7 +126,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentGreaterThan);
+            "Value is too large.");
     }
 
     [DoesNotReturn]
@@ -137,7 +135,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentGreaterThanOrEqual);
+            "Value is too large.");
     }
 
     [DoesNotReturn]
@@ -146,7 +144,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentLessThan);
+            "Value is too small.");
     }
 
     [DoesNotReturn]
@@ -155,7 +153,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentLessThanOrEqual);
+            "Value is too small.");
     }
 
     [DoesNotReturn]
@@ -164,7 +162,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentNotEqual);
+            "Value must be equal to the required value.");
     }
 
     [DoesNotReturn]
@@ -173,7 +171,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentNegative);
+            "Value must not be negative.");
     }
 
     [DoesNotReturn]
@@ -182,7 +180,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentNegativeOrZero);
+            "Value must be positive.");
     }
 
     [DoesNotReturn]
@@ -191,7 +189,7 @@ internal static class ArgumentOutOfRangeExceptionExtensions
     {
         throw new ArgumentOutOfRangeException(
             paramName,
-            SR.Error_ArgumentZero);
+            "Value must not be zero.");
     }
 }
 
