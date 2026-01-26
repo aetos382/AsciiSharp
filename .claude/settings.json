@@ -1,4 +1,36 @@
 {
+  "respectGitignore": true,
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet format:*)",
+      "Bash(dotnet package search:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet test:*)",
+      "Bash(find:*)",
+      "Bash(git fetch:*)",
+      "Bash(git ls-remote:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Skill(commit-commands:commit)",
+      "Skill(commit-commands:commit:*)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [
+      "Edit(/Directory.packages.props)",
+      "Edit(**/packages.lock.json)",
+      "Edit(**/*.g.cs)",
+      "Edit(**/*.Designer.cs)",
+      "Write(/Directory.packages.props)",
+      "Write(**/packages.lock.json)",
+      "Write(**/*.g.cs)",
+      "Write(**/*.Designer.cs)"
+    ]
+  },
   "enabledPlugins": {
     "claude-code-setup@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
@@ -15,39 +47,5 @@
       }
     }
   },
-  "language": "Japanese",
-  "permissions": {
-    "allow": [
-      "Bash(cat:*)",
-      "Bash(dotnet build:*)",
-      "Bash(dotnet clean:*)",
-      "Bash(dotnet format:*)",
-      "Bash(dotnet package search:*)",
-      "Bash(dotnet restore:*)",
-      "Bash(dotnet test:*)",
-      "Bash(find:*)",
-      "Bash(git fetch:*)",
-      "Bash(git rev-parse:*)",
-      "Bash(grep:*)",
-      "Bash(ls:*)",
-      "Skill(commit-commands:commit)",
-      "Skill(commit-commands:commit:*)",
-      "WebFetch",
-      "WebSearch"
-    ],
-    "deny": [
-      "Edit(/Directory.packages.props)",
-      "Edit(**/packages.lock.json)",
-      "Edit(**/*.g.cs)",
-      "Edit(**/*.Designer.cs)",
-      "Edit(**/obj/**/*.cs)",
-
-      "Write(/Directory.packages.props)",
-      "Write(**/packages.lock.json)",
-      "Write(**/*.g.cs)",
-      "Write(**/*.Designer.cs)",
-      "Write(**/obj/**/*.cs)"
-    ]
-  },
-  "respectGitignore": true
+  "language": "Japanese"
 }
