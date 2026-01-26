@@ -18,7 +18,8 @@
       "Skill(commit-commands:commit)",
       "Skill(commit-commands:commit:*)",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "mcp__microsoft-learn__microsoft_docs_fetch"
     ],
     "deny": [
       "Edit(/Directory.packages.props)",

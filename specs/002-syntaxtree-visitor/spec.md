@@ -38,21 +38,6 @@
 
 ---
 
-### User Story 3 - 構文木の変換 (Priority: P3)
-
-ライブラリ利用者が、構文木を変換して新しい構文木を生成したい。例えば、特定のノードを別のノードに置換したり、ノードを削除したりする。
-
-**Why this priority**: 構文木の変換は、リファクタリングツールやドキュメント変換ツールにおいて必要な機能だが、読み取りのみのユースケースより優先度は低い。
-
-**Independent Test**: 構文木内のリンクテキストを変換するテストを実行し、新しい構文木が正しく生成されることを確認できる。
-
-**Acceptance Scenarios**:
-
-1. **Given** リンクを含む文書がある, **When** Rewriter でリンクの URL を変換する, **Then** 新しい構文木が生成され、元の構文木は変更されない
-2. **Given** 複数のセクションを持つ文書がある, **When** Rewriter で特定のセクションを削除する, **Then** そのセクションを含まない新しい構文木が返される
-
----
-
 ### Edge Cases
 
 - 空の文書（ノードがない）を走査した場合、エラーなく完了する
@@ -64,36 +49,30 @@
 
 ### Functional Requirements
 
-- **FR-001**: システムは、構文木のすべてのノードを深さ優先順序で訪問できる Visitor を提供しなければならない
-- **FR-002**: システムは、戻り値なしの Visitor（SyntaxVisitor）を提供しなければならない
-- **FR-003**: システムは、戻り値ありの Visitor（SyntaxVisitor&lt;TResult&gt;）を提供しなければならない
-- **FR-004**: システムは、構文木を変換する Rewriter（SyntaxRewriter）を提供しなければならない
-- **FR-005**: Visitor は各具象ノード型（DocumentSyntax, SectionSyntax など）に対応する Visit メソッドを持たなければならない
-- **FR-006**: Visitor は SyntaxToken を訪問できなければならない
-- **FR-007**: Visitor は SyntaxTrivia を訪問できなければならない
-- **FR-008**: 利用者は Visit メソッドをオーバーライドして特定のノード型の処理をカスタマイズできなければならない
-- **FR-009**: デフォルトの Visit メソッドは子ノードを再帰的に訪問しなければならない
-- **FR-010**: SyntaxRewriter は、ノードを変換して新しいイミュータブルな構文木を返さなければならない
+- **FR-001**: システムは、構文木のノードを訪問できる Visitor インターフェイスを提供しなければならない
+- **FR-002**: システムは、戻り値なしの Visitor インターフェイス（ISyntaxVisitor）を提供しなければならない
+- **FR-003**: システムは、戻り値ありの Visitor インターフェイス（ISyntaxVisitor&lt;TResult&gt;）を提供しなければならない
+- **FR-004**: Visitor インターフェイスは各具象ノード型（DocumentSyntax, SectionSyntax など）に対応する VisitXxx メソッドを持たなければならない
+- **FR-005**: 各 SyntaxNode 派生クラスは Accept メソッドを持ち、適切な VisitXxx メソッドを呼び出さなければならない
 
 ### Key Entities
 
-- **SyntaxVisitor**: 戻り値なしで構文木を走査する抽象基底クラス
-- **SyntaxVisitor&lt;TResult&gt;**: 走査結果を返す抽象基底クラス
-- **SyntaxRewriter**: 構文木を変換して新しい構文木を返すクラス（SyntaxVisitor&lt;SyntaxNode?&gt; から派生）
+- **ISyntaxVisitor**: 戻り値なしで構文木を走査するインターフェイス
+- **ISyntaxVisitor&lt;TResult&gt;**: 走査結果を返すインターフェイス
+- **SyntaxNode.Accept**: 各ノード型が実装するダブルディスパッチ用メソッド
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
-- **SC-001**: すべての既存 SyntaxNode 派生クラスに対応する Visit メソッドが提供される
-- **SC-002**: 1000 ノードを持つ構文木を走査できる
+- **SC-001**: すべての既存 SyntaxNode 派生クラス（8 種）に対応する VisitXxx メソッドがインターフェイスで定義される
+- **SC-002**: すべての既存 SyntaxNode 派生クラス（8 種）に Accept メソッドが追加される
 - **SC-003**: Visitor を使用して文書内のすべてのリンクを抽出する処理を実装できる
-- **SC-004**: SyntaxRewriter を使用してノードを置換した新しい構文木を生成できる
-- **SC-005**: .NET Standard 2.0 と .NET 10.0 の両方で同等に動作する
+- **SC-004**: .NET Standard 2.0 と .NET 10.0 の両方で同等に動作する
 
 ## Assumptions
 
-- Roslyn の CSharpSyntaxVisitor / CSharpSyntaxRewriter パターンに従う
-- Visit メソッドは仮想メソッドとし、派生クラスでオーバーライド可能とする
-- 構文木はイミュータブルであり、Rewriter は常に新しい構文木を返す
-- トリビアの訪問はオプショナルとし、デフォルトでは訪問しない
+- インターフェイスのみを提供し、デフォルト実装クラスは提供しない
+- Visit / DefaultVisit のような汎用メソッドは設けない
+- SyntaxToken / SyntaxTrivia は構造体であり、Visitor の対象外とする
+- 子ノードの走査ロジックは利用者の実装に委ねる
