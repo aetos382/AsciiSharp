@@ -332,20 +332,14 @@
 
 > **目的**: コメントを Token として扱うのをやめ、Roslyn と同様にすべてのコメントを Trivia として統一する
 
-- [ ] T114f [P] SyntaxKind.cs から SingleLineCommentToken と BlockCommentToken を削除（Source/AsciiSharp/SyntaxKind.cs）
-- [ ] T114g Lexer.cs を修正してすべてのコメント（冒頭・本文中）を Trivia として生成（Source/AsciiSharp/Parser/Lexer.cs）
-  - `_isAtDocumentStart` フラグを削除
-  - `ScanComment()` メソッドを削除
-  - すべてのコメントを `ScanLeadingTrivia()` で処理
-- [ ] T114h Parser.cs からコメント Token 関連の処理を削除（Source/AsciiSharp/Parser/Parser.cs）
-  - `IsAtComment()` メソッドを削除
-  - `SkipComment()` メソッドを削除
-  - `SkipLeadingCommentsAndBlankLines()` メソッドを削除または簡素化
-- [ ] T114i [P] CommentParsingSteps.cs のステップ定義を更新（Test/AsciiSharp.Specs/StepDefinitions/CommentParsingSteps.cs）
-  - Token を検索する箇所を Trivia のみに変更
-  - コメント数カウントロジックを Trivia のみに統一
-- [ ] T114j BDD テストを実行し、Green を確認
-- [ ] T114k ビルドを実行し、警告ゼロを確認
+- [x] T114f [P] SyntaxKind.cs から SingleLineCommentToken と BlockCommentToken を削除（Source/AsciiSharp/SyntaxKind.cs）*（確認の結果、元々 Token は存在せず Trivia のみだった）*
+- [x] T114g Lexer.cs を修正してすべてのコメント（冒頭・本文中）を Trivia として生成（Source/AsciiSharp/Parser/Lexer.cs）*（既に Trivia として生成していた）*
+- [x] T114h Parser.cs からコメント Token 関連の処理を削除（Source/AsciiSharp/Parser/Parser.cs）*（既にコメント Token 処理は存在しなかった）*
+- [x] T114i [P] CommentParsingSteps.cs のステップ定義を更新（Test/AsciiSharp.Specs/StepDefinitions/CommentParsingSteps.cs）*（既に Trivia のみを検索していた）*
+- [x] T114j BDD テストを実行し、Green を確認
+  - ParagraphSyntax.ChildNodesAndTokens() がトークンを yield するように修正
+  - これにより DescendantTokens() でコメント Trivia が正しく列挙されるようになった
+- [x] T114k ビルドを実行し、警告ゼロを確認
 
 - ~~[ ] T115 [P] include ディレクティブ、条件付きディレクティブの構文認識を追加~~ *(延期: 後続イテレーション)*
 - [x] T116 [P] BOM（Byte Order Mark）処理を SourceText に実装
