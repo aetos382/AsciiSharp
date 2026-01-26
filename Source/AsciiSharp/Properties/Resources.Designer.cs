@@ -59,27 +59,126 @@ namespace AsciiSharp.Properties {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
-        ///   Expected token '{0}' is missing. に類似したローカライズされた文字列を検索します。
+        ///   Expected token &apos;{0}&apos; is missing. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ADS0001_ExpectedToken {
             get {
                 return ResourceManager.GetString("ADS0001_ExpectedToken", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Section title text is missing. に類似したローカライズされた文字列を検索します。
+        ///   Section title text is missing. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ADS0002_MissingSectionTitleText {
             get {
                 return ResourceManager.GetString("ADS0002_MissingSectionTitleText", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Maximum nesting level exceeded. Document structure is too deeply nested. に類似したローカライズされた文字列を検索します。
+        ///   Value must not be equal to the specified value. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentEqual {
+            get {
+                return ResourceManager.GetString("Error_ArgumentEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value is too large. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentGreaterThan {
+            get {
+                return ResourceManager.GetString("Error_ArgumentGreaterThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value is too large. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentGreaterThanOrEqual {
+            get {
+                return ResourceManager.GetString("Error_ArgumentGreaterThanOrEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value is too small. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentLessThan {
+            get {
+                return ResourceManager.GetString("Error_ArgumentLessThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value is too small. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentLessThanOrEqual {
+            get {
+                return ResourceManager.GetString("Error_ArgumentLessThanOrEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value must not be negative. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentNegative {
+            get {
+                return ResourceManager.GetString("Error_ArgumentNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value must be positive. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentNegativeOrZero {
+            get {
+                return ResourceManager.GetString("Error_ArgumentNegativeOrZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value must be equal to the required value. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentNotEqual {
+            get {
+                return ResourceManager.GetString("Error_ArgumentNotEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value cannot be null or empty. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentNullOrEmpty {
+            get {
+                return ResourceManager.GetString("Error_ArgumentNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value cannot be null or white space. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("Error_ArgumentNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value must not be zero. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_ArgumentZero {
+            get {
+                return ResourceManager.GetString("Error_ArgumentZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Maximum nesting level exceeded. Document structure is too deeply nested. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Error_NestingLevelExceeded {
             get {

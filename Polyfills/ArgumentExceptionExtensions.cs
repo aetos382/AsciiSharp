@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
+using SR = AsciiSharp.Properties.Resources;
+
 namespace System;
 
 public static class ArgumentExceptionExtensions
@@ -17,7 +19,7 @@ public static class ArgumentExceptionExtensions
         {
             if (string.IsNullOrEmpty(argument))
             {
-                Throw(paramName);
+                ThrowNullOrEmpty(paramName);
             }
         }
 
@@ -27,17 +29,27 @@ public static class ArgumentExceptionExtensions
         {
             if (string.IsNullOrWhiteSpace(argument))
             {
-                Throw(paramName);
+                ThrowNullOrWhitespance(paramName);
             }
         }
     }
 #pragma warning restore
 
     [DoesNotReturn]
-    private static void Throw(string? paramName)
+    private static void ThrowNullOrEmpty(string? paramName)
     {
-        // TODO: message
-        throw new ArgumentException(paramName);
+        throw new ArgumentException(
+            SR.Error_ArgumentNullOrEmpty,
+            paramName);
+    }
+
+    [DoesNotReturn]
+    private static void ThrowNullOrWhitespance(string? paramName)
+    {
+        throw new ArgumentException(
+            SR.Error_ArgumentNullOrWhiteSpace,
+            paramName);
     }
 }
+
 #endif
