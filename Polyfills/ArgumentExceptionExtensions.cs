@@ -8,7 +8,8 @@ namespace System;
 
 public static class ArgumentExceptionExtensions
 {
-    extension (ArgumentException)
+#pragma warning disable CA1034, CS8777 // false positive
+    extension(ArgumentException)
     {
         public static void ThrowIfNullOrEmpty(
             [NotNull] string? argument,
@@ -18,8 +19,6 @@ public static class ArgumentExceptionExtensions
             {
                 Throw(paramName);
             }
-
-            Debug.Assert(argument is not null);
         }
 
         public static void ThrowIfNullOrWhiteSpace(
@@ -30,14 +29,14 @@ public static class ArgumentExceptionExtensions
             {
                 Throw(paramName);
             }
-
-            Debug.Assert(argument is not null);
         }
     }
+#pragma warning restore
 
     [DoesNotReturn]
     private static void Throw(string? paramName)
     {
+        // TODO: message
         throw new ArgumentException(paramName);
     }
 }
