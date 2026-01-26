@@ -11,14 +11,18 @@
         "runOn": "folderOpen"
       },
       "presentation": {
-        "close": true
+        "close": true,
+        "showReuseMessage": false
       }
     },
     {
       "label": "restore tools",
       "type": "process",
       "command": "dotnet",
-      "args": [ "tool", "restore" ]
+      "args": [ "tool", "restore" ],
+      "presentation": {
+        "showReuseMessage": false
+      }
     },
     {
       "label": "build",
