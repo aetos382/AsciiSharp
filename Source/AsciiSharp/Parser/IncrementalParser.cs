@@ -295,7 +295,7 @@ internal sealed class IncrementalParser
             return new SyntaxTree(
                 newInternalRoot,
                 this._fullParsedTree.Text,
-                [.. this._fullParsedTree.Diagnostics],
+                this._fullParsedTree.Diagnostics,
                 this._fullParsedTree.FilePath);
         }
 

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
@@ -14,7 +15,7 @@ namespace AsciiSharp.Syntax;
 public sealed class SyntaxTree
 {
     private readonly InternalNode _internalRoot;
-    private readonly List<Diagnostic> _diagnostics;
+    private readonly Diagnostic[] _diagnostics;
 
     /// <summary>
     /// ソーステキスト。
@@ -37,8 +38,6 @@ public sealed class SyntaxTree
 
             return field;
         }
-
-        private set;
     }
 
     /// <summary>
@@ -75,15 +74,16 @@ public sealed class SyntaxTree
     internal SyntaxTree(
         InternalNode internalRoot,
         SourceText text,
-        List<Diagnostic> diagnostics,
+        IEnumerable<Diagnostic> diagnostics,
         string? filePath = null)
     {
         ArgumentNullException.ThrowIfNull(internalRoot);
         ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(diagnostics);
 
         this._internalRoot = internalRoot;
         this.Text = text;
-        this._diagnostics = diagnostics ?? [];
+        this._diagnostics = diagnostics.ToArray();
         this.FilePath = filePath;
     }
 
@@ -116,9 +116,8 @@ public sealed class SyntaxTree
         parser.ParseDocument();
 
         var internalRoot = treeBuilder.BuildRoot();
-        var diagnostics = new List<Diagnostic>(parser.Diagnostics);
 
-        return new SyntaxTree(internalRoot, text, diagnostics, filePath);
+        return new SyntaxTree(internalRoot, text, parser.Diagnostics, filePath);
     }
 
     /// <summary>
@@ -128,10 +127,7 @@ public sealed class SyntaxTree
     /// <returns>診断情報のシーケンス。</returns>
     public IEnumerable<Diagnostic> GetDiagnosticsForNode(SyntaxNode node)
     {
-        if (node is null)
-        {
-            yield break;
-        }
+        ArgumentNullException.ThrowIfNull(node);
 
         var span = node.FullSpan;
         foreach (var diagnostic in this._diagnostics)
@@ -189,7 +185,7 @@ public sealed class SyntaxTree
     {
         ArgumentNullException.ThrowIfNull(root);
 
-        return new SyntaxTree(root.Internal, this.Text, [.. this._diagnostics], this.FilePath);
+        return new SyntaxTree(root.Internal, this.Text, this._diagnostics, this.FilePath);
     }
 
     /// <summary>

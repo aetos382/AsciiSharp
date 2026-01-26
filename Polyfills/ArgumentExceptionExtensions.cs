@@ -27,7 +27,7 @@ public static class ArgumentExceptionExtensions
         {
             if (string.IsNullOrWhiteSpace(argument))
             {
-                ThrowNullOrWhitespance(paramName);
+                ThrowNullOrWhitespace(paramName);
             }
         }
     }
@@ -42,7 +42,7 @@ public static class ArgumentExceptionExtensions
     }
 
     [DoesNotReturn]
-    private static void ThrowNullOrWhitespance(string? paramName)
+    private static void ThrowNullOrWhitespace(string? paramName)
     {
         throw new ArgumentException(
             "Value cannot be null or white space.",
