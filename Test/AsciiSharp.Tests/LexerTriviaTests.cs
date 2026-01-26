@@ -30,7 +30,12 @@ public class LexerTriviaTests
     public void コメント行の後のテキストにはコメントトリビアが付加される()
     {
         // Arrange: 空行、コメント、テキスト
-        var text = "\n// これはコメント\n本文テキスト";
+        var text = """
+
+                   // これはコメント
+                   本文テキスト
+                   """;
+
         var source = SourceText.From(text);
         var lexer = new Lexer(source);
 
@@ -55,7 +60,11 @@ public class LexerTriviaTests
     public void 文書冒頭のコメントはトリビアとして付加される()
     {
         // Arrange: 冒頭コメント、テキスト
-        var text = "// 冒頭のコメント\n本文テキスト";
+        var text = """
+                   // 冒頭のコメント
+                   本文テキスト
+                   """;
+
         var source = SourceText.From(text);
         var lexer = new Lexer(source);
 
@@ -78,7 +87,13 @@ public class LexerTriviaTests
     public void 構文木を経由してもコメントトリビアが保持される()
     {
         // Arrange: タイトル + 空行 + コメント + テキスト
-        var text = "= タイトル\n\n// これはコメント\n本文テキスト";
+        var text = """
+                   = タイトル
+
+                   // これはコメント
+                   本文テキスト
+                   """;
+
         var tree = SyntaxTree.ParseText(text);
 
         // Act: 全トークンからトリビアを収集
