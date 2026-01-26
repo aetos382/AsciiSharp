@@ -67,19 +67,8 @@ public sealed class Diagnostic : IEquatable<Diagnostic>
         TextSpan location,
         params object?[] arguments)
     {
-        ArgumentNullException.ThrowIfNull(code);
-
-        if (string.IsNullOrWhiteSpace(code))
-        {
-            throw new ArgumentException("診断コードは空にできません。", nameof(code));
-        }
-
-        ArgumentNullException.ThrowIfNull(message);
-
-        if (string.IsNullOrWhiteSpace(message))
-        {
-            throw new ArgumentException("診断メッセージは空にできません。", nameof(message));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(code);
+        ArgumentException.ThrowIfNullOrWhiteSpace(message);
 
         this.Code = code;
         this.Message = message;
