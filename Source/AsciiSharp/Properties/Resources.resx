@@ -60,48 +60,4 @@
 		<value>Maximum nesting level exceeded. Document structure is too deeply nested.</value>
 		<comment>Error when the parser detects excessive nesting depth, which may indicate malformed content or infinite loops</comment>
 	</data>
-	<data name="Error_ArgumentNullOrEmpty" xml:space="preserve">
-		<value>Value cannot be null or empty.</value>
-		<comment>ArgumentException: Value is null or empty string</comment>
-	</data>
-	<data name="Error_ArgumentNullOrWhiteSpace" xml:space="preserve">
-		<value>Value cannot be null or white space.</value>
-		<comment>ArgumentException: Value is null or white space</comment>
-	</data>
-	<data name="Error_ArgumentEqual" xml:space="preserve">
-		<value>Value must not be equal to the specified value.</value>
-		<comment>ArgumentOutOfRangeException: Value equals the disallowed value</comment>
-	</data>
-	<data name="Error_ArgumentGreaterThan" xml:space="preserve">
-		<value>Value is too large.</value>
-		<comment>ArgumentOutOfRangeException: Value exceeds the maximum</comment>
-	</data>
-	<data name="Error_ArgumentGreaterThanOrEqual" xml:space="preserve">
-		<value>Value is too large.</value>
-		<comment>ArgumentOutOfRangeException: Value exceeds or equals the maximum</comment>
-	</data>
-	<data name="Error_ArgumentLessThan" xml:space="preserve">
-		<value>Value is too small.</value>
-		<comment>ArgumentOutOfRangeException: Value is below the minimum</comment>
-	</data>
-	<data name="Error_ArgumentLessThanOrEqual" xml:space="preserve">
-		<value>Value is too small.</value>
-		<comment>ArgumentOutOfRangeException: Value is below or equals the minimum</comment>
-	</data>
-	<data name="Error_ArgumentNotEqual" xml:space="preserve">
-		<value>Value must be equal to the required value.</value>
-		<comment>ArgumentOutOfRangeException: Value does not equal the required value</comment>
-	</data>
-	<data name="Error_ArgumentNegative" xml:space="preserve">
-		<value>Value must not be negative.</value>
-		<comment>ArgumentOutOfRangeException: Value is negative</comment>
-	</data>
-	<data name="Error_ArgumentNegativeOrZero" xml:space="preserve">
-		<value>Value must be positive.</value>
-		<comment>ArgumentOutOfRangeException: Value is negative or zero</comment>
-	</data>
-	<data name="Error_ArgumentZero" xml:space="preserve">
-		<value>Value must not be zero.</value>
-		<comment>ArgumentOutOfRangeException: Value is zero</comment>
-	</data>
 </root>
