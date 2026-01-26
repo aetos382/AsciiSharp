@@ -10,8 +10,8 @@
 
 namespace AsciiSharp.Properties {
     using System;
-    
-    
+
+
     /// <summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
     /// </summary>
@@ -23,15 +23,15 @@ namespace AsciiSharp.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
@@ -45,7 +45,7 @@ namespace AsciiSharp.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
@@ -57,6 +57,33 @@ namespace AsciiSharp.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+
+        /// <summary>
+        ///   Expected token &apos;{0}&apos; is missing. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ADS0001_ExpectedToken {
+            get {
+                return ResourceManager.GetString("ADS0001_ExpectedToken", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Section title text is missing. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ADS0002_MissingSectionTitleText {
+            get {
+                return ResourceManager.GetString("ADS0002_MissingSectionTitleText", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Maximum nesting level exceeded. Document structure is too deeply nested. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Error_NestingLevelExceeded {
+            get {
+                return ResourceManager.GetString("Error_NestingLevelExceeded", resourceCulture);
             }
         }
     }

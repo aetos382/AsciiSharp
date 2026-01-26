@@ -1,0 +1,159 @@
+# AsciiDoc PEG 文法定義
+# 参照仕様：パーサー実装のガイドとして使用（パーサージェネレーターは不使用）
+# 日付: 2026-01-21
+# スコープ: MVP（ドキュメントヘッダー、セクション、段落、リンク、コメント）
+
+# ========================================
+# 1. Document（文書）
+# ========================================
+
+Document
+  = Header? Body EOF
+
+Header
+  = DocumentTitle AuthorLine?
+
+DocumentTitle
+  = "=" Space+ TitleText NewLine
+
+AuthorLine
+  = !SectionMarker TextLine
+
+Body
+  = Block*
+
+# ========================================
+# 2. Blocks（ブロック要素）
+# ========================================
+
+Block
+  = Section
+  / Paragraph
+  / BlankLine
+  / CommentBlock
+  / SingleLineComment
+
+Section
+  = SectionTitle Content*
+
+SectionTitle
+  = SectionMarker Space+ TitleText NewLine
+
+SectionMarker
+  = "======" / "=====" / "====" / "===" / "==" / "="
+
+Content
+  = !SectionMarker Block
+
+# ========================================
+# 3. Paragraph（段落）
+# ========================================
+
+Paragraph
+  = ParagraphLine+ BlankLine*
+
+ParagraphLine
+  = !BlankLine !SectionMarker !CommentStart InlineContent NewLine
+
+# ========================================
+# 4. Inline Elements（インライン要素）
+# ========================================
+
+InlineContent
+  = (Link / PlainText)+
+
+PlainText
+  = (!NewLine !LinkStart .)+
+
+# ========================================
+# 5. Links（リンク）- MVP
+# ========================================
+
+Link
+  = ExplicitLink
+  / AutoLink
+
+ExplicitLink
+  = "link:" Target LinkText?
+
+AutoLink
+  = Scheme "://" UrlChars LinkText?
+
+LinkText
+  = "[" LinkTextContent* "]"
+
+LinkTextContent
+  = !"]" .
+
+Target
+  = UrlChars
+
+Scheme
+  = "https" / "http" / "ftp" / "mailto"
+
+UrlChars
+  = [a-zA-Z0-9._~:/?#\[\]@!$&'()*+,;=-]+
+
+LinkStart
+  = "link:" / Scheme "://"
+
+# ========================================
+# 6. Comments（コメント）
+# ========================================
+
+SingleLineComment
+  = "//" (!NewLine .)* NewLine
+
+CommentBlock
+  = CommentDelimiter NewLine CommentContent CommentDelimiter NewLine
+
+CommentDelimiter
+  = "////"
+
+CommentContent
+  = (!CommentDelimiter .)*
+
+CommentStart
+  = "//"
+
+# ========================================
+# 7. Basic Elements（基本要素）
+# ========================================
+
+TitleText
+  = (!NewLine .)+
+
+TextLine
+  = (!NewLine .)+ NewLine
+
+BlankLine
+  = Space* NewLine
+
+# ========================================
+# 8. Terminals（終端記号）
+# ========================================
+
+Space
+  = [ \t]
+
+NewLine
+  = "\r\n" / "\n" / "\r"
+
+EOF
+  = !.
+
+# ========================================
+# Notes（実装者向けメモ）
+# ========================================
+#
+# 1. この PEG 文法は参照仕様であり、パーサージェネレーターでは使用しない
+# 2. 実際のパーサーは手書きの再帰下降パーサーとして実装
+# 3. エラー回復は同期ポイント（空行、セクションヘッダー）で行う
+# 4. トリビア（空白、コメント）はトークンに付与（Roslyn スタイル）
+# 5. 後続イテレーションで追加予定:
+#    - リスト（順序付き、順序なし、説明リスト）
+#    - 区切りブロック（コード、引用、サイドバー等）
+#    - 書式マークアップ（太字、斜体、等幅）
+#    - マクロ（image, include 等）
+#    - テーブル
+#    - 属性参照 {name}

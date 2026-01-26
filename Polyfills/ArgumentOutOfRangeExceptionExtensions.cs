@@ -1,5 +1,6 @@
 #if !NET8_0_OR_GREATER
 
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -13,9 +14,11 @@ internal static class ArgumentOutOfRangeExceptionExtensions
             T value,
             T other,
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
-            where T : IComparable<T>
         {
-            ThrowIf(value.CompareTo(other) == 0, paramName);
+            if (EqualityComparer<T>.Default.Equals(value, other))
+            {
+                ThrowEqual(paramName);
+            }
         }
 
         public static void ThrowIfGreaterThan<T>(
@@ -24,7 +27,10 @@ internal static class ArgumentOutOfRangeExceptionExtensions
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
             where T : IComparable<T>
         {
-            ThrowIf(value.CompareTo(other) > 0, paramName);
+            if (value.CompareTo(other) > 0)
+            {
+                ThrowGreaterThan(paramName);
+            }
         }
 
         public static void ThrowIfGreaterThanOrEqual<T>(
@@ -33,7 +39,10 @@ internal static class ArgumentOutOfRangeExceptionExtensions
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
             where T : IComparable<T>
         {
-            ThrowIf(value.CompareTo(other) >= 0, paramName);
+            if (value.CompareTo(other) >= 0)
+            {
+                ThrowGreaterThanOrEqual(paramName);
+            }
         }
 
         public static void ThrowIfLessThan<T>(
@@ -42,7 +51,10 @@ internal static class ArgumentOutOfRangeExceptionExtensions
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
             where T : IComparable<T>
         {
-            ThrowIf(value.CompareTo(other) < 0, paramName);
+            if (value.CompareTo(other) < 0)
+            {
+                ThrowLessThan(paramName);
+            }
         }
 
         public static void ThrowIfLessThanOrEqual<T>(
@@ -51,45 +63,133 @@ internal static class ArgumentOutOfRangeExceptionExtensions
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
             where T : IComparable<T>
         {
-            ThrowIf(value.CompareTo(other) <= 0, paramName);
+            if (value.CompareTo(other) <= 0)
+            {
+                ThrowLessThanOrEqual(paramName);
+            }
         }
 
         public static void ThrowIfNotEqual<T>(
             T value,
             T other,
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
-            where T : IComparable<T>
         {
-            ThrowIf(value.CompareTo(other) != 0, paramName);
+            if (!EqualityComparer<T>.Default.Equals(value, other))
+            {
+                ThrowNotEqual(paramName);
+            }
         }
 
         public static void ThrowIfNegative(
             int value,
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
         {
-            ThrowIf(value < 0, paramName);
+            if (value < 0)
+            {
+                ThrowNegative(paramName);
+            }
         }
 
         public static void ThrowIfNegativeOrZero(
             int value,
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
         {
-            ThrowIf(value <= 0, paramName);
+            if (value <= 0)
+            {
+                ThrowNegativeOrZero(paramName);
+            }
         }
 
         public static void ThrowIfZero(
             int value,
             [CallerArgumentExpression(nameof(value))] string? paramName = null)
         {
-            ThrowIf(value == 0, paramName);
+            if (value == 0)
+            {
+                ThrowZero(paramName);
+            }
         }
     }
 
-    private static void ThrowIf(
-        [DoesNotReturnIf(true)] bool condition,
+    [DoesNotReturn]
+    private static void ThrowEqual(
         string? paramName)
     {
-        throw new ArgumentOutOfRangeException(paramName);
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value must not be equal to the specified value.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowGreaterThan(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value is too large.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowGreaterThanOrEqual(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value is too large.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowLessThan(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value is too small.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowLessThanOrEqual(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value is too small.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowNotEqual(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value must be equal to the required value.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowNegative(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value must not be negative.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowNegativeOrZero(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value must be positive.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowZero(
+        string? paramName)
+    {
+        throw new ArgumentOutOfRangeException(
+            paramName,
+            "Value must not be zero.");
     }
 }
 
