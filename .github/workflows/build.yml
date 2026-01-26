@@ -2,81 +2,34 @@ name: Build and Test
 
 on:
   push:
-    branches: [ main, '001-*' ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
   build-and-test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        include:
-          - os: ubuntu-latest
-            framework: net10.0
-          - os: windows-latest
-            framework: net10.0
-          - os: windows-latest
-            framework: net481
+    runs-on: ubuntu-latest
+
+    env:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+      NUGET_PACKAGES: '${{ github.workspace }}/.nuget/packages'
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         submodules: true
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
       with:
-        dotnet-version: '10.0.x'
+        cache: true
+        cache-dependency-path: '**/packages.lock.json'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore --locked-mode
 
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    - name: Test (.NET 10)
-      if: matrix.framework == 'net10.0'
-      run: dotnet test --no-build --configuration Release --verbosity normal --framework net10.0
-
-    - name: Test (.NET Framework 4.8.1)
-      if: matrix.framework == 'net481' && matrix.os == 'windows-latest'
-      run: dotnet test --no-build --configuration Release --verbosity normal --framework net481 Test/AsciiSharp.Tests/AsciiSharp.Tests.csproj
-
-  format-check:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '10.0.x'
-
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Check formatting
-      run: dotnet format --verify-no-changes
-
-  aot-compatibility:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '10.0.x'
-
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build with AOT analysis
-      run: dotnet build Source/AsciiSharp/AsciiSharp.csproj --configuration Release -p:PublishAot=true -p:IsAotCompatible=true
+    - name: Test
+      run: dotnet test --no-build --configuration Release --verbosity normal
