@@ -36,10 +36,17 @@
       "WebSearch"
     ],
     "deny": [
-      "Edit(**/packages.lock.json)",
       "Edit(/Directory.packages.props)",
+      "Edit(**/packages.lock.json)",
+      "Edit(**/*.g.cs)",
+      "Edit(**/*.Designer.cs)",
+      "Edit(**/obj/**/*.cs)",
+
+      "Write(/Directory.packages.props)",
       "Write(**/packages.lock.json)",
-      "Write(/Directory.packages.props)"
+      "Write(**/*.g.cs)",
+      "Write(**/*.Designer.cs)",
+      "Write(**/obj/**/*.cs)"
     ]
   },
   "respectGitignore": true
