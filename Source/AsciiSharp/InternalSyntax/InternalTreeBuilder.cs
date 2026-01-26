@@ -117,15 +117,8 @@ internal sealed class InternalTreeBuilder : ITreeSink
     /// <inheritdoc />
     public void Error(string code, string message)
     {
-        if (string.IsNullOrWhiteSpace(code))
-        {
-            throw new ArgumentException("エラーコードは空にできません。", nameof(code));
-        }
-
-        if (string.IsNullOrWhiteSpace(message))
-        {
-            throw new ArgumentException("エラーメッセージは空にできません。", nameof(message));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(code);
+        ArgumentException.ThrowIfNullOrWhiteSpace(message);
 
         var location = new TextSpan(this._position, 0);
         var diagnostic = Diagnostic.Error(code, message, location);
