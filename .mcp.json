@@ -20,14 +20,6 @@
       "headers": {
         "Authorization": "Bearer ${GITHUB_TOKEN}"
       }
-    },
-    "stack-mcp-server": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "mcp.stackoverflow.com"
-      ]
     }
   }
 }
