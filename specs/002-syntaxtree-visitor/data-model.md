@@ -28,6 +28,11 @@ public interface ISyntaxVisitor
     void VisitDocumentHeader(DocumentHeaderSyntax node);
 
     /// <summary>
+    /// AuthorLineSyntax ノードを訪問する。
+    /// </summary>
+    void VisitAuthorLine(AuthorLineSyntax node);
+
+    /// <summary>
     /// DocumentBodySyntax ノードを訪問する。
     /// </summary>
     void VisitDocumentBody(DocumentBodySyntax node);
@@ -81,6 +86,11 @@ public interface ISyntaxVisitor<TResult>
     /// DocumentHeaderSyntax ノードを訪問する。
     /// </summary>
     TResult VisitDocumentHeader(DocumentHeaderSyntax node);
+
+    /// <summary>
+    /// AuthorLineSyntax ノードを訪問する。
+    /// </summary>
+    TResult VisitAuthorLine(AuthorLineSyntax node);
 
     /// <summary>
     /// DocumentBodySyntax ノードを訪問する。
@@ -168,6 +178,7 @@ public sealed class DocumentSyntax : SyntaxNode
 |---------|------|------------------|
 | DocumentSyntax | 文書全体 | VisitDocument |
 | DocumentHeaderSyntax | 文書ヘッダー | VisitDocumentHeader |
+| AuthorLineSyntax | 著者行 | VisitAuthorLine |
 | DocumentBodySyntax | 文書本体 | VisitDocumentBody |
 | SectionSyntax | セクション | VisitSection |
 | SectionTitleSyntax | セクションタイトル | VisitSectionTitle |
