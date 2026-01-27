@@ -32,9 +32,6 @@
       "group": {
         "kind": "build",
         "isDefault": true
-      },
-      "options": {
-        "cwd": "${workspaceFolder}"
       }
     },
     {
@@ -45,9 +42,6 @@
       "group": {
         "kind": "test",
         "isDefault": true
-      },
-      "options": {
-        "cwd": "${workspaceFolder}"
       }
     },
     {
@@ -55,9 +49,6 @@
       "type": "process",
       "command": "docker",
       "args": [ "buildx", "bake", "tck" ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
       "dependsOn": [
         "pull tck"
       ],
@@ -77,10 +68,7 @@
       "label": "pull tck",
       "type": "process",
       "command": "git",
-      "args": [ "submodule", "update", "--init", "submodules/asciidoc-tck" ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      }
+      "args": [ "submodule", "update", "--init", "submodules/asciidoc-tck" ]
     }
   ]
 }
