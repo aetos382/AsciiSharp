@@ -15,7 +15,7 @@
 **Testing**: MSTest.Sdk + Reqnroll（BDD）
 **Target Platform**: .NET 10.0, .NET Standard 2.0 互換ランタイム
 **Project Type**: ライブラリ（既存プロジェクト Source/AsciiSharp に追加）
-**Performance Goals**: 1000 ノード以上の構文木を走査可能
+**Performance Goals**: N/A（初期段階では重視しない）
 **Constraints**: .NET Standard 2.0 互換性維持
 **Scale/Scope**: 既存 SyntaxNode 派生クラス 8 種
 
@@ -61,7 +61,7 @@ Source/AsciiSharp/
 │   ├── TextSyntax.cs           # 既存: テキストノード（Accept メソッド追加）
 │   ├── LinkSyntax.cs           # 既存: リンクノード（Accept メソッド追加）
 │   ├── ISyntaxVisitor.cs       # 新規: 戻り値なし Visitor インターフェイス
-│   └── ISyntaxVisitor`1.cs     # 新規: 戻り値あり Visitor インターフェイス
+│   └── ISyntaxVisitorOfT.cs    # 新規: 戻り値あり Visitor インターフェイス
 └── ...
 
 Test/AsciiSharp.Specs/

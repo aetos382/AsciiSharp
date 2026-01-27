@@ -29,7 +29,7 @@ Test/AsciiSharp.Specs/        # BDD テスト（Reqnroll）
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 
 - [ ] T001 ISyntaxVisitor インターフェイスを Source/AsciiSharp/Syntax/ISyntaxVisitor.cs に作成
-- [ ] T002 [P] ISyntaxVisitor&lt;TResult&gt; インターフェイスを Source/AsciiSharp/Syntax/ISyntaxVisitor`1.cs に作成
+- [ ] T002 [P] ISyntaxVisitor&lt;TResult&gt; インターフェイスを Source/AsciiSharp/Syntax/ISyntaxVisitorOfT.cs に作成
 - [ ] T003 SyntaxNode に抽象 Accept メソッドを追加（Source/AsciiSharp/Syntax/SyntaxNode.cs）
 
 **Checkpoint**: 基盤完了 - ユーザーストーリーの実装開始可能
@@ -44,7 +44,7 @@ Test/AsciiSharp.Specs/        # BDD テスト（Reqnroll）
 
 ### BDD テスト（Red）
 
-- [ ] T004 [US1] BDD feature ファイルを Test/AsciiSharp.Specs/Features/Visitor/SyntaxVisitor.feature に作成
+- [ ] T004 [US1] BDD feature ファイルを Test/AsciiSharp.Specs/Features/Visitor/SyntaxVisitor.feature に作成（エッジケース含む: 空文書、例外伝播、欠落ノード）
 
 ### Accept メソッド実装（Green）
 
@@ -101,13 +101,13 @@ Test/AsciiSharp.Specs/        # BDD テスト（Reqnroll）
 
 - **Foundational (Phase 1)**: 依存なし - 即座に開始可能
 - **User Story 1 (Phase 2)**: Foundational 完了に依存
-- **User Story 2 (Phase 3)**: Foundational 完了に依存（US1 とは独立）
+- **User Story 2 (Phase 3)**: User Story 1 完了に依存
 - **Polish (Phase 4)**: すべてのユーザーストーリー完了に依存
 
 ### User Story Dependencies
 
 - **User Story 1 (P1)**: Foundational 完了後に開始可能 - 他ストーリーへの依存なし
-- **User Story 2 (P2)**: Foundational 完了後に開始可能 - Accept&lt;TResult&gt; は US1 で実装済み
+- **User Story 2 (P2)**: User Story 1 完了後に開始可能 - Accept&lt;TResult&gt; は US1 の T005-T012 で実装される
 
 ### Within Each User Story
 
