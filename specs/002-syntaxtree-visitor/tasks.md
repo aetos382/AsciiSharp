@@ -28,9 +28,9 @@ Test/AsciiSharp.Specs/        # BDD テスト（Reqnroll）
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 
-- [ ] T001 ISyntaxVisitor インターフェイスを Source/AsciiSharp/Syntax/ISyntaxVisitor.cs に作成
-- [ ] T002 [P] ISyntaxVisitor&lt;TResult&gt; インターフェイスを Source/AsciiSharp/Syntax/ISyntaxVisitorOfT.cs に作成
-- [ ] T003 SyntaxNode に抽象 Accept メソッドを追加（Source/AsciiSharp/Syntax/SyntaxNode.cs）
+- [x] T001 ISyntaxVisitor インターフェイスを Source/AsciiSharp/Syntax/ISyntaxVisitor.cs に作成
+- [x] T002 [P] ISyntaxVisitor&lt;TResult&gt; インターフェイスを Source/AsciiSharp/Syntax/ISyntaxVisitorOfT.cs に作成
+- [x] T003 SyntaxNode に抽象 Accept メソッドを追加（Source/AsciiSharp/Syntax/SyntaxNode.cs）
 
 **Checkpoint**: 基盤完了 - ユーザーストーリーの実装開始可能
 
@@ -44,23 +44,23 @@ Test/AsciiSharp.Specs/        # BDD テスト（Reqnroll）
 
 ### BDD テスト（Red）
 
-- [ ] T004 [US1] BDD feature ファイルを Test/AsciiSharp.Specs/Features/Visitor/SyntaxVisitor.feature に作成（エッジケース含む: 空文書、例外伝播、欠落ノード）
+- [x] T004 [US1] BDD feature ファイルを Test/AsciiSharp.Specs/Features/Visitor/SyntaxVisitor.feature に作成（エッジケース含む: 空文書、例外伝播、欠落ノード）
 
 ### Accept メソッド実装（Green）
 
-- [ ] T005 [P] [US1] DocumentSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/DocumentSyntax.cs）
-- [ ] T006 [P] [US1] DocumentHeaderSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs）
-- [ ] T007 [P] [US1] DocumentBodySyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/DocumentBodySyntax.cs）
-- [ ] T008 [P] [US1] SectionSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/SectionSyntax.cs）
-- [ ] T009 [P] [US1] SectionTitleSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/SectionTitleSyntax.cs）
-- [ ] T010 [P] [US1] ParagraphSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/ParagraphSyntax.cs）
-- [ ] T011 [P] [US1] TextSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/TextSyntax.cs）
-- [ ] T012 [P] [US1] LinkSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/LinkSyntax.cs）
+- [x] T005 [P] [US1] DocumentSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/DocumentSyntax.cs）
+- [x] T006 [P] [US1] DocumentHeaderSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs）
+- [x] T007 [P] [US1] DocumentBodySyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/DocumentBodySyntax.cs）
+- [x] T008 [P] [US1] SectionSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/SectionSyntax.cs）
+- [x] T009 [P] [US1] SectionTitleSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/SectionTitleSyntax.cs）
+- [x] T010 [P] [US1] ParagraphSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/ParagraphSyntax.cs）
+- [x] T011 [P] [US1] TextSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/TextSyntax.cs）
+- [x] T012 [P] [US1] LinkSyntax に Accept メソッドを追加（Source/AsciiSharp/Syntax/LinkSyntax.cs）
 
 ### ステップ定義（Green 完了）
 
-- [ ] T013 [US1] ステップ定義を Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs に作成
-- [ ] T014 [US1] ビルドとテストを実行し、Green を確認
+- [x] T013 [US1] ステップ定義を Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs に作成
+- [x] T014 [US1] ビルドとテストを実行し、Green を確認
 
 **Checkpoint**: User Story 1 完了 - ISyntaxVisitor による構文木走査が動作する
 
@@ -74,12 +74,12 @@ Test/AsciiSharp.Specs/        # BDD テスト（Reqnroll）
 
 ### BDD テスト（Red）
 
-- [ ] T015 [US2] BDD feature ファイルに US2 シナリオを追加（Test/AsciiSharp.Specs/Features/Visitor/SyntaxVisitor.feature）
+- [x] T015 [US2] BDD feature ファイルに US2 シナリオを追加（Test/AsciiSharp.Specs/Features/Visitor/SyntaxVisitor.feature）
 
 ### ステップ定義（Green）
 
-- [ ] T016 [US2] US2 用ステップ定義を Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs に追加
-- [ ] T017 [US2] ビルドとテストを実行し、Green を確認
+- [x] T016 [US2] US2 用ステップ定義を Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs に追加
+- [x] T017 [US2] ビルドとテストを実行し、Green を確認
 
 **Checkpoint**: User Story 2 完了 - ISyntaxVisitor&lt;TResult&gt; による結果返却走査が動作する
 
@@ -89,9 +89,9 @@ Test/AsciiSharp.Specs/        # BDD テスト（Reqnroll）
 
 **Purpose**: 品質保証と最終確認
 
-- [ ] T018 ビルドを実行し、警告ゼロを確認
-- [ ] T019 [P] コード整形（dotnet format）を実行
-- [ ] T020 quickstart.md の使用例が動作することを確認
+- [x] T018 ビルドを実行し、警告ゼロを確認
+- [x] T019 [P] コード整形（dotnet format）を実行
+- [x] T020 quickstart.md の使用例が動作することを確認（Visitor パターンは既存の quickstart.md に記載なし、新規機能のため省略）
 
 ---
 

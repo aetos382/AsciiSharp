@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 
 using AsciiSharp.InternalSyntax;
@@ -74,5 +75,19 @@ public sealed class DocumentBodySyntax : SyntaxNode
             oldNode,
             newNode,
             internalNode => new DocumentBodySyntax(internalNode, null, 0, null));
+    }
+
+    /// <inheritdoc />
+    public override void Accept(ISyntaxVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
+        visitor.VisitDocumentBody(this);
+    }
+
+    /// <inheritdoc />
+    public override TResult Accept<TResult>(ISyntaxVisitor<TResult> visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
+        return visitor.VisitDocumentBody(this);
     }
 }

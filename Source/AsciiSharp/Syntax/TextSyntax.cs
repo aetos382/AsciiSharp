@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 
 using AsciiSharp.InternalSyntax;
@@ -33,5 +34,19 @@ public sealed class TextSyntax : SyntaxNode
     {
         // リーフノードなので、子孫にターゲットノードは存在しない
         return this;
+    }
+
+    /// <inheritdoc />
+    public override void Accept(ISyntaxVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
+        visitor.VisitText(this);
+    }
+
+    /// <inheritdoc />
+    public override TResult Accept<TResult>(ISyntaxVisitor<TResult> visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
+        return visitor.VisitText(this);
     }
 }

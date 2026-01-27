@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 
 using AsciiSharp.InternalSyntax;
@@ -101,5 +102,19 @@ public sealed class SectionSyntax : SyntaxNode
             oldNode,
             newNode,
             internalNode => new SectionSyntax(internalNode, null, 0, null));
+    }
+
+    /// <inheritdoc />
+    public override void Accept(ISyntaxVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
+        visitor.VisitSection(this);
+    }
+
+    /// <inheritdoc />
+    public override TResult Accept<TResult>(ISyntaxVisitor<TResult> visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
+        return visitor.VisitSection(this);
     }
 }

@@ -256,6 +256,18 @@ public sealed class SyntaxTree
             throw new NotImplementedException("ノードの置換は未実装です。");
         }
 
+        public override void Accept(ISyntaxVisitor visitor)
+        {
+            // PlaceholderSyntax は内部実装用の一時的なクラスであり、Visitor パターンでの訪問は想定されていない
+            throw new NotSupportedException("PlaceholderSyntax は Visitor パターンをサポートしません。");
+        }
+
+        public override TResult Accept<TResult>(ISyntaxVisitor<TResult> visitor)
+        {
+            // PlaceholderSyntax は内部実装用の一時的なクラスであり、Visitor パターンでの訪問は想定されていない
+            throw new NotSupportedException("PlaceholderSyntax は Visitor パターンをサポートしません。");
+        }
+
         private int CalculateChildPosition(int index)
         {
             var position = this.Position;

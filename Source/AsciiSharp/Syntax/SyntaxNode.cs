@@ -302,7 +302,7 @@ public abstract class SyntaxNode
         for (var i = 0; i < slotCount; i++)
         {
             var slot = this.Internal.GetSlot(i);
-            if (slot is null or InternalSyntax.InternalToken)
+            if (slot is null or InternalToken)
             {
                 continue;
             }
@@ -327,4 +327,18 @@ public abstract class SyntaxNode
         // 見つからない場合は自身を返す（変更なし）
         return this;
     }
+
+    /// <summary>
+    /// 指定された Visitor でこのノードを訪問する。
+    /// </summary>
+    /// <param name="visitor">Visitor。</param>
+    public abstract void Accept(ISyntaxVisitor visitor);
+
+    /// <summary>
+    /// 指定された Visitor でこのノードを訪問し、結果を返す。
+    /// </summary>
+    /// <typeparam name="TResult">訪問結果の型。</typeparam>
+    /// <param name="visitor">Visitor。</param>
+    /// <returns>訪問結果。</returns>
+    public abstract TResult Accept<TResult>(ISyntaxVisitor<TResult> visitor);
 }
