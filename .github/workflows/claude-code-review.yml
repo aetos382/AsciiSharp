@@ -7,7 +7,10 @@ on:
 jobs:
   claude-review:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.pull_request.labels.*.name, 'skip-ci')"
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'claude-review') &&
+      !contains(github.event.pull_request.labels.*.name, 'skip-ci')
+
     permissions:
       contents: read
       pull-requests: read
@@ -27,5 +30,8 @@ jobs:
           plugin_marketplaces: 'https://github.com/anthropics/claude-plugins-official.git'
           plugins: 'code-review@claude-plugins-official'
           prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
+          claude_args: |
+            --allowed-tools "mcp__github__*"
+            --mcp-config ".mcp.json"
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
