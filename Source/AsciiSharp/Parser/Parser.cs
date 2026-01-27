@@ -343,8 +343,8 @@ internal sealed class AsciiDocParser
         }
 
         var text = this.Current.Text;
-        if (!string.Equals(text, "http", System.StringComparison.OrdinalIgnoreCase) &&
-            !string.Equals(text, "https", System.StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(text, "http", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(text, "https", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }

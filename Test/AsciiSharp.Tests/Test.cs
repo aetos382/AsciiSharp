@@ -19,6 +19,6 @@ public sealed class Test
             === baz
             """;
 
-        var tree = SyntaxTree.ParseText(code);
+        _ = SyntaxTree.ParseText(code);
     }
 }

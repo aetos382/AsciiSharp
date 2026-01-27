@@ -5,20 +5,21 @@ using System.Collections.Generic;
 using AsciiSharp.InternalSyntax;
 
 namespace AsciiSharp.Syntax;
+
 /// <summary>
-/// プレーンテキストを表す構文ノード。
+/// 著者行を表す構文ノード。
 /// </summary>
-public sealed class TextSyntax : SyntaxNode
+public sealed class AuthorLineSyntax : SyntaxNode
 {
     /// <summary>
-    /// テキストの内容。
+    /// 著者行のテキスト。
     /// </summary>
     public string Text => this.Internal.ToFullString();
 
     /// <summary>
-    /// TextSyntax を作成する。
+    /// AuthorLineSyntax を作成する。
     /// </summary>
-    internal TextSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
+    internal AuthorLineSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
         : base(internalNode, parent, position, syntaxTree)
     {
     }
@@ -40,13 +41,13 @@ public sealed class TextSyntax : SyntaxNode
     public override void Accept(ISyntaxVisitor visitor)
     {
         ArgumentNullException.ThrowIfNull(visitor);
-        visitor.VisitText(this);
+        visitor.VisitAuthorLine(this);
     }
 
     /// <inheritdoc />
     public override TResult Accept<TResult>(ISyntaxVisitor<TResult> visitor)
     {
         ArgumentNullException.ThrowIfNull(visitor);
-        return visitor.VisitText(this);
+        return visitor.VisitAuthorLine(this);
     }
 }

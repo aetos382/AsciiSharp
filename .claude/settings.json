@@ -12,13 +12,15 @@
       "Bash(dotnet test:*)",
       "Bash(find:*)",
       "Bash(git fetch:*)",
+      "Bash(git ls-remote:*)",
       "Bash(git rev-parse:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
       "Skill(commit-commands:commit)",
       "Skill(commit-commands:commit:*)",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "mcp__microsoft-learn__microsoft_docs_fetch"
     ],
     "deny": [
       "Edit(/Directory.packages.props)",
