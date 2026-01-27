@@ -1,21 +1,6 @@
 {
-  "enabledPlugins": {
-    "claude-code-setup@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
-    "csharp-lsp@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "claude-plugins-official": {
-      "source": {
-        "source": "github",
-        "repo": "Anthropic/claude-plugins-official"
-      }
-    }
-  },
-  "language": "Japanese",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "respectGitignore": true,
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -40,14 +25,29 @@
       "Edit(**/packages.lock.json)",
       "Edit(**/*.g.cs)",
       "Edit(**/*.Designer.cs)",
-      "Edit(**/obj/**/*.cs)",
-
       "Write(/Directory.packages.props)",
       "Write(**/packages.lock.json)",
       "Write(**/*.g.cs)",
-      "Write(**/*.Designer.cs)",
-      "Write(**/obj/**/*.cs)"
+      "Write(**/*.Designer.cs)"
     ]
   },
-  "respectGitignore": true
+  "enabledPlugins": {
+    "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "csharp-lsp@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "github@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "Anthropic/claude-plugins-official"
+      }
+    }
+  },
+  "language": "Japanese",
+  "enableAllProjectMcpServers": true
 }
