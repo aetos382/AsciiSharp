@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
