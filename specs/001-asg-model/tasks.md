@@ -29,29 +29,29 @@
 
 ### User Story 1: 基本変換テスト (FR-001〜FR-004, FR-007, FR-008)
 
-- [ ] T003 document ノードへの変換テスト
-- [ ] T004 section ノードへの変換テスト（level プロパティ含む）
-- [ ] T005 paragraph ノードへの変換テスト
-- [ ] T006 text ノードへの変換テスト
+- [x] T003 document ノードへの変換テスト
+- [x] T004 section ノードへの変換テスト（level プロパティ含む）
+- [x] T005 paragraph ノードへの変換テスト
+- [x] T006 text ノードへの変換テスト
 
 ### User Story 2: location テスト (FR-005)
 
-- [ ] T007 位置情報の開始・終了位置テスト
-- [ ] T008 複数行にまたがるノードの位置情報テスト
+- [x] T007 位置情報の開始・終了位置テスト
+- [x] T008 複数行にまたがるノードの位置情報テスト
 
 ### User Story 3: header テスト (FR-006)
 
-- [ ] T009 タイトル付き文書の header 変換テスト
-- [ ] T010 ヘッダーのない文書の header null テスト
+- [x] T009 タイトル付き文書の header 変換テスト
+- [x] T010 ヘッダーのない文書の header null テスト
 
 ### エッジケーステスト
 
-- [ ] T011 空の DocumentSyntax（Header も Body もない）→ blocks が空配列
-- [ ] T012 ネストした SectionSyntax → blocks 内に再帰的に section
-- [ ] T013 空文字列の TextSyntax → value が空文字列
-- [ ] T014 未対応 SyntaxNode（LinkSyntax, AuthorLineSyntax）→ スキップされる
+- [x] T011 空の DocumentSyntax（Header も Body もない）→ blocks が空配列
+- [x] T012 ネストした SectionSyntax → blocks 内に再帰的に section
+- [x] T013 空文字列の TextSyntax → value が空文字列
+- [x] T014 未対応 SyntaxNode（LinkSyntax, AuthorLineSyntax）→ スキップされる
 
-**Checkpoint**: TckAdapter のユニットテストが Green
+**Checkpoint**: ✅ TckAdapter のユニットテストが Green (17テスト全成功)
 
 ---
 
@@ -59,9 +59,9 @@
 
 **Purpose**: コード品質の確認と最終検証
 
-- [ ] T015 全テスト実行: `dotnet test` で全テストが Green であることを確認
-- [ ] T016 ビルド警告確認: `dotnet build` で警告ゼロを確認
-- [ ] T017 [P] quickstart.md の検証: サンプルコードが実際に動作することを確認
+- [x] T015 全テスト実行: `dotnet test` で全テストが Green であることを確認
+- [x] T016 ビルド警告確認: `dotnet build` で警告ゼロを確認
+- [x] T017 [P] quickstart.md の検証: サンプルコードが実際に動作することを確認
 
 ---
 

@@ -18,8 +18,8 @@ using AsciiSharp.TckAdapter.Asg.Models;
 // AsciiDoc テキストをパース
 var text = "= Hello World\n\nThis is a paragraph.";
 var sourceText = SourceText.From(text);
-var parser = new Parser();
-var document = parser.Parse(sourceText);
+var syntaxTree = SyntaxTree.ParseText(text);
+var document = (DocumentSyntax)syntaxTree.Root;
 
 // ASG に変換
 var converter = new AsgConverter(sourceText);
