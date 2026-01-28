@@ -9,6 +9,7 @@
       "Bash(dotnet format:*)",
       "Bash(dotnet package search:*)",
       "Bash(dotnet restore:*)",
+      "Bash(dotnet run:*)",
       "Bash(dotnet test:*)",
       "Bash(find:*)",
       "Bash(git fetch:*)",

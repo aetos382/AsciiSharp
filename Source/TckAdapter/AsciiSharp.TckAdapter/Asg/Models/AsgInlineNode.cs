@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace AsciiSharp.TckAdapter.Asg.Models;
 
 /// <summary>
@@ -7,6 +9,7 @@ namespace AsciiSharp.TckAdapter.Asg.Models;
 /// インライン要素の Type は派生クラスで定義される。
 /// 例: text は "string" となる。
 /// </remarks>
+[JsonDerivedType(typeof(AsgText))]
 public abstract class AsgInlineNode : AsgNode
 {
 }
