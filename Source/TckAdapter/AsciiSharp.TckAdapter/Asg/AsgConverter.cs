@@ -93,6 +93,20 @@ public sealed class AsgConverter : ISyntaxVisitor<AsgNode?>
             }
         }
 
+        // InlineElements が空の場合、パラグラフのテキストを直接取得
+        if (inlines.Count == 0)
+        {
+            var paragraphText = node.ToString().Trim();
+            if (!string.IsNullOrEmpty(paragraphText))
+            {
+                inlines.Add(new AsgText
+                {
+                    Value = paragraphText,
+                    Location = this.GetLocation(node)
+                });
+            }
+        }
+
         return new AsgParagraph
         {
             Inlines = inlines,
@@ -237,7 +251,7 @@ public sealed class AsgConverter : ISyntaxVisitor<AsgNode?>
     /// <summary>
     /// <see cref="SyntaxNode"/> の位置情報を <see cref="AsgLocation"/> に変換する。
     /// </summary>
-    private AsgLocation GetLocation(SyntaxNode node)
+    private AsgLocation? GetLocation(SyntaxNode node)
     {
         var span = node.Span;
         return this.GetLocationFromSpan(span.Start, span.End);
@@ -246,7 +260,7 @@ public sealed class AsgConverter : ISyntaxVisitor<AsgNode?>
     /// <summary>
     /// <see cref="SyntaxToken"/> の位置情報を <see cref="AsgLocation"/> に変換する。
     /// </summary>
-    private AsgLocation GetTokenLocation(SyntaxToken token)
+    private AsgLocation? GetTokenLocation(SyntaxToken token)
     {
         var span = token.Span;
         return this.GetLocationFromSpan(span.Start, span.End);
@@ -257,8 +271,14 @@ public sealed class AsgConverter : ISyntaxVisitor<AsgNode?>
     /// </summary>
     /// <param name="startOffset">開始オフセット（0-based、包含）。</param>
     /// <param name="endOffset">終了オフセット（0-based、排他）。</param>
-    private AsgLocation GetLocationFromSpan(int startOffset, int endOffset)
+    private AsgLocation? GetLocationFromSpan(int startOffset, int endOffset)
     {
+        // 空のスパンの場合は null を返す
+        if (this._sourceText.Length == 0)
+        {
+            return null;
+        }
+
         // 開始位置（0-based から 1-based への変換）
         var (startLine, startCol) = this._sourceText.GetLineAndColumn(startOffset);
         var start = new AsgPosition(startLine + 1, startCol + 1);
