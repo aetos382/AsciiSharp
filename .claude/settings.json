@@ -33,14 +33,14 @@
       "Write(**/*.Designer.cs)"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledPlugins": {
     "claude-code-setup@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "csharp-lsp@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "github@claude-plugins-official": true
+    "security-guidance@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -50,6 +50,5 @@
       }
     }
   },
-  "language": "Japanese",
-  "enableAllProjectMcpServers": true
+  "language": "Japanese"
 }
