@@ -1,0 +1,11 @@
+﻿<Project Sdk="MSTest.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\TckAdapter\AsciiSharp.TckAdapter\AsciiSharp.TckAdapter.csproj" />
+  </ItemGroup>
+
+</Project>

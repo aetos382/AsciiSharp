@@ -165,6 +165,27 @@ this._field = parameter ?? throw new ArgumentNullException(nameof(parameter));
   - ソリューション ディレクトリまたは個別のプロジェクト ディレクトリで `dotnet test`
   - 個別のプロジェクトディレクトリで `dotnet run`
 
+### BDD の対象範囲
+
+- BDD（.feature ファイルによる振る舞いテスト）の対象は **コア ライブラリ（Source/AsciiSharp）のみ** とします。
+- その他のプロジェクト（TckAdapter、Cli 等）は通常のユニット テストで検証します。
+
+### テスト プロジェクトの作成
+
+新しいテスト プロジェクトを作成する際は、`dotnet new` コマンドを使用します。
+
+```bash
+dotnet new mstest --language C# --framework net10.0 --sdk --test-runner Microsoft.Testing.Platform
+```
+
+### プロジェクト ファイルの操作
+
+プロジェクト ファイル（`.csproj`）は直接編集せず、以下の CLI コマンドを使用します。
+
+- **プロジェクト参照の追加**: `dotnet add reference <参照先プロジェクト>`
+- **NuGet パッケージの追加**: `dotnet add package <パッケージ名>`
+- **ソリューションへのプロジェクト追加**: `dotnet sln add <プロジェクト>`
+
 ### 仕様策定と .feature ファイルについて
 
 - 仕様策定（`/speckit.specify` または `/speckit.plan`）の完了時には、必ず対応する .feature ファイルを `Test/AsciiSharp.Specs/Features/` に作成します。

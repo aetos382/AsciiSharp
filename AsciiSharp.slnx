@@ -8,6 +8,7 @@
   </Folder>
   <Folder Name="/Test/">
     <Project Path="Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj" />
+    <Project Path="Test/AsciiSharp.TckAdapter.Tests/AsciiSharp.TckAdapter.Tests.csproj" />
     <Project Path="Test/AsciiSharp.Tests/AsciiSharp.Tests.csproj" />
   </Folder>
 </Solution>
