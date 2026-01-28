@@ -1,18 +1,16 @@
 <!--
 Sync Impact Report:
-- Version: 1.2.0 → 1.3.0
+- Version: 1.3.0 → 1.3.1
 - 変更された原則: なし
-- 追加されたセクション:
-  - 開発ワークフロー > セッション継続性
+- 追加されたセクション: なし
 - 修正されたセクション:
-  - Core Principles > VI. フェーズ順序の厳守: セッション中断時の再開ルールを追加
-  - 開発ワークフロー > フェーズ順序: plan で .feature 作成、analyze は整合性検証に変更
-  - 開発ワークフロー > コミットとプッシュ: フェーズ終了時のコミットルールを追加
+  - Core Principles > VI. フェーズ順序の厳守: Red 確認を plan フェーズで即座に行えるよう明確化
+  - 開発ワークフロー > BDD サイクル: Red 確認タイミングを明確化
 - 削除されたセクション: なし
 - テンプレート更新状況:
-  - plan-template.md: ✅ 変更不要（.feature 作成を plan で行う旨は実行時に適用）
+  - plan-template.md: ✅ 変更不要
   - spec-template.md: ✅ 変更不要
-  - tasks-template.md: ✅ 整合性確認済み
+  - tasks-template.md: ✅ 変更不要
 - フォローアップTODO: なし
 -->
 
@@ -85,7 +83,7 @@ Sync Impact Report:
   4. **tasks**: タスクリストの生成（`/speckit.tasks`）
   5. **analyze**: 品質・整合性の分析、テスト失敗確認（`/speckit.analyze`）
   6. **implement**: 実装の実行（`/speckit.implement`）
-- BDD の Red ステップ（失敗するテストの作成）は **plan** フェーズで .feature ファイルを作成し、**analyze** フェーズでテスト失敗を確認する
+- BDD の Red ステップ（失敗するテストの作成）は **plan** フェーズで .feature ファイルを作成し、作成後すぐにテスト失敗を確認してよい
 - BDD の Green/Refactor ステップは **implement** フェーズ中に行う
 - フェーズをスキップしてはならない（ただし clarify は曖昧さがない場合は省略可）
 - **各フェーズの終了時には必ずコミットを作成する**
@@ -107,9 +105,9 @@ Sync Impact Report:
 specify → clarify → plan → tasks → analyze → implement
    │         │        │       │        │          │
    │         │        │       │        │          └─ Green/Refactor
-   │         │        │       │        └─ テスト失敗確認 (Red 確認)
+   │         │        │       │        └─ 整合性検証
    │         │        │       └─ タスク分解
-   │         │        └─ 設計ドキュメント + .feature 作成 (Red)
+   │         │        └─ 設計ドキュメント + .feature 作成 + Red 確認
    │         └─ 質問による曖昧さ解消
    └─ 仕様書作成
 ```
@@ -117,9 +115,9 @@ specify → clarify → plan → tasks → analyze → implement
 **フェーズの目的**:
 - **specify**: ユーザーストーリーと受け入れ条件を定義
 - **clarify**: 仕様の不明点を質問で解消
-- **plan**: 技術調査、データモデル、APIコントラクト、**.feature ファイル**を策定（Red ステップ）
+- **plan**: 技術調査、データモデル、APIコントラクト、**.feature ファイル**を策定し、テスト失敗を確認（Red）
 - **tasks**: 実装タスクを依存関係順に分解
-- **analyze**: 成果物の整合性を検証し、テストが失敗することを確認（Red 確認）
+- **analyze**: 成果物の整合性を検証
 - **implement**: テストを通す実装を行い（Green）、リファクタリング（Refactor）
 
 ### セッション継続性
@@ -146,7 +144,8 @@ specify → clarify → plan → tasks → analyze → implement
    - ユーザーストーリーから受け入れシナリオを作成
    - Given-When-Then 形式でテストケースを記述
    - .feature ファイルを作成
-   - **タイミング**: **plan** フェーズで作成、**analyze** フェーズで失敗確認
+   - テストを実行し、失敗することを確認
+   - **タイミング**: **plan** フェーズで作成・確認（作成後すぐに Red 確認してよい）
 
 2. **Green（グリーン）**: テストを通す最小限の実装
    - テストを成功させるコードを実装
@@ -242,4 +241,4 @@ specify → clarify → plan → tasks → analyze → implement
 
 ---
 
-**Version**: 1.3.0 | **Ratified**: 2026-01-18 | **Last Amended**: 2026-01-28
+**Version**: 1.3.1 | **Ratified**: 2026-01-18 | **Last Amended**: 2026-01-28
