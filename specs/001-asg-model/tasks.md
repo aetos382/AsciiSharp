@@ -38,6 +38,12 @@
 ### BDD テスト (Red → Green 確認)
 
 - [ ] T003 [US1] .feature ファイル作成: SyntaxTree から ASG への基本変換 in Test/AsciiSharp.Specs/Features/AsgConversion.feature
+  - FR-001: document ノードへの変換
+  - FR-002: section ノードへの変換
+  - FR-003: paragraph ノードへの変換
+  - FR-004: text ノードへの変換
+  - **FR-007: section の level プロパティ検証を含める**
+  - **FR-008: title 配列の複数要素検証を含める**
 - [ ] T004 [US1] Step Definition 作成: ASG 変換の Given/When/Then in Test/AsciiSharp.Specs/Steps/AsgConversionSteps.cs
 - [ ] T005 [US1] テスト実行: Red 確認（テストが存在しないため失敗を確認）
 - [ ] T006 [US1] テスト実行: Green 確認（実装済みコードでテストが通ることを確認）
@@ -78,13 +84,33 @@
 
 ---
 
-## Phase 5: Polish & Refactor
+## Phase 5: Unit Tests (TckAdapter.Tests)
+
+**Purpose**: エッジケースのユニットテスト
+
+### テストプロジェクト作成
+
+- [ ] T013 [P] TckAdapter.Tests プロジェクト作成 in Test/AsciiSharp.TckAdapter.Tests/
+- [ ] T014 [P] プロジェクト参照追加: AsciiSharp.TckAdapter への参照
+
+### エッジケーステスト
+
+- [ ] T015 空の DocumentSyntax（Header も Body もない）→ blocks が空配列
+- [ ] T016 ネストした SectionSyntax → blocks 内に再帰的に section
+- [ ] T017 空文字列の TextSyntax → value が空文字列
+- [ ] T018 未対応 SyntaxNode（LinkSyntax, AuthorLineSyntax）→ スキップされる
+
+**Checkpoint**: TckAdapter のエッジケーステストが Green
+
+---
+
+## Phase 6: Polish & Refactor
 
 **Purpose**: コード品質の確認と最終検証
 
-- [ ] T013 全テスト実行: `dotnet test` で全テストが Green であることを確認
-- [ ] T014 ビルド警告確認: `dotnet build` で警告ゼロを確認
-- [ ] T015 [P] quickstart.md の検証: サンプルコードが実際に動作することを確認
+- [ ] T019 全テスト実行: `dotnet test` で全テストが Green であることを確認
+- [ ] T020 ビルド警告確認: `dotnet build` で警告ゼロを確認
+- [ ] T021 [P] quickstart.md の検証: サンプルコードが実際に動作することを確認
 
 ---
 
@@ -96,7 +122,8 @@
 - **User Story 1 (Phase 2)**: Depends on Setup
 - **User Story 2 (Phase 3)**: Can start after Phase 2 (location は基本変換に依存)
 - **User Story 3 (Phase 4)**: Can start after Phase 2 (header は独立)
-- **Polish (Phase 5)**: Depends on all user stories being complete
+- **Unit Tests (Phase 5)**: Can start after Phase 2 (TckAdapter の実装に依存)
+- **Polish (Phase 6)**: Depends on all user stories and unit tests being complete
 
 ### User Story Dependencies
 
@@ -121,7 +148,8 @@
 2. Complete Phase 2: User Story 1 の .feature 作成 → Green 確認
 3. Complete Phase 3: User Story 2 のシナリオ追加 → Green 確認
 4. Complete Phase 4: User Story 3 のシナリオ追加 → Green 確認
-5. Complete Phase 5: 全体検証
+5. Complete Phase 5: TckAdapter のユニットテスト追加
+6. Complete Phase 6: 全体検証
 
 ### 注意事項
 
