@@ -27,7 +27,7 @@ AsciiDoc Technology Compatibility Kit (TCK) を使用して AsciiSharp パーサ
 |------|-----------|------|
 | I. コード品質ファースト | ✅ 準拠 | 可読性、メンテナンス性、テスト可能性を優先 |
 | II. モジュール設計 | ✅ 準拠 | TckAdapter は独立したプロジェクトとして分離済み |
-| III. BDD必須 | ✅ 準拠 | .feature ファイルで受け入れシナリオを定義 |
+| III. BDD必須 | ✅ 準拠 | TckAdapter は BDD 対象外（constitution v1.4.0）。TCK テストによる外部検証で品質確保 |
 | IV. 継続的品質保証 | ✅ 準拠 | CI で TCK テストを自動実行 |
 | V. 警告ゼロポリシー | ✅ 準拠 | Refactor ステップで全警告を解消 |
 | VI. フェーズ順序の厳守 | ✅ 準拠 | specify → clarify → plan → tasks → analyze → implement |
@@ -66,9 +66,7 @@ Source/
         └── Dockerfile                    # Docker ビルド設定 (既存)
 
 Test/
-├── AsciiSharp.Specs/                     # BDD テスト
-│   └── Features/
-│       └── TckIntegration.feature        # TCK 統合テスト (新規)
+├── AsciiSharp.Specs/                     # BDD テスト（コア ライブラリ用）
 └── AsciiSharp.Tests/                     # ユニット テスト
     └── TckAdapter/
         └── (TckAdapter 関連テスト)
