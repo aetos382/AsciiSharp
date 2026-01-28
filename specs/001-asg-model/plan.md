@@ -1,104 +1,99 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: AsciiDoc ASG モデルクラス
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Branch**: `001-asg-model` | **Date**: 2026-01-28 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/001-asg-model/spec.md`
+**Status**: 実装完了
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+AsciiSharp の SyntaxTree を AsciiDoc TCK が期待する ASG (Abstract Semantic Graph) JSON 形式に変換する機能を実装する。`ISyntaxVisitor<T>` パターンを使用して各 SyntaxNode を対応する ASG ノードに変換し、System.Text.Json の Source Generator を使用して AOT 互換の JSON シリアライズを実現する。
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: C# 14 / .NET 10.0
+**Primary Dependencies**: System.Text.Json、AsciiSharp.Syntax (ISyntaxVisitor<T>)
+**Storage**: N/A
+**Testing**: MSTest.Sdk、Reqnroll (BDD)
+**Target Platform**: .NET 10.0 (TckAdapter プロジェクト)
+**Project Type**: ライブラリ
+**Performance Goals**: N/A（初期フェーズでは重視しない）
+**Constraints**: AOT 互換性必須（IsAotCompatible=true）
+**Scale/Scope**: TCK テストケースに対応する ASG 変換
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+| 原則 | 状態 | 確認内容 |
+|------|------|----------|
+| I. コード品質ファースト | ✅ | 可読性・メンテナンス性を考慮した設計 |
+| II. モジュール設計 | ✅ | Asg/ ディレクトリに Models, Serialization, Converter を分離 |
+| III. BDD必須 | ⚠️ | 実装先行のため、.feature ファイルは後続タスクで作成 |
+| IV. 継続的品質保証 | ✅ | ビルド・テスト成功後にコミット |
+| V. 警告ゼロポリシー | ✅ | 警告ゼロを達成（CA1822 は csproj で抑制、理由明記） |
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+specs/001-asg-model/
+├── plan.md              # このファイル
+├── research.md          # Phase 0 output
+├── data-model.md        # Phase 1 output
+├── quickstart.md        # Phase 1 output
+└── tasks.md             # Phase 2 output (後続)
 ```
 
-### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
+### Source Code (実装済み)
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+Source/TckAdapter/AsciiSharp.TckAdapter/
+├── AsciiSharp.TckAdapter.csproj   # プロジェクトファイル（NoWarn 設定追加）
+└── Asg/
+    ├── AsgConverter.cs            # ISyntaxVisitor<AsgNode?> 実装
+    ├── Models/
+    │   ├── AsgNode.cs             # 基底クラス（Location プロパティ）
+    │   ├── AsgBlockNode.cs        # ブロック要素の基底（Type="block"）
+    │   ├── AsgInlineNode.cs       # インライン要素の基底
+    │   ├── AsgDocument.cs         # document ブロック
+    │   ├── AsgSection.cs          # section ブロック
+    │   ├── AsgParagraph.cs        # paragraph ブロック
+    │   ├── AsgHeader.cs           # 文書ヘッダー
+    │   ├── AsgText.cs             # text インライン
+    │   ├── AsgPosition.cs         # 位置情報（line, col）
+    │   └── AsgLocation.cs         # 位置範囲（start, end）
+    └── Serialization/
+        ├── AsgJsonContext.cs              # AOT 互換 JsonSerializerContext
+        └── AsgLocationJsonConverter.cs    # Location の配列形式変換
 
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+Test/AsciiSharp.Specs/Features/
+└── (後続で .feature ファイルを作成)
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: TckAdapter プロジェクト内に `Asg/` ディレクトリを作成し、Models、Serialization、変換ロジックを分離配置。
 
 ## Complexity Tracking
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+| 追加項目 | 理由 | シンプルな代替案を却下した理由 |
+|----------|------|-------------------------------|
+| AsgLocationJsonConverter | TCK が期待する `[{start}, {end}]` 配列形式に対応 | デフォルトの JSON シリアライズではオブジェクト形式になるため |
+| CA1822 抑制 (csproj) | JSON シリアライズに必要なインスタンス プロパティ | 各ファイルに pragma を書くより csproj 一括が保守しやすい |
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+## Implementation Notes
+
+### 設計決定
+
+1. **ISyntaxVisitor<T> パターン**: AsciiSharp のビジターパターンを活用して型安全な変換を実現
+2. **yield return**: ConvertBlocks、ConvertSectionContent でイテレーターを使用し、メモリ効率を向上
+3. **AOT 互換**: `AsgJsonContext` で JsonSerializerContext を定義し、リフレクションフリーの JSON シリアライズを実現
+4. **位置情報変換**: AsciiSharp の 0-based オフセットを TCK の 1-based {line, col} に変換
+
+### 未対応ノード
+
+以下の SyntaxNode は現時点でスキップ（null を返す）:
+- `LinkSyntax`
+- `AuthorLineSyntax`
+- `DocumentHeaderSyntax`（直接変換せず、ConvertHeader 経由）
+- `DocumentBodySyntax`（直接変換せず、ConvertBlocks 経由）
+- `SectionTitleSyntax`（直接変換せず、ConvertTitleInlines 経由）
