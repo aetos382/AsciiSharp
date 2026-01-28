@@ -1,16 +1,18 @@
 <!--
 Sync Impact Report:
-- Version: 1.1.0 → 1.2.0
+- Version: 1.2.0 → 1.3.0
 - 変更された原則: なし
 - 追加されたセクション:
-  - Core Principles > VI. フェーズ順序の厳守 (NON-NEGOTIABLE)
-  - 開発ワークフロー > フェーズ順序
-- 修正されたセクション: なし
+  - 開発ワークフロー > セッション継続性
+- 修正されたセクション:
+  - Core Principles > VI. フェーズ順序の厳守: セッション中断時の再開ルールを追加
+  - 開発ワークフロー > フェーズ順序: plan で .feature 作成、analyze は整合性検証に変更
+  - 開発ワークフロー > コミットとプッシュ: フェーズ終了時のコミットルールを追加
 - 削除されたセクション: なし
 - テンプレート更新状況:
-  - plan-template.md: ✅ 変更不要（Constitution Check はフェーズ順序を自動的に検証）
-  - spec-template.md: ✅ 変更不要（仕様定義段階でのみ使用）
-  - tasks-template.md: ✅ 整合性確認済み（82行目に「Tests MUST be written and FAIL before implementation」記載あり）
+  - plan-template.md: ✅ 変更不要（.feature 作成を plan で行う旨は実行時に適用）
+  - spec-template.md: ✅ 変更不要
+  - tasks-template.md: ✅ 整合性確認済み
 - フォローアップTODO: なし
 -->
 
@@ -79,15 +81,23 @@ Sync Impact Report:
 - 機能開発は以下のフェーズ順序を厳守する:
   1. **specify**: 機能仕様の定義（`/speckit.specify`）
   2. **clarify**: 仕様の曖昧さを解消（`/speckit.clarify`）
-  3. **plan**: 実装計画の策定（`/speckit.plan`）
+  3. **plan**: 実装計画の策定と .feature ファイルの作成（`/speckit.plan`）
   4. **tasks**: タスクリストの生成（`/speckit.tasks`）
-  5. **analyze**: 品質・整合性の分析（`/speckit.analyze`）
+  5. **analyze**: 品質・整合性の分析、テスト失敗確認（`/speckit.analyze`）
   6. **implement**: 実装の実行（`/speckit.implement`）
-- BDD の Red ステップ（失敗するテストの作成）は、遅くとも **analyze** フェーズまでに完了する
+- BDD の Red ステップ（失敗するテストの作成）は **plan** フェーズで .feature ファイルを作成し、**analyze** フェーズでテスト失敗を確認する
 - BDD の Green/Refactor ステップは **implement** フェーズ中に行う
 - フェーズをスキップしてはならない（ただし clarify は曖昧さがない場合は省略可）
+- **各フェーズの終了時には必ずコミットを作成する**
 
-**根拠**: フェーズ順序を遵守することで、設計と実装の乖離を防ぎ、品質の一貫性を確保する。テストを先に書くことで、実装が要件を満たすことを保証できる。
+**セッション中断時の再開**:
+- チャットセッションが中断した場合、以下の情報から現在のフェーズを推測して再開する:
+  - チャット履歴
+  - 作成済みの文書（spec.md, plan.md, tasks.md 等）
+  - コミットログ（フェーズ名が記載されている）
+- フェーズが不明な場合は、ユーザーに問い合わせる
+
+**根拠**: フェーズ順序を遵守することで、設計と実装の乖離を防ぎ、品質の一貫性を確保する。テストを先に書くことで、実装が要件を満たすことを保証できる。セッション中断時もフェーズを追跡可能にすることで、作業の継続性を担保する。
 
 ## 開発ワークフロー
 
@@ -97,9 +107,9 @@ Sync Impact Report:
 specify → clarify → plan → tasks → analyze → implement
    │         │        │       │        │          │
    │         │        │       │        │          └─ Green/Refactor
-   │         │        │       │        └─ Red (テスト失敗確認)
+   │         │        │       │        └─ テスト失敗確認 (Red 確認)
    │         │        │       └─ タスク分解
-   │         │        └─ 設計ドキュメント
+   │         │        └─ 設計ドキュメント + .feature 作成 (Red)
    │         └─ 質問による曖昧さ解消
    └─ 仕様書作成
 ```
@@ -107,18 +117,36 @@ specify → clarify → plan → tasks → analyze → implement
 **フェーズの目的**:
 - **specify**: ユーザーストーリーと受け入れ条件を定義
 - **clarify**: 仕様の不明点を質問で解消
-- **plan**: 技術調査、データモデル、APIコントラクトを策定
+- **plan**: 技術調査、データモデル、APIコントラクト、**.feature ファイル**を策定（Red ステップ）
 - **tasks**: 実装タスクを依存関係順に分解
-- **analyze**: .feature ファイルを作成し、テストが失敗することを確認（Red）
+- **analyze**: 成果物の整合性を検証し、テストが失敗することを確認（Red 確認）
 - **implement**: テストを通す実装を行い（Green）、リファクタリング（Refactor）
+
+### セッション継続性
+
+**中断時の再開手順**:
+1. 以下の情報源を確認してフェーズを特定:
+   - コミットログ: `git log --oneline -10` でフェーズ名を確認
+   - 文書の存在: `specs/[feature]/` 配下のファイル有無
+   - チャット履歴: 最後に実行したコマンドを確認
+2. フェーズが特定できた場合、そのフェーズの続きから再開
+3. フェーズが不明な場合、ユーザーに確認を求める
+
+**フェーズ特定の目安**:
+| 存在する成果物 | 推定フェーズ |
+|---------------|-------------|
+| spec.md のみ | specify 完了 → clarify または plan |
+| spec.md + plan.md | plan 完了 → tasks |
+| spec.md + plan.md + tasks.md | tasks 完了 → analyze |
+| 上記 + 実装コード（テスト失敗） | analyze 完了 → implement |
 
 ### BDD サイクル
 
 1. **Red（レッド）**: 失敗するテストを書く
    - ユーザーストーリーから受け入れシナリオを作成
    - Given-When-Then 形式でテストケースを記述
-   - テストを実行し、失敗することを確認
-   - **タイミング**: analyze フェーズまでに完了
+   - .feature ファイルを作成
+   - **タイミング**: **plan** フェーズで作成、**analyze** フェーズで失敗確認
 
 2. **Green（グリーン）**: テストを通す最小限の実装
    - テストを成功させるコードを実装
@@ -138,6 +166,7 @@ specify → clarify → plan → tasks → analyze → implement
 
 **必須事項**:
 - **タスク完了ごとにコミットを作成する**
+- **各フェーズの終了時に必ずコミットを作成する**
 - コミット作成には `/commit-commands:commit` コマンドを使用する
 - コミット前に必ずビルドとテストを実行する
 - コミットメッセージは日本語で明確に記述する
@@ -145,7 +174,19 @@ specify → clarify → plan → tasks → analyze → implement
 **コミットのタイミング**:
 - 各タスク（T001, T002, ...）の完了時
 - 各 BDD サイクル（Red → Green → Refactor）の完了時
+- **各フェーズ（specify, clarify, plan, tasks, analyze）の完了時**
 - 論理的にまとまった変更の完了時
+
+**フェーズ終了時のコミットメッセージ形式**:
+```
+[phase: <フェーズ名>] <変更内容の要約>
+
+例:
+[phase: specify] ASG モデルの仕様書を作成
+[phase: plan] ASG モデルの設計と .feature ファイルを追加
+[phase: tasks] ASG モデルのタスクリストを生成
+[phase: analyze] ASG モデルの整合性検証完了
+```
 
 **プッシュ**:
 - プッシュ前に CI パイプラインの成功を確認する
@@ -201,4 +242,4 @@ specify → clarify → plan → tasks → analyze → implement
 
 ---
 
-**Version**: 1.2.0 | **Ratified**: 2026-01-18 | **Last Amended**: 2026-01-28
+**Version**: 1.3.0 | **Ratified**: 2026-01-18 | **Last Amended**: 2026-01-28
