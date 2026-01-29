@@ -1,5 +1,5 @@
 target "tck" {
-  dockerfile = "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/Dockerfile"
+  dockerfile = "Source/AsciiSharp.TckAdapter/Dockerfile"
   context = "."
   contexts = {
     "asciidoc-tck" = "submodules/asciidoc-tck"
