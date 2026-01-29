@@ -2,9 +2,9 @@ name: TCK
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -14,53 +14,58 @@ jobs:
       contents: read
 
     steps:
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          submodules: true
 
-    - name: Build TCK Docker image
-      uses: docker/bake-action@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6.10.0
-      with:
-        files: docker-bake.hcl
-        targets: tck
-        load: true
-        set: |
-          *.cache-from=type=gha
-          *.cache-to=type=gha,mode=max
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-    - name: Run TCK tests
-      id: tck
-      run: |
-        docker run --rm asciisharp-tck 2>&1 | tee tck-output.txt
-        exit_code=${PIPESTATUS[0]}
-        echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
-        exit "$exit_code"
+      - name: Build TCK Docker image
+        uses: docker/bake-action@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6.10.0
+        with:
+          source: .
+          files: docker-bake.hcl
+          targets: tck
+          load: true
+          set: |
+            *.cache-from=type=gha
+            *.cache-to=type=gha,mode=max
 
-    - name: TCK test summary
-      if: always()
-      run: |
-        echo "## TCK テスト結果" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
+      - name: Run TCK tests
+        id: tck
+        run: |
+          docker run --rm asciisharp-tck 2>&1 | tee tck-output.txt
+          exit_code=${PIPESTATUS[0]}
+          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+          exit "$exit_code"
 
-        # 統計情報を抽出
-        tests=$(grep -oP '(?<=ℹ tests )\d+' tck-output.txt || echo "0")
-        pass=$(grep -oP '(?<=ℹ pass )\d+' tck-output.txt || echo "0")
-        fail=$(grep -oP '(?<=ℹ fail )\d+' tck-output.txt || echo "0")
-        skipped=$(grep -oP '(?<=ℹ skipped )\d+' tck-output.txt || echo "0")
+      - name: TCK test summary
+        if: always()
+        run: |
+          echo "## TCK テスト結果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
 
-        # サマリーテーブル
-        echo "| 項目 | 件数 |" >> $GITHUB_STEP_SUMMARY
-        echo "|------|-----:|" >> $GITHUB_STEP_SUMMARY
-        echo "| ✅ Pass | $pass |" >> $GITHUB_STEP_SUMMARY
-        echo "| ❌ Fail | $fail |" >> $GITHUB_STEP_SUMMARY
-        echo "| ⏭️ Skipped | $skipped |" >> $GITHUB_STEP_SUMMARY
-        echo "| 📊 Total | $tests |" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
+          # 統計情報を抽出
+          tests=$(grep -oP '(?<=ℹ tests )\d+' tck-output.txt || echo "0")
+          pass=$(grep -oP '(?<=ℹ pass )\d+' tck-output.txt || echo "0")
+          fail=$(grep -oP '(?<=ℹ fail )\d+' tck-output.txt || echo "0")
+          skipped=$(grep -oP '(?<=ℹ skipped )\d+' tck-output.txt || echo "0")
 
-        # テスト結果ツリー
-        echo "<details>" >> $GITHUB_STEP_SUMMARY
-        echo "<summary>テスト結果の詳細</summary>" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        grep -E '^[▶✔✖ℹ]|^  ' tck-output.txt >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        echo "</details>" >> $GITHUB_STEP_SUMMARY
+          # サマリーテーブル
+          echo "| 項目 | 件数 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-----:|" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Pass | $pass |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Fail | $fail |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⏭️ Skipped | $skipped |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📊 Total | $tests |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # テスト結果ツリー
+          echo "<details>" >> $GITHUB_STEP_SUMMARY
+          echo "<summary>テスト結果の詳細</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -E '^[▶✔✖ℹ]|^  ' tck-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
