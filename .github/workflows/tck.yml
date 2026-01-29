@@ -26,11 +26,19 @@ jobs:
         with:
           source: .
           files: docker-bake.hcl
-          targets: tck
+          targets: tck-with-log
           load: true
           set: |
+            *.args.CI=true
             *.cache-from=type=gha
             *.cache-to=type=gha,mode=max
+
+      - name: Upload adapter build logs
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v
+        with:
+          name: AsciiSharp.TckAdapter Build Logs
+          path: build-logs/AsciiSharp.TckAdapter.binlog
+          compression-level: 0
 
       - name: Run TCK tests
         id: tck

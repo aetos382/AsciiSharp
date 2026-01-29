@@ -42,12 +42,13 @@ RUN --mount=type=cache,id=nuget-cache,target=/var/cache/nuget \
   "--configuration", "Release", \
   "--runtime", "linux-x64", \
   "--self-contained", \
-  "--nologo" \
+  "--nologo", \
+  "-bl:logs/AsciiSharp.TckAdapter.binlog" \
 ]
 
 RUN [ "dotnet", "build-server", "shutdown" ]
 
-FROM node:lts-trixie-slim@sha256:a16979bcaf12a2fd24888eb8e89874b11bd1038a3e3f1881c26a5e2b8fb92b5c
+FROM node:lts-trixie-slim@sha256:a16979bcaf12a2fd24888eb8e89874b11bd1038a3e3f1881c26a5e2b8fb92b5c AS tck
 
 WORKDIR /workspaces
 
@@ -73,3 +74,9 @@ CMD [ \
   "harness/bin/asciidoc-tck.js", "cli", \
   "--adapter-command", "/workspaces/tck-adapter/AsciiSharp.TckAdapter" \
 ]
+
+FROM scratch AS build-log
+
+WORKDIR /
+
+COPY --from=adapter-build /workspaces/logs/* .
