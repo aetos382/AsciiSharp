@@ -69,6 +69,6 @@ jobs:
         echo "<summary>テスト結果の詳細</summary>" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo '```' >> $GITHUB_STEP_SUMMARY
-        grep -E '^[▶✔✖ℹ]|^  ' tck-output.txt | head -60 >> $GITHUB_STEP_SUMMARY
+        grep -E '^[▶✔✖ℹ]|^  ' tck-output.txt >> $GITHUB_STEP_SUMMARY
         echo '```' >> $GITHUB_STEP_SUMMARY
         echo "</details>" >> $GITHUB_STEP_SUMMARY
