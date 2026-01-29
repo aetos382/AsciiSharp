@@ -1,17 +1,17 @@
 <!--
 Sync Impact Report:
-- Version: 1.3.0 → 1.3.1
+- Version: 1.4.0 → 1.4.1
 - 変更された原則: なし
 - 追加されたセクション: なし
 - 修正されたセクション:
-  - Core Principles > VI. フェーズ順序の厳守: Red 確認を plan フェーズで即座に行えるよう明確化
-  - 開発ワークフロー > BDD サイクル: Red 確認タイミングを明確化
+  - III. BDD必須: プロジェクト構造変更に伴い「TckAdapter、CLI ツール等」を「Asg、TckAdapter 等」に更新
 - 削除されたセクション: なし
 - テンプレート更新状況:
   - plan-template.md: ✅ 変更不要
   - spec-template.md: ✅ 変更不要
   - tasks-template.md: ✅ 変更不要
-- フォローアップTODO: なし
+- フォローアップTODO:
+  - specs フォルダ配下のドキュメント更新 → 本コミットで更新
 -->
 
 # AsciiSharp Constitution
@@ -44,13 +44,20 @@ Sync Impact Report:
 ### III. BDD必須 (NON-NEGOTIABLE)
 
 **必須事項**:
-- すべての機能開発において Behavior Driven Development (BDD) を実施する
+- **明示的に指定した対象プロジェクト**の機能開発において Behavior Driven Development (BDD) を実施する
 - Red-Green-Refactor サイクルを厳格に遵守する
 - Given-When-Then 形式で振る舞いを記述する
 - ユーザーストーリーから受け入れシナリオを導出する
 - 実装前にテストを記述し、テストが失敗することを確認する
 
-**根拠**: BDD は要件と実装の乖離を防ぎ、ビジネス価値とテストを直結させる。テストファーストにより、設計品質が向上し、リグレッションを防止できる。
+**BDD 対象プロジェクト**:
+現時点で BDD を適用する対象プロジェクトは以下の通り:
+- `Source/AsciiSharp/AsciiSharp.csproj` （コア ライブラリ）
+
+上記以外のプロジェクト（Asg、TckAdapter 等）は、通常のユニット テストまたは外部検証（TCK テスト等）で品質を確保する。
+対象プロジェクトの追加は、この憲章の改訂により明示的に指定する。
+
+**根拠**: BDD は要件と実装の乖離を防ぎ、ビジネス価値とテストを直結させる。テストファーストにより、設計品質が向上し、リグレッションを防止できる。対象を明示的に指定することで、BDD の適用範囲を明確にし、過度な負担を避ける。
 
 ### IV. 継続的品質保証
 
@@ -241,4 +248,4 @@ specify → clarify → plan → tasks → analyze → implement
 
 ---
 
-**Version**: 1.3.1 | **Ratified**: 2026-01-18 | **Last Amended**: 2026-01-28
+**Version**: 1.4.1 | **Ratified**: 2026-01-18 | **Last Amended**: 2026-01-29

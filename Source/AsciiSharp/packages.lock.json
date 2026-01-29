@@ -58,6 +58,7 @@
         "contentHash": "2hBr6zdbIBTDE3EhK7NSVNdX58uTK6iHW/P/Axmm9sl1xoGSLqDvMtpecn226TNwHByFokYwJmt/aQQNlO5CRw=="
       }
     },
+    ".NETStandard,Version=v2.0/linux-x64": {},
     "net10.0": {
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
@@ -65,6 +66,7 @@
         "resolved": "10.0.2",
         "contentHash": "sXdDtMf2qcnbygw9OdE535c2lxSxrZP8gO4UhDJ0xiJbl1wIqXS1OTcTDFTIJPOFd6Mhcm8gPEthqWGUxBsTqw=="
       }
-    }
+    },
+    "net10.0/linux-x64": {}
   }
 }

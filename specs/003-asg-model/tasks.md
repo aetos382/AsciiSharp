@@ -4,7 +4,7 @@
 **Prerequisites**: plan.md (required), spec.md (required), data-model.md, quickstart.md
 **Status**: 実装完了 → ユニットテスト追加フェーズ
 
-**Note**: 実装は完了しています。BDD はコアプロジェクト（Source/AsciiSharp）のみを対象とするため、TckAdapter のテストは通常のユニットテストで実施します。
+**Note**: 実装は完了しています。BDD はコアプロジェクト（Source/AsciiSharp）のみを対象とするため、Asg のテストは通常のユニットテストで実施します。
 
 ## Format: `[ID] [P?] Description`
 
@@ -13,8 +13,8 @@
 
 ## Path Conventions
 
-- **Source**: `Source/TckAdapter/AsciiSharp.TckAdapter/`
-- **Tests**: `Test/AsciiSharp.TckAdapter.Tests/`
+- **Source**: `Source/AsciiSharp.Asg/`
+- **Tests**: `Test/AsciiSharp.Asg.Tests/`
 
 ---
 
@@ -24,7 +24,7 @@
 
 ### テストプロジェクト作成
 
-- [x] T001 [P] TckAdapter.Tests プロジェクト作成 in Test/AsciiSharp.TckAdapter.Tests/
+- [x] T001 [P] Asg.Tests プロジェクト作成 in Test/AsciiSharp.Asg.Tests/
 - [x] T002 プロジェクト参照追加: AsciiSharp.TckAdapter への参照
 
 ### User Story 1: 基本変換テスト (FR-001〜FR-004, FR-007, FR-008)
