@@ -35,7 +35,7 @@ COPY ["Source", "Source/"]
 RUN --mount=type=cache,id=nuget-cache,target=/var/cache/nuget \
 [ \
   "dotnet", "publish", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
+  "Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
   "--configuration", "Release", \
   "--runtime", "linux-x64", \
   "--self-contained", \

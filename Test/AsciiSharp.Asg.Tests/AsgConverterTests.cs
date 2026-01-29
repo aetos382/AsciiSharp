@@ -1,5 +1,4 @@
 using AsciiSharp.Syntax;
-using AsciiSharp.Asg;
 using AsciiSharp.Asg.Models;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

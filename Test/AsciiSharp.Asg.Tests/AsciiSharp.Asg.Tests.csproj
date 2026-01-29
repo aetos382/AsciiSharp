@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\Asg\AsciiSharp.Asg\AsciiSharp.Asg.csproj" />
+    <ProjectReference Include="..\..\Source\AsciiSharp.Asg\AsciiSharp.Asg.csproj" />
   </ItemGroup>
 
 </Project>
