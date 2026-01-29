@@ -24,16 +24,8 @@ try
     var syntaxTree = SyntaxTree.ParseText(tckInput.Contents, tckInput.Path);
 
     // 4. AsgConverter で SyntaxTree を ASG に変換
-    var converter = new AsgConverter(syntaxTree.Text);
-    var root = syntaxTree.Root;
-
-    if (root is not DocumentSyntax document)
-    {
-        Console.Error.WriteLine("Error: Root node is not a document.");
-        return 1;
-    }
-
-    var asgDocument = converter.Convert(document);
+    var converter = new AsgConverter(syntaxTree);
+    var asgDocument = converter.Convert();
 
     // 5. ASG を JSON シリアライズして標準出力に出力
     var outputJson = JsonSerializer.Serialize(asgDocument, AsgJsonContext.Default.AsgDocument);

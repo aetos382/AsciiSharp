@@ -1,7 +1,6 @@
 using AsciiSharp.Syntax;
 using AsciiSharp.TckAdapter.Asg;
 using AsciiSharp.TckAdapter.Asg.Models;
-using AsciiSharp.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,12 +19,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "This is a paragraph.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.AreEqual("document", result.Name);
@@ -37,12 +35,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.IsEmpty(result.Blocks);
@@ -58,12 +55,11 @@ public sealed class AsgConverterTests
         // Arrange
         // AsciiSharp では Level は = の数を返す（== は level 2）
         var text = "== Section Title\n\nContent.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.HasCount(1, result.Blocks);
@@ -79,12 +75,11 @@ public sealed class AsgConverterTests
         // Arrange
         // AsciiSharp では Level は = の数を返す（=== は level 3）
         var text = "=== Level 3 Section\n\nContent.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         var section = result.Blocks[0] as AsgSection;
@@ -98,12 +93,11 @@ public sealed class AsgConverterTests
         // Arrange
         // AsciiSharp のパーサーはセクションをレベルに基づいてネストする
         var text = "== Level 2\n\n=== Level 3\n\nNested content.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         // パーサーの動作に応じてテストを調整
@@ -118,12 +112,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "== My Title\n\nContent.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         var section = result.Blocks[0] as AsgSection;
@@ -143,12 +136,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "This is a paragraph.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.HasCount(1, result.Blocks);
@@ -167,12 +159,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "Hello World";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         var paragraph = result.Blocks[0] as AsgParagraph;
@@ -192,12 +183,11 @@ public sealed class AsgConverterTests
         // Arrange - 空の段落を作成するために改行のみの文書を使用
         // 注: パーサーの動作により、完全に空のテキストノードは生成されない可能性がある
         var text = "";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.IsEmpty(result.Blocks);
@@ -212,12 +202,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "Hello World";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         var paragraph = result.Blocks[0] as AsgParagraph;
@@ -235,12 +224,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "Hello World";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         var paragraph = result.Blocks[0] as AsgParagraph;
@@ -262,12 +250,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "First line\nSecond line";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         var paragraph = result.Blocks[0] as AsgParagraph;
@@ -287,12 +274,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "= Document Title\n\nContent.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.IsNotNull(result.Header);
@@ -303,12 +289,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "= Document Title\n\nContent.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.IsNotNull(result.Header);
@@ -328,12 +313,11 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "Just a paragraph.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var converter = new AsgConverter(sourceText);
+        var converter = new AsgConverter(syntaxTree);
 
         // Act
-        var result = converter.Convert((DocumentSyntax)syntaxTree.Root);
+        var result = converter.Convert();
 
         // Assert
         Assert.IsNull(result.Header);
@@ -348,8 +332,8 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "dummy";
-        var sourceText = SourceText.From(text);
-        var converter = new AsgConverter(sourceText);
+        var syntaxTree = SyntaxTree.ParseText(text);
+        ISyntaxVisitor<AsgNode?> converter = new AsgConverter(syntaxTree);
 
         // Act
         var result = converter.VisitLink(null!);
@@ -363,8 +347,8 @@ public sealed class AsgConverterTests
     {
         // Arrange
         var text = "dummy";
-        var sourceText = SourceText.From(text);
-        var converter = new AsgConverter(sourceText);
+        var syntaxTree = SyntaxTree.ParseText(text);
+        ISyntaxVisitor<AsgNode?> converter = new AsgConverter(syntaxTree);
 
         // Act
         var result = converter.VisitAuthorLine(null!);

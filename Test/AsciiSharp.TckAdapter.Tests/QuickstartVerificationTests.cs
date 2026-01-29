@@ -3,9 +3,7 @@ using System.Text.Json;
 
 using AsciiSharp.Syntax;
 using AsciiSharp.TckAdapter.Asg;
-using AsciiSharp.TckAdapter.Asg.Models;
 using AsciiSharp.TckAdapter.Asg.Serialization;
-using AsciiSharp.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,13 +20,11 @@ public sealed class QuickstartVerificationTests
     {
         // Arrange - quickstart.md サンプル 1
         var text = "= Hello World\n\nThis is a paragraph.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var document = (DocumentSyntax)syntaxTree.Root;
 
         // Act
-        var converter = new AsgConverter(sourceText);
-        var asgDocument = converter.Convert(document);
+        var converter = new AsgConverter(syntaxTree);
+        var asgDocument = converter.Convert();
 
         // Assert - 基本的な検証
         Assert.AreEqual("document", asgDocument.Name);
@@ -41,11 +37,9 @@ public sealed class QuickstartVerificationTests
     {
         // Arrange
         var text = "= Hello World\n\nThis is a paragraph.";
-        var sourceText = SourceText.From(text);
         var syntaxTree = SyntaxTree.ParseText(text);
-        var document = (DocumentSyntax)syntaxTree.Root;
-        var converter = new AsgConverter(sourceText);
-        var asgDocument = converter.Convert(document);
+        var converter = new AsgConverter(syntaxTree);
+        var asgDocument = converter.Convert();
 
         // Act - quickstart.md サンプル 2（シリアライズが例外なく実行できることを確認）
         var json = JsonSerializer.Serialize(
