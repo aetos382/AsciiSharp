@@ -16,15 +16,15 @@ COPY [ \
 ]
 
 COPY [ \
-  "Source/Asg/AsciiSharp.Asg/AsciiSharp.Asg.csproj", \
-  "Source/Asg/AsciiSharp.Asg/packages.lock.json", \
-  "Source/Asg/AsciiSharp.Asg/" \
+  "Source/AsciiSharp.Asg/AsciiSharp.Asg.csproj", \
+  "Source/AsciiSharp.Asg/packages.lock.json", \
+  "Source/AsciiSharp.Asg/" \
 ]
 
 COPY [ \
-  "Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter/packages.lock.json", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter/" \
+  "Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
+  "Source/AsciiSharp.TckAdapter/packages.lock.json", \
+  "Source/AsciiSharp.TckAdapter/" \
 ]
 
 # dotnet restore を分離するのはうまくいかない
