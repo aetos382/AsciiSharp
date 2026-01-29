@@ -37,11 +37,38 @@ jobs:
           *.cache-to=type=gha,mode=max
 
     - name: Run TCK tests
-      run: docker run --rm asciisharp-tck
-      continue-on-error: true
+      id: tck
+      run: |
+        docker run --rm asciisharp-tck 2>&1 | tee tck-output.txt
+        exit_code=${PIPESTATUS[0]}
+        echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+        exit 0
 
     - name: TCK test summary
       run: |
         echo "## TCK テスト結果" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "TCK テストが完了しました。失敗したテストは、AsciiSharp パーサーがまだ対応していない AsciiDoc 構文要素を示しています。" >> $GITHUB_STEP_SUMMARY
+
+        # 統計情報を抽出
+        tests=$(grep -oP '(?<=ℹ tests )\d+' tck-output.txt || echo "0")
+        pass=$(grep -oP '(?<=ℹ pass )\d+' tck-output.txt || echo "0")
+        fail=$(grep -oP '(?<=ℹ fail )\d+' tck-output.txt || echo "0")
+        skipped=$(grep -oP '(?<=ℹ skipped )\d+' tck-output.txt || echo "0")
+
+        # サマリーテーブル
+        echo "| 項目 | 件数 |" >> $GITHUB_STEP_SUMMARY
+        echo "|------|-----:|" >> $GITHUB_STEP_SUMMARY
+        echo "| ✅ Pass | $pass |" >> $GITHUB_STEP_SUMMARY
+        echo "| ❌ Fail | $fail |" >> $GITHUB_STEP_SUMMARY
+        echo "| ⏭️ Skipped | $skipped |" >> $GITHUB_STEP_SUMMARY
+        echo "| 📊 Total | $tests |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # テスト結果ツリー
+        echo "<details>" >> $GITHUB_STEP_SUMMARY
+        echo "<summary>テスト結果の詳細</summary>" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        grep -E '^[▶✔✖ℹ]|^  ' tck-output.txt | head -60 >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "</details>" >> $GITHUB_STEP_SUMMARY
