@@ -54,7 +54,7 @@ public sealed class AsgConverter
             this._syntaxTree = syntaxTree;
         }
 
-        public AsgNode? VisitDocument(DocumentSyntax node)
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitDocument(DocumentSyntax node)
         {
             ArgumentNullException.ThrowIfNull(node);
 
@@ -70,7 +70,7 @@ public sealed class AsgConverter
             };
         }
 
-        public AsgNode? VisitSection(SectionSyntax node)
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitSection(SectionSyntax node)
         {
             ArgumentNullException.ThrowIfNull(node);
 
@@ -87,7 +87,7 @@ public sealed class AsgConverter
             };
         }
 
-        public AsgNode? VisitParagraph(ParagraphSyntax node)
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitParagraph(ParagraphSyntax node)
         {
             ArgumentNullException.ThrowIfNull(node);
 
@@ -123,7 +123,7 @@ public sealed class AsgConverter
             };
         }
 
-        public AsgNode? VisitText(TextSyntax node)
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitText(TextSyntax node)
         {
             ArgumentNullException.ThrowIfNull(node);
 
@@ -136,15 +136,15 @@ public sealed class AsgConverter
 
         // 以下は直接変換せず、親ノードで処理するか、未対応のため null を返す
 
-        public AsgNode? VisitDocumentHeader(DocumentHeaderSyntax node) => null;
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitDocumentHeader(DocumentHeaderSyntax node) => null;
 
-        public AsgNode? VisitDocumentBody(DocumentBodySyntax node) => null;
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitDocumentBody(DocumentBodySyntax node) => null;
 
-        public AsgNode? VisitSectionTitle(SectionTitleSyntax node) => null;
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitSectionTitle(SectionTitleSyntax node) => null;
 
-        public AsgNode? VisitLink(LinkSyntax node) => null;
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitLink(LinkSyntax node) => null;
 
-        public AsgNode? VisitAuthorLine(AuthorLineSyntax node) => null;
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitAuthorLine(AuthorLineSyntax node) => null;
 
         /// <summary>
         /// <see cref="DocumentHeaderSyntax"/> を <see cref="AsgHeader"/> に変換する。
