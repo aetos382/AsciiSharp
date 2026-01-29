@@ -3,7 +3,7 @@
 **Feature Branch**: `001-asg-model`
 **Created**: 2026-01-28
 **Status**: Draft
-**Input**: AsciiDoc ASG を生成する機能を追加する。Source/TckAdapter/AsciiSharp.TckAdapter.csproj に、ASG に対応するクラス群を追加する。
+**Input**: AsciiDoc ASG を生成する機能を追加する。Source/AsciiSharp.Asg/AsciiSharp.Asg.csproj に、ASG に対応するクラス群を追加する。
 
 ## User Scenarios & Testing
 

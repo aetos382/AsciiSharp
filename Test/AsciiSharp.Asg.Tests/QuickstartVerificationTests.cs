@@ -1,8 +1,8 @@
 using System;
 using System.Text.Json;
 
-using AsciiSharp.Syntax;
 using AsciiSharp.Asg.Serialization;
+using AsciiSharp.Syntax;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

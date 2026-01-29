@@ -112,9 +112,8 @@ Source/
 │   │   └── TextSpan.cs
 │   └── Diagnostics/                     # 診断情報
 │       └── Diagnostic.cs
-└── TckAdapter/                          # TCK 連携用プロジェクト
-    ├── AsciiSharp.TckAdapter/           # SyntaxTree を ASG 形式に変換
-    └── AsciiSharp.TckAdapter.Cli/       # TCK 準拠テスト用 CLI
+├── AsciiSharp.Asg/                      # SyntaxTree を ASG 形式に変換
+└── AsciiSharp.TckAdapter/               # TCK 準拠テスト用 CLI
 
 Polyfills/                               # .NET Standard 2.0 用 Polyfill（ルート直下）
 └── [IsExternalInit, RequiredMemberAttribute など]

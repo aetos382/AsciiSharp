@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using AsciiSharp.Syntax;
 using AsciiSharp.Asg.Models;
+using AsciiSharp.Syntax;
 
 namespace AsciiSharp.Asg;
 

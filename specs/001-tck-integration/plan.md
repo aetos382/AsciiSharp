@@ -53,32 +53,29 @@ specs/001-tck-integration/
 Source/
 ├── AsciiSharp/                           # コア ライブラリ
 │   └── (既存のパーサー実装)
-└── TckAdapter/
-    ├── AsciiSharp.TckAdapter/            # ASG 変換ライブラリ
-    │   ├── Asg/
-    │   │   ├── Models/                   # ASG モデル (既存)
-    │   │   ├── Serialization/            # JSON シリアライゼーション (既存)
-    │   │   └── AsgConverter.cs           # 変換ロジック (既存)
-    │   └── Tck/
-    │       └── TckInput.cs               # TCK 入力モデル (新規)
-    └── AsciiSharp.TckAdapter.Cli/        # CLI アプリケーション
-        ├── Program.cs                    # エントリポイント (要実装)
-        └── Dockerfile                    # Docker ビルド設定 (既存)
+├── AsciiSharp.Asg/                       # ASG 変換ライブラリ
+│   ├── Models/                           # ASG モデル (既存)
+│   ├── Serialization/                    # JSON シリアライゼーション (既存)
+│   └── AsgConverter.cs                   # 変換ロジック (既存)
+└── AsciiSharp.TckAdapter/                # CLI アプリケーション
+    ├── Program.cs                        # エントリポイント
+    ├── TckInput.cs                       # TCK 入力モデル
+    ├── TckJsonContext.cs                 # JSON シリアライゼーション
+    └── Dockerfile                        # Docker ビルド設定
 
 Test/
+├── AsciiSharp.Asg.Tests/                 # ASG ユニット テスト
 ├── AsciiSharp.Specs/                     # BDD テスト（コア ライブラリ用）
 └── AsciiSharp.Tests/                     # ユニット テスト
-    └── TckAdapter/
-        └── (TckAdapter 関連テスト)
 
 .github/workflows/
 ├── build.yml                             # ビルド・テスト (既存)
-└── tck.yml                               # TCK テスト実行 (新規)
+└── tck.yml                               # TCK テスト実行
 
-docker-bake.hcl                           # Docker ビルド設定 (既存)
+docker-bake.hcl                           # Docker ビルド設定
 ```
 
-**Structure Decision**: 既存のプロジェクト構造を維持。TckAdapter 配下に TCK 入力モデルを追加し、CLI の Program.cs を実装する。GitHub Actions に TCK ワークフローを追加。
+**Structure Decision**: AsciiSharp.Asg ライブラリと AsciiSharp.TckAdapter CLI に分離。GitHub Actions に TCK ワークフローを追加。
 
 ## Complexity Tracking
 

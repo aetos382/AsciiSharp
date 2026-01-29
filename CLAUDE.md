@@ -47,11 +47,11 @@ dotnet format          # フォーマット
 AsciiSharp.slnx
 ├─ Source
 │  ├─ AsciiSharp: コア ライブラリです。
-│  └─ TckAdapter
-│     ├─ AsciiSharp.TckAdapter: SyntaxTree を ASG (Abstract Syntax Graph) 形式に変換するためのライブラリです。
-│     └─ AsciiSharp.TckAdapter.Cli: TCK と連携して準拠テストを行うコンソール アプリケーションです。
+│  ├─ AsciiSharp.Asg: SyntaxTree を ASG (Abstract Semantic Graph) 形式に変換するためのライブラリです。
+│  └─ AsciiSharp.TckAdapter: TCK と連携して準拠テストを行うコンソール アプリケーションです。
 ├─ Polyfills: .NET Standard 2.0 でサポートされない言語機能やフレームワーク機能を補うためのコードです。
 ├─ Test
+│  ├─ AsciiSharp.Asg.Tests: AsciiSharp.Asg のユニット テスト プロジェクトです。
 │  ├─ AsciiSharp.Specs: BDD によるテスト プロジェクトです。
 │  └─ AsciiSharp.Tests: ユニット テスト プロジェクトです。
 ├─ Benchmark: ベンチマーク プロジェクトです。
@@ -168,7 +168,7 @@ this._field = parameter ?? throw new ArgumentNullException(nameof(parameter));
 ### BDD の対象範囲
 
 - BDD（.feature ファイルによる振る舞いテスト）の対象は **コア ライブラリ（Source/AsciiSharp）のみ** とします。
-- その他のプロジェクト（TckAdapter、Cli 等）は通常のユニット テストで検証します。
+- その他のプロジェクト（Asg、TckAdapter 等）は通常のユニット テストで検証します。
 
 ### テスト プロジェクトの作成
 

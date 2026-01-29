@@ -14,7 +14,8 @@
 ## Path Conventions
 
 このプロジェクトの構造:
-- **Source**: `Source/TckAdapter/` 配下
+- **Asg Source**: `Source/AsciiSharp.Asg/`
+- **TckAdapter Source**: `Source/AsciiSharp.TckAdapter/`
 - **CI**: `.github/workflows/`
 
 ---
@@ -23,8 +24,8 @@
 
 **Purpose**: 基盤モデルと JSON シリアライゼーションの準備
 
-- [ ] T001 TckInput モデルを作成 `Source/TckAdapter/AsciiSharp.TckAdapter/Tck/TckInput.cs`
-- [ ] T002 TckInput を AsgJsonContext に追加 `Source/TckAdapter/AsciiSharp.TckAdapter/Asg/Serialization/AsgJsonContext.cs`
+- [ ] T001 TckInput モデルを作成 `Source/AsciiSharp.TckAdapter/TckInput.cs`
+- [ ] T002 TckJsonContext を作成 `Source/AsciiSharp.TckAdapter/TckJsonContext.cs`
 
 **Checkpoint**: TckInput モデルと JSON シリアライゼーションの準備完了
 
@@ -34,11 +35,11 @@
 
 **Goal**: CLI が標準入力から TCK 形式の JSON を受け取り、ASG 形式の JSON を標準出力に出力する
 
-**Independent Test**: `echo '{"contents": "Hello", "path": "/test.adoc", "type": "block"}' | dotnet run --project Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj`
+**Independent Test**: `echo '{"contents": "Hello", "path": "/test.adoc", "type": "block"}' | dotnet run --project Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj`
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] Program.cs に CLI 処理フローを実装 `Source/TckAdapter/AsciiSharp.TckAdapter.Cli/Program.cs`
+- [ ] T003 [US1] Program.cs に CLI 処理フローを実装 `Source/AsciiSharp.TckAdapter/Program.cs`
 - [ ] T004 [US1] ビルドして手動テストで動作確認
 - [ ] T005 [US1] 警告をゼロにする
 

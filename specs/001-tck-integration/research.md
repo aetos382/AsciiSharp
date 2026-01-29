@@ -64,7 +64,7 @@ ASG JSON 形式。以下は paragraph を含む document の例:
 ## 2. ASG モデルの実装状態
 
 ### 決定事項
-既存の AsciiSharp.TckAdapter プロジェクトに実装済みの ASG モデルとコンバーターを活用する。
+既存の AsciiSharp.Asg プロジェクトに実装済みの ASG モデルとコンバーターを活用する。
 
 ### 根拠
 - `AsgConverter` クラスが SyntaxTree → ASG 変換を実装済み
@@ -108,10 +108,10 @@ ASG JSON 形式。以下は paragraph を含む document の例:
 **既存の Docker 設定**:
 ```hcl
 target "tck" {
-  dockerfile = "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/Dockerfile"
+  dockerfile = "Source/AsciiSharp.TckAdapter/Dockerfile"
   context = "."
   contexts = {
-    "asciidoc-tck" = "submodules/asciidoc-tck"
+    "asciidoc-tck" = "https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git"
   }
   tags = [ "asciisharp-tck" ]
 }

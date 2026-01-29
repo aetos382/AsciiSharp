@@ -21,10 +21,10 @@ git submodule update --init --recursive
 
 ```bash
 # プロジェクトのビルド
-dotnet build Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj
+dotnet build Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj
 
 # AOT ビルド（オプション）
-dotnet publish Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj \
+dotnet publish Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj \
   --configuration Release \
   --runtime linux-x64
 ```
@@ -36,7 +36,7 @@ CLI アダプターに直接 JSON を渡してテストできます。
 ```bash
 # 入力 JSON を作成
 echo '{"contents": "Hello AsciiDoc", "path": "/test.adoc", "type": "block"}' | \
-  dotnet run --project Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj
+  dotnet run --project Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj
 ```
 
 期待される出力:
@@ -85,7 +85,7 @@ docker run --rm asciisharp-tck
 
 ```bash
 # テストパターンを指定して実行
-docker run --rm asciisharp-tck cli --adapter-command tck-adapter/AsciiSharp.TckAdapter.Cli --pattern "block/paragraph/*"
+docker run --rm asciisharp-tck cli --adapter-command tck-adapter/AsciiSharp.TckAdapter --pattern "block/paragraph/*"
 ```
 
 ---
@@ -140,7 +140,7 @@ TCK テストはすべてのテストケースを実行するため、初回実�
 
 1. **失敗したテストの確認**: TCK テスト結果から、まだサポートされていない AsciiDoc 構文要素を特定
 2. **パーサーの拡張**: 失敗したテストに対応する構文要素を AsciiSharp コアライブラリに実装
-3. **ASG モデルの追加**: 新しい構文要素に対応する ASG ノードを TckAdapter に追加
+3. **ASG モデルの追加**: 新しい構文要素に対応する ASG ノードを AsciiSharp.Asg に追加
 
 ---
 

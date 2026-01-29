@@ -3,7 +3,7 @@
 **Feature Branch**: `001-tck-integration`
 **Created**: 2026-01-29
 **Status**: Draft
-**Input**: User description: "TCK を使ったテストの仕組みを整えます。TCK の仕様と仕組みについては submodules/asciidoc-tck/README.adoc を参照してください。AsciiSharp.TckAdapter.Cli が標準入力から AsciiDoc 文書を受け取り、AsciiDoc.TckAdapter を使って ASG 形式に変換し、標準出力に出力します。docker-bake.hcl を使って docker buildx bake tck でビルドします。テストにパスしなかった構文要素を次の実装候補にします。GitHub CI で TCK を実行する仕組みを作ります。"
+**Input**: User description: "TCK を使ったテストの仕組みを整えます。TCK の仕様と仕組みについては submodules/asciidoc-tck/README.adoc を参照してください。AsciiSharp.TckAdapter が標準入力から AsciiDoc 文書を受け取り、AsciiSharp.Asg を使って ASG 形式に変換し、標準出力に出力します。docker-bake.hcl を使って docker buildx bake tck でビルドします。テストにパスしなかった構文要素を次の実装候補にします。GitHub CI で TCK を実行する仕組みを作ります。"
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -92,7 +92,6 @@
 - **FR-006**: Docker イメージには .NET 10.0 ランタイムと PublishAot でビルドされたネイティブ実行可能ファイルが含まれなければならない
 - **FR-007**: GitHub Actions ワークフローで TCK テストを自動実行しなければならない
 - **FR-008**: CI ワークフローは毎回実行時に asciidoc-tck サブモジュールを最新版に更新しなければならない。更新に失敗した場合、ワークフローは即座に失敗しなければならない
-- **FR-008a**: CI ワークフローは Node.js 20 以上をセットアップしなければならない
 - **FR-009**: TCK テストの実行には `--adapter-command` オプションでアダプターのパスを指定しなければならない
 - **FR-010**: TCK テストの結果（成功/失敗）を明確に出力しなければならない
 - **FR-011**: 失敗した TCK テストについて、失敗した構文要素を特定できる情報を提供しなければならない
