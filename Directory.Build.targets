@@ -13,6 +13,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Polyfills\**\*.cs" LinkBase="Polyfills" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <RestoreLockedMode>true</RestoreLockedMode>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TemporarilySuppressedWarning)' != ''">
     <NoWarn>$(NoWarn);$(TemporarilySuppressedWarning)</NoWarn>
   </PropertyGroup>

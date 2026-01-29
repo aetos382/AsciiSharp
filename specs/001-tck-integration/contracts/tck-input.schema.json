@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://asciisharp.dev/schemas/tck-input.schema.json",
+  "title": "TCK Input",
+  "description": "TCK から CLI アダプターに渡される入力データのスキーマ",
+  "type": "object",
+  "required": ["contents", "path", "type"],
+  "properties": {
+    "contents": {
+      "type": "string",
+      "description": "パース対象の AsciiDoc 文書の内容"
+    },
+    "path": {
+      "type": "string",
+      "description": "入力ファイルの仮想パス"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["block", "inline"],
+      "description": "パース タイプ。block はドキュメント全体、inline はインライン要素のみをパースする"
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "contents": "= Document Title\n\nA simple paragraph.",
+      "path": "/test/document.adoc",
+      "type": "block"
+    },
+    {
+      "contents": "*bold text*",
+      "path": "/test/inline.adoc",
+      "type": "inline"
+    }
+  ]
+}

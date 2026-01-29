@@ -8,6 +8,9 @@ namespace AsciiSharp.TckAdapter.Asg.Models;
 /// <remarks>
 /// ブロック要素は <c>Type</c> が "block" となる。
 /// </remarks>
+[JsonDerivedType(typeof(AsgDocument))]
+[JsonDerivedType(typeof(AsgSection))]
+[JsonDerivedType(typeof(AsgParagraph))]
 public abstract class AsgBlockNode : AsgNode
 {
     /// <summary>
