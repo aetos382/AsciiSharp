@@ -2,12 +2,12 @@ using System;
 using System.Text.Json;
 
 using AsciiSharp.Syntax;
-using AsciiSharp.TckAdapter;
-using AsciiSharp.TckAdapter.Serialization;
+using AsciiSharp.Asg;
+using AsciiSharp.Asg.Serialization;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AsciiSharp.TckAdapter.Tests;
+namespace AsciiSharp.Asg.Tests;
 
 /// <summary>
 /// quickstart.md のサンプルコードが正しく動作することを検証するテスト。

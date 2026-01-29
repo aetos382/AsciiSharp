@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Models;
+namespace AsciiSharp.Asg.Models;
 
 /// <summary>
 /// インライン要素の基底クラス。

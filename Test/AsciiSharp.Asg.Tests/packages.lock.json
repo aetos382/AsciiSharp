@@ -115,13 +115,13 @@
         "resolved": "4.0.2",
         "contentHash": "83PHm/97WR6XuciUicakLXSPDFubMsphUHxQHgkUfHcF8rOjpnlKSjRazhuvcGeqy2co8ZudUNbTM+u5e5Ujow=="
       },
-      "asciisharp": {
+      "asciisharp.asg": {
         "type": "Project"
       },
       "asciisharp.tckadapter": {
         "type": "Project",
         "dependencies": {
-          "AsciiSharp": "[1.0.0, )"
+          "AsciiSharp.Asg": "[1.0.0, )"
         }
       }
     }

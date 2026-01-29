@@ -2,9 +2,9 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-using AsciiSharp.TckAdapter.Models;
+using AsciiSharp.Asg.Models;
 
-namespace AsciiSharp.TckAdapter.Serialization;
+namespace AsciiSharp.Asg.Serialization;
 
 /// <summary>
 /// <see cref="AsgLocation"/> を JSON 配列形式でシリアライズするコンバーター。

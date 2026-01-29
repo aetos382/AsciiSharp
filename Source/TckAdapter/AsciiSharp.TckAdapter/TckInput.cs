@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Cli;
+namespace AsciiSharp.TckAdapter;
 
 /// <summary>
 /// TCK から渡される入力データを表す。

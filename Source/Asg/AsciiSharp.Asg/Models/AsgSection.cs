@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Models;
+namespace AsciiSharp.Asg.Models;
 
 /// <summary>
 /// ASG の section ブロックを表す。

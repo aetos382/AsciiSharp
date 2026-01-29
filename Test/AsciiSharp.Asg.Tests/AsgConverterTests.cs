@@ -1,10 +1,10 @@
 using AsciiSharp.Syntax;
-using AsciiSharp.TckAdapter;
-using AsciiSharp.TckAdapter.Models;
+using AsciiSharp.Asg;
+using AsciiSharp.Asg.Models;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AsciiSharp.TckAdapter.Tests;
+namespace AsciiSharp.Asg.Tests;
 
 /// <summary>
 /// <see cref="AsgConverter"/> のユニットテスト。

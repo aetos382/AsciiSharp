@@ -2,13 +2,15 @@
   <Folder Name="/Source/">
     <Project Path="Source/AsciiSharp/AsciiSharp.csproj" />
   </Folder>
+  <Folder Name="/Source/Asg/">
+    <Project Path="Source/Asg/AsciiSharp.Asg/AsciiSharp.Asg.csproj" />
+  </Folder>
   <Folder Name="/Source/TckAdapter/">
-    <Project Path="Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj" />
     <Project Path="Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj" />
   </Folder>
   <Folder Name="/Test/">
     <Project Path="Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj" />
-    <Project Path="Test/AsciiSharp.TckAdapter.Tests/AsciiSharp.TckAdapter.Tests.csproj" />
+    <Project Path="Test/AsciiSharp.Asg.Tests/AsciiSharp.Asg.Tests.csproj" />
     <Project Path="Test/AsciiSharp.Tests/AsciiSharp.Tests.csproj" />
   </Folder>
 </Solution>

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\TckAdapter\AsciiSharp.TckAdapter\AsciiSharp.TckAdapter.csproj" />
+    <ProjectReference Include="..\..\Source\Asg\AsciiSharp.Asg\AsciiSharp.Asg.csproj" />
   </ItemGroup>
 
 </Project>

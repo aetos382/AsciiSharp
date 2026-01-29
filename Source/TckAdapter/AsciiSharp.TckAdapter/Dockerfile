@@ -16,15 +16,15 @@ COPY [ \
 ]
 
 COPY [ \
-  "Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter/packages.lock.json", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter/" \
+  "Source/Asg/AsciiSharp.Asg/AsciiSharp.Asg.csproj", \
+  "Source/Asg/AsciiSharp.Asg/packages.lock.json", \
+  "Source/Asg/AsciiSharp.Asg/" \
 ]
 
 COPY [ \
-  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/packages.lock.json", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/" \
+  "Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter/packages.lock.json", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter/" \
 ]
 
 # dotnet restore を分離するのはうまくいかない
@@ -35,7 +35,7 @@ COPY ["Source", "Source/"]
 RUN --mount=type=cache,id=nuget-cache,target=/var/cache/nuget \
 [ \
   "dotnet", "publish", \
-  "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
+  "Source/TckAdapter/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
   "--configuration", "Release", \
   "--runtime", "linux-x64", \
   "--self-contained", \
@@ -53,9 +53,9 @@ RUN ["chown", "node:node", "."]
 USER node
 
 COPY --from=asciidoc-tck --chown=node:node ["./", "/workspaces/asciidoc-tck/"]
-COPY --from=adapter-build --chown=node:node --chmod=544 ["/workspaces/artifacts/publish/AsciiSharp.TckAdapter.Cli/release_linux-x64/AsciiSharp.TckAdapter.Cli", "tck-adapter/"]
+COPY --from=adapter-build --chown=node:node --chmod=544 ["/workspaces/artifacts/publish/AsciiSharp.TckAdapter/release_linux-x64/AsciiSharp.TckAdapter", "tck-adapter/"]
 
-ENV ASCIIDOC_TCK_ADAPTER=/workspaces/tck-adapter/AsciiSharp.TckAdapter.Cli
+ENV ASCIIDOC_TCK_ADAPTER=/workspaces/tck-adapter/AsciiSharp.TckAdapter
 
 WORKDIR /workspaces/asciidoc-tck
 
@@ -68,5 +68,5 @@ RUN \
 CMD [ \
   "node", \
   "harness/bin/asciidoc-tck.js", "cli", \
-  "--adapter-command", "/workspaces/tck-adapter/AsciiSharp.TckAdapter.Cli" \
+  "--adapter-command", "/workspaces/tck-adapter/AsciiSharp.TckAdapter" \
 ]

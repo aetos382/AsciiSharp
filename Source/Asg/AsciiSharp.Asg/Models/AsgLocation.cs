@@ -1,9 +1,9 @@
 using System;
 using System.Text.Json.Serialization;
 
-using AsciiSharp.TckAdapter.Serialization;
+using AsciiSharp.Asg.Serialization;
 
-namespace AsciiSharp.TckAdapter.Models;
+namespace AsciiSharp.Asg.Models;
 
 /// <summary>
 /// ASG における位置情報（開始位置と終了位置）を表す。

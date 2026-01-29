@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json;
 
+using AsciiSharp.Asg;
+using AsciiSharp.Asg.Serialization;
 using AsciiSharp.Syntax;
 using AsciiSharp.TckAdapter;
-using AsciiSharp.TckAdapter.Cli;
-using AsciiSharp.TckAdapter.Serialization;
 
 try
 {

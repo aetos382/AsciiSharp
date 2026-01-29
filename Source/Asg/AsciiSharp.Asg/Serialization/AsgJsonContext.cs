@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-using AsciiSharp.TckAdapter.Models;
+using AsciiSharp.Asg.Models;
 
-namespace AsciiSharp.TckAdapter.Serialization;
+namespace AsciiSharp.Asg.Serialization;
 
 /// <summary>
 /// ASG の JSON シリアライズ用コンテキスト。

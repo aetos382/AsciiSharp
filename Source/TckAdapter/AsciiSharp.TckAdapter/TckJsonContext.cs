@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Cli;
+namespace AsciiSharp.TckAdapter;
 
 /// <summary>
 /// TCK 入力の JSON シリアライズ用コンテキスト。
