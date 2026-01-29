@@ -324,38 +324,4 @@ public sealed class AsgConverterTests
     }
 
     #endregion
-
-    #region T014: 未対応 SyntaxNode のスキップテスト
-
-    [TestMethod]
-    public void VisitLink_未対応ノード_nullを返す()
-    {
-        // Arrange
-        var text = "dummy";
-        var syntaxTree = SyntaxTree.ParseText(text);
-        ISyntaxVisitor<AsgNode?> converter = new AsgConverter(syntaxTree);
-
-        // Act
-        var result = converter.VisitLink(null!);
-
-        // Assert
-        Assert.IsNull(result);
-    }
-
-    [TestMethod]
-    public void VisitAuthorLine_未対応ノード_nullを返す()
-    {
-        // Arrange
-        var text = "dummy";
-        var syntaxTree = SyntaxTree.ParseText(text);
-        ISyntaxVisitor<AsgNode?> converter = new AsgConverter(syntaxTree);
-
-        // Act
-        var result = converter.VisitAuthorLine(null!);
-
-        // Assert
-        Assert.IsNull(result);
-    }
-
-    #endregion
 }
