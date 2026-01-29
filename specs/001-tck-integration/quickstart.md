@@ -35,7 +35,7 @@ CLI アダプターに直接 JSON を渡してテストできます。
 
 ```bash
 # 入力 JSON を作成
-echo '{"contents": "Hello, AsciiDoc!", "path": "/test.adoc", "type": "block"}' | \
+echo '{"contents": "Hello AsciiDoc", "path": "/test.adoc", "type": "block"}' | \
   dotnet run --project Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj
 ```
 
@@ -52,14 +52,14 @@ echo '{"contents": "Hello, AsciiDoc!", "path": "/test.adoc", "type": "block"}' |
         {
           "name": "text",
           "type": "string",
-          "value": "Hello, AsciiDoc!",
-          "location": [{ "line": 1, "col": 1 }, { "line": 1, "col": 16 }]
+          "value": "Hello AsciiDoc",
+          "location": [{ "line": 1, "col": 1 }, { "line": 1, "col": 14 }]
         }
       ],
-      "location": [{ "line": 1, "col": 1 }, { "line": 1, "col": 16 }]
+      "location": [{ "line": 1, "col": 1 }, { "line": 1, "col": 14 }]
     }
   ],
-  "location": [{ "line": 1, "col": 1 }, { "line": 1, "col": 16 }]
+  "location": [{ "line": 1, "col": 1 }, { "line": 1, "col": 14 }]
 }
 ```
 
