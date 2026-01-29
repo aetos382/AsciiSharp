@@ -37,9 +37,10 @@ jobs:
         docker run --rm asciisharp-tck 2>&1 | tee tck-output.txt
         exit_code=${PIPESTATUS[0]}
         echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
-        exit 0
+        exit "$exit_code"
 
     - name: TCK test summary
+      if: always()
       run: |
         echo "## TCK テスト結果" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
