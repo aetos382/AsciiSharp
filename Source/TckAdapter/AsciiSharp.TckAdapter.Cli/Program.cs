@@ -47,8 +47,10 @@ catch (JsonException ex)
     Console.Error.WriteLine($"Error: Invalid JSON input - {ex.Message}");
     return 1;
 }
+#pragma warning disable CA1031 // CLI のエントリポイントではすべての例外をキャッチして適切な終了コードを返す必要がある
 catch (Exception ex)
 {
     Console.Error.WriteLine($"Error: {ex.Message}");
     return 1;
 }
+#pragma warning restore CA1031

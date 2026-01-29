@@ -1,0 +1,47 @@
+name: TCK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  tck:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      with:
+        submodules: true
+
+    - name: Update asciidoc-tck submodule to latest
+      run: |
+        git submodule update --remote submodules/asciidoc-tck
+        echo "Updated to: $(git -C submodules/asciidoc-tck rev-parse HEAD)"
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+
+    - name: Build TCK Docker image
+      uses: docker/bake-action@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6.10.0
+      with:
+        source: .
+        targets: tck
+        load: true
+        set: |
+          *.cache-from=type=gha
+          *.cache-to=type=gha,mode=max
+
+    - name: Run TCK tests
+      run: docker run --rm asciisharp-tck
+      continue-on-error: true
+
+    - name: TCK test summary
+      run: |
+        echo "## TCK テスト結果" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "TCK テストが完了しました。失敗したテストは、AsciiSharp パーサーがまだ対応していない AsciiDoc 構文要素を示しています。" >> $GITHUB_STEP_SUMMARY

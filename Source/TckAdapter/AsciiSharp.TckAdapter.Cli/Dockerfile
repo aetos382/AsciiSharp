@@ -7,7 +7,7 @@ WORKDIR /workspaces
 
 COPY ["global.json", "Directory.*", "NuGet.config", ".globalconfig", "./"]
 
-COPY ["Source/Directory.*", "Source/"]
+COPY ["Source/Directory.Build.*", "Source/"]
 
 COPY [ \
   "Source/AsciiSharp/AsciiSharp.csproj",  \
@@ -27,38 +27,46 @@ COPY [ \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/" \
 ]
 
+# dotnet restore を分離するのはうまくいかない
+# https://github.com/dotnet/sdk/issues/51766
+
 COPY ["Source", "Source/"]
 
-RUN --mount=type=cache,id=nuget,target=/var/cache/nuget \
+RUN --mount=type=cache,id=nuget-cache,target=/var/cache/nuget \
 [ \
   "dotnet", "publish", \
   "Source/TckAdapter/AsciiSharp.TckAdapter.Cli/AsciiSharp.TckAdapter.Cli.csproj", \
   "--configuration", "Release", \
   "--runtime", "linux-x64", \
-  "--output", "/workspaces/publish", \
+  "--self-contained", \
   "--nologo" \
 ]
 
-FROM node:lts-trixie@sha256:bea2f8264c42f56e253295ebd89db8e7c4ff96a03339adeb4a7628bd548d9476 AS tck-build
+RUN [ "dotnet", "build-server", "shutdown" ]
+
+FROM node:lts-trixie-slim@sha256:a16979bcaf12a2fd24888eb8e89874b11bd1038a3e3f1881c26a5e2b8fb92b5c
 
 WORKDIR /workspaces
 
-COPY --from=asciidoc-tck . /workspaces/asciidoc-tck/
+RUN ["chown", "node:node", "."]
+
+USER node
+
+COPY --from=asciidoc-tck --chown=node:node ["./", "/workspaces/asciidoc-tck/"]
+COPY --from=adapter-build --chown=node:node --chmod=544 ["/workspaces/artifacts/publish/AsciiSharp.TckAdapter.Cli/release_linux-x64/AsciiSharp.TckAdapter.Cli", "tck-adapter/"]
+
+ENV ASCIIDOC_TCK_ADAPTER=/workspaces/tck-adapter/AsciiSharp.TckAdapter.Cli
 
 WORKDIR /workspaces/asciidoc-tck
 
+RUN ["mkdir", "-p", "/home/node/.npm"]
+
 RUN \
-  --mount=type=cache,target=/root/.npm \
-  --mount=type=cache,target=/workspaces/asciidoc-tck/node_modules \
-  npm ci && npm install -D postject && npm run dist
+  --mount=type=cache,id=npm-cache,target=/home/node/.npm,uid=1000,gid=1000 \
+  npm ci && yes | npm run dist
 
-FROM debian:trixie-slim@sha256:77ba0164de17b88dd0bf6cdc8f65569e6e5fa6cd256562998b62553134a00ef0
-
-WORKDIR /workspaces
-
-COPY --from=adapter-build --chmod=555 ["/workspaces/publish", "tck-adapter/"]
-COPY --from=tck-build --chmod=555 ["/workspaces/asciidoc-tck/dist", "tck/"]
-COPY --from=tck-build --chmod=555 ["/workspaces/asciidoc-tck/tests", "tests/"]
-
-ENTRYPOINT [ "tck/asciidoc-tck" ]
-CMD [ "cli", "--adapter-command", "tck-adapter/AsciiSharp.TckAdapter.Cli" ]
+CMD [ \
+  "node", \
+  "harness/bin/asciidoc-tck.js", "cli", \
+  "--adapter-command", "/workspaces/tck-adapter/AsciiSharp.TckAdapter.Cli" \
+]
