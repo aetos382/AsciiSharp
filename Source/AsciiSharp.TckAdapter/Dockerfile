@@ -3,6 +3,9 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0.102-noble-aot-amd64@sha256:dd57b0d2ace631
 
 ENV NUGET_PACKAGES=/var/cache/nuget
 
+ARG CI=false
+ENV CI=${CI:-false}
+
 WORKDIR /workspaces
 
 COPY ["global.json", "Directory.*", "NuGet.config", ".globalconfig", "./"]
