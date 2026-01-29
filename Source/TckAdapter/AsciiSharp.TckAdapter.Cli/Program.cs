@@ -2,9 +2,9 @@ using System;
 using System.Text.Json;
 
 using AsciiSharp.Syntax;
-using AsciiSharp.TckAdapter.Asg;
-using AsciiSharp.TckAdapter.Asg.Serialization;
+using AsciiSharp.TckAdapter;
 using AsciiSharp.TckAdapter.Cli;
+using AsciiSharp.TckAdapter.Serialization;
 
 try
 {

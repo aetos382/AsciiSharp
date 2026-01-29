@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Asg.Models;
+namespace AsciiSharp.TckAdapter.Models;
 
 /// <summary>
 /// ASG の text インライン要素を表す。

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Asg.Models;
+namespace AsciiSharp.TckAdapter.Models;
 
 /// <summary>
 /// ASG の document ブロックを表す。

@@ -2,8 +2,8 @@ using System;
 using System.Text.Json;
 
 using AsciiSharp.Syntax;
-using AsciiSharp.TckAdapter.Asg;
-using AsciiSharp.TckAdapter.Asg.Serialization;
+using AsciiSharp.TckAdapter;
+using AsciiSharp.TckAdapter.Serialization;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

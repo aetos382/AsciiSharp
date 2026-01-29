@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Asg.Models;
+namespace AsciiSharp.TckAdapter.Models;
 
 /// <summary>
 /// ブロック要素の基底クラス。

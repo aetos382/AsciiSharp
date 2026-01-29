@@ -1,6 +1,6 @@
 using AsciiSharp.Syntax;
-using AsciiSharp.TckAdapter.Asg;
-using AsciiSharp.TckAdapter.Asg.Models;
+using AsciiSharp.TckAdapter;
+using AsciiSharp.TckAdapter.Models;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

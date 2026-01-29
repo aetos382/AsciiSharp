@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace AsciiSharp.TckAdapter.Asg.Models;
+namespace AsciiSharp.TckAdapter.Models;
 
 /// <summary>
 /// ASG における単一の位置情報（行・列）を表す。

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using AsciiSharp.Syntax;
-using AsciiSharp.TckAdapter.Asg.Models;
-using AsciiSharp.Text;
+using AsciiSharp.TckAdapter.Models;
 
-namespace AsciiSharp.TckAdapter.Asg;
+namespace AsciiSharp.TckAdapter;
 
 /// <summary>
 /// SyntaxTree を ASG に変換するコンバーター。
