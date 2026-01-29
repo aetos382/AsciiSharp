@@ -12,6 +12,8 @@
       "Bash(dotnet run:*)",
       "Bash(dotnet test:*)",
       "Bash(find:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
       "Bash(git fetch:*)",
       "Bash(git ls-remote:*)",
       "Bash(git rev-parse:*)",

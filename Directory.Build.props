@@ -35,6 +35,5 @@
 
   <PropertyGroup Condition="'$(CI)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <RestoreLockedMode>true</RestoreLockedMode>
   </PropertyGroup>
 </Project>
