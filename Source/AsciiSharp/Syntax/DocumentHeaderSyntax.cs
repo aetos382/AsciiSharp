@@ -11,7 +11,7 @@ namespace AsciiSharp.Syntax;
 /// <remarks>
 /// ヘッダーには文書タイトル、著者行などが含まれる。
 /// </remarks>
-public sealed class DocumentHeaderSyntax : SyntaxNode
+public sealed class DocumentHeaderSyntax : BlockSyntax
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
 

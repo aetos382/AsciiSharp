@@ -8,7 +8,7 @@ namespace AsciiSharp.Syntax;
 /// <summary>
 /// AsciiDoc 文書全体を表す構文ノード。
 /// </summary>
-public sealed class DocumentSyntax : SyntaxNode
+public sealed class DocumentSyntax : BlockSyntax
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
 

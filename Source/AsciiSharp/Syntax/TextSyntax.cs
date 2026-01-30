@@ -8,7 +8,7 @@ namespace AsciiSharp.Syntax;
 /// <summary>
 /// プレーンテキストを表す構文ノード。
 /// </summary>
-public sealed class TextSyntax : SyntaxNode
+public sealed class TextSyntax : InlineSyntax
 {
     /// <summary>
     /// テキストの内容。

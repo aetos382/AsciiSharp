@@ -11,7 +11,7 @@ namespace AsciiSharp.Syntax;
 /// <remarks>
 /// セクションはタイトル行（= で始まる）とその内容で構成される。
 /// </remarks>
-public sealed class SectionSyntax : SyntaxNode
+public sealed class SectionSyntax : BlockSyntax
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
     private readonly List<SyntaxNode> _content = [];

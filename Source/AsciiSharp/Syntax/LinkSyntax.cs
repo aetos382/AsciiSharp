@@ -9,7 +9,7 @@ namespace AsciiSharp.Syntax;
 /// <summary>
 /// リンクを表す構文ノード。
 /// </summary>
-public sealed class LinkSyntax : SyntaxNode
+public sealed class LinkSyntax : InlineSyntax
 {
     private readonly List<SyntaxToken> _tokens = [];
 
