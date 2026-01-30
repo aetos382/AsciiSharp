@@ -50,3 +50,4 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         results-path: artifacts/TestResults/*.trx
         coverage-path: artifacts/TestResults/*.cobertura.xml
+        coverage-type: cobertura
