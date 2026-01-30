@@ -51,3 +51,4 @@ jobs:
         results-path: artifacts/TestResults/*.trx
         coverage-path: artifacts/TestResults/*.cobertura.xml
         coverage-type: cobertura
+        pull-request-check: true
