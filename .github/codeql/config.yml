@@ -6,3 +6,4 @@ queries:
 paths-ignore:
   - '**/*.g.cs'
   - '**/*.Designer.cs'
+  - '**/*.feature'
