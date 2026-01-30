@@ -7,3 +7,4 @@ paths-ignore:
   - '**/*.g.cs'
   - '**/*.Designer.cs'
   - '**/*.feature'
+  - '**/obj/**/*.cs'
