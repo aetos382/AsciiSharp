@@ -18,9 +18,7 @@
       "installTools": false,
       "optimize": true
     },
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {
-      "shallowClone": true
-    },
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
     "ghcr.io/va-h/devcontainers-features/uv:1": {}
   },
