@@ -40,7 +40,8 @@ jobs:
       with:
         languages: csharp
         build-mode: manual
-        analysis-kinds: code-quality
+        analysis-kinds: code-scanning, code-quality
+        queries: security-and-quality, codeql/csharp-all@5.4.5
 
     - name: Build
       run: dotnet build --no-restore --no-incremental --nologo
