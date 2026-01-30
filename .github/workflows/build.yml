@@ -12,6 +12,7 @@ jobs:
 
     permissions:
       contents: read
+      pull-requests: write
 
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
