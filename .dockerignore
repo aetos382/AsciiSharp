@@ -9,7 +9,6 @@
 
 **/bin/
 **/obj/
-**/TestResults/
 
 **/*.log
 **/*.binlog
