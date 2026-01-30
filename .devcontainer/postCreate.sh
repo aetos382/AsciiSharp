@@ -1,7 +1,7 @@
 mkdir -p /home/vscode/.local/bin
 mkdir -p /home/vscode/.dotnet/tools
 
-npm install -g @openai/codex
+brew install --cask codex
 
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
