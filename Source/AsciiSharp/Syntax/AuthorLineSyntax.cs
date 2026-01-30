@@ -9,7 +9,7 @@ namespace AsciiSharp.Syntax;
 /// <summary>
 /// 著者行を表す構文ノード。
 /// </summary>
-public sealed class AuthorLineSyntax : SyntaxNode
+public sealed class AuthorLineSyntax : BlockSyntax
 {
     /// <summary>
     /// 著者行のテキスト。

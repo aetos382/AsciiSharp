@@ -11,7 +11,7 @@ namespace AsciiSharp.Syntax;
 /// <remarks>
 /// 段落は空行で区切られたテキストのブロック。
 /// </remarks>
-public sealed class ParagraphSyntax : SyntaxNode
+public sealed class ParagraphSyntax : BlockSyntax
 {
     private readonly List<SyntaxNode> _inlineElements = [];
     private readonly List<SyntaxNodeOrToken> _children = [];

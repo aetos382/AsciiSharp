@@ -12,7 +12,7 @@ namespace AsciiSharp.Syntax;
 /// <remarks>
 /// セクションタイトルは = で始まる行で、= の数がセクションレベルを示す。
 /// </remarks>
-public sealed class SectionTitleSyntax : SyntaxNode
+public sealed class SectionTitleSyntax : BlockSyntax
 {
     private readonly List<SyntaxToken> _tokens = [];
 

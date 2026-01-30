@@ -27,23 +27,13 @@
     シナリオ: インライン要素は InlineSyntax として識別できる
         前提 以下の AsciiDoc 文書がある:
             """
-            段落テキスト
-            """
-        もし 文書を解析する
-        ならば Text ノードは InlineSyntax である
-        かつ Text ノードは BlockSyntax ではない
-
-    @Acceptance @Scenario3 @P1
-    シナリオ: リンクは InlineSyntax として識別できる
-        前提 以下の AsciiDoc 文書がある:
-            """
             https://example.com[リンク]
             """
         もし 文書を解析する
         ならば Link ノードは InlineSyntax である
         かつ Link ノードは BlockSyntax ではない
 
-    @Acceptance @Scenario4 @P1
+    @Acceptance @Scenario3 @P1
     シナリオ: セクション関連ノードは BlockSyntax として識別できる
         前提 以下の AsciiDoc 文書がある:
             """
@@ -57,13 +47,13 @@
         ならば Section ノードは BlockSyntax である
         かつ SectionTitle ノードは BlockSyntax である
 
-    @Acceptance @Scenario5 @P2
+    @Acceptance @Scenario4 @P2
     シナリオ: すべてのブロックノードを一括で取得できる
         前提 以下の AsciiDoc 文書がある:
             """
             = タイトル
 
-            段落1
+            段落1 https://example.com[リンク]
 
             == セクション
 
@@ -74,16 +64,15 @@
         ならば 取得したノードに Document が含まれる
         かつ 取得したノードに Paragraph が含まれる
         かつ 取得したノードに Section が含まれる
-        かつ 取得したノードに Text は含まれない
+        かつ 取得したノードに Link は含まれない
 
-    @Acceptance @Scenario6 @P2
+    @Acceptance @Scenario5 @P2
     シナリオ: すべてのインラインノードを一括で取得できる
         前提 以下の AsciiDoc 文書がある:
             """
-            テキスト https://example.com[リンク]
+            https://example.com[リンク]
             """
         もし 文書を解析する
         かつ すべての InlineSyntax ノードをクエリする
-        ならば 取得したノードに Text が含まれる
-        かつ 取得したノードに Link が含まれる
+        ならば 取得したノードに Link が含まれる
         かつ 取得したノードに Paragraph は含まれない

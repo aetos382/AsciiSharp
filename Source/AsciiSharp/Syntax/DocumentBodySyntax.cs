@@ -11,7 +11,7 @@ namespace AsciiSharp.Syntax;
 /// <remarks>
 /// 本体にはセクション、段落、その他のブロック要素が含まれる。
 /// </remarks>
-public sealed class DocumentBodySyntax : SyntaxNode
+public sealed class DocumentBodySyntax : BlockSyntax
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
 
