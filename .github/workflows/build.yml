@@ -40,7 +40,7 @@ jobs:
       with:
         languages: csharp
         build-mode: manual
-        analysis-kinds: code-scanning, code-quality
+        analysis-kinds: code-scanning,code-quality
         queries: security-and-quality
 
     - name: Build
