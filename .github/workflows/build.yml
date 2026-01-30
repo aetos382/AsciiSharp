@@ -13,6 +13,9 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      security-events: write
+      packages: read
+      actions: read
 
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
@@ -32,8 +35,21 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore --locked-mode
 
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
+      with:
+        languages: csharp
+        build-mode: manual
+        analysis-kinds: code-scanning,code-quality
+        queries: security-and-quality
+
     - name: Build
       run: dotnet build --no-restore --no-incremental --nologo
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
+      with:
+        category: /language:csharp
 
     - name: Test
       id: test
