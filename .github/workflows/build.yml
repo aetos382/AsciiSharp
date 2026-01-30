@@ -37,7 +37,7 @@ jobs:
 
     - name: Test
       id: test
-      run: dotnet test --no-restore --no-build --no-banner --no-ansi --no-progress --no-launch-profile --report-trx --results-directory artifacts/TestResults
+      run: dotnet test --no-restore --no-build --no-banner --no-ansi --no-progress --no-launch-profile --report-trx --coverage --coverage-output-format cobertura --results-directory artifacts/TestResults
 
     - name: Shutdown build servers
       if: always()
@@ -49,3 +49,6 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         results-path: artifacts/TestResults/*.trx
+        coverage-path: artifacts/TestResults/*.cobertura.xml
+        coverage-type: cobertura
+        pull-request-check: true

@@ -5,10 +5,6 @@
     </AssemblyAttribute>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(ExcludeFromCodeCoverage)' == 'true'">
-    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(UsePolyfills)' == 'true'">
     <Compile Include="$(MSBuildThisFileDirectory)Polyfills\**\*.cs" LinkBase="Polyfills" />
   </ItemGroup>
