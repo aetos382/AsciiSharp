@@ -5,3 +5,5 @@
 *.sh text diff=bash
 
 packages.lock.json text -eol
+
+**/obj/**/* linguist-generated=true
