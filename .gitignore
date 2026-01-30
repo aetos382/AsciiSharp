@@ -2,7 +2,6 @@
 /artifacts/
 bin/
 obj/
-TestResults/
 
 *.log
 *.binlog

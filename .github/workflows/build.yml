@@ -9,8 +9,10 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
+      pull-requests: write
 
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
@@ -31,7 +33,19 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build --no-restore --no-incremental --nologo
 
     - name: Test
-      run: dotnet test --no-build --configuration Release --verbosity normal
+      id: test
+      run: dotnet test --no-restore --no-build --no-banner --no-ansi --no-progress --no-launch-profile --report-trx --results-directory artifacts/TestResults
+
+    - name: Shutdown build servers
+      if: always()
+      run: dotnet build-server shutdown
+
+    - name: Publish test reports
+      uses: bibipkins/dotnet-test-reporter@5bafb08d6d3a2a779a0be59537305b0a92313f84 # v1.6.1
+      if: ${{ steps.test.outcome == 'success' || steps.test.outcome == 'failure' }}
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        results-path: artifacts/TestResults/*.trx
