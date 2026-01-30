@@ -54,6 +54,8 @@
         "GitHub.copilot-chat",
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
+        "Google.gemini-cli-vscode-ide-companion",
+        "Google.geminicodeassist",
         "ms-dotnettools.csdevkit",
         "-dbaeumer.vscode-eslint",
         "-ms-python.python",
