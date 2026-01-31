@@ -5,12 +5,10 @@
 
 /.editorconfig
 /.gitignore
-/CLAUDE.md
 /docker-bake.hcl
 
 **/bin/
 **/obj/
-**/TestResults/
 
 **/*.log
 **/*.binlog
