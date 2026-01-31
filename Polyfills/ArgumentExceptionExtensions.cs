@@ -8,7 +8,9 @@ namespace System;
 
 public static class ArgumentExceptionExtensions
 {
-#pragma warning disable CA1034, CS8777 // false positive
+// false positive
+// https://github.com/dotnet/sdk/issues/51681
+#pragma warning disable CA1034, CS8777
     extension(ArgumentException)
     {
         public static void ThrowIfNullOrEmpty(
