@@ -18,12 +18,19 @@
       "installTools": false,
       "optimize": true
     },
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
+    "ghcr.io/devcontainers-extra/features/npm-packages:1": {
+      "packages": "@github/copilot,@openai/codex,@anthropic-ai/claude-code,@google/gemini-cli"
+    },
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
     "ghcr.io/va-h/devcontainers-features/uv:1": {}
   },
+  "overrideFeatureInstallOrder": [
+    "ghcr.io/devcontainers/features/node"
+  ],
   "remoteUser": "vscode",
   "containerEnv": {
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
     "DISABLE_AUTOUPDATER": "1",
     "LANG": "ja_JP.UTF-8",
     "NUGET_PACKAGES": "/home/vscode/.nuget/packages",
@@ -39,13 +46,19 @@
   "mounts": [
     {
       "type": "volume",
-      "source": "asciisharp-nuget-package-cache",
+      "source": "claude-code-config-${devcontainerId}",
+      "target": "/home/vscode/.claude"
+    },
+    {
+      "type": "volume",
+      "source": "nuget-package-cache-${devcontainerId}",
       "target": "/home/vscode/.nuget/packages"
     }
   ],
   "customizations": {
     "vscode": {
       "extensions": [
+        "Anthropic.claude-code",
         "asciidoctor.asciidoctor-vscode",
         "CucumberOpen.cucumber-official",
         "docker.docker",
@@ -54,6 +67,8 @@
         "GitHub.copilot-chat",
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
+        "Google.geminicodeassist",
+        "Google.gemini-cli-vscode-ide-companion",
         "ms-dotnettools.csdevkit",
         "openai.chatgpt",
         "-dbaeumer.vscode-eslint",

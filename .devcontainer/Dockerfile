@@ -4,4 +4,6 @@ FROM mcr.microsoft.com/devcontainers/base:2-noble@sha256:c1613dbcdafe28e4b36ede9
 USER vscode
 
 RUN mkdir -p /home/vscode/.claude
+RUN mkdir -p /home/vscode/.dotnet/tools
+RUN mkdir -p /home/vscode/.local/bin
 RUN mkdir -p /home/vscode/.nuget/packages
