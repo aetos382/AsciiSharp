@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/base:2-noble@sha256:3dcb059253b2ebb44de3936
 
 USER vscode
 
-RUN mkdir -p\
+RUN mkdir -p \
   /home/vscode/.copilot \
   /home/vscode/.codex \
   /home/vscode/.claude \
