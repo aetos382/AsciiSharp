@@ -1,9 +1,13 @@
-# syntax=docker/dockerfile:1@sha256:26147acbda4f14c5add9946e2fd2ed543fc402884fd75146bd342a7f6271dc1d
-FROM mcr.microsoft.com/devcontainers/base:2-noble@sha256:c1613dbcdafe28e4b36ede9f3cb84a96e76765f50b3aeee87cb589eeb4c6dbca
+# syntax=docker/dockerfile:latest@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+FROM mcr.microsoft.com/devcontainers/base:2-noble@sha256:3dcb059253b2ebb44de3936620e1cff3dadcd2c1c982d579081ca8128c1eb319
 
 USER vscode
 
-RUN mkdir -p /home/vscode/.claude
-RUN mkdir -p /home/vscode/.dotnet/tools
-RUN mkdir -p /home/vscode/.local/bin
-RUN mkdir -p /home/vscode/.nuget/packages
+RUN mkdir -p \
+  /home/vscode/.copilot \
+  /home/vscode/.codex \
+  /home/vscode/.claude \
+  /home/vscode/.gemini \
+  /home/vscode/.dotnet/tools \
+  /home/vscode/.local/bin \
+  /home/vscode/.nuget/packages
