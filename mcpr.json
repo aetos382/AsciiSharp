@@ -1,0 +1,42 @@
+{
+  "servers": [
+    {
+      "name": "microsoft-learn",
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    {
+      "name": "github",
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_TOKEN}"
+      }
+    },
+    {
+      "name": "nuget",
+      "type": "stdio",
+      "command": "dnx",
+      "args": [
+        "NuGet.Mcp.Server",
+        "--source",
+        "https://api.nuget.org/v3/index.json",
+        "--yes"
+      ]
+    }
+  ],
+  "synced_clients": [
+    {
+      "name": "claude-code"
+    },
+    {
+      "name": "gemini"
+    },
+    {
+      "name": "vscode"
+    },
+    {
+      "name": "codex"
+    }
+  ]
+}
