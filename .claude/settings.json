@@ -36,7 +36,6 @@
       "Write(**/*.Designer.cs)"
     ]
   },
-  "enableAllProjectMcpServers": true,
   "enabledPlugins": {
     "claude-code-setup@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
