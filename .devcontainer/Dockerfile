@@ -5,6 +5,11 @@ RUN CGO_ENABLED=0 go install github.com/jrandolf/mcpr@latest
 
 FROM mcr.microsoft.com/devcontainers/base:2-noble@sha256:3dcb059253b2ebb44de3936620e1cff3dadcd2c1c982d579081ca8128c1eb319
 
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends --no-install-suggests \
+      asciidoctor && \
+    rm -rf /var/lib/apt/lists/*
+
 USER vscode
 
 RUN mkdir -p \
