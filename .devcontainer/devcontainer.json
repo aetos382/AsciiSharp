@@ -33,7 +33,6 @@
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
     "DISABLE_AUTOUPDATER": "1",
-    "GITHUB_PERSONAL_ACCESS_TOKEN": "${localEnv:GITHUB_TOKEN}",
     "LANG": "ja_JP.UTF-8",
     "NUGET_PACKAGES": "/home/vscode/.nuget/packages",
     "NUGET_XMLDOC_MODE": "none",
