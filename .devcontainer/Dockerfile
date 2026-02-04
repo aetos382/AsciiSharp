@@ -18,4 +18,6 @@ RUN mkdir -p \
   /home/vscode/.nuget/packages \
   /home/vscode/.docker/cli-plugins
 
-RUN DOCKER_MCP_GATEWAY_VERSION=v0.39.0 curl -qfsSL https://github.com/docker/mcp-gateway/releases/download/${DOCKER_MCP_GATEWAY_VERSION}/docker-mcp-linux-amd64.tar.gz | tar -xzC /home/vscode/.docker/cli-plugins
+ARG DOCKER_MCP_GATEWAY_VERSION=v0.39.0
+
+RUN curl -qfsSL https://github.com/docker/mcp-gateway/releases/download/${DOCKER_MCP_GATEWAY_VERSION}/docker-mcp-linux-amd64.tar.gz | tar -xzC /home/vscode/.docker/cli-plugins
