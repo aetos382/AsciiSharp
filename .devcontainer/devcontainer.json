@@ -19,7 +19,7 @@
       "optimize": true
     },
     "ghcr.io/devcontainers-extra/features/npm-packages:1": {
-      "packages": "@github/copilot,@openai/codex,@anthropic-ai/claude-code,@google/gemini-cli"
+      "packages": "npm,@github/copilot,@openai/codex,@anthropic-ai/claude-code,@google/gemini-cli"
     },
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
     "ghcr.io/va-h/devcontainers-features/uv:1": {}
