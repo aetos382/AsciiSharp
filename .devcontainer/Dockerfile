@@ -1,8 +1,4 @@
 # syntax=docker/dockerfile:latest@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
-FROM golang:1-trixie@sha256:fb4b74a39c7318d53539ebda43ccd3ecba6e447a78591889c0efc0a7235ea8b3 AS go-build
-
-RUN CGO_ENABLED=0 go install github.com/jrandolf/mcpr@latest
-
 FROM mcr.microsoft.com/devcontainers/base:2-noble@sha256:3dcb059253b2ebb44de3936620e1cff3dadcd2c1c982d579081ca8128c1eb319
 
 RUN apt-get update --yes && \
@@ -19,6 +15,9 @@ RUN mkdir -p \
   /home/vscode/.gemini \
   /home/vscode/.dotnet/tools \
   /home/vscode/.local/bin \
-  /home/vscode/.nuget/packages
+  /home/vscode/.nuget/packages \
+  /home/vscode/.docker/cli-plugins
 
-COPY --from=go-build /go/bin/mcpr /home/vscode/.local/bin/
+ARG DOCKER_MCP_GATEWAY_VERSION=v0.39.0
+
+RUN curl -qfsSL https://github.com/docker/mcp-gateway/releases/download/${DOCKER_MCP_GATEWAY_VERSION}/docker-mcp-linux-amd64.tar.gz | tar -xzC /home/vscode/.docker/cli-plugins
