@@ -42,23 +42,8 @@
   "mounts": [
     {
       "type": "volume",
-      "source": "copilot-config-${devcontainerId}",
-      "target": "/home/vscode/.copilot"
-    },
-    {
-      "type": "volume",
-      "source": "codex-config-${devcontainerId}",
-      "target": "/home/vscode/.codex"
-    },
-    {
-      "type": "volume",
       "source": "claude-code-config-${devcontainerId}",
       "target": "/home/vscode/.claude"
-    },
-    {
-      "type": "volume",
-      "source": "gemini-config-${devcontainerId}",
-      "target": "/home/vscode/.gemini"
     },
     {
       "type": "volume",
@@ -75,13 +60,9 @@
         "docker.docker",
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
-        "GitHub.copilot-chat",
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
-        "Google.gemini-cli-vscode-ide-companion",
-        "Google.geminicodeassist",
         "ms-dotnettools.csdevkit",
-        "openai.chatgpt",
         "-ms-python.python",
         "-ms-python.vscode-pylance",
         "-ms-python.autopep8"
@@ -90,19 +71,7 @@
         "asciidoc.extensions.enableKroki": true,
         "asciidoc.preview.asciidoctorAttributes": {
           "kroki-server-url": "http://localhost:8000"
-        },
-        "chat.promptFilesRecommendations": {
-          "speckit.constitution": true,
-          "speckit.specify": true,
-          "speckit.plan": true,
-          "speckit.tasks": true,
-          "speckit.implement": true
-        },
-        "chat.tools.terminal.autoApprove": {
-          ".specify/scripts/bash/": true,
-          ".specify/scripts/powershell/": true
-        },
-        "http.systemCertificatesNode": true
+        }
       }
     }
   }
