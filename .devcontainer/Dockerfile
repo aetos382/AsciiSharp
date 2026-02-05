@@ -9,18 +9,12 @@ RUN apt-get update --yes && \
 USER vscode
 
 RUN mkdir -p \
-  /home/vscode/.copilot \
-  /home/vscode/.codex \
   /home/vscode/.claude \
-  /home/vscode/.gemini \
   /home/vscode/.dotnet/tools \
   /home/vscode/.local/bin \
   /home/vscode/.local/node/bin \
-  /home/vscode/.nuget/packages \
-  /home/vscode/.docker/cli-plugins
+  /home/vscode/.nuget/packages
 
 ARG NODE_VERSION=v24.13.0
-ARG DOCKER_MCP_GATEWAY_VERSION=v0.39.0
 
 RUN curl -qfsSL https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.xz | tar -xJ --strip-components=1 -C /home/vscode/.local/node
-RUN curl -qfsSL https://github.com/docker/mcp-gateway/releases/download/${DOCKER_MCP_GATEWAY_VERSION}/docker-mcp-linux-amd64.tar.gz | tar -xzC /home/vscode/.docker/cli-plugins
