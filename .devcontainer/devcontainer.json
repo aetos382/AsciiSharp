@@ -12,20 +12,15 @@
       "version": "10.0.102"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/powershell:1": {},
     "ghcr.io/devcontainers/features/python:1": {
       "installTools": false,
       "optimize": true
     },
-    "ghcr.io/devcontainers-extra/features/npm-packages:1": {
-      "packages": "npm,@github/copilot,@openai/codex,@anthropic-ai/claude-code,@google/gemini-cli"
-    },
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
     "ghcr.io/va-h/devcontainers-features/uv:1": {}
   },
   "overrideFeatureInstallOrder": [
-    "ghcr.io/devcontainers/features/node",
     "ghcr.io/devcontainers/features/python"
   ],
   "remoteUser": "vscode",
@@ -40,7 +35,7 @@
   },
   "remoteEnv": {
     "DOCKER_API_VERSION": "1.43",
-    "PATH": "/home/vscode/.local/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}"
+    "PATH": "/home/vscode/.local/bin:/home/vscode/.local/node/bin:/home/vscode/.dotnet/tools:${containerEnv:PATH}"
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "postStartCommand": "bash .devcontainer/postStart.sh",
@@ -87,7 +82,6 @@
         "Google.geminicodeassist",
         "ms-dotnettools.csdevkit",
         "openai.chatgpt",
-        "-dbaeumer.vscode-eslint",
         "-ms-python.python",
         "-ms-python.vscode-pylance",
         "-ms-python.autopep8"
