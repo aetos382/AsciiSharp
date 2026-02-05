@@ -50,7 +50,7 @@ public sealed class ParagraphSyntax : BlockSyntax
 #pragma warning disable IDE0072
             SyntaxNode? child = slot.Kind switch
             {
-                SyntaxKind.Text => new TextSyntax(slot, this, currentPosition, syntaxTree),
+                SyntaxKind.InlineText => new InlineTextSyntax(slot, this, currentPosition, syntaxTree),
                 SyntaxKind.Link => new LinkSyntax(slot, this, currentPosition, syntaxTree),
                 _ => null
             };

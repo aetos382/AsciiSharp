@@ -153,7 +153,7 @@ public sealed class BasicParsingSteps
         var document = this.CurrentSyntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
-        var actualTitle = document.Header.Title?.TitleContent;
+        var actualTitle = document.Header.Title?.GetTitleContent();
         Assert.AreEqual(expectedTitle, actualTitle, $"タイトルが一致しません。期待: '{expectedTitle}', 実際: '{actualTitle}'");
     }
 
@@ -189,7 +189,7 @@ public sealed class BasicParsingSteps
 
         var section = sections[sectionIndex - 1];
         Assert.IsNotNull(section, $"セクション {sectionIndex} が null です。");
-        var actualTitle = section.Title?.TitleContent;
+        var actualTitle = section.Title?.GetTitleContent();
         Assert.AreEqual(expectedTitle, actualTitle, $"セクション {sectionIndex} のタイトルが一致しません。期待: '{expectedTitle}', 実際: '{actualTitle}'");
     }
 

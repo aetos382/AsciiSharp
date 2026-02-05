@@ -64,7 +64,7 @@ public sealed class IncrementalParsingSteps
 
         var section = document.DescendantNodes()
             .OfType<SectionSyntax>()
-            .FirstOrDefault(s => s.Title?.TitleContent?.Contains(sectionName, System.StringComparison.Ordinal) == true);
+            .FirstOrDefault(s => s.Title?.GetTitleContent()?.Contains(sectionName, System.StringComparison.Ordinal) == true);
         Assert.IsNotNull(section, $"セクション '{sectionName}' が見つかりません。");
 
         this._sectionInternalNodesByName[sectionName] = section.Internal;
@@ -124,7 +124,7 @@ public sealed class IncrementalParsingSteps
 
         var newSection = this._incrementalSyntaxTree.Root.DescendantNodes()
             .OfType<SectionSyntax>()
-            .FirstOrDefault(s => s.Title?.TitleContent?.Contains(sectionName, System.StringComparison.Ordinal) == true);
+            .FirstOrDefault(s => s.Title?.GetTitleContent()?.Contains(sectionName, System.StringComparison.Ordinal) == true);
         Assert.IsNotNull(newSection, $"新しい構文木にセクション '{sectionName}' が見つかりません。");
 
         Assert.AreSame(

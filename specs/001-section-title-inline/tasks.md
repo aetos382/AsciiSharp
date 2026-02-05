@@ -38,8 +38,8 @@ Test/
 
 **Purpose**: パッケージ依存関係の追加
 
-- [ ] T001 `dotnet package add` で System.Collections.Immutable パッケージを Source/AsciiSharp/AsciiSharp.csproj に追加
-- [ ] T002 Source/AsciiSharp/AsciiSharp.csproj を編集し、パッケージ参照を .NET Standard 2.0 のみに条件付きで限定
+- [x] T001 `dotnet package add` で System.Collections.Immutable パッケージを Source/AsciiSharp/AsciiSharp.csproj に追加
+- [x] T002 Source/AsciiSharp/AsciiSharp.csproj を編集し、パッケージ参照を .NET Standard 2.0 のみに条件付きで限定
 
 **Checkpoint**: ImmutableArray<T> が使用可能になる
 
@@ -51,10 +51,10 @@ Test/
 
 **⚠️ CRITICAL**: .feature ファイル作成後、テストを実行して失敗することを確認してから実装に進む
 
-- [ ] T003 [P] Test/AsciiSharp.Specs/Features/SectionTitleInlineElements.feature を作成（US1 用）
-- [ ] T004 [P] Test/AsciiSharp.Specs/Features/InlineTextSyntaxRename.feature を作成（US2 用）
-- [ ] T005 [P] Test/AsciiSharp.Specs/Features/SectionTitleTrivia.feature を作成（US3 用）
-- [ ] T006 テストを実行し、すべての新規シナリオが失敗することを確認（Red 確認）
+- [x] T003 [P] Test/AsciiSharp.Specs/Features/SectionTitleInlineElements.feature を作成（US1 用）
+- [x] T004 [P] Test/AsciiSharp.Specs/Features/InlineTextSyntaxRename.feature を作成（US2 用）
+- [x] T005 [P] Test/AsciiSharp.Specs/Features/SectionTitleTrivia.feature を作成（US3 用）
+- [x] T006 テストを実行し、すべての新規シナリオが失敗することを確認（Red 確認）
 
 **Checkpoint**: BDD Red ステップ完了 - 失敗するテストが存在する
 
@@ -70,13 +70,13 @@ Test/
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] Source/AsciiSharp/Syntax/TextSyntax.cs を InlineTextSyntax.cs にリネームし、クラス名を InlineTextSyntax に変更
-- [ ] T008 [US2] Source/AsciiSharp/SyntaxKind.cs の `Text` を `InlineText` にリネーム
-- [ ] T009 [P] [US2] Source/AsciiSharp/Syntax/ISyntaxVisitor.cs の `VisitText` を `VisitInlineText` にリネーム
-- [ ] T010 [P] [US2] Source/AsciiSharp/Syntax/ISyntaxVisitorOfT.cs の `VisitText` を `VisitInlineText` にリネーム
-- [ ] T011 [US2] Source/AsciiSharp/Syntax/InlineTextSyntax.cs の Accept メソッドを更新（visitor.VisitInlineText）
-- [ ] T012 [US2] Source/AsciiSharp/Syntax/ParagraphSyntax.cs の SyntaxKind.Text 参照を SyntaxKind.InlineText に更新
-- [ ] T013 [P] [US2] Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs の VisitText 参照を更新
+- [x] T007 [US2] Source/AsciiSharp/Syntax/TextSyntax.cs を InlineTextSyntax.cs にリネームし、クラス名を InlineTextSyntax に変更
+- [x] T008 [US2] Source/AsciiSharp/SyntaxKind.cs の `Text` を `InlineText` にリネーム
+- [x] T009 [P] [US2] Source/AsciiSharp/Syntax/ISyntaxVisitor.cs の `VisitText` を `VisitInlineText` にリネーム
+- [x] T010 [P] [US2] Source/AsciiSharp/Syntax/ISyntaxVisitorOfT.cs の `VisitText` を `VisitInlineText` にリネーム
+- [x] T011 [US2] Source/AsciiSharp/Syntax/InlineTextSyntax.cs の Accept メソッドを更新（visitor.VisitInlineText）
+- [x] T012 [US2] Source/AsciiSharp/Syntax/ParagraphSyntax.cs の SyntaxKind.Text 参照を SyntaxKind.InlineText に更新
+- [x] T013 [P] [US2] Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs の VisitText 参照を更新
 - [ ] T014 [US2] ビルドとテストを実行し、US2 関連のシナリオが成功することを確認（Green）
 - [ ] T015 [US2] コード整形とリファクタリング（Refactor）
 

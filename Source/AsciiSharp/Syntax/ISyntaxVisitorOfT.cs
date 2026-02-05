@@ -56,11 +56,11 @@ public interface ISyntaxVisitor<TResult>
     TResult VisitParagraph(ParagraphSyntax node);
 
     /// <summary>
-    /// TextSyntax ノードを訪問する。
+    /// InlineTextSyntax ノードを訪問する。
     /// </summary>
     /// <param name="node">訪問するノード。</param>
     /// <returns>訪問結果。</returns>
-    TResult VisitText(TextSyntax node);
+    TResult VisitInlineText(InlineTextSyntax node);
 
     /// <summary>
     /// LinkSyntax ノードを訪問する。

@@ -122,7 +122,7 @@ public sealed class AsgConverter
             };
         }
 
-        AsgNode? ISyntaxVisitor<AsgNode?>.VisitText(TextSyntax node)
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitInlineText(InlineTextSyntax node)
         {
             ArgumentNullException.ThrowIfNull(node);
 
@@ -166,7 +166,7 @@ public sealed class AsgConverter
         /// </summary>
         private IReadOnlyList<AsgInlineNode> ConvertTitleInlines(SectionTitleSyntax title)
         {
-            var titleText = title.TitleContent;
+            var titleText = title.GetTitleContent();
 
             if (string.IsNullOrEmpty(titleText))
             {
@@ -174,9 +174,9 @@ public sealed class AsgConverter
             }
 
             // タイトルテキストの位置を計算
-            // TitleText トークンの位置を使用（なければタイトル全体の位置）
-            var location = title.TitleText is { } titleToken
-                ? this.GetTokenLocation(titleToken)
+            // InlineElements があればその位置を使用、なければタイトル全体の位置
+            var location = title.InlineElements.Length > 0
+                ? this.GetLocation(title.InlineElements[0])
                 : this.GetLocation(title);
 
             return

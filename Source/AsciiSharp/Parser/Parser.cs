@@ -269,12 +269,18 @@ internal sealed class AsciiDocParser
             this.EmitCurrentToken();
         }
 
-        // タイトルテキストを読み取る
+        // タイトルテキストを読み取る（InlineText ノードとしてラップ）
         var hasTitleText = false;
-        while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
+        if (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
         {
-            hasTitleText = true;
-            this.EmitCurrentToken();
+            this._sink.StartNode(SyntaxKind.InlineText);
+            while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
+            {
+                hasTitleText = true;
+                this.EmitCurrentToken();
+            }
+
+            this._sink.FinishNode();
         }
 
         // タイトルテキストがない場合はエラーを報告
@@ -316,7 +322,8 @@ internal sealed class AsciiDocParser
                 }
                 else
                 {
-                    this.EmitCurrentToken();
+                    // テキストトークンを InlineText ノードとしてラップ
+                    this.ParseInlineText();
                 }
             }
 
@@ -325,6 +332,26 @@ internal sealed class AsciiDocParser
             {
                 this.EmitCurrentToken();
             }
+        }
+
+        this._sink.FinishNode();
+    }
+
+    /// <summary>
+    /// インラインテキストを解析する。
+    /// 連続するテキストトークンを InlineText ノードとしてラップする。
+    /// </summary>
+    private void ParseInlineText()
+    {
+        this._sink.StartNode(SyntaxKind.InlineText);
+
+        // リンクまたは行末に達するまでテキストトークンを読み取る
+        while (!this.IsAtEnd() &&
+               this.Current.Kind != SyntaxKind.NewLineToken &&
+               this.Current.Kind != SyntaxKind.EndOfFileToken &&
+               !this.IsAtLink())
+        {
+            this.EmitCurrentToken();
         }
 
         this._sink.FinishNode();
