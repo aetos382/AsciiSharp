@@ -25,7 +25,7 @@ internal sealed class AsciiDocParser
     private readonly Lexer _lexer;
     private readonly ITreeSink _sink;
     private readonly List<Diagnostic> _diagnostics = [];
-    private InternalToken? _peekedToken;
+    private readonly Queue<InternalToken> _peekedTokens = new();
     private int _nestLevel;
 
     /// <summary>
@@ -58,9 +58,34 @@ internal sealed class AsciiDocParser
     /// </summary>
     private InternalToken Peek()
     {
-        this._peekedToken ??= this._lexer.NextToken();
+        return this.Peek(0);
+    }
 
-        return this._peekedToken;
+    /// <summary>
+    /// 指定オフセット先のトークンを先読みする。
+    /// </summary>
+    /// <param name="offset">先読みオフセット（0 = 次のトークン）。</param>
+    private InternalToken Peek(int offset)
+    {
+        while (this._peekedTokens.Count <= offset)
+        {
+            this._peekedTokens.Enqueue(this._lexer.NextToken());
+        }
+
+        // Queue の offset 番目の要素を返す
+        var index = 0;
+        foreach (var token in this._peekedTokens)
+        {
+            if (index == offset)
+            {
+                return token;
+            }
+
+            index++;
+        }
+
+        // ここには到達しないが、コンパイラのために
+        return this._lexer.NextToken();
     }
 
     /// <summary>
@@ -68,10 +93,9 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void Advance()
     {
-        if (this._peekedToken is not null)
+        if (this._peekedTokens.Count > 0)
         {
-            this.Current = this._peekedToken;
-            this._peekedToken = null;
+            this.Current = this._peekedTokens.Dequeue();
         }
         else
         {
@@ -561,12 +585,11 @@ internal sealed class AsciiDocParser
         }
 
         var count = 1;
-        var token = this.Peek();
-        while (token.Kind == SyntaxKind.EqualsToken)
+        var offset = 0;
+        while (this.Peek(offset).Kind == SyntaxKind.EqualsToken)
         {
             count++;
-            // 先読みをさらに進めることはできないので、1つ目の = の後をカウント
-            break;
+            offset++;
         }
 
         return count;
