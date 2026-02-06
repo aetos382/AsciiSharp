@@ -1,143 +1,102 @@
 # Tasks: SectionTitleSyntax の構成改定と TextSyntax のリネーム
 
 **Input**: Design documents from `/specs/001-section-title-inline/`
-**Prerequisites**: plan.md, spec.md, research.md, data-model.md, quickstart.md
+**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, quickstart.md
 
-**BDD**: このフィーチャーはコア ライブラリを対象とするため、BDD（Red-Green-Refactor）が必須です。
+**BDD**: このフィーチャーはコア ライブラリを対象とするため、BDD（Red-Green-Refactor）が必須。
+.feature ファイルは plan フェーズで作成済み、Red 確認済み。
 
-**Organization**: タスクはユーザー ストーリーごとにグループ化されています。
+**Organization**: タスクはユーザーストーリーごとにグループ化。大部分は実装済みのため、残タスクは US3 の Green フェーズと Polish のみ。
 
 ## Format: `[ID] [P?] [Story] Description`
 
-- **[P]**: 並列実行可能（異なるファイル、依存関係なし）
-- **[Story]**: タスクが属するユーザー ストーリー（例: US1, US2, US3）
-- 説明には正確なファイル パスを含む
-
-## Path Conventions
-
-```text
-Source/
-├── AsciiSharp/                           # コア ライブラリ
-│   ├── Syntax/
-│   │   ├── SectionTitleSyntax.cs
-│   │   ├── TextSyntax.cs → InlineTextSyntax.cs
-│   │   ├── ISyntaxVisitor.cs
-│   │   └── ISyntaxVisitorOfT.cs
-│   └── SyntaxKind.cs
-├── AsciiSharp.Asg/
-│   └── AsgConverter.cs
-Test/
-├── AsciiSharp.Specs/
-│   ├── Features/
-│   └── StepDefinitions/
-```
+- **[P]**: 並行実行可能（異なるファイル、依存関係なし）
+- **[Story]**: 対応するユーザーストーリー（US1, US2, US3）
+- ファイルパスは正確に記載
 
 ---
 
-## Phase 1: Setup
+## Phase 1: Setup (共有インフラ)
 
-**Purpose**: パッケージ依存関係の追加
+**Purpose**: Lexer の変更と基盤整備
 
-- [x] T001 `dotnet package add` で System.Collections.Immutable パッケージを Source/AsciiSharp/AsciiSharp.csproj に追加
-- [x] T002 Source/AsciiSharp/AsciiSharp.csproj を編集し、パッケージ参照を .NET Standard 2.0 のみに条件付きで限定
-
-**Checkpoint**: ImmutableArray<T> が使用可能になる
-
----
-
-## Phase 2: Foundational (BDD Red - .feature ファイル作成)
-
-**Purpose**: BDD テストの基盤となる .feature ファイルの作成（Red ステップ）
-
-**⚠️ CRITICAL**: .feature ファイル作成後、テストを実行して失敗することを確認してから実装に進む
-
-- [x] T003 [P] Test/AsciiSharp.Specs/Features/SectionTitleInlineElements.feature を作成（US1 用）
-- [x] T004 [P] Test/AsciiSharp.Specs/Features/InlineTextSyntaxRename.feature を作成（US2 用）
-- [x] T005 [P] Test/AsciiSharp.Specs/Features/SectionTitleTrivia.feature を作成（US3 用）
-- [x] T006 テストを実行し、すべての新規シナリオが失敗することを確認（Red 確認）
-
-**Checkpoint**: BDD Red ステップ完了 - 失敗するテストが存在する
+- [x] T001 Lexer で連続する `=` を単一トークンにまとめる変更を実装 in `Source/AsciiSharp/Parser/Lexer.cs`
+- [x] T002 `UnreachableException` の Polyfill を追加 in `Polyfills/UnreachableException.cs`
+- [x] T003 `Peek(offset)` の到達不能コードを `UnreachableException` に置換 in `Source/AsciiSharp/Parser/Parser.cs`
 
 ---
 
-## Phase 3: User Story 2 - TextSyntax が InlineTextSyntax として参照される (Priority: P2)
+## Phase 2: User Story 2 - TextSyntax が InlineTextSyntax として参照される (Priority: P2)
 
-**Goal**: TextSyntax を InlineTextSyntax にリネームし、すべての参照箇所を更新する
+**Goal**: `TextSyntax` を `InlineTextSyntax` にリネームし、`SyntaxKind.Text` を `SyntaxKind.InlineText` に統一する
 
-**Independent Test**: `grep -r "TextSyntax" Source/` が 0 件になること
+**Independent Test**: コード全体で `TextSyntax` および `SyntaxKind.Text` への参照が 0 件であることを確認
 
-**Note**: US1 が依存するため、優先度 P2 だが先に実装する
+**Note**: US1 が InlineTextSyntax を使用するため、先に実装
 
-### Implementation for User Story 2
+### 実装 (完了済み)
 
-- [x] T007 [US2] Source/AsciiSharp/Syntax/TextSyntax.cs を InlineTextSyntax.cs にリネームし、クラス名を InlineTextSyntax に変更
-- [x] T008 [US2] Source/AsciiSharp/SyntaxKind.cs の `Text` を `InlineText` にリネーム
-- [x] T009 [P] [US2] Source/AsciiSharp/Syntax/ISyntaxVisitor.cs の `VisitText` を `VisitInlineText` にリネーム
-- [x] T010 [P] [US2] Source/AsciiSharp/Syntax/ISyntaxVisitorOfT.cs の `VisitText` を `VisitInlineText` にリネーム
-- [x] T011 [US2] Source/AsciiSharp/Syntax/InlineTextSyntax.cs の Accept メソッドを更新（visitor.VisitInlineText）
-- [x] T012 [US2] Source/AsciiSharp/Syntax/ParagraphSyntax.cs の SyntaxKind.Text 参照を SyntaxKind.InlineText に更新
-- [x] T013 [P] [US2] Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs の VisitText 参照を更新
-- [ ] T014 [US2] ビルドとテストを実行し、US2 関連のシナリオが成功することを確認（Green）
-- [ ] T015 [US2] コード整形とリファクタリング（Refactor）
+- [x] T004 [US2] `TextSyntax` を `InlineTextSyntax` にリネーム in `Source/AsciiSharp/Syntax/InlineTextSyntax.cs`（旧 `TextSyntax.cs`）
+- [x] T005 [US2] `SyntaxKind.Text` を `SyntaxKind.InlineText` にリネーム in `Source/AsciiSharp/SyntaxKind.cs`
+- [x] T006 [P] [US2] `ISyntaxVisitor.VisitText` を `VisitInlineText` にリネーム in `Source/AsciiSharp/Syntax/ISyntaxVisitor.cs`
+- [x] T007 [P] [US2] `ISyntaxVisitor<T>.VisitText` を `VisitInlineText` にリネーム in `Source/AsciiSharp/Syntax/ISyntaxVisitorOfT.cs`
+- [x] T008 [US2] すべての参照箇所を更新しビルド＆テスト成功を確認
 
-**Checkpoint**: TextSyntax への参照が 0 件、InlineTextSyntax に統一される
+**Checkpoint**: US2 完了。`TextSyntax` と `SyntaxKind.Text` への参照が 0 件。
 
 ---
 
-## Phase 4: User Story 1 - セクションタイトルの構文木からインライン要素を取得する (Priority: P1)
+## Phase 3: User Story 1 - セクションタイトルの構文木からインライン要素を取得する (Priority: P1)
 
-**Goal**: SectionTitleSyntax に ImmutableArray<InlineSyntax> InlineElements プロパティを追加し、TitleContent を削除する
+**Goal**: SectionTitleSyntax を「= マーカー + 空白トリビア + InlineSyntax コレクション」構成に改定し、インライン要素として走査可能にする
 
-**Independent Test**: `== Hello World` をパースして InlineElements に単一の InlineTextSyntax が含まれること
+**Independent Test**: `== タイトルテキスト` をパースし、SectionTitleSyntax の InlineElements が単一の InlineTextSyntax を含むことを検証
 
-### Implementation for User Story 1
+### BDD テスト (完了済み)
 
-- [ ] T016 [US1] Source/AsciiSharp/Syntax/SectionTitleSyntax.cs に ImmutableArray<InlineSyntax> InlineElements プロパティを追加
-- [ ] T017 [US1] Source/AsciiSharp/Syntax/SectionTitleSyntax.cs のコンストラクタを更新し、InlineElements を構築
-- [ ] T018 [US1] Source/AsciiSharp/Syntax/SectionTitleSyntax.cs から TitleContent プロパティを削除
-- [ ] T019 [US1] Source/AsciiSharp/Syntax/SectionTitleSyntax.cs から TitleText プロパティを削除
-- [ ] T020 [US1] Source/AsciiSharp/Syntax/SectionTitleSyntax.cs の ChildNodesAndTokens() を更新し、InlineElements を含める
-- [ ] T021 [US1] Source/AsciiSharp.Asg/AsgConverter.cs の TitleContent 参照を InlineElements 経由に更新
-- [ ] T022 [P] [US1] Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs の TitleContent 参照を更新
-- [ ] T023 [P] [US1] Test/AsciiSharp.Specs/StepDefinitions/CommentParsingSteps.cs の TitleContent 参照を更新
-- [ ] T024 [P] [US1] Test/AsciiSharp.Specs/StepDefinitions/IncrementalParsingSteps.cs の TitleContent 参照を更新
-- [ ] T025 [P] [US1] Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs の TitleContent 参照を更新
-- [ ] T026 [US1] InlineElements の順序検証テストを追加（各要素の Position は前の要素以上）
-- [ ] T027 [US1] ビルドとテストを実行し、US1 関連のシナリオが成功することを確認（Green）
-- [ ] T028 [US1] コード整形とリファクタリング（Refactor）
+- [x] T009 [US1] .feature ファイルを作成 in `Test/AsciiSharp.Specs/Features/SectionTitleInlineElements.feature`
+- [x] T010 [US1] ステップ定義を作成 in `Test/AsciiSharp.Specs/StepDefinitions/SectionTitleInlineElementsSteps.cs`
 
-**Checkpoint**: SectionTitleSyntax.InlineElements が機能し、TitleContent への参照が 0 件
+### 実装 (完了済み)
+
+- [x] T011 [US1] SectionTitleSyntax を `_children` パターンに移行し、`Marker`/`Level`/`InlineElements` プロパティを追加 in `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs`
+- [x] T012 [US1] `TitleContent` プロパティを削除 in `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs`
+- [x] T013 [US1] Parser の `ParseSectionTitle()` で単一マーカートークン + 空白 TrailingTrivia を処理 in `Source/AsciiSharp/Parser/Parser.cs`
+- [x] T014 [US1] `TitleContent` 参照箇所をインライン要素ベースに更新 in `Source/AsciiSharp.Asg/AsgConverter.cs`, `Test/AsciiSharp.Specs/StepDefinitions/`
+
+**Checkpoint**: US1 完了。`== Hello` パース時に InlineElements が単一の InlineTextSyntax を含む。
 
 ---
 
-## Phase 5: User Story 3 - SectionTitleSyntax の空白トリビアが適切に保持される (Priority: P3)
+## Phase 4: User Story 3 - セクション見出し認識条件の厳格化と空白トリビア保持 (Priority: P3)
 
-**Goal**: マーカー（`=`）とタイトル本文の間の空白がマーカーの TrailingTrivia として保持され、ToFullString() で完全に復元される
+**Goal**: `=` が 7 個以上の行、および `=` 後に空白がない行をセクション見出しではなく段落として扱う。空白トリビアの完全な復元を保証する。
 
-**Independent Test**: `==  タイトル`（2つのスペース）をパースして ToFullString() で完全復元すること
+**Independent Test**: `======= Title` がパース後に ParagraphSyntax となること。`==タイトル` がパース後に ParagraphSyntax となること。`==  タイトル`（空白2つ）の `ToFullString()` が入力と完全一致すること。
 
-### Implementation for User Story 3
+### BDD テスト (Red 確認済み)
 
-- [ ] T029 [US3] Source/AsciiSharp/Syntax/SectionTitleSyntax.cs でマーカー後の空白を TrailingTrivia として処理
-- [ ] T030 [US3] 空白なし（`==タイトル`）のケースが正しく処理されることを確認
-- [ ] T031 [US3] 複数空白（`==  タイトル`）のケースが正しく処理されることを確認
-- [ ] T032 [US3] ビルドとテストを実行し、US3 関連のシナリオが成功することを確認（Green）
-- [ ] T033 [US3] コード整形とリファクタリング（Refactor）
+- [x] T015 [US3] 認識条件の .feature ファイルを作成（5 シナリオ） in `Test/AsciiSharp.Specs/Features/SectionTitleRecognition.feature`
+- [x] T016 [US3] セクションレベル検証のステップ定義を追加 in `Test/AsciiSharp.Specs/StepDefinitions/SectionTitleInlineElementsSteps.cs`
 
-**Checkpoint**: ToFullString() による完全な復元が保証される
+### 実装 (Green フェーズ — 未完了)
+
+- [ ] T017 [US3] `IsAtSectionTitle()` に `Text.Length <= 6` と `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
+- [ ] T018 [US3] `IsAtDocumentTitle()` に `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
+- [ ] T019 [US3] `IsAtSectionTitleOfLevelOrHigher()` に `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
+- [ ] T020 [US3] ビルドとすべてのテスト（92 件）が成功することを確認
+
+**Checkpoint**: US3 完了。Level 7+ と空白なしが段落として解析される。ToFullString() の完全復元が維持される。
 
 ---
 
-## Phase 6: Polish & Cross-Cutting Concerns
+## Phase 5: Polish & Cross-Cutting Concerns
 
-**Purpose**: 全体の整合性確認と最終調整
+**Purpose**: リファクタリングと品質確認
 
-- [ ] T034 すべてのテストを実行し、100% 成功することを確認
-- [ ] T035 ビルド警告がゼロであることを確認
-- [ ] T036 [P] `grep -r "TextSyntax" Source/ Test/` で TextSyntax への参照が 0 件であることを確認
-- [ ] T037 [P] `grep -r "TitleContent" Source/ Test/` で TitleContent への参照が 0 件であることを確認
-- [ ] T038 [P] `grep -r "SyntaxKind\.Text[^T]" Source/ Test/` で SyntaxKind.Text への参照が 0 件であることを確認
-- [ ] T039 quickstart.md の API 使用例が動作することを確認
+- [ ] T021 ビルド警告がゼロであることを確認し、必要に応じて警告を解消
+- [ ] T022 `IsAtSectionTitle()` / `IsAtDocumentTitle()` / `IsAtSectionTitleOfLevelOrHigher()` の XML ドキュメントコメントを更新 in `Source/AsciiSharp/Parser/Parser.cs`
+- [ ] T023 quickstart.md の検証シナリオを手動で確認
 
 ---
 
@@ -145,87 +104,70 @@ Test/
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: 依存なし - 即座に開始可能
-- **Foundational (Phase 2)**: Setup 完了後 - .feature ファイル作成、Red 確認
-- **User Story 2 (Phase 3)**: Foundational 完了後 - リネーム作業
-- **User Story 1 (Phase 4)**: User Story 2 完了後 - InlineTextSyntax を使用するため
-- **User Story 3 (Phase 5)**: User Story 1 完了後 - SectionTitleSyntax の構造変更後
-- **Polish (Phase 6)**: すべてのユーザー ストーリー完了後
+- **Phase 1 (Setup)**: 完了済み
+- **Phase 2 (US2)**: Phase 1 に依存 → 完了済み
+- **Phase 3 (US1)**: Phase 2 に依存（InlineTextSyntax を使用） → 完了済み
+- **Phase 4 (US3)**: Phase 1 に依存、US1/US2 とは独立 → **Green フェーズ未完了**
+- **Phase 5 (Polish)**: Phase 4 完了後に実行
 
 ### User Story Dependencies
 
+- **US2 (P2)**: 他のストーリーに依存しない → 完了済み
+- **US1 (P1)**: US2 に依存（InlineTextSyntax を使用） → 完了済み
+- **US3 (P3)**: 他のストーリーに依存しない → Red 完了、Green 未実施
+
+### 残タスクの実行順序
+
 ```
-US2 (TextSyntax リネーム)
-  ↓
-US1 (InlineElements 追加) ← US2 に依存（InlineTextSyntax を使用）
-  ↓
-US3 (トリビア処理) ← US1 に依存（SectionTitleSyntax 構造変更後）
+T017 → T018 → T019 → T020 → T021 → T022 → T023
 ```
 
-### Within Each User Story
-
-1. .feature ファイル作成（Red）
-2. 実装（Green）
-3. リファクタリング（Refactor）
-4. コミット
-
-### Parallel Opportunities
-
-- T003, T004, T005: .feature ファイル作成は並列実行可能
-- T009, T010: ISyntaxVisitor の更新は並列実行可能
-- T013: VisitorSteps の更新は他の StepDefinitions と並列実行可能
-- T022, T023, T024, T025: StepDefinitions の TitleContent 参照更新は並列実行可能
-- T036, T037, T038: 最終確認の grep は並列実行可能
+T017〜T019 はすべて同一ファイル（Parser.cs）への変更のため並行実行不可。ただし変更量が小さいため、一括で実施して T020 で検証するのが効率的。
 
 ---
 
-## Parallel Example: Phase 2 (Foundational)
+## Parallel Example: User Story 3
 
-```bash
-# Launch all .feature file creation together:
-Task: "Test/AsciiSharp.Specs/Features/SectionTitleInlineElements.feature を作成"
-Task: "Test/AsciiSharp.Specs/Features/InlineTextSyntaxRename.feature を作成"
-Task: "Test/AsciiSharp.Specs/Features/SectionTitleTrivia.feature を作成"
-```
+```text
+# T017〜T019 は同一ファイルのため順次実行:
+T017: IsAtSectionTitle() に条件追加
+T018: IsAtDocumentTitle() に条件追加
+T019: IsAtSectionTitleOfLevelOrHigher() に条件追加
 
-## Parallel Example: User Story 1 (StepDefinitions 更新)
-
-```bash
-# Launch all StepDefinitions updates together:
-Task: "Test/AsciiSharp.Specs/StepDefinitions/BasicParsingSteps.cs の TitleContent 参照を更新"
-Task: "Test/AsciiSharp.Specs/StepDefinitions/CommentParsingSteps.cs の TitleContent 参照を更新"
-Task: "Test/AsciiSharp.Specs/StepDefinitions/IncrementalParsingSteps.cs の TitleContent 参照を更新"
-Task: "Test/AsciiSharp.Specs/StepDefinitions/VisitorSteps.cs の TitleContent 参照を更新"
+# 実装完了後に検証:
+T020: dotnet build && dotnet test
 ```
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (User Story 2 + 1)
+### 残タスクの実行方針
 
-1. Complete Phase 1: Setup（パッケージ追加）
-2. Complete Phase 2: Foundational（.feature ファイル作成、Red 確認）
-3. Complete Phase 3: User Story 2（リネーム）
-4. Complete Phase 4: User Story 1（InlineElements）
-5. **STOP and VALIDATE**: テスト実行、独立検証
-6. Deploy/demo if ready
+1. **T017〜T019**: Parser.cs の 3 メソッドを一括変更（変更量が極めて小さいため）
+2. **T020**: ビルド＆テスト実行で Green 確認
+3. **T021〜T022**: Refactor フェーズとして警告解消と XML ドキュメント更新
+4. **T023**: quickstart.md の検証
 
-### Incremental Delivery
+### サマリ
 
-1. Setup + Foundational → 基盤準備完了
-2. User Story 2 完了 → リネーム完了
-3. User Story 1 完了 → コア機能完了（MVP!）
-4. User Story 3 完了 → トリビア処理完了
-5. Polish → 最終調整
+| カテゴリ | タスク数 | 状態 |
+|---------|---------|------|
+| Phase 1: Setup | 3 | 完了 |
+| Phase 2: US2 | 5 | 完了 |
+| Phase 3: US1 | 6 | 完了 |
+| Phase 4: US3 (Red) | 2 | 完了 |
+| Phase 4: US3 (Green) | 4 | 未実施 |
+| Phase 5: Polish | 3 | 未実施 |
+| **合計** | **23** | **完了 16 / 残 7** |
 
 ---
 
 ## Notes
 
 - [P] タスク = 異なるファイル、依存関係なし
-- [Story] ラベル = タスクを特定のユーザー ストーリーにマッピング
-- 各ユーザー ストーリーは独立して完了・テスト可能（ただし依存関係あり）
-- テストが失敗することを確認してから実装
+- [Story] ラベル = タスクを特定のユーザーストーリーにマッピング
+- 各ユーザーストーリーは独立して完了・テスト可能
+- テストが失敗することを確認してから実装（Red-Green-Refactor）
 - 各タスクまたは論理グループ後にコミット
 - 任意のチェックポイントで停止してストーリーを独立検証可能
