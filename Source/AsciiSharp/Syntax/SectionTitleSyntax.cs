@@ -85,51 +85,7 @@ public sealed class SectionTitleSyntax : BlockSyntax
     {
         if (this.InlineElements.IsEmpty)
         {
-            // タイトルテキストがない場合（InlineText ノードが生成されなかった場合）
-            var titleBuilder = new StringBuilder();
-            var markerFinished = false;
-
-            foreach (var child in this._children)
-            {
-                if (!child.IsToken)
-                {
-                    continue;
-                }
-
-                var token = child.AsToken();
-                switch (token.Kind)
-                {
-                    case SyntaxKind.EqualsToken:
-                        break;
-
-                    case SyntaxKind.WhitespaceToken:
-                        if (markerFinished)
-                        {
-                            titleBuilder.Append(token.Text);
-                        }
-                        else
-                        {
-                            markerFinished = true;
-                        }
-
-                        break;
-
-                    case SyntaxKind.TextToken:
-                        markerFinished = true;
-                        titleBuilder.Append(token.Text);
-                        break;
-
-                    default:
-                        if (markerFinished)
-                        {
-                            titleBuilder.Append(token.Text);
-                        }
-
-                        break;
-                }
-            }
-
-            return titleBuilder.ToString().Trim();
+            return string.Empty;
         }
 
         // InlineElements からタイトルを構築
