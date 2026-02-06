@@ -36,7 +36,9 @@ public sealed class SectionTitleSyntax : BlockSyntax
 - `TitleText` - 最初のテキストトークン（不要）
 
 **不変条件（Invariants）**:
-- `Level >= 1`（`=` が最低1つ必要）
+- `Level` は 1〜6 の範囲（`=` 1〜6 個）
+- `=` が 7 個以上の場合はセクション見出しとして認識されない（FR-011）
+- マーカー後に空白が必須（FR-012）。空白がない場合はセクション見出しとして認識されない
 - `InlineElements` は構文上の出現順に並ぶ
 - `InlineElements[i].Position >= InlineElements[i-1].Position`（i > 0 の場合）
 
@@ -126,7 +128,8 @@ SyntaxNode (抽象基底)
 
 | ルール | 説明 | エラー時の動作 |
 |--------|------|---------------|
-| Level >= 1 | セクションレベルは1以上 | パーサーがエラー回復 |
+| Level は 1〜6 | セクションレベルは 1〜6（`=` 1〜6 個） | 7 個以上は段落として解析 |
+| マーカー後の空白 | マーカーの後に空白が必須 | 空白なしは段落として解析 |
 | InlineElements の順序 | 構文上の出現順に並ぶ | コンストラクタで保証 |
 
 ### 4.2 InlineTextSyntax

@@ -1,11 +1,15 @@
 # Implementation Plan: SectionTitleSyntax の構成改定と TextSyntax のリネーム
 
-**Branch**: `001-section-title-inline` | **Date**: 2026-02-05 | **Spec**: [spec.md](./spec.md)
+**Branch**: `001-section-title-inline` | **Date**: 2026-02-05 (updated: 2026-02-06) | **Spec**: [spec.md](./spec.md)
 **Input**: Feature specification from `/specs/001-section-title-inline/spec.md`
 
 ## Summary
 
 SectionTitleSyntax の内部構造を改定し、現在の「空白区切りによるタイトル分割」から「= トークン + 空白トリビア + InlineSyntax コレクション」の構成に変更する。これにより将来のインラインマークアップ対応の基盤を整備する。また、TextSyntax を InlineTextSyntax にリネームし、「一行の文字列」という意味を明確化する。
+
+**追加要件（2026-02-06）**:
+- FR-011: `=` が 7 個以上の行はセクション見出しとして認識せず、段落として扱う
+- FR-012: `=` の後に空白がない行はセクション見出しとして認識せず、段落として扱う
 
 ## Technical Context
 
@@ -15,7 +19,7 @@ SectionTitleSyntax の内部構造を改定し、現在の「空白区切りに�
 **Testing**: MSTest.Sdk, Reqnroll (BDD)
 **Target Platform**: .NET 10.0, .NET Standard 2.0（マルチターゲット）
 **Project Type**: ライブラリ（NuGet パッケージ）
-**Performance Goals**: 初期段階では重視しない（AGENTS.md に記載）
+**Performance Goals**: 初期段階では重視しない（CLAUDE.md に記載）
 **Constraints**: イミュータブル構文木、完全なテキスト復元可能性
 **Scale/Scope**: コア ライブラリと関連テストプロジェクトの変更
 
@@ -25,12 +29,12 @@ SectionTitleSyntax の内部構造を改定し、現在の「空白区切りに�
 
 | 原則 | 状態 | 備考 |
 |------|------|------|
-| I. コード品質ファースト | ✅ PASS | 可読性・メンテナンス性を重視したリネーム |
-| II. モジュール設計 | ✅ PASS | 既存のモジュール構造を維持 |
-| III. BDD必須 | ✅ PASS | コア ライブラリが対象、.feature ファイルを作成 |
-| IV. 継続的品質保証 | ✅ PASS | 各ステップでビルド・テスト実行 |
-| V. 警告ゼロポリシー | ✅ PASS | リファクタリング時に警告解消 |
-| VI. フェーズ順序の厳守 | ✅ PASS | specify → clarify → plan の順序を遵守 |
+| I. コード品質ファースト | PASS | 可読性・メンテナンス性を重視したリネーム |
+| II. モジュール設計 | PASS | 既存のモジュール構造を維持 |
+| III. BDD必須 | PASS | コア ライブラリが対象、.feature ファイル作成済み |
+| IV. 継続的品質保証 | PASS | 各ステップでビルド・テスト実行 |
+| V. 警告ゼロポリシー | PASS | リファクタリング時に警告解消 |
+| VI. フェーズ順序の厳守 | PASS | specify → clarify → plan の順序を遵守 |
 
 ## Project Structure
 
@@ -51,27 +55,29 @@ specs/001-section-title-inline/
 ```text
 Source/
 ├── AsciiSharp/                           # コア ライブラリ（変更対象）
+│   ├── Parser/
+│   │   ├── Lexer.cs                     # 連続する = をまとめてトークン化（実装済み）
+│   │   └── Parser.cs                    # セクション見出し認識条件の変更（FR-011, FR-012）
 │   ├── Syntax/
-│   │   ├── SectionTitleSyntax.cs        # 構造変更
-│   │   ├── TextSyntax.cs                # InlineTextSyntax.cs にリネーム
+│   │   ├── SectionTitleSyntax.cs        # 構造変更（実装済み）
+│   │   ├── InlineTextSyntax.cs          # リネーム済み（旧 TextSyntax.cs）
 │   │   ├── InlineSyntax.cs              # 基底クラス（変更なし）
-│   │   ├── ISyntaxVisitor.cs            # VisitText → VisitInlineText
-│   │   └── ISyntaxVisitorOfT.cs         # VisitText → VisitInlineText
-│   └── SyntaxKind.cs                    # Text → InlineText
+│   │   ├── ISyntaxVisitor.cs            # VisitText → VisitInlineText（実装済み）
+│   │   └── ISyntaxVisitorOfT.cs         # VisitText → VisitInlineText（実装済み）
+│   └── SyntaxKind.cs                    # Text → InlineText（実装済み）
 │
-├── AsciiSharp.Asg/                       # 参照更新
-│   └── AsgConverter.cs                   # TitleContent 参照の更新
+├── AsciiSharp.Asg/                       # 参照更新（実装済み）
+│   └── AsgConverter.cs
 │
-└── AsciiSharp.TckAdapter/                # 影響確認
+└── AsciiSharp.TckAdapter/                # 影響なし
 
 Test/
 ├── AsciiSharp.Specs/                     # BDD テスト
-│   ├── Features/                         # .feature ファイル追加
-│   └── StepDefinitions/                  # TitleContent 参照の更新
-│       ├── VisitorSteps.cs
-│       ├── BasicParsingSteps.cs
-│       ├── CommentParsingSteps.cs
-│       └── IncrementalParsingSteps.cs
+│   ├── Features/
+│   │   ├── SectionTitleInlineElements.feature    # インライン要素テスト（実装済み）
+│   │   └── SectionTitleRecognition.feature       # 認識条件テスト（Red 確認済み）
+│   └── StepDefinitions/
+│       └── SectionTitleInlineElementsSteps.cs    # ステップ定義（実装済み）
 │
 └── AsciiSharp.Tests/                     # ユニット テスト
 ```
@@ -90,31 +96,18 @@ Test/
 
 ### 調査課題
 
-1. **SectionTitleSyntax の現在の実装詳細**
-   - 既に解決：`Source/AsciiSharp/Syntax/SectionTitleSyntax.cs` で確認済み
-   - 現在は `TitleContent` プロパティで全テキストを結合して返却
+すべての調査課題は解決済み。詳細は [research.md](./research.md) を参照。
 
-2. **TextSyntax のリネーム影響範囲**
-   - 既に解決：以下のファイルで参照あり
-   - `ISyntaxVisitor.cs`: `VisitText` メソッド
-   - `ISyntaxVisitorOfT.cs`: `VisitText` メソッド
-   - `SyntaxKind.cs`: `Text` 列挙値
+### 追加調査（FR-011, FR-012）
 
-3. **TitleContent の参照箇所**
-   - 既に解決：以下のファイルで参照あり
-   - `AsgConverter.cs`: 行169
-   - `VisitorSteps.cs`: 行138-142, 541
-   - `BasicParsingSteps.cs`: 行156, 192
-   - `CommentParsingSteps.cs`: 行76
-   - `IncrementalParsingSteps.cs`: 行67, 127
+1. **AsciiDoc 仕様でのセクション見出しレベル上限**
+   - 決定: `=` が 7 個以上の場合はセクション見出しとして認識しない
+   - 根拠: VSCode AsciiDoc Extension のプレビュー表示では Level 7 は見出しとして扱われない
+   - AsciiDoc 言語仕様でも Level 0〜5（`=` 1〜6 個）が定義されている
 
-4. **InlineSyntax コレクションの設計パターン**
-   - 既存のコレクション実装（`ChildNodesAndTokens` など）を参考にする
-   - イミュータブルなコレクションとして実装
-
-### 技術的決定事項
-
-research.md に詳細を記載。
+2. **マーカー後の空白必須性**
+   - 決定: `=` の後に空白がない場合はセクション見出しとして認識しない
+   - 根拠: AsciiDoc 仕様ではマーカーとタイトル本文の間に少なくとも 1 つの空白が必要
 
 ---
 
@@ -136,20 +129,85 @@ research.md に詳細を記載。
 3. **マーカー後の空白**: マーカーの TrailingTrivia として保持
 4. **パッケージ依存**: `System.Collections.Immutable`（.NET Standard 2.0 用）
 
+### FR-011/FR-012 の設計
+
+**変更対象メソッド**:
+
+1. `IsAtSectionTitle()` — セクション見出し判定に 2 つの条件を追加:
+   - `=` の数が 6 以下であること（FR-011）
+   - `=` の後に空白トークンが続くこと（FR-012）
+
+2. `IsAtDocumentTitle()` — ドキュメントタイトル判定にも同じ空白条件を追加:
+   - `=` が 1 つであること（既存）
+   - `=` の後に空白トークンが続くこと（FR-012）
+
+**実装方針**:
+```csharp
+// IsAtSectionTitle: 行頭の EqualsToken かつ 6 文字以下 かつ 次に空白がある
+private bool IsAtSectionTitle()
+{
+    return this.Current.Kind == SyntaxKind.EqualsToken
+        && this.Current.Text.Length <= 6
+        && this.Peek().Kind == SyntaxKind.WhitespaceToken;
+}
+
+// IsAtDocumentTitle: 行頭の EqualsToken かつ 1 文字 かつ 次に空白がある
+private bool IsAtDocumentTitle()
+{
+    return this.Current.Kind == SyntaxKind.EqualsToken
+        && this.Current.Text.Length == 1
+        && this.Peek().Kind == SyntaxKind.WhitespaceToken;
+}
+
+// IsAtSectionTitleOfLevelOrHigher: 既存の Level 比較 + 空白条件
+private bool IsAtSectionTitleOfLevelOrHigher(int level)
+{
+    return this.Current.Kind == SyntaxKind.EqualsToken
+        && this.Current.Text.Length <= level
+        && this.Peek().Kind == SyntaxKind.WhitespaceToken;
+}
+```
+
+**影響範囲**:
+- Parser.cs の 3 メソッドのみ変更
+- Lexer.cs は変更不要（連続する `=` のまとめ読みは既に対応済み）
+- 構文木構造（SectionTitleSyntax）は変更不要
+
+**検証**:
+- `=` が 7 個以上 → `IsAtSectionTitle()` が false → `ParseParagraph()` にフォールバック
+- `=` の後に空白なし → `IsAtSectionTitle()` が false → `ParseParagraph()` にフォールバック
+- `== ` マーカーのみ（空タイトル）→ `IsAtSectionTitle()` が true → 既存のエラー回復で処理
+
 ---
 
 ## Constitution Check（Phase 1 後の再評価）
 
 | 原則 | 状態 | 備考 |
 |------|------|------|
-| I. コード品質ファースト | ✅ PASS | 可読性・メンテナンス性を重視した設計 |
-| II. モジュール設計 | ✅ PASS | 既存のモジュール構造を維持 |
-| III. BDD必須 | ✅ PASS | コア ライブラリが対象、.feature ファイルを作成予定 |
-| IV. 継続的品質保証 | ✅ PASS | 各ステップでビルド・テスト実行予定 |
-| V. 警告ゼロポリシー | ✅ PASS | リファクタリング時に警告解消予定 |
-| VI. フェーズ順序の厳守 | ✅ PASS | specify → clarify → plan の順序を遵守中 |
+| I. コード品質ファースト | PASS | 判定ロジックが明確で読みやすい |
+| II. モジュール設計 | PASS | Parser 内部の変更のみ |
+| III. BDD必須 | PASS | .feature ファイル作成済み、Red 確認済み |
+| IV. 継続的品質保証 | PASS | 各ステップでビルド・テスト実行予定 |
+| V. 警告ゼロポリシー | PASS | リファクタリング時に警告解消予定 |
+| VI. フェーズ順序の厳守 | PASS | specify → clarify → plan の順序を遵守中 |
 
 **追加確認**:
-- ✅ 破壊的変更は許容される（プロジェクト未公開のため）
-- ✅ 新規パッケージ依存は最小限（System.Collections.Immutable のみ）
-- ✅ Roslyn パターンに準拠した設計
+- 破壊的変更は許容される（プロジェクト未公開のため）
+- 変更は Parser.cs の 3 メソッドのみで、影響範囲が限定的
+- 既存のテスト（89 件）への影響なし（`==` のテストケースは空白を含む形式のみ）
+
+## 現在の実装状況
+
+### 完了済み
+- Lexer: 連続する `=` をまとめてトークン化
+- SectionTitleSyntax: `_children` パターンへの移行、`TitleContent` 削除
+- TextSyntax → InlineTextSyntax リネーム
+- SyntaxKind.Text → SyntaxKind.InlineText リネーム
+- ISyntaxVisitor: VisitText → VisitInlineText
+- InlineElements コレクションの追加
+- SectionTitleRecognition.feature: FR-011/FR-012 の Red テスト作成
+
+### 未実装（Green フェーズ）
+- Parser.cs: `IsAtSectionTitle()` に `Text.Length <= 6` と空白チェックを追加
+- Parser.cs: `IsAtDocumentTitle()` に空白チェックを追加
+- Parser.cs: `IsAtSectionTitleOfLevelOrHigher()` に空白チェックを追加

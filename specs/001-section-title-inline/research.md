@@ -227,7 +227,45 @@ var titleFullString = string.Join("", sectionTitle.InlineElements.Select(e => e.
 | ImmutableArray の .NET Standard 2.0 対応 | 低 | NuGet パッケージで対応可能 |
 | InlineElements の順序不正 | 中 | 順序検証テストを追加 |
 
-## 5. 結論
+## 5. 追加調査（2026-02-06）: セクション見出し認識条件
+
+### Decision 8: `=` が 7 個以上の行の扱い（FR-011）
+
+**決定**: `=` が 7 個以上の行はセクション見出しとして認識せず、段落（本文テキスト）として扱う
+
+**根拠**:
+- AsciiDoc 言語仕様では Level 0〜5（`=` 1〜6 個）が定義されている
+- VSCode AsciiDoc Extension のプレビュー表示でも Level 7 は見出しとして扱われない
+- ユーザーとの仕様確認（Session 2026-02-06）で合意
+
+**代替案（却下）**:
+- `=` の数に上限を設けず、すべてセクション見出しとして扱う → AsciiDoc 仕様に反する
+- パーサーでエラーを報告してセクション見出しとして扱う → 段落として扱うのが自然
+
+**実装影響**:
+- `IsAtSectionTitle()` に `this.Current.Text.Length <= 6` の条件を追加
+- `IsAtSectionTitleOfLevelOrHigher()` は既に `Text.Length <= level` で比較しており、level は最大 6 のため影響なし
+
+### Decision 9: マーカー後の空白必須（FR-012）
+
+**決定**: `=` の後に空白がない行はセクション見出しとして認識せず、段落として扱う
+
+**根拠**:
+- AsciiDoc 仕様ではマーカーとタイトル本文の間に少なくとも 1 つの空白が必要
+- `==タイトル` のような形式は AsciiDoc の標準的な構文ではない
+- ユーザーとの仕様確認（Session 2026-02-06）で合意
+
+**代替案（却下）**:
+- 空白なしでもセクション見出しとして許容する → AsciiDoc 仕様に反する
+- 空白なしの場合にパーサーがエラーを報告する → 段落として扱うのが自然
+
+**実装影響**:
+- `IsAtSectionTitle()` に `this.Peek().Kind == SyntaxKind.WhitespaceToken` の条件を追加
+- `IsAtDocumentTitle()` に同じ条件を追加
+- `IsAtSectionTitleOfLevelOrHigher()` に同じ条件を追加
+- `Peek()` の呼び出しが増えるが、Queue ベースの先読みバッファにより追加コストは軽微
+
+## 6. 結論
 
 すべての調査課題が解決され、実装に進む準備が整った。
 
@@ -238,3 +276,5 @@ var titleFullString = string.Join("", sectionTitle.InlineElements.Select(e => e.
 - `TextSyntax` は `InlineTextSyntax` にリネーム
 - `SyntaxKind.Text` は `SyntaxKind.InlineText` にリネーム
 - `TitleContent` プロパティは削除
+- `=` が 7 個以上の行はセクション見出しとして認識しない（FR-011）
+- `=` の後に空白がない行はセクション見出しとして認識しない（FR-012）
