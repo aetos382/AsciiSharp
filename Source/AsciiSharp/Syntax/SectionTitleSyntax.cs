@@ -23,10 +23,10 @@ public sealed class SectionTitleSyntax : BlockSyntax
     public int Level { get; }
 
     /// <summary>
-    /// セクションマーカー（= の並び）。
+    /// セクションマーカー（= の並びの最後のトークン）。
     /// マーカー後の空白は TrailingTrivia として保持される。
     /// </summary>
-    public SyntaxToken? Marker { get; }
+    public SyntaxToken? Marker { get; private set; }
 
     /// <summary>
     /// タイトルを構成するインライン要素のコレクション。
@@ -43,8 +43,6 @@ public sealed class SectionTitleSyntax : BlockSyntax
         var currentPosition = position;
         var level = 0;
         var inlineElementsBuilder = ImmutableArray.CreateBuilder<InlineSyntax>();
-        var titleBuilder = new StringBuilder();
-        var markerFinished = false;
 
         for (var i = 0; i < internalNode.SlotCount; i++)
         {
@@ -54,59 +52,22 @@ public sealed class SectionTitleSyntax : BlockSyntax
                 continue;
             }
 
-            // トークンの処理
             if (slot is InternalToken internalToken)
             {
                 var token = new SyntaxToken(internalToken, this, currentPosition, i);
                 this._tokens.Add(token);
 
-                // 種別ごとの処理
-                // IDE0010: SyntaxKind の全ケースを網羅する必要なし - タイトルに関連する種別のみ処理
-#pragma warning disable IDE0010
-                switch (slot.Kind)
+                if (slot.Kind == SyntaxKind.EqualsToken)
                 {
-                    case SyntaxKind.EqualsToken:
-                        level++;
-                        this.Marker ??= token;
-                        break;
-
-                    case SyntaxKind.WhitespaceToken:
-                        if (markerFinished)
-                        {
-                            // マーカー後の空白はタイトルの一部
-                            titleBuilder.Append(internalToken.Text);
-                        }
-                        else
-                        {
-                            // マーカー直後の空白（スキップしてマーカー終了）
-                            markerFinished = true;
-                        }
-
-                        break;
-
-                    case SyntaxKind.TextToken:
-                        markerFinished = true;
-                        titleBuilder.Append(internalToken.Text);
-                        break;
-
-                    default:
-                        // その他のトークンもタイトルの一部として扱う
-                        if (markerFinished)
-                        {
-                            titleBuilder.Append(internalToken.Text);
-                        }
-
-                        break;
+                    level++;
+                    // 最後の = トークンが Marker になる（TrailingTrivia に空白を含む）
+                    this.Marker = token;
                 }
-#pragma warning restore IDE0010
             }
             else if (slot.Kind == SyntaxKind.InlineText)
             {
-                // InlineSyntax ノードの処理
-                markerFinished = true;
                 var inlineText = new InlineTextSyntax(slot, this, currentPosition, syntaxTree);
                 inlineElementsBuilder.Add(inlineText);
-                titleBuilder.Append(inlineText.Text);
             }
 
             currentPosition += slot.FullWidth;

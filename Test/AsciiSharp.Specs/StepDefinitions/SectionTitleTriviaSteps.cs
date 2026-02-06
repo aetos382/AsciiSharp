@@ -38,14 +38,11 @@ public sealed class SectionTitleTriviaSteps
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
         Assert.IsNotNull(sectionTitle.Marker, "セクションタイトルのマーカーが null です。");
 
-        // TODO: Phase 5 で TrailingTrivia プロパティを実装後に有効化
-        // var hasWhitespaceTrivia = sectionTitle.Marker.TrailingTrivia
-        //     .Any(t => t.Kind == SyntaxKind.WhitespaceTrivia);
-        // Assert.IsTrue(hasWhitespaceTrivia,
-        //     "セクションタイトルのマーカーの TrailingTrivia に空白がありません。");
-
-        // Phase 5 まで失敗させる
-        Assert.Fail("TrailingTrivia プロパティは Phase 5 で実装予定です。");
+        var marker = sectionTitle.Marker.Value;
+        var hasWhitespaceTrivia = marker.TrailingTrivia
+            .Any(t => t.Kind == SyntaxKind.WhitespaceTrivia);
+        Assert.IsTrue(hasWhitespaceTrivia,
+            "セクションタイトルのマーカーの TrailingTrivia に空白がありません。");
     }
 
     /// <summary>

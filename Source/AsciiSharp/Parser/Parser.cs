@@ -281,16 +281,30 @@ internal sealed class AsciiDocParser
 
         var startPosition = this._lexer.Position - this.Current.FullWidth;
 
-        // = を読み取る
+        // = を読み取る（最後の = にマーカー後の空白を TrailingTrivia として付与）
+        InternalToken? lastEqualsToken = null;
         while (this.Current.Kind == SyntaxKind.EqualsToken)
         {
-            this.EmitCurrentToken();
+            if (lastEqualsToken is not null)
+            {
+                this._sink.EmitToken(lastEqualsToken);
+            }
+
+            lastEqualsToken = this.Current;
+            this.Advance();
         }
 
-        // 空白を読み取る
-        if (this.Current.Kind == SyntaxKind.WhitespaceToken)
+        if (lastEqualsToken is not null)
         {
-            this.EmitCurrentToken();
+            if (this.Current.Kind == SyntaxKind.WhitespaceToken)
+            {
+                // マーカー後の空白を最後の = トークンの TrailingTrivia として付与
+                var whitespaceTrivia = InternalTrivia.Whitespace(this.Current.Text);
+                lastEqualsToken = lastEqualsToken.WithTrivia(null, [whitespaceTrivia]);
+                this.Advance();
+            }
+
+            this._sink.EmitToken(lastEqualsToken);
         }
 
         // タイトルテキストを読み取る（InlineText ノードとしてラップ）
