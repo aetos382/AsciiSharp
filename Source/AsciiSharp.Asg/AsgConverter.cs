@@ -242,15 +242,6 @@ public sealed class AsgConverter
         }
 
         /// <summary>
-        /// <see cref="SyntaxToken"/> の位置情報を <see cref="AsgLocation"/> に変換する。
-        /// </summary>
-        private AsgLocation? GetTokenLocation(SyntaxToken token)
-        {
-            var span = token.Span;
-            return this.GetLocationFromSpan(span.Start, span.End);
-        }
-
-        /// <summary>
         /// 開始位置と終了位置から <see cref="AsgLocation"/> を作成する。
         /// </summary>
         /// <param name="startOffset">開始オフセット（0-based、包含）。</param>

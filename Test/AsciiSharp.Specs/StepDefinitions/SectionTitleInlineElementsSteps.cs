@@ -34,10 +34,10 @@ public sealed class SectionTitleInlineElementsSteps
         var document = tree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
-        var sectionTitle = this.GetFirstSectionTitle(document);
+        var sectionTitle = GetFirstSectionTitle(document);
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
 
-        Assert.AreEqual(expectedCount, sectionTitle.InlineElements.Length,
+        Assert.HasCount(expectedCount, sectionTitle.InlineElements,
             $"InlineElements の数が一致しません。期待: {expectedCount}, 実際: {sectionTitle.InlineElements.Length}");
     }
 
@@ -50,7 +50,7 @@ public sealed class SectionTitleInlineElementsSteps
         var document = tree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
-        var sectionTitle = this.GetFirstSectionTitle(document);
+        var sectionTitle = GetFirstSectionTitle(document);
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
         Assert.IsGreaterThan(0, sectionTitle.InlineElements.Length, "InlineElements が空です。");
 
@@ -68,7 +68,7 @@ public sealed class SectionTitleInlineElementsSteps
         var document = tree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
-        var sectionTitle = this.GetFirstSectionTitle(document);
+        var sectionTitle = GetFirstSectionTitle(document);
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
         Assert.IsGreaterThan(0, sectionTitle.InlineElements.Length, "InlineElements が空です。");
 
@@ -90,7 +90,7 @@ public sealed class SectionTitleInlineElementsSteps
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
         Assert.IsNotNull(document.Header.Title, "Header は Title を持つ必要があります。");
 
-        Assert.AreEqual(expectedCount, document.Header.Title.InlineElements.Length,
+        Assert.HasCount(expectedCount, document.Header.Title.InlineElements,
             $"InlineElements の数が一致しません。期待: {expectedCount}, 実際: {document.Header.Title.InlineElements.Length}");
     }
 
@@ -122,7 +122,7 @@ public sealed class SectionTitleInlineElementsSteps
         var document = tree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
-        var sectionTitle = this.GetFirstSectionTitle(document);
+        var sectionTitle = GetFirstSectionTitle(document);
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
 
         // 各要素の Position が前の要素以上であることを確認
@@ -131,8 +131,8 @@ public sealed class SectionTitleInlineElementsSteps
             var prev = sectionTitle.InlineElements[i - 1];
             var curr = sectionTitle.InlineElements[i];
 
-            Assert.IsTrue(curr.Position >= prev.Position,
-                $"InlineElements[{i}].Position ({curr.Position}) が InlineElements[{i - 1}].Position ({prev.Position}) より小さいです。");
+            Assert.IsGreaterThanOrEqualTo(prev.Position,
+curr.Position, $"InlineElements[{i}].Position ({curr.Position}) が InlineElements[{i - 1}].Position ({prev.Position}) より小さいです。");
         }
     }
 
@@ -168,7 +168,7 @@ public sealed class SectionTitleInlineElementsSteps
     /// <summary>
     /// 最初のセクションタイトルを取得する（ヘッダーのタイトルまたはボディの最初のセクションのタイトル）。
     /// </summary>
-    private SectionTitleSyntax? GetFirstSectionTitle(DocumentSyntax document)
+    private static SectionTitleSyntax? GetFirstSectionTitle(DocumentSyntax document)
     {
         // まずヘッダーのタイトルを確認
         if (document.Header?.Title is not null)

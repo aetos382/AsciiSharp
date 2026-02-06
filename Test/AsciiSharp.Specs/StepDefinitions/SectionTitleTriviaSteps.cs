@@ -34,7 +34,7 @@ public sealed class SectionTitleTriviaSteps
         var document = tree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
-        var sectionTitle = this.GetFirstSectionTitle(document);
+        var sectionTitle = GetFirstSectionTitle(document);
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
         Assert.IsNotNull(sectionTitle.Marker, "セクションタイトルのマーカーが null です。");
 
@@ -51,7 +51,7 @@ public sealed class SectionTitleTriviaSteps
     /// <summary>
     /// 最初のセクションタイトルを取得する。
     /// </summary>
-    private SectionTitleSyntax? GetFirstSectionTitle(DocumentSyntax document)
+    private static SectionTitleSyntax? GetFirstSectionTitle(DocumentSyntax document)
     {
         // まずヘッダーのタイトルを確認
         if (document.Header?.Title is not null)
