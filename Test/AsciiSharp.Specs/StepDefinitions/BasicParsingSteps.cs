@@ -32,9 +32,15 @@ public sealed class BasicParsingSteps
     }
 
     [Given(@"以下の AsciiDoc 文書がある:")]
-    public void Given以下のAsciiDoc文書がある(string multilineText)
+    [Given(@"AsciiDoc テキスト ""(.*)"" がある")]
+    public void Given以下のAsciiDoc文書がある(string text)
     {
-        this.CurrentSourceText = multilineText;
+        ArgumentNullException.ThrowIfNull(text);
+
+        // Gherkin はエスケープシーケンスを解釈しないため、
+        // feature ファイル内の \n を実際の改行文字に変換する。
+        this.CurrentSourceText = text
+            .Replace(@"\n", "\n", StringComparison.Ordinal);
     }
 
     [Given(@"空の AsciiDoc 文書がある")]

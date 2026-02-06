@@ -66,7 +66,7 @@
 - マーカー（`=`）のみで本文テキストがない場合（例: `==`）、インライン要素コレクションは空になる
 - マーカーと本文の間に空白が複数あある場合、それらすべてがトリビアとして保持される
 - レベル 6（`======`）を超える `=` の数の場合、Level はそのまま `=` の数となる（上限は制限しない；上限の強制は別フィーチャーで対応）
-- タイトル本文に末尾の空白がある場合：AsciiDoc 正規化仕様に従い、改行前の末尾空白は削除される（参照: https://docs.asciidoctor.org/asciidoc/latest/normalization/）
+- タイトル本文に末尾の空白がある場合：AsciiDoc 正規化仕様（参照: https://docs.asciidoctor.org/asciidoc/latest/normalization/ ）では改行前の末尾空白を削除するとされるが、本パーサーでは full-fidelity（完全復元）原則を優先し、末尾空白もそのまま保持する。正規化は本パーサーの責務外とする
 
 ## Requirements *(mandatory)*
 
