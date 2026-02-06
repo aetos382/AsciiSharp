@@ -113,6 +113,22 @@ public sealed class SectionTitleInlineElementsSteps
             $"テキストが一致しません。期待: '{expectedText}', 実際: '{firstElement.Text}'");
     }
 
+    [Then(@"最初のセクションタイトルのレベルは (\d+) である")]
+    public void Then最初のセクションタイトルのレベルはである(int expectedLevel)
+    {
+        var tree = this._basicParsingSteps.CurrentSyntaxTree;
+        Assert.IsNotNull(tree, "構文木が null です。");
+
+        var document = tree.Root as DocumentSyntax;
+        Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
+
+        var sectionTitle = GetFirstSectionTitle(document);
+        Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
+
+        Assert.AreEqual(expectedLevel, sectionTitle.Level,
+            $"レベルが一致しません。期待: {expectedLevel}, 実際: {sectionTitle.Level}");
+    }
+
     [Then(@"最初のセクションタイトルの InlineElements は構文上の出現順に並んでいる")]
     public void Then最初のセクションタイトルのInlineElementsは構文上の出現順に並んでいる()
     {
