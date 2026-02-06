@@ -15,18 +15,18 @@ namespace AsciiSharp.Syntax;
 /// </remarks>
 public sealed class SectionTitleSyntax : BlockSyntax
 {
-    private readonly List<SyntaxToken> _tokens = [];
+    private readonly List<SyntaxNodeOrToken> _children = [];
 
     /// <summary>
-    /// セクションレベル（= の数、1-6）。
+    /// セクションレベル（マーカー内の = の文字数）。
     /// </summary>
     public int Level { get; }
 
     /// <summary>
-    /// セクションマーカー（= の並びの最後のトークン）。
-    /// マーカー後の空白は TrailingTrivia として保持される。
+    /// セクションマーカー（連続する = をまとめた単一トークン、例: "==", "==="）。
+    /// マーカー後の空白はこのトークンの TrailingTrivia として保持される。
     /// </summary>
-    public SyntaxToken? Marker { get; private set; }
+    public SyntaxToken? Marker { get; }
 
     /// <summary>
     /// タイトルを構成するインライン要素のコレクション。
@@ -41,7 +41,7 @@ public sealed class SectionTitleSyntax : BlockSyntax
         : base(internalNode, parent, position, syntaxTree)
     {
         var currentPosition = position;
-        var level = 0;
+        SyntaxToken? marker = null;
         var inlineElementsBuilder = ImmutableArray.CreateBuilder<InlineSyntax>();
 
         for (var i = 0; i < internalNode.SlotCount; i++)
@@ -55,25 +55,25 @@ public sealed class SectionTitleSyntax : BlockSyntax
             if (slot is InternalToken internalToken)
             {
                 var token = new SyntaxToken(internalToken, this, currentPosition, i);
-                this._tokens.Add(token);
+                this._children.Add(new SyntaxNodeOrToken(token));
 
                 if (slot.Kind == SyntaxKind.EqualsToken)
                 {
-                    level++;
-                    // 最後の = トークンが Marker になる（TrailingTrivia に空白を含む）
-                    this.Marker = token;
+                    marker = token;
                 }
             }
             else if (slot.Kind == SyntaxKind.InlineText)
             {
                 var inlineText = new InlineTextSyntax(slot, this, currentPosition, syntaxTree);
                 inlineElementsBuilder.Add(inlineText);
+                this._children.Add(new SyntaxNodeOrToken(inlineText));
             }
 
             currentPosition += slot.FullWidth;
         }
 
-        this.Level = level;
+        this.Level = marker?.Text.Length ?? 0;
+        this.Marker = marker;
         this.InlineElements = inlineElementsBuilder.ToImmutable();
     }
 
@@ -85,12 +85,18 @@ public sealed class SectionTitleSyntax : BlockSyntax
     {
         if (this.InlineElements.IsEmpty)
         {
-            // トークンからタイトルを構築（レガシーパス）
+            // タイトルテキストがない場合（InlineText ノードが生成されなかった場合）
             var titleBuilder = new StringBuilder();
             var markerFinished = false;
 
-            foreach (var token in this._tokens)
+            foreach (var child in this._children)
             {
+                if (!child.IsToken)
+                {
+                    continue;
+                }
+
+                var token = child.AsToken();
                 switch (token.Kind)
                 {
                     case SyntaxKind.EqualsToken:
@@ -139,23 +145,19 @@ public sealed class SectionTitleSyntax : BlockSyntax
     /// <inheritdoc />
     public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
     {
-        foreach (var token in this._tokens)
+        foreach (var child in this._children)
         {
-            yield return new SyntaxNodeOrToken(token);
-        }
-
-        // InlineElements も子ノードとして返す
-        foreach (var element in this.InlineElements)
-        {
-            yield return new SyntaxNodeOrToken(element);
+            yield return child;
         }
     }
 
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        // リーフノードなので、子孫にターゲットノードは存在しない
-        return this;
+        return this.ReplaceInDescendants(
+            oldNode,
+            newNode,
+            internalNode => new SectionTitleSyntax(internalNode, null, 0, null));
     }
 
     /// <inheritdoc />

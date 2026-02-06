@@ -237,7 +237,7 @@ internal sealed class AsciiDocParser
 
             this._sink.StartNode(SyntaxKind.Section);
 
-            var currentLevel = this.CountEqualsAtLineStart();
+            var currentLevel = this.Current.Text.Length;
 
             // セクションタイトルを解析
             this.ParseSectionTitle();
@@ -281,30 +281,21 @@ internal sealed class AsciiDocParser
 
         var startPosition = this._lexer.Position - this.Current.FullWidth;
 
-        // = を読み取る（最後の = にマーカー後の空白を TrailingTrivia として付与）
-        InternalToken? lastEqualsToken = null;
-        while (this.Current.Kind == SyntaxKind.EqualsToken)
+        // セクションマーカー（= の並び）を読み取る
+        if (this.Current.Kind == SyntaxKind.EqualsToken)
         {
-            if (lastEqualsToken is not null)
-            {
-                this._sink.EmitToken(lastEqualsToken);
-            }
-
-            lastEqualsToken = this.Current;
+            var markerToken = this.Current;
             this.Advance();
-        }
 
-        if (lastEqualsToken is not null)
-        {
             if (this.Current.Kind == SyntaxKind.WhitespaceToken)
             {
-                // マーカー後の空白を最後の = トークンの TrailingTrivia として付与
+                // マーカー後の空白を TrailingTrivia として付与
                 var whitespaceTrivia = InternalTrivia.Whitespace(this.Current.Text);
-                lastEqualsToken = lastEqualsToken.WithTrivia(null, [whitespaceTrivia]);
+                markerToken = markerToken.WithTrivia(null, [whitespaceTrivia]);
                 this.Advance();
             }
 
-            this._sink.EmitToken(lastEqualsToken);
+            this._sink.EmitToken(markerToken);
         }
 
         // タイトルテキストを読み取る（InlineText ノードとしてラップ）
@@ -559,11 +550,11 @@ internal sealed class AsciiDocParser
     }
 
     /// <summary>
-    /// 現在位置がドキュメントタイトル（レベル1セクション）かどうか。
+    /// 現在位置がドキュメントタイトル（レベル1セクション、= 1 つ）かどうか。
     /// </summary>
     private bool IsAtDocumentTitle()
     {
-        return this.Current.Kind == SyntaxKind.EqualsToken && this.Peek().Kind != SyntaxKind.EqualsToken;
+        return this.Current.Kind == SyntaxKind.EqualsToken && this.Current.Text.Length == 1;
     }
 
     /// <summary>
@@ -584,29 +575,7 @@ internal sealed class AsciiDocParser
             return false;
         }
 
-        var equalsCount = this.CountEqualsAtLineStart();
-        return equalsCount <= level;
-    }
-
-    /// <summary>
-    /// 行頭の = の数を数える。
-    /// </summary>
-    private int CountEqualsAtLineStart()
-    {
-        if (this.Current.Kind != SyntaxKind.EqualsToken)
-        {
-            return 0;
-        }
-
-        var count = 1;
-        var offset = 0;
-        while (this.Peek(offset).Kind == SyntaxKind.EqualsToken)
-        {
-            count++;
-            offset++;
-        }
-
-        return count;
+        return this.Current.Text.Length <= level;
     }
 
     /// <summary>
