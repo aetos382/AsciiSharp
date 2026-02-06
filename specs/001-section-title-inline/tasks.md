@@ -79,12 +79,12 @@
 - [x] T015 [US3] 認識条件の .feature ファイルを作成（5 シナリオ） in `Test/AsciiSharp.Specs/Features/SectionTitleRecognition.feature`
 - [x] T016 [US3] セクションレベル検証のステップ定義を追加 in `Test/AsciiSharp.Specs/StepDefinitions/SectionTitleInlineElementsSteps.cs`
 
-### 実装 (Green フェーズ — 未完了)
+### 実装 (Green フェーズ — 完了)
 
-- [ ] T017 [US3] `IsAtSectionTitle()` に `Text.Length <= 6` と `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
-- [ ] T018 [US3] `IsAtDocumentTitle()` に `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
-- [ ] T019 [US3] `IsAtSectionTitleOfLevelOrHigher()` に `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
-- [ ] T020 [US3] ビルドとすべてのテスト（92 件）が成功することを確認
+- [x] T017 [US3] `IsAtSectionTitle()` に `Text.Length <= 6` と `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
+- [x] T018 [US3] `IsAtDocumentTitle()` に `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
+- [x] T019 [US3] `IsAtSectionTitleOfLevelOrHigher()` に `Peek().Kind == WhitespaceToken` の条件を追加 in `Source/AsciiSharp/Parser/Parser.cs`
+- [x] T020 [US3] ビルドとすべてのテスト（92 件）が成功することを確認
 
 **Checkpoint**: US3 完了。Level 7+ と空白なしが段落として解析される。ToFullString() の完全復元が維持される。
 
@@ -94,9 +94,9 @@
 
 **Purpose**: リファクタリングと品質確認
 
-- [ ] T021 ビルド警告がゼロであることを確認し、必要に応じて警告を解消
-- [ ] T022 `IsAtSectionTitle()` / `IsAtDocumentTitle()` / `IsAtSectionTitleOfLevelOrHigher()` の XML ドキュメントコメントを更新 in `Source/AsciiSharp/Parser/Parser.cs`
-- [ ] T023 quickstart.md の検証シナリオを手動で確認
+- [x] T021 ビルド警告がゼロであることを確認し、必要に応じて警告を解消
+- [x] T022 `IsAtSectionTitle()` / `IsAtDocumentTitle()` / `IsAtSectionTitleOfLevelOrHigher()` の XML ドキュメントコメントを更新 in `Source/AsciiSharp/Parser/Parser.cs`
+- [x] T023 quickstart.md の検証シナリオを手動で確認
 
 ---
 
@@ -107,14 +107,14 @@
 - **Phase 1 (Setup)**: 完了済み
 - **Phase 2 (US2)**: Phase 1 に依存 → 完了済み
 - **Phase 3 (US1)**: Phase 2 に依存（InlineTextSyntax を使用） → 完了済み
-- **Phase 4 (US3)**: Phase 1 に依存、US1/US2 とは独立 → **Green フェーズ未完了**
-- **Phase 5 (Polish)**: Phase 4 完了後に実行
+- **Phase 4 (US3)**: Phase 1 に依存、US1/US2 とは独立 → 完了
+- **Phase 5 (Polish)**: Phase 4 完了後に実行 → 完了
 
 ### User Story Dependencies
 
 - **US2 (P2)**: 他のストーリーに依存しない → 完了済み
 - **US1 (P1)**: US2 に依存（InlineTextSyntax を使用） → 完了済み
-- **US3 (P3)**: 他のストーリーに依存しない → Red 完了、Green 未実施
+- **US3 (P3)**: 他のストーリーに依存しない → 完了
 
 ### 残タスクの実行順序
 
@@ -157,9 +157,9 @@ T020: dotnet build && dotnet test
 | Phase 2: US2 | 5 | 完了 |
 | Phase 3: US1 | 6 | 完了 |
 | Phase 4: US3 (Red) | 2 | 完了 |
-| Phase 4: US3 (Green) | 4 | 未実施 |
-| Phase 5: Polish | 3 | 未実施 |
-| **合計** | **23** | **完了 16 / 残 7** |
+| Phase 4: US3 (Green) | 4 | 完了 |
+| Phase 5: Polish | 3 | 完了 |
+| **合計** | **23** | **完了 23 / 残 0** |
 
 ---
 

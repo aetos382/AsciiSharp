@@ -550,32 +550,37 @@ internal sealed class AsciiDocParser
     }
 
     /// <summary>
-    /// 現在位置がドキュメントタイトル（レベル1セクション、= 1 つ）かどうか。
+    /// 現在位置がドキュメントタイトル（レベル 1 セクション）かどうかを判定する。
+    /// <c>=</c> が 1 つで、その後に空白が続く場合に <see langword="true"/> を返す。
     /// </summary>
     private bool IsAtDocumentTitle()
     {
-        return this.Current.Kind == SyntaxKind.EqualsToken && this.Current.Text.Length == 1;
+        return this.Current.Kind == SyntaxKind.EqualsToken
+            && this.Current.Text.Length == 1
+            && this.Peek().Kind == SyntaxKind.WhitespaceToken;
     }
 
     /// <summary>
-    /// 現在位置がセクションタイトルかどうか。
+    /// 現在位置がセクションタイトルかどうかを判定する。
+    /// <c>=</c> が 1〜6 個で、その後に空白が続く場合に <see langword="true"/> を返す。
+    /// <c>=</c> が 7 個以上の場合、または空白が続かない場合は段落として扱われる。
     /// </summary>
     private bool IsAtSectionTitle()
     {
-        return this.Current.Kind == SyntaxKind.EqualsToken;
+        return this.Current.Kind == SyntaxKind.EqualsToken
+            && this.Current.Text.Length <= 6
+            && this.Peek().Kind == SyntaxKind.WhitespaceToken;
     }
 
     /// <summary>
-    /// 現在位置が指定レベル以上のセクションタイトルかどうか。
+    /// 現在位置が指定レベル以上のセクションタイトルかどうかを判定する。
+    /// <c>=</c> の数が <paramref name="level"/> 以下で、その後に空白が続く場合に <see langword="true"/> を返す。
     /// </summary>
     private bool IsAtSectionTitleOfLevelOrHigher(int level)
     {
-        if (this.Current.Kind != SyntaxKind.EqualsToken)
-        {
-            return false;
-        }
-
-        return this.Current.Text.Length <= level;
+        return this.Current.Kind == SyntaxKind.EqualsToken
+            && this.Current.Text.Length <= level
+            && this.Peek().Kind == SyntaxKind.WhitespaceToken;
     }
 
     /// <summary>

@@ -15,6 +15,9 @@ trim_trailing_whitespace = unset
 [*.md]
 trim_trailing_whitespace = false
 
+[*.feature]
+trim_trailing_whitespace = false
+
 [*.cs]
 indent_size = 4
 
