@@ -3,9 +3,10 @@
 ## クイック リファレンス
 
 ```bash
-dotnet build           # ビルド
-dotnet test            # テスト
-dotnet format          # フォーマット
+dotnet build              # ビルド
+dotnet test               # テスト
+dotnet format whitespace  # 空白フォーマット
+dotnet format style       # スタイル フォーマット
 ```
 
 ## 環境要件
@@ -85,7 +86,7 @@ AsciiSharp コア ライブラリでは以下の方針に従います。
 - コードを修正した場合、次のステップに進む前にビルドとテストを行います。
 - BDD の Green または Refactor ステップで、ビルドまたはテストに失敗した場合、修正してビルドとテストが通るようにしてから、次のステップに進みます。
 - ビルド警告は、Refactor ステップ中に修正または無効化します。次の Red ステップに進む際には警告ゼロの状態です。
-- ビルドとテストが通ったら一度コミットし、`dotnet format` で整形してからプッシュします。
+- ビルドとテストが通ったら一度コミットし、`dotnet format whitespace` と `dotnet format style` で整形してからプッシュします。
 
 ## 言語について
 
