@@ -11,7 +11,7 @@
 
 - Q: `TitleContent` プロパティの廃止について → A: `TitleContent` を削除し、全参照箇所を更新する
 - Q: `SyntaxKind.Text` の名前変更について → A: `SyntaxKind.Text` も `SyntaxKind.InlineText` にリネームし、全参照箇所を更新する
-- Q: レベル 6 を超える `=` の扱い → A: `=` の数をそのままカウントし、上限を制限しない（Level の上限は別フィーチャーで扱う）
+- Q: レベル 6 を超える `=` の扱い → A: ~~`=` の数をそのままカウントし、上限を制限しない（Level の上限は別フィーチャーで扱う）~~ ※ Session 2026-02-06 で FR-007/FR-011 により変更: Level は 1〜6、7 個以上は段落として扱う
 
 ### Session 2026-02-06
 
@@ -51,13 +51,13 @@
 
 ---
 
-### User Story 3 - SectionTitleSyntax の空白トリビアが適切に保持される（P3）
+### User Story 3 - セクション見出し認識条件の厳格化と空白トリビアの適切な保持（P3）
 
-開発者がセクションタイトルの構文木を再構築したテキストに変換したとき、マーカー（`=`）とタイトル本文の間の空白が元と同じ通り忠実に復元される。
+セクション見出しとして認識される条件を厳格化する。具体的には、`=` が 7 個以上の行（FR-011）および `=` の後に空白がない行（FR-012）をセクション見出しではなく段落として扱う。また、正しく認識されたセクションタイトルにおいて、マーカー（`=`）とタイトル本文の間の空白が忠実に復元される。
 
-**Why this priority**: 構文木のイミュタビリティと完全な復元可能性はこのプロジェクトの仕様要件であり、空白情報の喪失は仕様違反になる。
+**Why this priority**: 構文木のイミュタビリティと完全な復元可能性はこのプロジェクトの仕様要件であり、空白情報の喪失は仕様違反になる。また、AsciiDoc 仕様に準拠した正確な認識条件の実装は、パーサーの信頼性に直結する。
 
-**Independent Test**: `==  タイトル`（2つの半角スペース）をパースし、`ToFullString()` で復元したテキストが入力と完全一致することで検証できる。
+**Independent Test**: `======= Title` が ParagraphSyntax としてパースされること。`==タイトル` が ParagraphSyntax としてパースされること。`==  タイトル`（2つの半角スペース）をパースし、`ToFullString()` で復元したテキストが入力と完全一致すること。
 
 **Acceptance Scenarios**:
 
@@ -78,13 +78,13 @@
 
 ### Functional Requirements
 
-- **FR-001**: SectionTitleSyntax は「1〜6 個の `=` からなるマーカートークン」「マーカー後の空白トリビア（必須）」「0つ以上の InlineSyntax のコレクション」で構成される
+- **FR-001**: SectionTitleSyntax は「1〜6 個の `=` からなるマーカートークン（Level 範囲は FR-007 参照）」「マーカー後の空白トリビア（必須、FR-012 参照）」「0つ以上の InlineSyntax のコレクション」で構成される
 - **FR-002**: インライン要素コレクションは空白で分割せず、要素の種類ごとに区切られる（現時点では単一の InlineTextSyntax のみ）
 - **FR-003**: `TextSyntax` クラスは `InlineTextSyntax` にリネームされ、すべての参照箇所が更新される
 - **FR-004**: `ISyntaxVisitor` と `ISyntaxVisitor<TResult>` のメソッド名も `VisitText` から `VisitInlineText` へ更新される
 - **FR-005**: リネーム後も ParagraphSyntax やその他のインライン要素を生成する箇所で正しく動作する
 - **FR-006**: 構文木の完全な文字列復元（`ToFullString()`）が変更前と同じ結果を返す（イミュタビリティと復元可能性の維持）
-- **FR-007**: SectionTitleSyntax の `Level` プロパティはマーカー内の `=` の文字数（1〜6）で決まる。`=` が 7 個以上の場合はセクション見出しとして認識されない
+- **FR-007**: SectionTitleSyntax の `Level` プロパティはマーカー内の `=` の文字数（1〜6）で決まる。認識条件については FR-011 を参照
 - **FR-008**: `TitleContent` プロパティは削除され、タイトル文字列の取得はインライン要素コレクションから行う
 - **FR-009**: `TitleContent`・`TitleText` を参照している箇所（テスト StepDefinitions・Asg converter など）も同じフィーチャー内で更新する
 - **FR-010**: `SyntaxKind.Text` は `SyntaxKind.InlineText` にリネームされ、すべての参照箇所が更新される
