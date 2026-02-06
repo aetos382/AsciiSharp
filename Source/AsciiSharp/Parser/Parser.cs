@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
@@ -84,8 +85,7 @@ internal sealed class AsciiDocParser
             index++;
         }
 
-        // ここには到達しないが、コンパイラのために
-        return this._lexer.NextToken();
+        throw new UnreachableException();
     }
 
     /// <summary>
