@@ -15,6 +15,12 @@ namespace AsciiSharp.Parser;
 internal sealed class AsciiDocParser
 {
     /// <summary>
+    /// セクションマーカー (<c>=</c>) の最大長。
+    /// AsciiDoc ではセクションレベルは 0〜5 の 6 段階で、マーカーの <c>=</c> の数は 1〜6。
+    /// </summary>
+    private const int MaxSectionMarkerLength = 6;
+
+    /// <summary>
     /// 許容される最大ネストレベル。
     /// </summary>
     /// <remarks>
@@ -65,7 +71,7 @@ internal sealed class AsciiDocParser
     /// <summary>
     /// 指定オフセット先のトークンを先読みする。
     /// </summary>
-    /// <param name="offset">先読みオフセット（0 = 次のトークン）。</param>
+    /// <param name="offset">先読みオフセット（0 = Current の次のトークン）。</param>
     private InternalToken Peek(int offset)
     {
         Debug.Assert(offset >= 0, "offset は 0 以上でなければならない");
@@ -565,12 +571,12 @@ internal sealed class AsciiDocParser
     /// <summary>
     /// 現在位置がセクションタイトルかどうかを判定する。
     /// <c>=</c> が 1〜6 個で、その後に空白が続く場合に <see langword="true"/> を返す。
-    /// <c>=</c> が 7 個以上の場合、または空白が続かない場合は段落として扱われる。
+    /// <c>=</c> が 7 個以上の場合、または空白が続かない場合は <see langword="false"/> を返す。
     /// </summary>
     private bool IsAtSectionTitle()
     {
         return this.Current.Kind == SyntaxKind.EqualsToken
-            && this.Current.Text.Length <= 6
+            && this.Current.Text.Length <= MaxSectionMarkerLength
             && this.Peek().Kind == SyntaxKind.WhitespaceToken;
     }
 

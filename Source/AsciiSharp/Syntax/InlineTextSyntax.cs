@@ -56,7 +56,7 @@ public sealed class InlineTextSyntax : InlineSyntax
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        // リーフノードなので、子孫にターゲットノードは存在しない
+        // 子はすべてトークンなので、子孫にターゲットノードは存在しない
         return this;
     }
 
