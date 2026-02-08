@@ -66,7 +66,7 @@ public sealed class SyntaxHierarchySteps
     [Then(@"Text ノードは InlineSyntax である")]
     public void ThenTextノードはInlineSyntaxである()
     {
-        var text = this.FindFirstNodeOfKind(SyntaxKind.Text);
+        var text = this.FindFirstNodeOfKind(SyntaxKind.InlineText);
         Assert.IsNotNull(text, "Text ノードが見つかりません。");
         Assert.IsInstanceOfType<InlineSyntax>(text, "Text ノードは InlineSyntax である必要があります。");
     }
@@ -99,7 +99,7 @@ public sealed class SyntaxHierarchySteps
     [Then(@"Text ノードは BlockSyntax ではない")]
     public void ThenTextノードはBlockSyntaxではない()
     {
-        var text = this.FindFirstNodeOfKind(SyntaxKind.Text);
+        var text = this.FindFirstNodeOfKind(SyntaxKind.InlineText);
         Assert.IsNotNull(text, "Text ノードが見つかりません。");
         Assert.IsNotInstanceOfType<BlockSyntax>(text, "Text ノードは BlockSyntax ではありません。");
     }
@@ -169,7 +169,7 @@ public sealed class SyntaxHierarchySteps
     {
         Assert.IsNotNull(this._queriedNodes, "クエリが実行されていません。");
         Assert.IsTrue(
-            this._queriedNodes.Any(n => n.Kind == SyntaxKind.Text),
+            this._queriedNodes.Any(n => n.Kind == SyntaxKind.InlineText),
             "取得したノードに Text が含まれる必要があります。");
     }
 
@@ -187,7 +187,7 @@ public sealed class SyntaxHierarchySteps
     {
         Assert.IsNotNull(this._queriedNodes, "クエリが実行されていません。");
         Assert.IsFalse(
-            this._queriedNodes.Any(n => n.Kind == SyntaxKind.Text),
+            this._queriedNodes.Any(n => n.Kind == SyntaxKind.InlineText),
             "取得したノードに Text は含まれないはずです。");
     }
 

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using AsciiSharp.Diagnostics;
 using AsciiSharp.InternalSyntax;
@@ -14,6 +15,12 @@ namespace AsciiSharp.Parser;
 internal sealed class AsciiDocParser
 {
     /// <summary>
+    /// セクションマーカー (<c>=</c>) の最大長。
+    /// AsciiDoc ではセクションレベルは 0〜5 の 6 段階で、マーカーの <c>=</c> の数は 1〜6。
+    /// </summary>
+    private const int MaxSectionMarkerLength = 6;
+
+    /// <summary>
     /// 許容される最大ネストレベル。
     /// </summary>
     /// <remarks>
@@ -25,7 +32,7 @@ internal sealed class AsciiDocParser
     private readonly Lexer _lexer;
     private readonly ITreeSink _sink;
     private readonly List<Diagnostic> _diagnostics = [];
-    private InternalToken? _peekedToken;
+    private readonly Queue<InternalToken> _peekedTokens = new();
     private int _nestLevel;
 
     /// <summary>
@@ -58,9 +65,35 @@ internal sealed class AsciiDocParser
     /// </summary>
     private InternalToken Peek()
     {
-        this._peekedToken ??= this._lexer.NextToken();
+        return this.Peek(0);
+    }
 
-        return this._peekedToken;
+    /// <summary>
+    /// 指定オフセット先のトークンを先読みする。
+    /// </summary>
+    /// <param name="offset">先読みオフセット（0 = Current の次のトークン）。</param>
+    private InternalToken Peek(int offset)
+    {
+        Debug.Assert(offset >= 0, "offset は 0 以上でなければならない");
+
+        while (this._peekedTokens.Count <= offset)
+        {
+            this._peekedTokens.Enqueue(this._lexer.NextToken());
+        }
+
+        // Queue の offset 番目の要素を返す
+        var index = 0;
+        foreach (var token in this._peekedTokens)
+        {
+            if (index == offset)
+            {
+                return token;
+            }
+
+            index++;
+        }
+
+        throw new UnreachableException();
     }
 
     /// <summary>
@@ -68,10 +101,9 @@ internal sealed class AsciiDocParser
     /// </summary>
     private void Advance()
     {
-        if (this._peekedToken is not null)
+        if (this._peekedTokens.Count > 0)
         {
-            this.Current = this._peekedToken;
-            this._peekedToken = null;
+            this.Current = this._peekedTokens.Dequeue();
         }
         else
         {
@@ -213,7 +245,7 @@ internal sealed class AsciiDocParser
 
             this._sink.StartNode(SyntaxKind.Section);
 
-            var currentLevel = this.CountEqualsAtLineStart();
+            var currentLevel = this.Current.Text.Length;
 
             // セクションタイトルを解析
             this.ParseSectionTitle();
@@ -257,24 +289,35 @@ internal sealed class AsciiDocParser
 
         var startPosition = this._lexer.Position - this.Current.FullWidth;
 
-        // = を読み取る
-        while (this.Current.Kind == SyntaxKind.EqualsToken)
+        // セクションマーカー（= の並び）を読み取る
+        if (this.Current.Kind == SyntaxKind.EqualsToken)
         {
-            this.EmitCurrentToken();
+            var markerToken = this.Current;
+            this.Advance();
+
+            if (this.Current.Kind == SyntaxKind.WhitespaceToken)
+            {
+                // マーカー後の空白を TrailingTrivia として付与
+                var whitespaceTrivia = InternalTrivia.Whitespace(this.Current.Text);
+                markerToken = markerToken.WithTrivia(null, [whitespaceTrivia]);
+                this.Advance();
+            }
+
+            this._sink.EmitToken(markerToken);
         }
 
-        // 空白を読み取る
-        if (this.Current.Kind == SyntaxKind.WhitespaceToken)
-        {
-            this.EmitCurrentToken();
-        }
-
-        // タイトルテキストを読み取る
+        // タイトルテキストを読み取る（InlineText ノードとしてラップ）
         var hasTitleText = false;
-        while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
+        if (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
         {
-            hasTitleText = true;
-            this.EmitCurrentToken();
+            this._sink.StartNode(SyntaxKind.InlineText);
+            while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
+            {
+                hasTitleText = true;
+                this.EmitCurrentToken();
+            }
+
+            this._sink.FinishNode();
         }
 
         // タイトルテキストがない場合はエラーを報告
@@ -316,7 +359,8 @@ internal sealed class AsciiDocParser
                 }
                 else
                 {
-                    this.EmitCurrentToken();
+                    // テキストトークンを InlineText ノードとしてラップ
+                    this.ParseInlineText();
                 }
             }
 
@@ -325,6 +369,26 @@ internal sealed class AsciiDocParser
             {
                 this.EmitCurrentToken();
             }
+        }
+
+        this._sink.FinishNode();
+    }
+
+    /// <summary>
+    /// インラインテキストを解析する。
+    /// 連続するテキストトークンを InlineText ノードとしてラップする。
+    /// </summary>
+    private void ParseInlineText()
+    {
+        this._sink.StartNode(SyntaxKind.InlineText);
+
+        // リンクまたは行末に達するまでテキストトークンを読み取る
+        while (!this.IsAtEnd() &&
+               this.Current.Kind != SyntaxKind.NewLineToken &&
+               this.Current.Kind != SyntaxKind.EndOfFileToken &&
+               !this.IsAtLink())
+        {
+            this.EmitCurrentToken();
         }
 
         this._sink.FinishNode();
@@ -494,55 +558,37 @@ internal sealed class AsciiDocParser
     }
 
     /// <summary>
-    /// 現在位置がドキュメントタイトル（レベル1セクション）かどうか。
+    /// 現在位置がドキュメントタイトル（レベル 1 セクション）かどうかを判定する。
+    /// <c>=</c> が 1 つで、その後に空白が続く場合に <see langword="true"/> を返す。
     /// </summary>
     private bool IsAtDocumentTitle()
     {
-        return this.Current.Kind == SyntaxKind.EqualsToken && this.Peek().Kind != SyntaxKind.EqualsToken;
+        return this.Current.Kind == SyntaxKind.EqualsToken
+            && this.Current.Text.Length == 1
+            && this.Peek().Kind == SyntaxKind.WhitespaceToken;
     }
 
     /// <summary>
-    /// 現在位置がセクションタイトルかどうか。
+    /// 現在位置がセクションタイトルかどうかを判定する。
+    /// <c>=</c> が 1〜6 個で、その後に空白が続く場合に <see langword="true"/> を返す。
+    /// <c>=</c> が 7 個以上の場合、または空白が続かない場合は <see langword="false"/> を返す。
     /// </summary>
     private bool IsAtSectionTitle()
     {
-        return this.Current.Kind == SyntaxKind.EqualsToken;
+        return this.Current.Kind == SyntaxKind.EqualsToken
+            && this.Current.Text.Length <= MaxSectionMarkerLength
+            && this.Peek().Kind == SyntaxKind.WhitespaceToken;
     }
 
     /// <summary>
-    /// 現在位置が指定レベル以上のセクションタイトルかどうか。
+    /// 現在位置が指定レベル以上のセクションタイトルかどうかを判定する。
+    /// <c>=</c> の数が <paramref name="level"/> 以下で、その後に空白が続く場合に <see langword="true"/> を返す。
     /// </summary>
     private bool IsAtSectionTitleOfLevelOrHigher(int level)
     {
-        if (this.Current.Kind != SyntaxKind.EqualsToken)
-        {
-            return false;
-        }
-
-        var equalsCount = this.CountEqualsAtLineStart();
-        return equalsCount <= level;
-    }
-
-    /// <summary>
-    /// 行頭の = の数を数える。
-    /// </summary>
-    private int CountEqualsAtLineStart()
-    {
-        if (this.Current.Kind != SyntaxKind.EqualsToken)
-        {
-            return 0;
-        }
-
-        var count = 1;
-        var token = this.Peek();
-        while (token.Kind == SyntaxKind.EqualsToken)
-        {
-            count++;
-            // 先読みをさらに進めることはできないので、1つ目の = の後をカウント
-            break;
-        }
-
-        return count;
+        return this.Current.Kind == SyntaxKind.EqualsToken
+            && this.Current.Text.Length <= level
+            && this.Peek().Kind == SyntaxKind.WhitespaceToken;
     }
 
     /// <summary>

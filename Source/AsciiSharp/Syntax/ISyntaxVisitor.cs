@@ -48,10 +48,10 @@ public interface ISyntaxVisitor
     void VisitParagraph(ParagraphSyntax node);
 
     /// <summary>
-    /// TextSyntax ノードを訪問する。
+    /// InlineTextSyntax ノードを訪問する。
     /// </summary>
     /// <param name="node">訪問するノード。</param>
-    void VisitText(TextSyntax node);
+    void VisitInlineText(InlineTextSyntax node);
 
     /// <summary>
     /// LinkSyntax ノードを訪問する。

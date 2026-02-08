@@ -1,6 +1,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 
 using AsciiSharp.InternalSyntax;
@@ -14,27 +16,24 @@ namespace AsciiSharp.Syntax;
 /// </remarks>
 public sealed class SectionTitleSyntax : BlockSyntax
 {
-    private readonly List<SyntaxToken> _tokens = [];
+    private readonly List<SyntaxNodeOrToken> _children = [];
 
     /// <summary>
-    /// セクションレベル（= の数、1-6）。
+    /// セクションレベル（マーカー内の = の文字数）。
     /// </summary>
     public int Level { get; }
 
     /// <summary>
-    /// タイトルのテキスト部分（最初のテキストトークン）。
-    /// </summary>
-    public SyntaxToken? TitleText { get; }
-
-    /// <summary>
-    /// セクションマーカー（= の並び）。
+    /// セクションマーカー（連続する = をまとめた単一トークン、例: "==", "==="）。
+    /// マーカー後の空白はこのトークンの TrailingTrivia として保持される。
     /// </summary>
     public SyntaxToken? Marker { get; }
 
     /// <summary>
-    /// タイトルの内容（マーカーと空白を除いた全テキスト）。
+    /// タイトルを構成するインライン要素のコレクション。
+    /// 構文上の出現順に並ぶ（各要素の Position は前の要素以上）。
     /// </summary>
-    public string TitleContent { get; }
+    public ImmutableArray<InlineSyntax> InlineElements { get; }
 
     /// <summary>
     /// SectionTitleSyntax を作成する。
@@ -43,9 +42,8 @@ public sealed class SectionTitleSyntax : BlockSyntax
         : base(internalNode, parent, position, syntaxTree)
     {
         var currentPosition = position;
-        var level = 0;
-        var titleBuilder = new StringBuilder();
-        var markerAndSpaceFinished = false;
+        SyntaxToken? marker = null;
+        var inlineElementsBuilder = ImmutableArray.CreateBuilder<InlineSyntax>();
 
         for (var i = 0; i < internalNode.SlotCount; i++)
         {
@@ -55,73 +53,72 @@ public sealed class SectionTitleSyntax : BlockSyntax
                 continue;
             }
 
-            // すべてのトークンをリストに追加
             if (slot is InternalToken internalToken)
             {
                 var token = new SyntaxToken(internalToken, this, currentPosition, i);
-                this._tokens.Add(token);
+                this._children.Add(new SyntaxNodeOrToken(token));
 
-                // 種別ごとの処理
-                // IDE0010: SyntaxKind の全ケースを網羅する必要なし - タイトルに関連する種別のみ処理
-#pragma warning disable IDE0010
-                switch (slot.Kind)
+                if (slot.Kind == SyntaxKind.EqualsToken)
                 {
-                    case SyntaxKind.EqualsToken:
-                        level++;
-                        this.Marker ??= token;
-                        break;
-
-                    case SyntaxKind.WhitespaceToken:
-                        if (markerAndSpaceFinished)
-                        {
-                            titleBuilder.Append(internalToken.Text);
-                        }
-                        else
-                        {
-                            markerAndSpaceFinished = true;
-                        }
-
-                        break;
-
-                    case SyntaxKind.TextToken:
-                        markerAndSpaceFinished = true;
-                        titleBuilder.Append(internalToken.Text);
-                        this.TitleText ??= token;
-                        break;
-
-                    default:
-                        // その他のトークンもタイトルの一部として扱う
-                        if (markerAndSpaceFinished)
-                        {
-                            titleBuilder.Append(internalToken.Text);
-                        }
-
-                        break;
+                    marker = token;
                 }
-#pragma warning restore IDE0010
+            }
+            else if (slot.Kind == SyntaxKind.InlineText)
+            {
+                var inlineText = new InlineTextSyntax(slot, this, currentPosition, syntaxTree);
+                inlineElementsBuilder.Add(inlineText);
+                this._children.Add(new SyntaxNodeOrToken(inlineText));
+            }
+            else
+            {
+                Debug.Fail($"SectionTitleSyntax: 未知のスロット種別 {slot.Kind}");
             }
 
             currentPosition += slot.FullWidth;
         }
 
-        this.Level = level;
-        this.TitleContent = titleBuilder.ToString().Trim();
+        this.Level = marker?.Text.Length ?? 0;
+        this.Marker = marker;
+        this.InlineElements = inlineElementsBuilder.ToImmutable();
+    }
+
+    /// <summary>
+    /// タイトルの内容を取得する（InlineElements から構築）。
+    /// </summary>
+    /// <returns>タイトルのテキスト内容。</returns>
+    public string GetTitleContent()
+    {
+        if (this.InlineElements.IsEmpty)
+        {
+            return string.Empty;
+        }
+
+        // InlineElements からタイトルを構築
+        var sb = new StringBuilder();
+        foreach (var element in this.InlineElements)
+        {
+            sb.Append(element.ToFullString());
+        }
+
+        return sb.ToString().Trim();
     }
 
     /// <inheritdoc />
     public override IEnumerable<SyntaxNodeOrToken> ChildNodesAndTokens()
     {
-        foreach (var token in this._tokens)
+        foreach (var child in this._children)
         {
-            yield return new SyntaxNodeOrToken(token);
+            yield return child;
         }
     }
 
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        // リーフノードなので、子孫にターゲットノードは存在しない
-        return this;
+        return this.ReplaceInDescendants(
+            oldNode,
+            newNode,
+            internalNode => new SectionTitleSyntax(internalNode, null, 0, null));
     }
 
     /// <inheritdoc />

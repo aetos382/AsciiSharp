@@ -73,7 +73,7 @@ public sealed class CommentParsingSteps
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
 
-        var actualTitle = document.Header.Title?.TitleContent;
+        var actualTitle = document.Header.Title?.GetTitleContent();
         Assert.AreEqual(expectedTitle, actualTitle, $"タイトルが一致しません。期待: '{expectedTitle}', 実際: '{actualTitle}'");
     }
 

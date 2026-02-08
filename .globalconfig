@@ -36,6 +36,7 @@ dotnet_diagnostic.IDE0003.severity = none
 dotnet_diagnostic.IDE0005.severity = suggestion
 dotnet_diagnostic.IDE0007.severity = suggestion
 dotnet_diagnostic.IDE0008.severity = none
+dotnet_diagnostic.IDE0010.severity = suggestion
 dotnet_diagnostic.IDE0016.severity = suggestion
 dotnet_diagnostic.IDE0022.severity = suggestion
 dotnet_diagnostic.IDE0023.severity = suggestion

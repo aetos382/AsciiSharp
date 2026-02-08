@@ -215,6 +215,11 @@ internal sealed class Lexer
         {
             case '=':
                 this.Position++;
+                while (!this.IsAtEnd && this.GetCurrent() == '=')
+                {
+                    this.Position++;
+                }
+
                 kind = SyntaxKind.EqualsToken;
                 break;
 

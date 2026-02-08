@@ -11,6 +11,20 @@
         "command": "cmd.exe",
         "args": [ "/c", "echo Direct commits to main are not allowed. && exit 1" ]
       }
+    },
+    {
+      "name": "dotnet-format-whitespace",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": [ "format", "whitespace", "--include", "${staged}" ],
+      "include": [ "**/*.cs" ]
+    },
+    {
+      "name": "dotnet-format-style",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": [ "format", "style", "--include", "${staged}" ],
+      "include": [ "**/*.cs" ]
     }
   ]
 }

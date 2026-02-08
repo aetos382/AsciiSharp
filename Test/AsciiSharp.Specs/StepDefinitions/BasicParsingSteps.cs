@@ -32,9 +32,15 @@ public sealed class BasicParsingSteps
     }
 
     [Given(@"以下の AsciiDoc 文書がある:")]
-    public void Given以下のAsciiDoc文書がある(string multilineText)
+    [Given(@"AsciiDoc テキスト ""(.*)"" がある")]
+    public void Given以下のAsciiDoc文書がある(string text)
     {
-        this.CurrentSourceText = multilineText;
+        ArgumentNullException.ThrowIfNull(text);
+
+        // Gherkin はエスケープシーケンスを解釈しないため、
+        // feature ファイル内の \n を実際の改行文字に変換する。
+        this.CurrentSourceText = text
+            .Replace(@"\n", "\n", StringComparison.Ordinal);
     }
 
     [Given(@"空の AsciiDoc 文書がある")]
@@ -153,7 +159,7 @@ public sealed class BasicParsingSteps
         var document = this.CurrentSyntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
-        var actualTitle = document.Header.Title?.TitleContent;
+        var actualTitle = document.Header.Title?.GetTitleContent();
         Assert.AreEqual(expectedTitle, actualTitle, $"タイトルが一致しません。期待: '{expectedTitle}', 実際: '{actualTitle}'");
     }
 
@@ -189,7 +195,7 @@ public sealed class BasicParsingSteps
 
         var section = sections[sectionIndex - 1];
         Assert.IsNotNull(section, $"セクション {sectionIndex} が null です。");
-        var actualTitle = section.Title?.TitleContent;
+        var actualTitle = section.Title?.GetTitleContent();
         Assert.AreEqual(expectedTitle, actualTitle, $"セクション {sectionIndex} のタイトルが一致しません。期待: '{expectedTitle}', 実際: '{actualTitle}'");
     }
 

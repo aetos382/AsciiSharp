@@ -20,8 +20,8 @@
         もし 文書を解析する
         かつ 全ノードを訪問する Visitor で走査する
         ならば すべてのノードが訪問される
-        # Document, Header, SectionTitle, Body, Paragraph の 5 ノード
-        かつ 訪問されたノード数は 5 である
+        # Document, Header, SectionTitle, Body, Paragraph, InlineText の 6 ノード
+        かつ 訪問されたノード数は 6 である
 
     @Acceptance @Scenario2
     シナリオ: Visitor でリンクノードのみを処理する

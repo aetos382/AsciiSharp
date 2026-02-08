@@ -135,11 +135,11 @@ public sealed class VisitorSteps
         Assert.IsGreaterThanOrEqualTo(2, this._collectedSectionTitles.Count,
             $"セクションタイトルが2個以上必要です。実際: {this._collectedSectionTitles.Count}");
 
-        Assert.AreEqual(title1, this._collectedSectionTitles[0].TitleContent,
-            $"1番目のセクションタイトルが一致しません。期待: '{title1}', 実際: '{this._collectedSectionTitles[0].TitleContent}'");
+        Assert.AreEqual(title1, this._collectedSectionTitles[0].GetTitleContent(),
+            $"1番目のセクションタイトルが一致しません。期待: '{title1}', 実際: '{this._collectedSectionTitles[0].GetTitleContent()}'");
 
-        Assert.AreEqual(title2, this._collectedSectionTitles[1].TitleContent,
-            $"2番目のセクションタイトルが一致しません。期待: '{title2}', 実際: '{this._collectedSectionTitles[1].TitleContent}'");
+        Assert.AreEqual(title2, this._collectedSectionTitles[1].GetTitleContent(),
+            $"2番目のセクションタイトルが一致しません。期待: '{title2}', 実際: '{this._collectedSectionTitles[1].GetTitleContent()}'");
     }
 
     [Then(@"エラーなく走査が完了する")]
@@ -293,7 +293,7 @@ public sealed class VisitorSteps
             }
         }
 
-        public void VisitText(TextSyntax node)
+        public void VisitInlineText(InlineTextSyntax node)
         {
             this.Count++;
         }
@@ -361,7 +361,7 @@ public sealed class VisitorSteps
             }
         }
 
-        public void VisitText(TextSyntax node)
+        public void VisitInlineText(InlineTextSyntax node)
         {
             // Text にはリンクがない
         }
@@ -425,7 +425,7 @@ public sealed class VisitorSteps
             // Paragraph にはセクションタイトルがない
         }
 
-        public void VisitText(TextSyntax node)
+        public void VisitInlineText(InlineTextSyntax node)
         {
             // Text にはセクションタイトルがない
         }
@@ -476,7 +476,7 @@ public sealed class VisitorSteps
             throw new InvalidOperationException("テスト用の例外");
         }
 
-        public void VisitText(TextSyntax node)
+        public void VisitInlineText(InlineTextSyntax node)
         {
             throw new InvalidOperationException("テスト用の例外");
         }
@@ -538,7 +538,7 @@ public sealed class VisitorSteps
             // セクションタイトルを目次に追加
             if (node.Title is not null)
             {
-                entries.Add(new TocEntry(node.Title.Level, node.Title.TitleContent ?? string.Empty));
+                entries.Add(new TocEntry(node.Title.Level, node.Title.GetTitleContent() ?? string.Empty));
             }
 
             // ネストされたセクションを再帰的に処理
@@ -560,7 +560,7 @@ public sealed class VisitorSteps
             return [];
         }
 
-        public List<TocEntry> VisitText(TextSyntax node)
+        public List<TocEntry> VisitInlineText(InlineTextSyntax node)
         {
             return [];
         }
@@ -642,7 +642,7 @@ public sealed class VisitorSteps
             return sb.ToString();
         }
 
-        public string VisitText(TextSyntax node)
+        public string VisitInlineText(InlineTextSyntax node)
         {
             return node.Text ?? string.Empty;
         }
