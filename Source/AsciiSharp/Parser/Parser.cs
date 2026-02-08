@@ -68,6 +68,8 @@ internal sealed class AsciiDocParser
     /// <param name="offset">先読みオフセット（0 = 次のトークン）。</param>
     private InternalToken Peek(int offset)
     {
+        Debug.Assert(offset >= 0, "offset は 0 以上でなければならない");
+
         while (this._peekedTokens.Count <= offset)
         {
             this._peekedTokens.Enqueue(this._lexer.NextToken());

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 
 using AsciiSharp.InternalSyntax;
@@ -67,6 +68,10 @@ public sealed class SectionTitleSyntax : BlockSyntax
                 var inlineText = new InlineTextSyntax(slot, this, currentPosition, syntaxTree);
                 inlineElementsBuilder.Add(inlineText);
                 this._children.Add(new SyntaxNodeOrToken(inlineText));
+            }
+            else
+            {
+                Debug.Fail($"SectionTitleSyntax: 未知のスロット種別 {slot.Kind}");
             }
 
             currentPosition += slot.FullWidth;
