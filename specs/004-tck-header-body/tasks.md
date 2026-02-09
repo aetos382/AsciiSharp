@@ -18,11 +18,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T001 [P] [US1] AsgDocument に `Attributes` プロパティ（`IReadOnlyDictionary<string, string>`）を追加する。デフォルト値は空の辞書とする — `Source/AsciiSharp.Asg/Models/AsgDocument.cs`
-- [ ] T002 [P] [US1] AsgJsonContext に `IReadOnlyDictionary<string, string>` の `[JsonSerializable]` 登録を追加する — `Source/AsciiSharp.Asg/Serialization/AsgJsonContext.cs`
-- [ ] T003 [US1] AsgConverter の `Convert()` メソッドで `Attributes` に空辞書を設定する — `Source/AsciiSharp.Asg/AsgConverter.cs`
-- [ ] T004 [US1] AsgConverterTests に header-body の attributes 出力テスト（空オブジェクト）を追加する — `Test/AsciiSharp.Asg.Tests/AsgConverterTests.cs`
-- [ ] T005 [US1] TckAdapter で header-body-input.adoc を手動実行し、期待出力との差分を確認・修正する
+- [x] T001 [P] [US1] AsgDocument に `Attributes` プロパティ（`IReadOnlyDictionary<string, string>`）を追加する。デフォルト値は空の辞書とする — `Source/AsciiSharp.Asg/Models/AsgDocument.cs`
+- [x] T002 [P] [US1] AsgJsonContext に `IReadOnlyDictionary<string, string>` の `[JsonSerializable]` 登録を追加する — `Source/AsciiSharp.Asg/Serialization/AsgJsonContext.cs`
+- [x] T003 [US1] AsgConverter の `Convert()` メソッドで `Attributes` に空辞書を設定する — `Source/AsciiSharp.Asg/AsgConverter.cs`
+- [x] T004 [US1] AsgConverterTests に header-body の attributes 出力テスト（空オブジェクト）を追加する — `Test/AsciiSharp.Asg.Tests/AsgConverterTests.cs`
+- [x] T005 [US1] TckAdapter で header-body-input.adoc を手動実行し、期待出力との差分を確認・修正する
 
 **Checkpoint**: `header-body-output` テスト ケースが TCK と一致する。既存テストが全てパスする。
 

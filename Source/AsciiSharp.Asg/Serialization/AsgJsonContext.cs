@@ -23,6 +23,7 @@ namespace AsciiSharp.Asg.Serialization;
 [JsonSerializable(typeof(AsgPosition))]
 [JsonSerializable(typeof(IReadOnlyList<AsgBlockNode>))]
 [JsonSerializable(typeof(IReadOnlyList<AsgInlineNode>))]
+[JsonSerializable(typeof(IReadOnlyDictionary<string, string>))]
 public partial class AsgJsonContext : JsonSerializerContext
 {
 }

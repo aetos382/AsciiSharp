@@ -266,6 +266,42 @@ public sealed class AsgConverterTests
 
     #endregion
 
+    #region US1: attributes フィールドのテスト
+
+    [TestMethod]
+    public void Convert_ヘッダー付き文書_attributesは空の辞書()
+    {
+        // Arrange
+        var text = "= Document Title\n\nbody\n";
+        var syntaxTree = SyntaxTree.ParseText(text);
+        var converter = new AsgConverter(syntaxTree);
+
+        // Act
+        var result = converter.Convert();
+
+        // Assert
+        Assert.IsNotNull(result.Attributes);
+        Assert.IsEmpty(result.Attributes);
+    }
+
+    [TestMethod]
+    public void Convert_ヘッダーなし文書_attributesは空の辞書()
+    {
+        // Arrange
+        var text = "Just a paragraph.";
+        var syntaxTree = SyntaxTree.ParseText(text);
+        var converter = new AsgConverter(syntaxTree);
+
+        // Act
+        var result = converter.Convert();
+
+        // Assert
+        Assert.IsNotNull(result.Attributes);
+        Assert.IsEmpty(result.Attributes);
+    }
+
+    #endregion
+
     #region T009: タイトル付き文書の header 変換テスト
 
     [TestMethod]

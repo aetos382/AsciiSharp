@@ -63,6 +63,7 @@ public sealed class AsgConverter
 
             return new AsgDocument
             {
+                Attributes = new Dictionary<string, string>(),
                 Header = header,
                 Blocks = this.ConvertBlocks(node.Body).ToList(),
                 Location = this.GetLocation(node)
@@ -235,10 +236,47 @@ public sealed class AsgConverter
         /// <summary>
         /// <see cref="SyntaxNode"/> の位置情報を <see cref="AsgLocation"/> に変換する。
         /// </summary>
+        /// <remarks>
+        /// 末尾の改行・空白・EOF トークンを除外したコンテンツ スパンを使用する。
+        /// TCK はノードの位置を「意味のあるコンテンツの範囲」として扱うため、
+        /// 構文的に必要だが意味を持たない末尾トークンを除外する。
+        /// </remarks>
         private AsgLocation? GetLocation(SyntaxNode node)
         {
-            var span = node.Span;
-            return this.GetLocationFromSpan(span.Start, span.End);
+            var startOffset = node.Span.Start;
+            var endOffset = GetContentEndOffset(node);
+
+            if (endOffset <= startOffset)
+            {
+                return null;
+            }
+
+            return this.GetLocationFromSpan(startOffset, endOffset);
+        }
+
+        /// <summary>
+        /// ノード内の末尾の改行・空白・EOF トークンを除外したコンテンツ終端オフセットを取得する。
+        /// </summary>
+        private static int GetContentEndOffset(SyntaxNode node)
+        {
+            var endOffset = node.Span.Start;
+
+            foreach (var token in node.DescendantTokens())
+            {
+                if (token.Kind != SyntaxKind.NewLineToken &&
+                    token.Kind != SyntaxKind.WhitespaceToken &&
+                    token.Kind != SyntaxKind.EndOfFileToken &&
+                    !token.IsMissing)
+                {
+                    var tokenEnd = token.Span.End;
+                    if (tokenEnd > endOffset)
+                    {
+                        endOffset = tokenEnd;
+                    }
+                }
+            }
+
+            return endOffset;
         }
 
         /// <summary>
