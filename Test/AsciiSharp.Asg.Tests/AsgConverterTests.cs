@@ -359,4 +359,77 @@ public sealed class AsgConverterTests
     }
 
     #endregion
+
+    #region T017: 属性エントリの ASG 変換テスト
+
+    [TestMethod]
+    public void Convert_値付き属性エントリ_attributesに名前と値が含まれる()
+    {
+        // Arrange
+        var text = "= Document Title\n:author: John\n\nbody\n";
+        var syntaxTree = SyntaxTree.ParseText(text);
+        var converter = new AsgConverter(syntaxTree);
+
+        // Act
+        var result = converter.Convert();
+
+        // Assert
+        Assert.IsNotNull(result.Attributes);
+        Assert.HasCount(1, result.Attributes);
+        Assert.AreEqual("John", result.Attributes["author"]);
+    }
+
+    [TestMethod]
+    public void Convert_値なし属性エントリ_attributesに空文字列が含まれる()
+    {
+        // Arrange
+        var text = "= Document Title\n:toc:\n\nbody\n";
+        var syntaxTree = SyntaxTree.ParseText(text);
+        var converter = new AsgConverter(syntaxTree);
+
+        // Act
+        var result = converter.Convert();
+
+        // Assert
+        Assert.IsNotNull(result.Attributes);
+        Assert.HasCount(1, result.Attributes);
+        Assert.AreEqual(string.Empty, result.Attributes["toc"]);
+    }
+
+    [TestMethod]
+    public void Convert_複数の属性エントリ_すべてattributesに含まれる()
+    {
+        // Arrange
+        var text = "= Document Title\n:author: John\n:toc:\n:revnumber: 42\n\nbody\n";
+        var syntaxTree = SyntaxTree.ParseText(text);
+        var converter = new AsgConverter(syntaxTree);
+
+        // Act
+        var result = converter.Convert();
+
+        // Assert
+        Assert.IsNotNull(result.Attributes);
+        Assert.HasCount(3, result.Attributes);
+        Assert.AreEqual("John", result.Attributes["author"]);
+        Assert.AreEqual(string.Empty, result.Attributes["toc"]);
+        Assert.AreEqual("42", result.Attributes["revnumber"]);
+    }
+
+    [TestMethod]
+    public void Convert_属性エントリなしヘッダー_attributesが空()
+    {
+        // Arrange
+        var text = "= Document Title\n\nbody\n";
+        var syntaxTree = SyntaxTree.ParseText(text);
+        var converter = new AsgConverter(syntaxTree);
+
+        // Act
+        var result = converter.Convert();
+
+        // Assert
+        Assert.IsNotNull(result.Attributes);
+        Assert.IsEmpty(result.Attributes);
+    }
+
+    #endregion
 }
