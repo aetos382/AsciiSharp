@@ -176,7 +176,7 @@ public sealed class AsgConverter
 
             // タイトルテキストの位置を計算
             // InlineElements があればその位置を使用、なければタイトル全体の位置
-            var location = title.InlineElements.Length > 0
+            var location = title.InlineElements.Count > 0
                 ? this.GetLocation(title.InlineElements[0])
                 : this.GetLocation(title);
 

@@ -38,7 +38,7 @@ public sealed class SectionTitleInlineElementsSteps
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
 
         Assert.HasCount(expectedCount, sectionTitle.InlineElements,
-            $"InlineElements の数が一致しません。期待: {expectedCount}, 実際: {sectionTitle.InlineElements.Length}");
+            $"InlineElements の数が一致しません。期待: {expectedCount}, 実際: {sectionTitle.InlineElements.Count}");
     }
 
     [Then(@"最初のセクションタイトルの最初のインライン要素は InlineTextSyntax である")]
@@ -52,7 +52,7 @@ public sealed class SectionTitleInlineElementsSteps
 
         var sectionTitle = GetFirstSectionTitle(document);
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
-        Assert.IsGreaterThan(0, sectionTitle.InlineElements.Length, "InlineElements が空です。");
+        Assert.IsGreaterThan(0, sectionTitle.InlineElements.Count, "InlineElements が空です。");
 
         var firstElement = sectionTitle.InlineElements[0];
         Assert.IsInstanceOfType<InlineTextSyntax>(firstElement,
@@ -70,7 +70,7 @@ public sealed class SectionTitleInlineElementsSteps
 
         var sectionTitle = GetFirstSectionTitle(document);
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
-        Assert.IsGreaterThan(0, sectionTitle.InlineElements.Length, "InlineElements が空です。");
+        Assert.IsGreaterThan(0, sectionTitle.InlineElements.Count, "InlineElements が空です。");
 
         var firstElement = sectionTitle.InlineElements[0] as InlineTextSyntax;
         Assert.IsNotNull(firstElement, "最初のインライン要素は InlineTextSyntax である必要があります。");
@@ -91,7 +91,7 @@ public sealed class SectionTitleInlineElementsSteps
         Assert.IsNotNull(document.Header.Title, "Header は Title を持つ必要があります。");
 
         Assert.HasCount(expectedCount, document.Header.Title.InlineElements,
-            $"InlineElements の数が一致しません。期待: {expectedCount}, 実際: {document.Header.Title.InlineElements.Length}");
+            $"InlineElements の数が一致しません。期待: {expectedCount}, 実際: {document.Header.Title.InlineElements.Count}");
     }
 
     [Then(@"ドキュメントタイトルの最初のインライン要素のテキストは ""(.*)"" である")]
@@ -104,7 +104,7 @@ public sealed class SectionTitleInlineElementsSteps
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
         Assert.IsNotNull(document.Header.Title, "Header は Title を持つ必要があります。");
-        Assert.IsGreaterThan(0, document.Header.Title.InlineElements.Length, "InlineElements が空です。");
+        Assert.IsGreaterThan(0, document.Header.Title.InlineElements.Count, "InlineElements が空です。");
 
         var firstElement = document.Header.Title.InlineElements[0] as InlineTextSyntax;
         Assert.IsNotNull(firstElement, "最初のインライン要素は InlineTextSyntax である必要があります。");
@@ -142,7 +142,7 @@ public sealed class SectionTitleInlineElementsSteps
         Assert.IsNotNull(sectionTitle, "セクションタイトルが見つかりません。");
 
         // 各要素の Position が前の要素以上であることを確認
-        for (var i = 1; i < sectionTitle.InlineElements.Length; i++)
+        for (var i = 1; i < sectionTitle.InlineElements.Count; i++)
         {
             var prev = sectionTitle.InlineElements[i - 1];
             var curr = sectionTitle.InlineElements[i];
@@ -172,7 +172,7 @@ curr.Position, $"InlineElements[{i}].Position ({curr.Position}) が InlineElemen
         var section = sections[sectionIndex - 1];
         Assert.IsNotNull(section, $"セクション {sectionIndex} が null です。");
         Assert.IsNotNull(section.Title, $"セクション {sectionIndex} のタイトルが null です。");
-        Assert.IsGreaterThan(0, section.Title.InlineElements.Length, "InlineElements が空です。");
+        Assert.IsGreaterThan(0, section.Title.InlineElements.Count, "InlineElements が空です。");
 
         var firstElement = section.Title.InlineElements[0] as InlineTextSyntax;
         Assert.IsNotNull(firstElement, "最初のインライン要素は InlineTextSyntax である必要があります。");
