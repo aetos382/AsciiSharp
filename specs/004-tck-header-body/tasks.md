@@ -38,7 +38,7 @@
 
 ### BDD Red ステップ
 
-- [ ] T006 [US2] BDD ステップ定義を作成する（コンパイル可能な最小限のスケルトン）— `Test/AsciiSharp.Specs/StepDefinitions/AttributeEntrySteps.cs`
+- [x] T006 [US2] BDD ステップ定義を作成する（コンパイル可能な最小限のスケルトン）— `Test/AsciiSharp.Specs/StepDefinitions/AttributeEntrySteps.cs`
 
 ### SyntaxList<T> 移行（D-006 前提作業）
 
