@@ -35,7 +35,7 @@ AsciiDoc の属性エントリ（`:name: value`）を表す構文ノード。
 |-----------|-----|------|
 | Title | SectionTitleSyntax? | 既存 |
 | AuthorLine | AuthorLineSyntax? | 既存 |
-| AttributeEntries | ImmutableArray\<AttributeEntrySyntax\> | **新規追加** |
+| AttributeEntries | SyntaxList\<AttributeEntrySyntax\> | **新規追加** |
 
 #### SyntaxKind（変更）
 
@@ -82,7 +82,7 @@ DocumentSyntax
 └── DocumentHeaderSyntax
     ├── SectionTitleSyntax? (Title)
     ├── AuthorLineSyntax? (AuthorLine)
-    └── AttributeEntrySyntax[] (AttributeEntries)  ← 新規
+    └── SyntaxList<AttributeEntrySyntax> (AttributeEntries)  ← 新規
         ├── ColonToken (OpeningColon)
         ├── TextToken (Name)
         ├── ColonToken (ClosingColon)

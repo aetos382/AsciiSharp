@@ -138,3 +138,10 @@ ParseDocumentHeader():
 
 - `[JsonPropertyOrder]` はプロジェクト全体で使用しない
 - TCK がセマンティック比較（`assert.deepEqual`）を使用するため、出力順序は無関係
+
+### D-006: 構文木の子ノード コレクション型
+
+- 構文木の子ノード コレクションには `SyntaxList<T>` を使用する（Roslyn の設計哲学に準拠、R-009/R-010 参照）
+- `ImmutableArray<T>` は構文木外の結果セットに使用する
+- 既存の `SectionTitleSyntax.InlineElements` も `ImmutableArray<InlineSyntax>` → `SyntaxList<InlineSyntax>` に移行する
+- AsciiSharp の `SyntaxList<T>` は現時点で配列ベースの簡易実装（Green Tree 統合なし）だが、公開 API 型として採用し、内部最適化は後続タスクとする

@@ -78,12 +78,69 @@ AttributeEntry
 
 ## R-007: DocumentHeaderSyntax への AttributeEntry 統合
 
-**Decision**: `DocumentHeaderSyntax` に `ImmutableArray<AttributeEntrySyntax>` プロパティを追加する
+**Decision**: `DocumentHeaderSyntax` に `SyntaxList<AttributeEntrySyntax>` プロパティを追加する
 
-**Rationale**: 既存の `SectionTitleSyntax? Title` や `AuthorLineSyntax? AuthorLine` と同様のパターンで、ヘッダー内の属性エントリを構造的にアクセス可能にする。Red Tree コンストラクタの switch 文に `SyntaxKind.AttributeEntry` ケースを追加する。
+**Rationale**: 既存の `SectionTitleSyntax? Title` や `AuthorLineSyntax? AuthorLine` と同様のパターンで、ヘッダー内の属性エントリを構造的にアクセス可能にする。Red Tree コンストラクタの switch 文に `SyntaxKind.AttributeEntry` ケースを追加する。コレクション型は R-009 の決定に基づき `SyntaxList<AttributeEntrySyntax>` とする。
 
 ## R-008: ISyntaxVisitor への VisitAttributeEntry 追加
 
 **Decision**: `ISyntaxVisitor` と `ISyntaxVisitor<TResult>` の両インターフェースに `VisitAttributeEntry(AttributeEntrySyntax node)` メソッドを追加する
 
 **Rationale**: 既存のビジター パターンに従い、新しいノード型に対応する訪問メソッドが必要。これは破壊的変更（インターフェースへのメソッド追加）だが、現時点で外部消費者はおらず、プロジェクト内の実装（AsgConverter の Visitor）を更新すれば十分。
+
+## R-009: 構文木の子ノード コレクション型
+
+**Decision**: `DocumentHeaderSyntax.AttributeEntries` には `SyntaxList<AttributeEntrySyntax>` を使用する。併せて既存の `SectionTitleSyntax.InlineElements` も `ImmutableArray<InlineSyntax>` から `SyntaxList<InlineSyntax>` に移行する。
+
+**Rationale**: Roslyn の設計哲学を調査した結果（R-010 参照）、構文木の子ノード コレクションには `SyntaxList<T>` を使い、`ImmutableArray<T>` は構文木外の結果セットに使うという明確な使い分けが存在する。AsciiSharp の `SyntaxList<T>` は現時点で Green Tree 統合を持たないが、以下の理由から採用する:
+
+1. **意図の明示**: 構文木の子ノード コレクションであることを型レベルで表現できる
+2. **将来の互換性**: Green Tree 統合（`Span`, `FullSpan`, `ToFullString()`, 変更操作）を後から追加する際に、公開 API を変更せずに内部実装のみの変更で済む
+3. **プロジェクト内の一貫性**: 今後追加される全ての構文ノード リストが同じ型を使うための先例となる
+
+**Alternatives considered**:
+- `ImmutableArray<T>` → 不採用（Roslyn では構文木外の結果セット用。構文木の子ノードとしては意図が伝わらない）
+- `AttributeEntryListSyntax` ラッパー ノード → 不採用（デリミタなし構文にリスト ノードは過剰。Roslyn でもデリミタなし連続要素は `SyntaxList<T>` で扱われる）
+
+## R-010: Roslyn のリスト表現設計哲学
+
+**Summary**: Roslyn における構文木のリスト表現の調査結果
+
+### 使い分け原則
+
+| カテゴリ | 型 | 用途例 |
+|---------|-----|--------|
+| 構文木の子ノード (デリミタなし) | `SyntaxList<T>` | `BlockSyntax.Statements`, `ClassDeclarationSyntax.Members`, `CompilationUnitSyntax.Usings` |
+| 構文木の子ノード (デリミタ区切り) | `SeparatedSyntaxList<T>` | `ParameterListSyntax.Parameters`, `ArgumentListSyntax.Arguments` |
+| デリミタ付き構文単位 | `XxxListSyntax` ラッパー ノード | `AttributeListSyntax` (`[...]`), `ParameterListSyntax` (`(...)`) |
+| 構文木「外」の結果セット | `ImmutableArray<T>` | `Compilation.GetDiagnostics()`, `IMethodSymbol.Parameters` |
+
+### Roslyn の `SyntaxList<T>` の内部構造
+
+- `readonly struct` で、内部フィールドは `SyntaxNode? _node` の 1 つのみ
+- `_node` は Green Tree 上の「リスト ノード」をラップした Red ノード
+- Green Tree 側では `InternalSyntax.SyntaxList : GreenNode` が要素数に応じて最適化:
+  - 0 → `null`, 1 → 子そのもの, 2 → `WithTwoChildren`, 3 → `WithThreeChildren`, 4+ → 配列
+- `Span`, `FullSpan`, `ToString()`, `ToFullString()` を提供
+- `Add()`, `Remove()`, `Replace()` 等のイミュータブル変更操作を提供
+
+### AsciiSharp の `SyntaxList<T>` との差異
+
+| 機能 | Roslyn | AsciiSharp |
+|------|--------|------------|
+| 内部表現 | `SyntaxNode?` (Green Tree ラッパー) | `TNode[]` (配列) |
+| Green Tree 統合 | あり | **なし** |
+| `Span` / `FullSpan` | あり | **なし** |
+| `ToFullString()` | あり | **なし** |
+| 変更操作 | `Add`, `Remove`, `Replace` | **なし** |
+| 便利メソッド | `Any`, `First`, `Last`, `IndexOf` 等 | `Any`, `FirstOrDefault`, `LastOrDefault`, `IndexOf` |
+
+### 今後の方針
+
+AsciiSharp の `SyntaxList<T>` は現時点で配列ベースの簡易実装であるが、公開 API 型としては適切である。将来的に Green Tree 統合を追加する際に、`SyntaxList<T>` の内部実装のみを変更することで、利用側のコードに影響を与えずに移行可能。
+
+**出典**:
+- [dotnet/roslyn - SyntaxList\`1.cs](https://github.com/dotnet/roslyn/blob/main/src/Compilers/Core/Portable/Syntax/SyntaxList%601.cs)
+- [dotnet/roslyn - InternalSyntax/SyntaxList.cs](https://github.com/dotnet/roslyn/blob/main/src/Compilers/Core/Portable/Syntax/InternalSyntax/SyntaxList.cs)
+- [Microsoft Learn - SyntaxList\<T\> API Reference](https://learn.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)
+- [Eric Lippert - Persistence, facades and Roslyn's red-green trees](https://ericlippert.com/2012/06/08/red-green-trees/)

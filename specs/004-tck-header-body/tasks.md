@@ -34,11 +34,15 @@
 
 **Independent Test**: `:icons: font` を含むドキュメントをパースし、`DocumentHeaderSyntax.AttributeEntries` から属性名と値を取得できる
 
-**設計上の重要事項**: `DocumentHeaderSyntax.AttributeEntries` は常に非 null とする（`ImmutableArray<AttributeEntrySyntax>`）。属性エントリがないドキュメント ヘッダーでも空の `ImmutableArray` を返す。これは TCK がドキュメント属性がない文書でも `"attributes": {}` を要求していることと整合する。
+**設計上の重要事項**: `DocumentHeaderSyntax.AttributeEntries` は常に非 null とする（`SyntaxList<AttributeEntrySyntax>`）。属性エントリがないドキュメント ヘッダーでも空の `SyntaxList` を返す。これは TCK がドキュメント属性がない文書でも `"attributes": {}` を要求していることと整合する。構文木の子ノード コレクションには Roslyn の設計哲学に準拠して `SyntaxList<T>` を使用する（D-006, R-009）。
 
 ### BDD Red ステップ
 
 - [ ] T006 [US2] BDD ステップ定義を作成する（コンパイル可能な最小限のスケルトン）— `Test/AsciiSharp.Specs/StepDefinitions/AttributeEntrySteps.cs`
+
+### SyntaxList<T> 移行（D-006 前提作業）
+
+- [ ] T007a [US2] `SectionTitleSyntax.InlineElements` を `ImmutableArray<InlineSyntax>` から `SyntaxList<InlineSyntax>` に変更する。利用側のコード（テスト含む）も `SyntaxList` API に合わせる — `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs` および影響箇所
 
 ### Implementation for User Story 2
 
@@ -46,11 +50,11 @@
 - [ ] T008 [P] [US2] `ISyntaxVisitor` に `VisitAttributeEntry(AttributeEntrySyntax node)` を追加する — `Source/AsciiSharp/Syntax/ISyntaxVisitor.cs`
 - [ ] T009 [P] [US2] `ISyntaxVisitor<TResult>` に `VisitAttributeEntry(AttributeEntrySyntax node)` を追加する — `Source/AsciiSharp/Syntax/ISyntaxVisitor.cs` もしくは対応するファイル
 - [ ] T010 [US2] `AttributeEntrySyntax` (Red Tree ノード) を作成する。`Name` プロパティ（属性名テキスト）と `Value` プロパティ（属性値テキスト、空可）、`Accept` メソッドを含む — `Source/AsciiSharp/Syntax/AttributeEntrySyntax.cs`
-- [ ] T011 [US2] `DocumentHeaderSyntax` に `AttributeEntries` プロパティ（`ImmutableArray<AttributeEntrySyntax>`）を追加する。コンストラクタの switch 文に `SyntaxKind.AttributeEntry` ケースを追加する。**属性エントリがない場合でも空の `ImmutableArray` を返すこと** — `Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs`
+- [ ] T011 [US2] `DocumentHeaderSyntax` に `AttributeEntries` プロパティ（`SyntaxList<AttributeEntrySyntax>`）を追加する。コンストラクタの switch 文に `SyntaxKind.AttributeEntry` ケースを追加する。**属性エントリがない場合でも空の `SyntaxList` を返すこと** — `Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs`
 - [ ] T012 [US2] `Parser.ParseAttributeEntry()` メソッドを実装する。D-001 の Green Tree 構造（開きコロン + 属性名 + 閉じコロン [trailingTrivia: 空白] + 属性値 [trailingTrivia: 改行]）に従う — `Source/AsciiSharp/Parser/Parser.cs`
 - [ ] T013 [US2] `ParseDocumentHeader()` を拡張し、タイトル・著者行の後に属性エントリ行（行頭 `ColonToken`）を認識するループを追加する — `Source/AsciiSharp/Parser/Parser.cs`
 - [ ] T014 [US2] 既存の Visitor 実装を `VisitAttributeEntry` に対応させる（AsgConverter 含む）— 各 Visitor 実装ファイル
-- [ ] T015 [US2] 属性エントリのないドキュメント ヘッダーで `AttributeEntries` が空の `ImmutableArray`（null でない）であることを BDD テストで検証する — `Test/AsciiSharp.Specs/StepDefinitions/AttributeEntrySteps.cs`
+- [ ] T015 [US2] 属性エントリのないドキュメント ヘッダーで `AttributeEntries` が空の `SyntaxList`（null でない）であることを BDD テストで検証する — `Test/AsciiSharp.Specs/StepDefinitions/AttributeEntrySteps.cs`
 
 **Checkpoint**: `AttributeEntryParsing.feature` の全シナリオがパスする。既存テストが全てパスする。ラウンドトリップが成功する。属性エントリなしの場合も `AttributeEntries` が空コレクションである。
 
@@ -107,7 +111,7 @@ US2 (SyntaxTree パース) ──────────┘
 ### Within Each User Story
 
 - US1: モデル変更 (T001, T002) → コンバーター変更 (T003) → テスト (T004) → 手動検証 (T005)
-- US2: BDD スケルトン (T006) → SyntaxKind (T007) → Visitor (T008, T009) → Red Tree (T010) → Header 更新 (T011) → Parser (T012, T013) → Visitor 実装更新 (T014) → 空コレクション検証 (T015)
+- US2: BDD スケルトン (T006) → SyntaxList 移行 (T007a) → SyntaxKind (T007) → Visitor (T008, T009) → Red Tree (T010) → Header 更新 (T011) → Parser (T012, T013) → Visitor 実装更新 (T014) → 空コレクション検証 (T015)
 - US3: コンバーター変更 (T016) → テスト (T017)
 
 ### Parallel Opportunities
@@ -146,7 +150,8 @@ US2 (SyntaxTree パース) ──────────┘
 
 - BDD テスト（AttributeEntryParsing.feature）はコア ライブラリ（AsciiSharp）の変更を検証する（US2）
 - ASG の変更（US1, US3）はユニット テスト（AsgConverterTests）で検証する
-- `DocumentHeaderSyntax.AttributeEntries` は常に非 null。属性エントリがなくても空の `ImmutableArray` を返す
+- `DocumentHeaderSyntax.AttributeEntries` は常に非 null。属性エントリがなくても空の `SyntaxList` を返す
+- 構文木の子ノード コレクションには `SyntaxList<T>` を使用する（D-006, R-009）。`SectionTitleSyntax.InlineElements` も同時に移行する（T007a）
 - `[JsonPropertyOrder]` は使用しない（R-005）
 - 閉じコロン後の空白と改行はトリビアとして扱う（D-001）
 - Commit は各タスク完了時または BDD サイクル完了時に行う
