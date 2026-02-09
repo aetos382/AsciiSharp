@@ -159,10 +159,16 @@ internal sealed class AsciiDocParser
         // タイトル行を解析
         this.ParseSectionTitle();
 
-        // 著者行があれば解析
-        if (!this.IsAtEnd() && !this.IsBlankLine() && !this.IsAtSectionTitle())
+        // 著者行があれば解析（属性エントリではない行）
+        if (!this.IsAtEnd() && !this.IsBlankLine() && !this.IsAtSectionTitle() && !this.IsAtAttributeEntry())
         {
             this.ParseAuthorLine();
+        }
+
+        // 属性エントリを解析
+        while (!this.IsAtEnd() && this.IsAtAttributeEntry())
+        {
+            this.ParseAttributeEntry();
         }
 
         // 空行をスキップ
@@ -589,6 +595,80 @@ internal sealed class AsciiDocParser
         return this.Current.Kind == SyntaxKind.EqualsToken
             && this.Current.Text.Length <= level
             && this.Peek().Kind == SyntaxKind.WhitespaceToken;
+    }
+
+    /// <summary>
+    /// 現在位置が属性エントリの開始位置かどうかを判定する。
+    /// <c>:name:</c> の形式（コロン + テキスト + コロン）で始まる行を検出する。
+    /// </summary>
+    private bool IsAtAttributeEntry()
+    {
+        return this.Current.Kind == SyntaxKind.ColonToken
+            && this.Peek(0).Kind == SyntaxKind.TextToken
+            && this.Peek(1).Kind == SyntaxKind.ColonToken;
+    }
+
+    /// <summary>
+    /// 属性エントリを解析する。
+    /// </summary>
+    /// <remarks>
+    /// <para>属性エントリは <c>:name: value</c> または <c>:name:</c> の形式。</para>
+    /// <para>閉じコロン後の空白はトリビアとして閉じコロンに付与する。</para>
+    /// <para>行末の改行は最後のトークン（値トークンまたは閉じコロン）のトリビアとして付与する。</para>
+    /// </remarks>
+    private void ParseAttributeEntry()
+    {
+        this._sink.StartNode(SyntaxKind.AttributeEntry);
+
+        // 開きコロン
+        this.EmitCurrentToken();
+
+        // 属性名
+        this.EmitCurrentToken();
+
+        // 閉じコロン
+        var closingColonToken = this.Current;
+        this.Advance();
+
+        if (this.Current.Kind == SyntaxKind.WhitespaceToken)
+        {
+            // 値あり: 空白をトリビアとして閉じコロンに付与
+            var whitespaceTrivia = InternalTrivia.Whitespace(this.Current.Text);
+            closingColonToken = closingColonToken.WithTrivia(null, [whitespaceTrivia]);
+            this._sink.EmitToken(closingColonToken);
+            this.Advance();
+
+            // 属性値を読み取る（行末まで）
+            if (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
+            {
+                var valueToken = this.Current;
+                this.Advance();
+
+                // 改行をトリビアとして値トークンに付与
+                if (this.Current.Kind == SyntaxKind.NewLineToken)
+                {
+                    var newLineTrivia = InternalTrivia.EndOfLine(this.Current.Text);
+                    valueToken = valueToken.WithTrivia(null, [newLineTrivia]);
+                    this.Advance();
+                }
+
+                this._sink.EmitToken(valueToken);
+            }
+        }
+        else
+        {
+            // 値なし: 改行をトリビアとして閉じコロンに付与
+            if (this.Current.Kind == SyntaxKind.NewLineToken)
+            {
+                var newLineTrivia = InternalTrivia.EndOfLine(this.Current.Text);
+                closingColonToken = closingColonToken.WithTrivia(null, [newLineTrivia]);
+                this.Advance();
+            }
+
+            this._sink.EmitToken(closingColonToken);
+        }
+
+        this._sink.FinishNode();
     }
 
     /// <summary>
