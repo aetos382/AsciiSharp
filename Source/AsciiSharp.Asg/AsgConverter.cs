@@ -61,9 +61,11 @@ public sealed class AsgConverter
                 ? this.ConvertHeader(node.Header)
                 : null;
 
+            var attributes = ConvertAttributes(node.Header);
+
             return new AsgDocument
             {
-                Attributes = new Dictionary<string, string>(),
+                Attributes = attributes,
                 Header = header,
                 Blocks = this.ConvertBlocks(node.Body).ToList(),
                 Location = this.GetLocation(node)
@@ -147,6 +149,28 @@ public sealed class AsgConverter
         AsgNode? ISyntaxVisitor<AsgNode?>.VisitAuthorLine(AuthorLineSyntax node) => null;
 
         AsgNode? ISyntaxVisitor<AsgNode?>.VisitAttributeEntry(AttributeEntrySyntax node) => null;
+
+        /// <summary>
+        /// <see cref="DocumentHeaderSyntax"/> の属性エントリを辞書に変換する。
+        /// </summary>
+        /// <param name="header">ドキュメントヘッダー。<c>null</c> の場合は空の辞書を返す。</param>
+        /// <returns>属性名をキー、属性値を値とする辞書。値なし属性は空文字列。</returns>
+        private static Dictionary<string, string> ConvertAttributes(DocumentHeaderSyntax? header)
+        {
+            var attributes = new Dictionary<string, string>();
+
+            if (header is null)
+            {
+                return attributes;
+            }
+
+            foreach (var entry in header.AttributeEntries)
+            {
+                attributes[entry.Name] = entry.Value;
+            }
+
+            return attributes;
+        }
 
         /// <summary>
         /// <see cref="DocumentHeaderSyntax"/> を <see cref="AsgHeader"/> に変換する。
