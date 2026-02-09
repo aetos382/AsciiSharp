@@ -42,22 +42,22 @@
 
 ### SyntaxList<T> 移行（D-006 前提作業）
 
-- [ ] T007a [US2] `SectionTitleSyntax.InlineElements` を `ImmutableArray<InlineSyntax>` から `SyntaxList<InlineSyntax>` に変更する。主な変更点は `.Length` → `.Count`。影響ファイル:
+- [x] T007a [US2] `SectionTitleSyntax.InlineElements` を `ImmutableArray<InlineSyntax>` から `SyntaxList<InlineSyntax>` に変更する。主な変更点は `.Length` → `.Count`。影響ファイル:
   - `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs` — プロパティ型変更、ビルダー → `SyntaxList` コンストラクタ
   - `Source/AsciiSharp.Asg/AsgConverter.cs` — `InlineElements.Length` → `.Count`
   - `Test/AsciiSharp.Specs/StepDefinitions/SectionTitleInlineElementsSteps.cs` — `InlineElements.Length` → `.Count` (複数箇所)
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] `SyntaxKind` に `AttributeEntry` 列挙値を追加する — `Source/AsciiSharp/SyntaxKind.cs`
-- [ ] T008 [P] [US2] `ISyntaxVisitor` に `VisitAttributeEntry(AttributeEntrySyntax node)` を追加する — `Source/AsciiSharp/Syntax/ISyntaxVisitor.cs`
-- [ ] T009 [P] [US2] `ISyntaxVisitor<TResult>` に `VisitAttributeEntry(AttributeEntrySyntax node)` を追加する — `Source/AsciiSharp/Syntax/ISyntaxVisitor.cs` もしくは対応するファイル
-- [ ] T010 [US2] `AttributeEntrySyntax` (Red Tree ノード) を作成する。`Name` プロパティ（属性名テキスト）と `Value` プロパティ（属性値テキスト、空可）、`Accept` メソッドを含む — `Source/AsciiSharp/Syntax/AttributeEntrySyntax.cs`
-- [ ] T011 [US2] `DocumentHeaderSyntax` に `AttributeEntries` プロパティ（`SyntaxList<AttributeEntrySyntax>`）を追加する。コンストラクタの switch 文に `SyntaxKind.AttributeEntry` ケースを追加する。**属性エントリがない場合でも空の `SyntaxList` を返すこと** — `Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs`
-- [ ] T012 [US2] `Parser.ParseAttributeEntry()` メソッドを実装する。D-001 の Green Tree 構造（開きコロン + 属性名 + 閉じコロン [trailingTrivia: 空白] + 属性値 [trailingTrivia: 改行]）に従う — `Source/AsciiSharp/Parser/Parser.cs`
-- [ ] T013 [US2] `ParseDocumentHeader()` を拡張し、タイトル・著者行の後に属性エントリ行（行頭 `ColonToken`）を認識するループを追加する — `Source/AsciiSharp/Parser/Parser.cs`
-- [ ] T014 [US2] 既存の Visitor 実装を `VisitAttributeEntry` に対応させる（AsgConverter 含む）— 各 Visitor 実装ファイル
-- [ ] T015 [US2] 属性エントリのないドキュメント ヘッダーで `AttributeEntries` が空の `SyntaxList`（null でない）であることを BDD テストで検証する — `Test/AsciiSharp.Specs/StepDefinitions/AttributeEntrySteps.cs`
+- [x] T007 [US2] `SyntaxKind` に `AttributeEntry` 列挙値を追加する — `Source/AsciiSharp/SyntaxKind.cs`
+- [x] T008 [P] [US2] `ISyntaxVisitor` に `VisitAttributeEntry(AttributeEntrySyntax node)` を追加する — `Source/AsciiSharp/Syntax/ISyntaxVisitor.cs`
+- [x] T009 [P] [US2] `ISyntaxVisitor<TResult>` に `VisitAttributeEntry(AttributeEntrySyntax node)` を追加する — `Source/AsciiSharp/Syntax/ISyntaxVisitor.cs` もしくは対応するファイル
+- [x] T010 [US2] `AttributeEntrySyntax` (Red Tree ノード) を作成する。`Name` プロパティ（属性名テキスト）と `Value` プロパティ（属性値テキスト、空可）、`Accept` メソッドを含む — `Source/AsciiSharp/Syntax/AttributeEntrySyntax.cs`
+- [x] T011 [US2] `DocumentHeaderSyntax` に `AttributeEntries` プロパティ（`SyntaxList<AttributeEntrySyntax>`）を追加する。コンストラクタの switch 文に `SyntaxKind.AttributeEntry` ケースを追加する。**属性エントリがない場合でも空の `SyntaxList` を返すこと** — `Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs`
+- [x] T012 [US2] `Parser.ParseAttributeEntry()` メソッドを実装する。D-001 の Green Tree 構造（開きコロン + 属性名 + 閉じコロン [trailingTrivia: 空白] + 属性値 [trailingTrivia: 改行]）に従う — `Source/AsciiSharp/Parser/Parser.cs`
+- [x] T013 [US2] `ParseDocumentHeader()` を拡張し、タイトル・著者行の後に属性エントリ行（行頭 `ColonToken`）を認識するループを追加する — `Source/AsciiSharp/Parser/Parser.cs`
+- [x] T014 [US2] 既存の Visitor 実装を `VisitAttributeEntry` に対応させる（AsgConverter 含む）— 各 Visitor 実装ファイル
+- [x] T015 [US2] 属性エントリのないドキュメント ヘッダーで `AttributeEntries` が空の `SyntaxList`（null でない）であることを BDD テストで検証する — `Test/AsciiSharp.Specs/StepDefinitions/AttributeEntrySteps.cs`
 
 **Checkpoint**: `AttributeEntryParsing.feature` の全シナリオがパスする。既存テストが全てパスする。ラウンドトリップが成功する。属性エントリなしの場合も `AttributeEntries` が空コレクションである。
 
@@ -73,8 +73,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] AsgConverter の `ConvertHeader()` または `VisitDocument()` で `DocumentHeaderSyntax.AttributeEntries` から `Dictionary<string, string>` を構築し、`AsgDocument.Attributes` に設定する。値なし属性は空文字列とする — `Source/AsciiSharp.Asg/AsgConverter.cs`
-- [ ] T017 [US3] AsgConverterTests に属性エントリ付きドキュメントの ASG 変換テストを追加する（値あり・値なし・複数属性・属性エントリなし）— `Test/AsciiSharp.Asg.Tests/AsgConverterTests.cs`
+- [x] T016 [US3] AsgConverter の `ConvertHeader()` または `VisitDocument()` で `DocumentHeaderSyntax.AttributeEntries` から `Dictionary<string, string>` を構築し、`AsgDocument.Attributes` に設定する。値なし属性は空文字列とする — `Source/AsciiSharp.Asg/AsgConverter.cs`
+- [x] T017 [US3] AsgConverterTests に属性エントリ付きドキュメントの ASG 変換テストを追加する（値あり・値なし・複数属性・属性エントリなし）— `Test/AsciiSharp.Asg.Tests/AsgConverterTests.cs`
 
 **Checkpoint**: 属性エントリ付きドキュメントの ASG 出力が TCK 期待と一致する。全テストがパスする。
 
@@ -84,9 +84,9 @@
 
 **Purpose**: リファクタリング、警告解消、最終検証
 
-- [ ] T018 ビルド警告を解消する（警告ゼロポリシー）
-- [ ] T019 quickstart.md の手動検証手順を実行し、出力を確認する
-- [ ] T020 `dotnet test` で全テスト（BDD + ユニット テスト）がパスすることを確認する
+- [x] T018 ビルド警告を解消する（警告ゼロポリシー）
+- [x] T019 quickstart.md の手動検証手順を実行し、出力を確認する
+- [x] T020 `dotnet test` で全テスト（BDD + ユニット テスト）がパスすることを確認する
 
 ---
 
