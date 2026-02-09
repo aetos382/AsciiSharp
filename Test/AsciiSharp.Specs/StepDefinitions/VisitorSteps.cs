@@ -298,6 +298,11 @@ public sealed class VisitorSteps
             this.Count++;
         }
 
+        public void VisitAttributeEntry(AttributeEntrySyntax node)
+        {
+            this.Count++;
+        }
+
         public void VisitLink(LinkSyntax node)
         {
             this.Count++;
@@ -366,6 +371,11 @@ public sealed class VisitorSteps
             // Text にはリンクがない
         }
 
+        public void VisitAttributeEntry(AttributeEntrySyntax node)
+        {
+            // AttributeEntry にはリンクがない
+        }
+
         public void VisitLink(LinkSyntax node)
         {
             this.Links.Add(node);
@@ -430,6 +440,11 @@ public sealed class VisitorSteps
             // Text にはセクションタイトルがない
         }
 
+        public void VisitAttributeEntry(AttributeEntrySyntax node)
+        {
+            // AttributeEntry にはセクションタイトルがない
+        }
+
         public void VisitLink(LinkSyntax node)
         {
             // Link にはセクションタイトルがない
@@ -477,6 +492,11 @@ public sealed class VisitorSteps
         }
 
         public void VisitInlineText(InlineTextSyntax node)
+        {
+            throw new InvalidOperationException("テスト用の例外");
+        }
+
+        public void VisitAttributeEntry(AttributeEntrySyntax node)
         {
             throw new InvalidOperationException("テスト用の例外");
         }
@@ -565,6 +585,11 @@ public sealed class VisitorSteps
             return [];
         }
 
+        public List<TocEntry> VisitAttributeEntry(AttributeEntrySyntax node)
+        {
+            return [];
+        }
+
         public List<TocEntry> VisitLink(LinkSyntax node)
         {
             return [];
@@ -645,6 +670,11 @@ public sealed class VisitorSteps
         public string VisitInlineText(InlineTextSyntax node)
         {
             return node.Text ?? string.Empty;
+        }
+
+        public string VisitAttributeEntry(AttributeEntrySyntax node)
+        {
+            return string.Empty;
         }
 
         public string VisitLink(LinkSyntax node)

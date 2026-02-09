@@ -54,6 +54,12 @@ public interface ISyntaxVisitor
     void VisitInlineText(InlineTextSyntax node);
 
     /// <summary>
+    /// AttributeEntrySyntax ノードを訪問する。
+    /// </summary>
+    /// <param name="node">訪問するノード。</param>
+    void VisitAttributeEntry(AttributeEntrySyntax node);
+
+    /// <summary>
     /// LinkSyntax ノードを訪問する。
     /// </summary>
     /// <param name="node">訪問するノード。</param>

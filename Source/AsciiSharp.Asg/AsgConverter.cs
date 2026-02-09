@@ -146,6 +146,8 @@ public sealed class AsgConverter
 
         AsgNode? ISyntaxVisitor<AsgNode?>.VisitAuthorLine(AuthorLineSyntax node) => null;
 
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitAttributeEntry(AttributeEntrySyntax node) => null;
+
         /// <summary>
         /// <see cref="DocumentHeaderSyntax"/> を <see cref="AsgHeader"/> に変換する。
         /// </summary>
