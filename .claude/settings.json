@@ -19,7 +19,6 @@
       "Bash(git rev-parse:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
-      "Bash(pwsh .specify/scripts/powershell/:*)",
       "Skill(commit-commands:commit)",
       "Skill(commit-commands:commit:*)",
       "WebFetch",
