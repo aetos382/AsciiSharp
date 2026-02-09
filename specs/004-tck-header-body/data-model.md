@@ -43,6 +43,12 @@ AsciiDoc の属性エントリ（`:name: value`）を表す構文ノード。
 |----|------|------|
 | AttributeEntry | 属性エントリ ノード | **新規追加**（Blocks 範囲内） |
 
+#### SectionTitleSyntax（変更 — D-006 SyntaxList 移行）
+
+| プロパティ | 型 | 変更 |
+|-----------|-----|------|
+| InlineElements | SyntaxList\<InlineSyntax\> | **型変更** (`ImmutableArray<InlineSyntax>` → `SyntaxList<InlineSyntax>`) |
+
 #### ISyntaxVisitor / ISyntaxVisitor\<TResult\>（変更）
 
 | メソッド | 変更 |

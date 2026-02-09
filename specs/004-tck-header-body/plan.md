@@ -61,6 +61,7 @@ Source/
 │   └── Syntax/
 │       ├── AttributeEntrySyntax.cs     # [新規] Red Tree ノード
 │       ├── DocumentHeaderSyntax.cs     # [変更] AttributeEntries プロパティ追加
+│       ├── SectionTitleSyntax.cs       # [変更] InlineElements を SyntaxList に移行 (D-006)
 │       ├── ISyntaxVisitor.cs           # [変更] VisitAttributeEntry 追加
 │       └── ISyntaxVisitorOfT.cs        # [変更] VisitAttributeEntry 追加
 ├── AsciiSharp.Asg/

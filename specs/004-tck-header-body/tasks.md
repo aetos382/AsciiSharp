@@ -42,7 +42,10 @@
 
 ### SyntaxList<T> 移行（D-006 前提作業）
 
-- [ ] T007a [US2] `SectionTitleSyntax.InlineElements` を `ImmutableArray<InlineSyntax>` から `SyntaxList<InlineSyntax>` に変更する。利用側のコード（テスト含む）も `SyntaxList` API に合わせる — `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs` および影響箇所
+- [ ] T007a [US2] `SectionTitleSyntax.InlineElements` を `ImmutableArray<InlineSyntax>` から `SyntaxList<InlineSyntax>` に変更する。主な変更点は `.Length` → `.Count`。影響ファイル:
+  - `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs` — プロパティ型変更、ビルダー → `SyntaxList` コンストラクタ
+  - `Source/AsciiSharp.Asg/AsgConverter.cs` — `InlineElements.Length` → `.Count`
+  - `Test/AsciiSharp.Specs/StepDefinitions/SectionTitleInlineElementsSteps.cs` — `InlineElements.Length` → `.Count` (複数箇所)
 
 ### Implementation for User Story 2
 
@@ -152,6 +155,7 @@ US2 (SyntaxTree パース) ──────────┘
 - ASG の変更（US1, US3）はユニット テスト（AsgConverterTests）で検証する
 - `DocumentHeaderSyntax.AttributeEntries` は常に非 null。属性エントリがなくても空の `SyntaxList` を返す
 - 構文木の子ノード コレクションには `SyntaxList<T>` を使用する（D-006, R-009）。`SectionTitleSyntax.InlineElements` も同時に移行する（T007a）
+- T004 (US1: 空 attributes テスト) と T017 (US3: attributes テスト) は「属性なし → 空 `{}`」の検証が重複するが、異なるフェーズで独立検証するための意図的な重複である
 - `[JsonPropertyOrder]` は使用しない（R-005）
 - 閉じコロン後の空白と改行はトリビアとして扱う（D-001）
 - Commit は各タスク完了時または BDD サイクル完了時に行う
