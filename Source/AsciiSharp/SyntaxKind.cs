@@ -123,6 +123,9 @@ public enum SyntaxKind
     /// <summary>著者行ノード。</summary>
     AuthorLine,
 
+    /// <summary>属性エントリノード。</summary>
+    AttributeEntry,
+
     // ========================================
     // Nodes (Inlines) - MVP スコープ
     // ========================================

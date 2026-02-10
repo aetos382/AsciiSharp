@@ -61,8 +61,11 @@ public sealed class AsgConverter
                 ? this.ConvertHeader(node.Header)
                 : null;
 
+            var attributes = ConvertAttributes(node.Header);
+
             return new AsgDocument
             {
+                Attributes = attributes,
                 Header = header,
                 Blocks = this.ConvertBlocks(node.Body).ToList(),
                 Location = this.GetLocation(node)
@@ -145,6 +148,30 @@ public sealed class AsgConverter
 
         AsgNode? ISyntaxVisitor<AsgNode?>.VisitAuthorLine(AuthorLineSyntax node) => null;
 
+        AsgNode? ISyntaxVisitor<AsgNode?>.VisitAttributeEntry(AttributeEntrySyntax node) => null;
+
+        /// <summary>
+        /// <see cref="DocumentHeaderSyntax"/> の属性エントリを辞書に変換する。
+        /// </summary>
+        /// <param name="header">ドキュメントヘッダー。<c>null</c> の場合は空の辞書を返す。</param>
+        /// <returns>属性名をキー、属性値を値とする辞書。値なし属性は空文字列。</returns>
+        private static Dictionary<string, string> ConvertAttributes(DocumentHeaderSyntax? header)
+        {
+            var attributes = new Dictionary<string, string>();
+
+            if (header is null)
+            {
+                return attributes;
+            }
+
+            foreach (var entry in header.AttributeEntries)
+            {
+                attributes[entry.Name] = entry.Value;
+            }
+
+            return attributes;
+        }
+
         /// <summary>
         /// <see cref="DocumentHeaderSyntax"/> を <see cref="AsgHeader"/> に変換する。
         /// </summary>
@@ -175,7 +202,7 @@ public sealed class AsgConverter
 
             // タイトルテキストの位置を計算
             // InlineElements があればその位置を使用、なければタイトル全体の位置
-            var location = title.InlineElements.Length > 0
+            var location = title.InlineElements.Count > 0
                 ? this.GetLocation(title.InlineElements[0])
                 : this.GetLocation(title);
 
@@ -235,10 +262,47 @@ public sealed class AsgConverter
         /// <summary>
         /// <see cref="SyntaxNode"/> の位置情報を <see cref="AsgLocation"/> に変換する。
         /// </summary>
+        /// <remarks>
+        /// 末尾の改行・空白・EOF トークンを除外したコンテンツ スパンを使用する。
+        /// TCK はノードの位置を「意味のあるコンテンツの範囲」として扱うため、
+        /// 構文的に必要だが意味を持たない末尾トークンを除外する。
+        /// </remarks>
         private AsgLocation? GetLocation(SyntaxNode node)
         {
-            var span = node.Span;
-            return this.GetLocationFromSpan(span.Start, span.End);
+            var startOffset = node.Span.Start;
+            var endOffset = GetContentEndOffset(node);
+
+            if (endOffset <= startOffset)
+            {
+                return null;
+            }
+
+            return this.GetLocationFromSpan(startOffset, endOffset);
+        }
+
+        /// <summary>
+        /// ノード内の末尾の改行・空白・EOF トークンを除外したコンテンツ終端オフセットを取得する。
+        /// </summary>
+        private static int GetContentEndOffset(SyntaxNode node)
+        {
+            var endOffset = node.Span.Start;
+
+            foreach (var token in node.DescendantTokens())
+            {
+                if (token.Kind != SyntaxKind.NewLineToken &&
+                    token.Kind != SyntaxKind.WhitespaceToken &&
+                    token.Kind != SyntaxKind.EndOfFileToken &&
+                    !token.IsMissing)
+                {
+                    var tokenEnd = token.Span.End;
+                    if (tokenEnd > endOffset)
+                    {
+                        endOffset = tokenEnd;
+                    }
+                }
+            }
+
+            return endOffset;
         }
 
         /// <summary>

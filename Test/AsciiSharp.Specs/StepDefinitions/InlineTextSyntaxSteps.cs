@@ -152,6 +152,10 @@ public sealed class InlineTextSyntaxSteps
             this._steps._visitInlineTextCalled = true;
         }
 
+        public void VisitAttributeEntry(AttributeEntrySyntax node)
+        {
+        }
+
         public void VisitLink(LinkSyntax node)
         {
         }

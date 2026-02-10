@@ -79,6 +79,42 @@ internal sealed class Lexer
     }
 
     /// <summary>
+    /// 行末までのテキストを単一トークンとしてスキャンする。
+    /// 特殊文字（<c>:</c>、<c>.</c>、<c>[</c> 等）もテキストの一部として扱う。
+    /// </summary>
+    /// <returns>読み取ったトークン。</returns>
+    public InternalToken NextRawLineToken()
+    {
+        this._leadingTrivia.Clear();
+
+        this.ScanLeadingTrivia();
+
+        var leadingTrivia = this._leadingTrivia.Count > 0 ? this._leadingTrivia.ToArray() : null;
+
+        // EOF または改行の場合は通常のトークン スキャンに委譲
+        if (this.IsAtEnd || this.GetCurrent() == '\r' || this.GetCurrent() == '\n')
+        {
+            var token = this.ScanToken();
+            ScanTrailingTrivia();
+            return token.WithTrivia(leadingTrivia, trailingTrivia: null);
+        }
+
+        // 行末まで特殊文字を無視してスキャン
+        var start = this.Position;
+        while (!this.IsAtEnd && this.GetCurrent() != '\r' && this.GetCurrent() != '\n')
+        {
+            this.Position++;
+        }
+
+        this._isAtLineStart = false;
+
+        var text = this._text.GetText(start, this.Position - start);
+        ScanTrailingTrivia();
+
+        return new InternalToken(SyntaxKind.TextToken, text).WithTrivia(leadingTrivia, trailingTrivia: null);
+    }
+
+    /// <summary>
     /// 先行トリビアをスキャンする。
     /// </summary>
     /// <remarks>

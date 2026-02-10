@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
@@ -33,7 +32,7 @@ public sealed class SectionTitleSyntax : BlockSyntax
     /// タイトルを構成するインライン要素のコレクション。
     /// 構文上の出現順に並ぶ（各要素の Position は前の要素以上）。
     /// </summary>
-    public ImmutableArray<InlineSyntax> InlineElements { get; }
+    public SyntaxList<InlineSyntax> InlineElements { get; }
 
     /// <summary>
     /// SectionTitleSyntax を作成する。
@@ -43,7 +42,7 @@ public sealed class SectionTitleSyntax : BlockSyntax
     {
         var currentPosition = position;
         SyntaxToken? marker = null;
-        var inlineElementsBuilder = ImmutableArray.CreateBuilder<InlineSyntax>();
+        var inlineElementsList = new List<InlineSyntax>();
 
         for (var i = 0; i < internalNode.SlotCount; i++)
         {
@@ -66,7 +65,7 @@ public sealed class SectionTitleSyntax : BlockSyntax
             else if (slot.Kind == SyntaxKind.InlineText)
             {
                 var inlineText = new InlineTextSyntax(slot, this, currentPosition, syntaxTree);
-                inlineElementsBuilder.Add(inlineText);
+                inlineElementsList.Add(inlineText);
                 this._children.Add(new SyntaxNodeOrToken(inlineText));
             }
             else
@@ -79,7 +78,7 @@ public sealed class SectionTitleSyntax : BlockSyntax
 
         this.Level = marker?.Text.Length ?? 0;
         this.Marker = marker;
-        this.InlineElements = inlineElementsBuilder.ToImmutable();
+        this.InlineElements = new SyntaxList<InlineSyntax>(inlineElementsList);
     }
 
     /// <summary>

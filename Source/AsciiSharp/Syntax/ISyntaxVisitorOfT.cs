@@ -63,6 +63,13 @@ public interface ISyntaxVisitor<TResult>
     TResult VisitInlineText(InlineTextSyntax node);
 
     /// <summary>
+    /// AttributeEntrySyntax ノードを訪問する。
+    /// </summary>
+    /// <param name="node">訪問するノード。</param>
+    /// <returns>訪問結果。</returns>
+    TResult VisitAttributeEntry(AttributeEntrySyntax node);
+
+    /// <summary>
     /// LinkSyntax ノードを訪問する。
     /// </summary>
     /// <param name="node">訪問するノード。</param>

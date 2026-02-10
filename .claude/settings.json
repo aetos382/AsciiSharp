@@ -43,6 +43,7 @@
     "csharp-lsp@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true
   },
+  "enableAllProjectMcpServers": true,
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {

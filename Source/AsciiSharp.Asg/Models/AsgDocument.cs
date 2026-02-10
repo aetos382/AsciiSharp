@@ -18,6 +18,12 @@ public sealed class AsgDocument : AsgBlockNode
     public string Name => "document";
 
     /// <summary>
+    /// ドキュメント属性。属性エントリがない場合は空の辞書。
+    /// </summary>
+    [JsonPropertyName("attributes")]
+    public IReadOnlyDictionary<string, string> Attributes { get; init; } = new Dictionary<string, string>();
+
+    /// <summary>
     /// 文書ヘッダー（オプション）。
     /// </summary>
     [JsonPropertyName("header")]

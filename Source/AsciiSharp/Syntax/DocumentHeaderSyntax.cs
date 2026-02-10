@@ -26,12 +26,18 @@ public sealed class DocumentHeaderSyntax : BlockSyntax
     public AuthorLineSyntax? AuthorLine { get; }
 
     /// <summary>
+    /// 属性エントリのリスト。属性エントリがない場合は空のリスト。
+    /// </summary>
+    public SyntaxList<AttributeEntrySyntax> AttributeEntries { get; }
+
+    /// <summary>
     /// DocumentHeaderSyntax を作成する。
     /// </summary>
     internal DocumentHeaderSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
         : base(internalNode, parent, position, syntaxTree)
     {
         var currentPosition = position;
+        var attributeEntries = new List<AttributeEntrySyntax>();
 
         for (var i = 0; i < internalNode.SlotCount; i++)
         {
@@ -62,12 +68,20 @@ public sealed class DocumentHeaderSyntax : BlockSyntax
                     this._children.Add(new SyntaxNodeOrToken(this.AuthorLine));
                     break;
 
+                case SyntaxKind.AttributeEntry:
+                    var entry = new AttributeEntrySyntax(slot, this, currentPosition, syntaxTree);
+                    attributeEntries.Add(entry);
+                    this._children.Add(new SyntaxNodeOrToken(entry));
+                    break;
+
                 default:
                     break;
             }
 
             currentPosition += slot.FullWidth;
         }
+
+        this.AttributeEntries = new SyntaxList<AttributeEntrySyntax>(attributeEntries);
     }
 
     /// <inheritdoc />
