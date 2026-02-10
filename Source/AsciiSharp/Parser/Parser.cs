@@ -112,6 +112,16 @@ internal sealed class AsciiDocParser
     }
 
     /// <summary>
+    /// 行末までのテキストを単一トークンとして次のトークンに進む。
+    /// 先読みバッファが空であることを前提とする。
+    /// </summary>
+    private void AdvanceRawLine()
+    {
+        Debug.Assert(this._peekedTokens.Count == 0, "先読みバッファが空であることを期待");
+        this.Current = this._lexer.NextRawLineToken();
+    }
+
+    /// <summary>
     /// 文書全体を解析する。
     /// </summary>
     public void ParseDocument()
@@ -634,7 +644,7 @@ internal sealed class AsciiDocParser
         {
             // 閉じコロン後に空白がある場合
             var whitespaceTrivia = InternalTrivia.Whitespace(this.Current.Text);
-            this.Advance();
+            this.AdvanceRawLine();
 
             if (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
             {

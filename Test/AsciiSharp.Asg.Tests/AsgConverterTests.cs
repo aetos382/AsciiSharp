@@ -400,7 +400,7 @@ public sealed class AsgConverterTests
     public void Convert_複数の属性エントリ_すべてattributesに含まれる()
     {
         // Arrange
-        var text = "= Document Title\n:author: John\n:toc:\n:revnumber: 42\n\nbody\n";
+        var text = "= Document Title\n:author: John\n:toc:\n:revnumber: 1.0\n\nbody\n";
         var syntaxTree = SyntaxTree.ParseText(text);
         var converter = new AsgConverter(syntaxTree);
 
@@ -412,7 +412,7 @@ public sealed class AsgConverterTests
         Assert.HasCount(3, result.Attributes);
         Assert.AreEqual("John", result.Attributes["author"]);
         Assert.AreEqual(string.Empty, result.Attributes["toc"]);
-        Assert.AreEqual("42", result.Attributes["revnumber"]);
+        Assert.AreEqual("1.0", result.Attributes["revnumber"]);
     }
 
     [TestMethod]
