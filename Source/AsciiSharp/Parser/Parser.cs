@@ -632,15 +632,16 @@ internal sealed class AsciiDocParser
 
         if (this.Current.Kind == SyntaxKind.WhitespaceToken)
         {
-            // 値あり: 空白をトリビアとして閉じコロンに付与
+            // 閉じコロン後に空白がある場合
             var whitespaceTrivia = InternalTrivia.Whitespace(this.Current.Text);
-            closingColonToken = closingColonToken.WithTrivia(null, [whitespaceTrivia]);
-            this._sink.EmitToken(closingColonToken);
             this.Advance();
 
-            // 属性値を読み取る（行末まで）
             if (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
             {
+                // 値あり: 空白をトリビアとして閉じコロンに付与
+                closingColonToken = closingColonToken.WithTrivia(null, [whitespaceTrivia]);
+                this._sink.EmitToken(closingColonToken);
+
                 var valueToken = this.Current;
                 this.Advance();
 
@@ -653,6 +654,20 @@ internal sealed class AsciiDocParser
                 }
 
                 this._sink.EmitToken(valueToken);
+            }
+            else
+            {
+                // 値なし（空白の後に改行または EOF）: 空白と改行をトリビアとして閉じコロンに付与
+                List<InternalTrivia> triviaList = [whitespaceTrivia];
+
+                if (this.Current.Kind == SyntaxKind.NewLineToken)
+                {
+                    triviaList.Add(InternalTrivia.EndOfLine(this.Current.Text));
+                    this.Advance();
+                }
+
+                closingColonToken = closingColonToken.WithTrivia(null, [.. triviaList]);
+                this._sink.EmitToken(closingColonToken);
             }
         }
         else

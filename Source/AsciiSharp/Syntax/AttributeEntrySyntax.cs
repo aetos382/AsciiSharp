@@ -1,6 +1,6 @@
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using AsciiSharp.InternalSyntax;
 
@@ -82,9 +82,17 @@ public sealed class AttributeEntrySyntax : BlockSyntax
                     case 3:
                         this.ValueToken = token;
                         break;
+
+                    default:
+                        Debug.Fail($"AttributeEntrySyntax: 予期しないスロット インデックス {slotIndex}");
+                        break;
                 }
 
                 slotIndex++;
+            }
+            else
+            {
+                Debug.Fail($"AttributeEntrySyntax: 予期しないノード スロット種別 {slot.Kind}");
             }
 
             currentPosition += slot.FullWidth;
