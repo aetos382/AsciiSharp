@@ -88,7 +88,7 @@ Reqnroll で定義されていた全シナリオが LightBDD で再現される�
 - **FR-002**: 既存の 14 個の .feature ファイルに定義されたすべてのシナリオが、C# の LightBDD テストとして再実装されなければならない
 - **FR-003**: 各テストクラスは `FeatureFixture` を継承し、`[Scenario]` 属性でシナリオを定義しなければならない
 - **FR-004**: ステップメソッドは Given/When/Then の命名規約に従い、`Runner.RunScenario()` で実行されなければならない
-- **FR-005**: 複数ステップ定義クラス間で共有されていた状態（BasicParsingSteps のコンテキスト）を、LightBDD の仕組みで適切に共有できなければならない
+- **FR-005**: 各フィーチャークラスは自己完結型とし、必要なステップメソッドをすべて自身で保持しなければならない
 - **FR-006**: パラメータ化されたシナリオ（セクションレベルの検証、リンクインデックスの検証等）が型安全に記述されなければならない
 - **FR-007**: テスト実行後に HTML レポートが生成されなければならない
 - **FR-008**: Reqnroll 関連のパッケージ参照、設定ファイル（reqnroll.json）、.feature ファイルが完全に除去されなければならない
@@ -99,7 +99,7 @@ Reqnroll で定義されていた全シナリオが LightBDD で再現される�
 
 ### Measurable Outcomes
 
-- **SC-001**: 既存の全 BDD シナリオ（約 50 シナリオ）が LightBDD テストとして実装され、すべて成功する
+- **SC-001**: 既存の全 BDD シナリオ（68 シナリオ）が LightBDD テストとして実装され、すべて成功する
 - **SC-002**: プロジェクト内に Reqnroll への参照が一切存在しない
 - **SC-003**: プロジェクト内に .feature ファイルが存在しない
 - **SC-004**: `dotnet test` 実行後に LightBDD の HTML テストレポートが生成される
@@ -109,6 +109,6 @@ Reqnroll で定義されていた全シナリオが LightBDD で再現される�
 
 - LightBDD.MsTest4 は MSTest.Sdk プロジェクト形式と互換性がある（NuGet パッケージとして追加可能）
 - LightBDD のステップメソッド名に日本語を使用しても、テスト実行とレポート生成に問題ない
-- 既存のステップ定義クラス間の依存関係（コンストラクタ注入）は、LightBDD の partial class パターンまたは CompositeStep で再現可能
+- 各フィーチャークラスは自己完結型とし、ステップ定義間の再利用は行わない（コード重複は許容する）
 - 並列テスト実行は LightBDD でもサポートされる
 - Central Package Management（Directory.Packages.props）で LightBDD パッケージを管理する
