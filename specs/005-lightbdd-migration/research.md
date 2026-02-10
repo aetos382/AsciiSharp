@@ -68,7 +68,7 @@
 
 **Decision**: ビッグバン移行を採用する
 
-**Rationale**: 68 シナリオの規模は段階的移行を必要とするほど大きくない。Reqnroll と LightBDD は同一テストプロジェクト内でパッケージ競合を起こす可能性がある。一括変換のほうが中間状態のビルド不整合を避けられる。
+**Rationale**: 67 シナリオ（移行対象）の規模は段階的移行を必要とするほど大きくない。Reqnroll と LightBDD は同一テストプロジェクト内でパッケージ競合を起こす可能性がある。一括変換のほうが中間状態のビルド不整合を避けられる。
 
 ## R-008: シナリオインベントリ
 
@@ -79,7 +79,7 @@
 | BasicParsing.feature | 11 | 0 |
 | SectionTitleRecognition.feature | 7 | 0 |
 | CommentParsing.feature | 7 | 0 |
-| ErrorRecovery.feature | 5 | 1 |
+| ErrorRecovery.feature | 5 (うち 1 件 @ignore → 移行対象外) | 1 |
 | Immutability.feature | 3 | 0 |
 | IncrementalParsing.feature | 5 | 0 |
 | LinkParsing.feature | 4 | 0 |
@@ -92,4 +92,6 @@
 | Visitor/SyntaxVisitor.feature | 8 | 0 |
 | **合計** | **68** | **1** |
 
-**注記**: 仕様書の「約 50 シナリオ」は 68 シナリオに修正が必要。
+**移行対象**: 67 シナリオ（@ignore の 1 件は移行せず削除する）
+
+**注記**: 仕様書の「約 50 シナリオ」は 67 シナリオ（移行対象）に修正が必要。

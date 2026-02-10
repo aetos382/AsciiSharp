@@ -25,7 +25,7 @@
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: 旧 Reqnroll ファイルの削除。ビッグバン移行のためすべての旧ファイルを先に除去する
+**Purpose**: 旧 Reqnroll ファイルの削除と憲章の用語更新。ビッグバン移行のためすべての旧ファイルを先に除去する
 
 **⚠️ CRITICAL**: この Phase が完了するまで US タスクに進まない
 
@@ -33,8 +33,9 @@
 - [ ] T005 Test/AsciiSharp.Specs/StepDefinitions/ ディレクトリとその中の全 .cs ファイルを削除する
 - [ ] T006 Test/AsciiSharp.Specs/Features/ ディレクトリ内の全 .feature ファイル（サブディレクトリ含む）を削除する
 - [ ] T007 Test/AsciiSharp.Specs/Assembly.cs を LightBDD 用に更新する（Reqnroll 関連の属性を削除、[assembly: Parallelize] を維持）
+- [ ] T008 .specify/memory/constitution.md 内の「.feature ファイル」を「フィーチャ定義」に一般化する（実装フェーズ開始前に憲章の用語を整合させる）
 
-**Checkpoint**: プロジェクトがビルドでき、テストが 0 件の状態
+**Checkpoint**: プロジェクトがビルドでき、テストが 0 件の状態。憲章の用語が更新済み
 
 ---
 
@@ -46,7 +47,7 @@
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] BasicParsing.feature を変換: Test/AsciiSharp.Specs/Features/BasicParsingFeature.cs（シナリオ定義）と Test/AsciiSharp.Specs/Features/BasicParsingFeature.Steps.cs（ステップ実装）を作成する（11 シナリオ）
+- [ ] T009 [US1] BasicParsing.feature を変換: Test/AsciiSharp.Specs/Features/BasicParsingFeature.cs（シナリオ定義）と Test/AsciiSharp.Specs/Features/BasicParsingFeature.Steps.cs（ステップ実装）を作成する（11 シナリオ）
 
 **Checkpoint**: BasicParsing の 11 シナリオが LightBDD で実行・成功し、HTML レポートに表示される。このパターンが以降のフィーチャー変換のテンプレートとなる
 
@@ -54,27 +55,27 @@
 
 ## Phase 4: User Story 2 - 既存テストカバレッジの維持 (Priority: P1)
 
-**Goal**: 残り 13 フィーチャー（57 シナリオ）をすべて LightBDD に変換し、全 68 シナリオが成功する状態にする
+**Goal**: 残り 13 フィーチャー（56 シナリオ）をすべて LightBDD に変換し、全 67 シナリオが成功する状態にする
 
-**Independent Test**: `dotnet test Test/AsciiSharp.Specs/` で 68 シナリオが全て成功する
+**Independent Test**: `dotnet test Test/AsciiSharp.Specs/` で 67 シナリオが全て成功する
 
 ### Implementation for User Story 2
 
-- [ ] T009 [P] [US2] SectionTitleRecognition.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleRecognitionFeature.cs + .Steps.cs を作成する（7 シナリオ）
-- [ ] T010 [P] [US2] CommentParsing.feature を変換: Test/AsciiSharp.Specs/Features/CommentParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
-- [ ] T011 [P] [US2] AttributeEntryParsing.feature を変換: Test/AsciiSharp.Specs/Features/AttributeEntryParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
-- [ ] T012 [P] [US2] SyntaxVisitor.feature を変換: Test/AsciiSharp.Specs/Features/SyntaxVisitorFeature.cs + .Steps.cs を作成する（8 シナリオ）
-- [ ] T013 [P] [US2] ErrorRecovery.feature を変換: Test/AsciiSharp.Specs/Features/ErrorRecoveryFeature.cs + .Steps.cs を作成する（5 シナリオ、1 件 @ignore → [Ignore] 属性）
-- [ ] T014 [P] [US2] IncrementalParsing.feature を変換: Test/AsciiSharp.Specs/Features/IncrementalParsingFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T015 [P] [US2] SectionTitleInlineElements.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleInlineElementsFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T016 [P] [US2] SectionTitleTrivia.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleTriviaFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T017 [P] [US2] BlockInlineSyntax.feature を変換: Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T018 [P] [US2] LinkParsing.feature を変換: Test/AsciiSharp.Specs/Features/LinkParsingFeature.cs + .Steps.cs を作成する（4 シナリオ）
-- [ ] T019 [P] [US2] TrailingWhitespace.feature を変換: Test/AsciiSharp.Specs/Features/TrailingWhitespaceFeature.cs + .Steps.cs を作成する（4 シナリオ）
-- [ ] T020 [P] [US2] Immutability.feature を変換: Test/AsciiSharp.Specs/Features/ImmutabilityFeature.cs + .Steps.cs を作成する（3 シナリオ）
-- [ ] T021 [P] [US2] InlineTextSyntaxRename.feature を変換: Test/AsciiSharp.Specs/Features/InlineTextSyntaxRenameFeature.cs + .Steps.cs を作成する（3 シナリオ）
+- [ ] T010 [P] [US2] SectionTitleRecognition.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleRecognitionFeature.cs + .Steps.cs を作成する（7 シナリオ）
+- [ ] T011 [P] [US2] CommentParsing.feature を変換: Test/AsciiSharp.Specs/Features/CommentParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
+- [ ] T012 [P] [US2] AttributeEntryParsing.feature を変換: Test/AsciiSharp.Specs/Features/AttributeEntryParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
+- [ ] T013 [P] [US2] SyntaxVisitor.feature を変換: Test/AsciiSharp.Specs/Features/SyntaxVisitorFeature.cs + .Steps.cs を作成する（8 シナリオ）
+- [ ] T014 [P] [US2] ErrorRecovery.feature を変換: Test/AsciiSharp.Specs/Features/ErrorRecoveryFeature.cs + .Steps.cs を作成する（4 シナリオ、@ignore シナリオは移行しない）
+- [ ] T015 [P] [US2] IncrementalParsing.feature を変換: Test/AsciiSharp.Specs/Features/IncrementalParsingFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [ ] T016 [P] [US2] SectionTitleInlineElements.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleInlineElementsFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [ ] T017 [P] [US2] SectionTitleTrivia.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleTriviaFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [ ] T018 [P] [US2] BlockInlineSyntax.feature を変換: Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [ ] T019 [P] [US2] LinkParsing.feature を変換: Test/AsciiSharp.Specs/Features/LinkParsingFeature.cs + .Steps.cs を作成する（4 シナリオ）
+- [ ] T020 [P] [US2] TrailingWhitespace.feature を変換: Test/AsciiSharp.Specs/Features/TrailingWhitespaceFeature.cs + .Steps.cs を作成する（4 シナリオ）
+- [ ] T021 [P] [US2] Immutability.feature を変換: Test/AsciiSharp.Specs/Features/ImmutabilityFeature.cs + .Steps.cs を作成する（3 シナリオ）
+- [ ] T022 [P] [US2] InlineTextSyntaxRename.feature を変換: Test/AsciiSharp.Specs/Features/InlineTextSyntaxRenameFeature.cs + .Steps.cs を作成する（3 シナリオ）
 
-**Checkpoint**: 全 68 シナリオ（67 成功 + 1 Ignore）が LightBDD で実行される
+**Checkpoint**: 全 67 シナリオが LightBDD で実行・成功する
 
 ---
 
@@ -86,9 +87,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T022 [P] [US3] Directory.Packages.props から Reqnroll.MsTest の PackageVersion エントリを手作業で削除する（`dotnet remove package` は csproj のみ削除するため）
-- [ ] T023 [P] [US3] CLAUDE.md 内の Reqnroll・.feature ファイル関連の記述を LightBDD に更新する
-- [ ] T024 [P] [US3] .specify/memory/constitution.md 内の「.feature ファイル」を「フィーチャ定義」に一般化する
+- [ ] T023 [P] [US3] Directory.Packages.props から Reqnroll.MsTest の PackageVersion エントリを手作業で削除する（`dotnet remove package` は csproj のみ削除するため）
+- [ ] T024 [P] [US3] CLAUDE.md 内の Reqnroll・.feature ファイル関連の記述を LightBDD に更新する
+- [ ] T025 [P] [US3] Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj から `ReqnrollDeleteObsoleteCodeBehindFilesOnClean` プロパティを手作業で削除する（`dotnet remove package` では除去されない残留プロパティ）
 
 **Checkpoint**: プロジェクト内に Reqnroll への参照が存在しない（specs/ ドキュメント内の履歴的言及を除く）
 
@@ -102,7 +103,7 @@
 
 ### Implementation for User Story 4
 
-- [ ] T025 [US4] テスト実行後に HTML レポートが生成されることを確認し、レポート出力先を .gitignore に追加する（Test/AsciiSharp.Specs/.gitignore または既存の .gitignore）
+- [ ] T026 [US4] テスト実行後に HTML レポートが生成されることを確認し、レポート出力先を .gitignore に追加する（Test/AsciiSharp.Specs/.gitignore または既存の .gitignore）
 
 **Checkpoint**: HTML レポートが正しく生成される
 
@@ -112,7 +113,7 @@
 
 **Purpose**: 最終検証と品質確認
 
-- [ ] T026 全テスト（AsciiSharp.Specs + AsciiSharp.Tests + AsciiSharp.Asg.Tests）が成功し、ビルド警告がゼロであることを確認する
+- [ ] T027 全テスト（AsciiSharp.Specs + AsciiSharp.Tests + AsciiSharp.Asg.Tests）が成功し、ビルド警告がゼロであることを確認する
 
 ---
 
@@ -130,13 +131,13 @@
 
 ### Within User Story 2
 
-- T009〜T021 はすべて [P]（並列実行可能）。各フィーチャーは独立したファイルを生成し、相互依存なし
+- T010〜T022 はすべて [P]（並列実行可能）。各フィーチャーは独立したファイルを生成し、相互依存なし
 - US1 の BasicParsingFeature をテンプレートとしてコピー＆修正する
 
 ### Parallel Opportunities
 
-- Phase 4 の 13 タスク（T009〜T021）はすべて並列実行可能
-- Phase 5 の 3 タスク（T022〜T024）はすべて並列実行可能
+- Phase 4 の 13 タスク（T010〜T022）はすべて並列実行可能
+- Phase 5 の 3 タスク（T023〜T025）はすべて並列実行可能
 
 ---
 
@@ -144,10 +145,10 @@
 
 ```text
 # 13 フィーチャーの変換はすべて同時に開始可能:
-Task T009: SectionTitleRecognitionFeature.cs + .Steps.cs
-Task T010: CommentParsingFeature.cs + .Steps.cs
-Task T011: AttributeEntryParsingFeature.cs + .Steps.cs
-... (T012〜T021 も同時)
+Task T010: SectionTitleRecognitionFeature.cs + .Steps.cs
+Task T011: CommentParsingFeature.cs + .Steps.cs
+Task T012: AttributeEntryParsingFeature.cs + .Steps.cs
+... (T013〜T022 も同時)
 ```
 
 ---
@@ -157,7 +158,7 @@ Task T011: AttributeEntryParsingFeature.cs + .Steps.cs
 ### MVP First (User Story 1 Only)
 
 1. Complete Phase 1: Setup → LightBDD パッケージ導入
-2. Complete Phase 2: Foundational → 旧 Reqnroll ファイル削除
+2. Complete Phase 2: Foundational → 旧 Reqnroll ファイル削除 + 憲章用語更新
 3. Complete Phase 3: User Story 1 → BasicParsing の 11 シナリオが LightBDD で成功
 4. **STOP and VALIDATE**: パターンが正しいことを確認
 
@@ -165,7 +166,7 @@ Task T011: AttributeEntryParsingFeature.cs + .Steps.cs
 
 1. Setup + Foundational → 基盤完了
 2. US1 (BasicParsing) → パターン確立、HTML レポート動作確認
-3. US2 (残り 13 フィーチャー) → 全 68 シナリオ移行完了
+3. US2 (残り 13 フィーチャー) → 全 67 シナリオ移行完了
 4. US3 (Reqnroll 除去) → クリーンアップ完了
 5. US4 (レポート検証) + Polish → 最終品質確認
 
@@ -177,6 +178,7 @@ Task T011: AttributeEntryParsingFeature.cs + .Steps.cs
 - [Story] label maps task to specific user story for traceability
 - 各フィーチャークラスは自己完結型（ステップ定義の再利用なし）
 - 変換元の .feature ファイルと StepDefinitions/*.cs は Phase 2 で削除済みのため、git の履歴から参照する
-- パッケージの追加・削除は `dotnet add package` / `dotnet remove package` コマンドで行う。dotnet コマンドがサポートしていない操作（Directory.Packages.props の不要エントリ削除等）のみ手作業で行う
+- パッケージの追加・削除は `dotnet add package` / `dotnet remove package` コマンドで行う。dotnet コマンドがサポートしていない操作（Directory.Packages.props の不要エントリ削除、csproj の残留プロパティ削除等）のみ手作業で行う
+- ErrorRecovery.feature の @ignore シナリオ（区切りブロックのパース）は移行せず削除する
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently

@@ -99,7 +99,7 @@ Reqnroll で定義されていた全シナリオが LightBDD で再現される�
 
 ### Measurable Outcomes
 
-- **SC-001**: 既存の全 BDD シナリオ（68 シナリオ）が LightBDD テストとして実装され、すべて成功する
+- **SC-001**: 既存の全 BDD シナリオ（67 シナリオ、@ignore の 1 件は移行対象外）が LightBDD テストとして実装され、すべて成功する
 - **SC-002**: プロジェクト内に Reqnroll への参照が一切存在しない
 - **SC-003**: プロジェクト内に .feature ファイルが存在しない
 - **SC-004**: `dotnet test` 実行後に LightBDD の HTML テストレポートが生成される

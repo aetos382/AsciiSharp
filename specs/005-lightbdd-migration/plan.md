@@ -5,7 +5,7 @@
 
 ## Summary
 
-Reqnroll（Gherkin ベースの BDD フレームワーク）を LightBDD.MsTest4（C# ネイティブの BDD フレームワーク）に移行する。14 個の .feature ファイル（68 シナリオ）を C# テストクラスに変換し、Reqnroll 依存を完全除去する。各フィーチャークラスは自己完結型とし、ステップ定義間の再利用は行わない。
+Reqnroll（Gherkin ベースの BDD フレームワーク）を LightBDD.MsTest4（C# ネイティブの BDD フレームワーク）に移行する。14 個の .feature ファイル（67 シナリオ、@ignore の 1 件は移行対象外）を C# テストクラスに変換し、Reqnroll 依存を完全除去する。各フィーチャークラスは自己完結型とし、ステップ定義間の再利用は行わない。
 
 ## Technical Context
 
@@ -17,7 +17,7 @@ Reqnroll（Gherkin ベースの BDD フレームワーク）を LightBDD.MsTest4
 **Project Type**: テストフレームワーク移行（単一プロジェクト）
 **Performance Goals**: N/A（テスト基盤の変更であり、パフォーマンス要件なし）
 **Constraints**: MSTest.Sdk プロジェクト形式を維持、Central Package Management
-**Scale/Scope**: 14 フィーチャーファイル、68 シナリオ、12 ステップ定義クラス
+**Scale/Scope**: 14 フィーチャーファイル、67 シナリオ（@ignore の 1 件は移行対象外）、12 ステップ定義クラス
 
 ## Constitution Check
 
@@ -185,7 +185,7 @@ private void Given_以下のAsciiDoc文書がある()
 
 ### @ignore シナリオの扱い
 
-ErrorRecovery.feature の 1 件の @ignore シナリオは、`[Scenario]` メソッドに `[Ignore("区切りブロックは MVP スコープ外")]` を付与して移行する。
+ErrorRecovery.feature の 1 件の @ignore シナリオ（区切りブロックのパース）は移行せず削除する。当該シナリオは MVP スコープ外であり、将来必要になった時点で新規作成する。
 
 ### LightBDD 初期化
 
