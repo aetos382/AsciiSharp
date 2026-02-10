@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reqnroll.MsTest" />
+    <PackageReference Include="LightBDD.MsTest4" />
   </ItemGroup>
 
   <ItemGroup>

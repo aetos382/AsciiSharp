@@ -15,9 +15,9 @@
 
 **Purpose**: LightBDD パッケージの導入とプロジェクト基盤の準備
 
-- [ ] T001 `dotnet add Test/AsciiSharp.Specs package LightBDD.MsTest4` を実行して LightBDD.MsTest4 パッケージを追加する
-- [ ] T002 `dotnet remove Test/AsciiSharp.Specs package Reqnroll.MsTest` を実行して Reqnroll パッケージ参照を削除する
-- [ ] T003 Test/AsciiSharp.Specs/ConfiguredLightBddScope.cs を作成し LightBDD の初期化・クリーンアップと HTML レポート出力を設定する
+- [x] T001 `dotnet add Test/AsciiSharp.Specs package LightBDD.MsTest4` を実行して LightBDD.MsTest4 パッケージを追加する
+- [x] T002 `dotnet remove Test/AsciiSharp.Specs package Reqnroll.MsTest` を実行して Reqnroll パッケージ参照を削除する
+- [x] T003 Test/AsciiSharp.Specs/ConfiguredLightBddScope.cs を作成し LightBDD の初期化・クリーンアップと HTML レポート出力を設定する
 
 **Checkpoint**: LightBDD パッケージが参照され、初期化クラスが作成されている
 
