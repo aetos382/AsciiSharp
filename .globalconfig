@@ -59,6 +59,7 @@ dotnet_diagnostic.IDE0305.severity = silent
 
 dotnet_diagnostic.CA1052.severity = suggestion
 dotnet_diagnostic.CA1056.severity = silent
+dotnet_diagnostic.CA1822.severity = suggestion
 dotnet_diagnostic.CA1852.severity = suggestion
 
 dotnet_naming_symbols.types_and_namespaces.applicable_kinds = class, struct, enum, delegate, namespace

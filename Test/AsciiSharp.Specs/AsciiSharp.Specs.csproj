@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <ReqnrollDeleteObsoleteCodeBehindFilesOnClean>true</ReqnrollDeleteObsoleteCodeBehindFilesOnClean>
+    <!-- LightBDD 拡張シナリオ構文では this. なしでインスタンス メソッドを呼び出すため -->
+    <NoWarn>$(NoWarn);IDE0009</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
