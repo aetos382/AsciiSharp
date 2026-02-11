@@ -1,4 +1,5 @@
 using LightBDD.Core.Configuration;
+using LightBDD.Framework.Configuration;
 using LightBDD.Framework.Reporting.Formatters;
 using LightBDD.MsTest4;
 
@@ -17,8 +18,8 @@ public class ConfiguredLightBddScope
     public static void Setup(TestContext testContext)
     {
         LightBddScope.Initialize(cfg => cfg
-            .ReportWritersConfiguration(rw => rw
-                .AddFileWriter<HtmlReportFormatter>("~\\Reports\\FeaturesReport.html")));
+            .ReportWritersConfiguration()
+            .AddFileWriter<HtmlReportFormatter>("~\\Reports\\FeaturesReport.html"));
     }
 
     [AssemblyCleanup]

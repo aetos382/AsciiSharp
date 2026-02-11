@@ -86,11 +86,11 @@ Sync Impact Report:
 - 機能開発は以下のフェーズ順序を厳守する:
   1. **specify**: 機能仕様の定義（`/speckit.specify`）
   2. **clarify**: 仕様の曖昧さを解消（`/speckit.clarify`）
-  3. **plan**: 実装計画の策定と .feature ファイルの作成（`/speckit.plan`）
+  3. **plan**: 実装計画の策定とフィーチャ定義の作成（`/speckit.plan`）
   4. **tasks**: タスクリストの生成（`/speckit.tasks`）
   5. **analyze**: 品質・整合性の分析、テスト失敗確認（`/speckit.analyze`）
   6. **implement**: 実装の実行（`/speckit.implement`）
-- BDD の Red ステップ（失敗するテストの作成）は **plan** フェーズで .feature ファイルを作成し、作成後すぐにテスト失敗を確認してよい
+- BDD の Red ステップ（失敗するテストの作成）は **plan** フェーズでフィーチャ定義を作成し、作成後すぐにテスト失敗を確認してよい
 - BDD の Green/Refactor ステップは **implement** フェーズ中に行う
 - フェーズをスキップしてはならない（ただし clarify は曖昧さがない場合は省略可）
 - **各フェーズの終了時には必ずコミットを作成する**
@@ -114,7 +114,7 @@ specify → clarify → plan → tasks → analyze → implement
    │         │        │       │        │          └─ Green/Refactor
    │         │        │       │        └─ 整合性検証
    │         │        │       └─ タスク分解
-   │         │        └─ 設計ドキュメント + .feature 作成 + Red 確認
+   │         │        └─ 設計ドキュメント + フィーチャ定義作成 + Red 確認
    │         └─ 質問による曖昧さ解消
    └─ 仕様書作成
 ```
@@ -122,7 +122,7 @@ specify → clarify → plan → tasks → analyze → implement
 **フェーズの目的**:
 - **specify**: ユーザーストーリーと受け入れ条件を定義
 - **clarify**: 仕様の不明点を質問で解消
-- **plan**: 技術調査、データモデル、APIコントラクト、**.feature ファイル**を策定し、テスト失敗を確認（Red）
+- **plan**: 技術調査、データモデル、APIコントラクト、**フィーチャ定義**を策定し、テスト失敗を確認（Red）
 - **tasks**: 実装タスクを依存関係順に分解
 - **analyze**: 成果物の整合性を検証
 - **implement**: テストを通す実装を行い（Green）、リファクタリング（Refactor）
@@ -150,7 +150,7 @@ specify → clarify → plan → tasks → analyze → implement
 1. **Red（レッド）**: 失敗するテストを書く
    - ユーザーストーリーから受け入れシナリオを作成
    - Given-When-Then 形式でテストケースを記述
-   - .feature ファイルを作成
+   - フィーチャ定義を作成
    - テストを実行し、失敗することを確認
    - **タイミング**: **plan** フェーズで作成・確認（作成後すぐに Red 確認してよい）
 
