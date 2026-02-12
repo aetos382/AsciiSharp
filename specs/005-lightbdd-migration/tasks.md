@@ -29,11 +29,11 @@
 
 **⚠️ CRITICAL**: この Phase が完了するまで US タスクに進まない
 
-- [ ] T004 Test/AsciiSharp.Specs/reqnroll.json を削除する
-- [ ] T005 Test/AsciiSharp.Specs/StepDefinitions/ ディレクトリとその中の全 .cs ファイルを削除する
-- [ ] T006 Test/AsciiSharp.Specs/Features/ ディレクトリ内の全 .feature ファイル（サブディレクトリ含む）を削除する
-- [ ] T007 Test/AsciiSharp.Specs/Assembly.cs を LightBDD 用に更新する（Reqnroll 関連の属性を削除、[assembly: Parallelize] を維持）
-- [ ] T008 .specify/memory/constitution.md 内の「.feature ファイル」を「フィーチャ定義」に一般化する（実装フェーズ開始前に憲章の用語を整合させる）
+- [x] T004 Test/AsciiSharp.Specs/reqnroll.json を削除する
+- [x] T005 Test/AsciiSharp.Specs/StepDefinitions/ ディレクトリとその中の全 .cs ファイルを削除する
+- [x] T006 Test/AsciiSharp.Specs/Features/ ディレクトリ内の全 .feature ファイル（サブディレクトリ含む）を削除する
+- [x] T007 Test/AsciiSharp.Specs/Assembly.cs を LightBDD 用に更新する（Reqnroll 関連の属性を削除、[assembly: Parallelize] を維持）
+- [x] T008 .specify/memory/constitution.md 内の「.feature ファイル」を「フィーチャ定義」に一般化する（実装フェーズ開始前に憲章の用語を整合させる）
 
 **Checkpoint**: プロジェクトがビルドでき、テストが 0 件の状態。憲章の用語が更新済み
 
@@ -47,7 +47,7 @@
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] BasicParsing.feature を変換: Test/AsciiSharp.Specs/Features/BasicParsingFeature.cs（シナリオ定義）と Test/AsciiSharp.Specs/Features/BasicParsingFeature.Steps.cs（ステップ実装）を作成する（11 シナリオ）
+- [x] T009 [US1] BasicParsing.feature を変換: Test/AsciiSharp.Specs/Features/BasicParsingFeature.cs（シナリオ定義）と Test/AsciiSharp.Specs/Features/BasicParsingFeature.Steps.cs（ステップ実装）を作成する（11 シナリオ）
 
 **Checkpoint**: BasicParsing の 11 シナリオが LightBDD で実行・成功し、HTML レポートに表示される。このパターンが以降のフィーチャー変換のテンプレートとなる
 
