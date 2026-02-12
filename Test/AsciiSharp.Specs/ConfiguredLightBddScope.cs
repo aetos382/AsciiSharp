@@ -9,7 +9,7 @@ namespace AsciiSharp.Specs;
 
 /// <summary>
 /// LightBDD のアセンブリ レベルの初期化・クリーンアップを行うクラスです。
-/// HTML レポートの出力設定もここで構成します。
+/// Markdown レポートの出力設定もここで構成します。
 /// </summary>
 [TestClass]
 public class ConfiguredLightBddScope
@@ -19,7 +19,8 @@ public class ConfiguredLightBddScope
     {
         LightBddScope.Initialize(cfg => cfg
             .ReportWritersConfiguration()
-            .AddFileWriter<HtmlReportFormatter>("~\\Reports\\FeaturesReport.html"));
+            .Clear()
+            .AddFileWriter<MarkdownReportFormatter>("~/Reports/FeaturesReport.md"));
     }
 
     [AssemblyCleanup]
