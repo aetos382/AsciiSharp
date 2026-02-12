@@ -1,3 +1,8 @@
 {
-  "dotnet.solution.autoOpen": "AsciiSharp.slnx"
+  "dotnet.solution.autoOpen": "AsciiSharp.slnx",
+
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.cs": "${capture}.Steps.cs"
+  }
 }
