@@ -103,7 +103,7 @@
 
 ### Implementation for User Story 4
 
-- [ ] T026 [US4] テスト実行後に HTML レポートが生成されることを確認し、レポート出力先を .gitignore に追加する（Test/AsciiSharp.Specs/.gitignore または既存の .gitignore）
+- [x] T026 [US4] テスト実行後に HTML レポートが生成されることを確認し、レポート出力先を .gitignore に追加する（Test/AsciiSharp.Specs/.gitignore または既存の .gitignore）
 
 **Checkpoint**: HTML レポートが正しく生成される
 
@@ -113,7 +113,7 @@
 
 **Purpose**: 最終検証と品質確認
 
-- [ ] T027 全テスト（AsciiSharp.Specs + AsciiSharp.Tests + AsciiSharp.Asg.Tests）が成功し、ビルド警告がゼロであることを確認する
+- [x] T027 全テスト（AsciiSharp.Specs + AsciiSharp.Tests + AsciiSharp.Asg.Tests）が成功し、ビルド警告がゼロであることを確認する
 
 ---
 
