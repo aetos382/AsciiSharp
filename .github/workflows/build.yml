@@ -45,7 +45,7 @@ jobs:
         config-file: .github/codeql/config.yml
 
     - name: Build
-      run: dotnet build --no-restore --no-incremental --nologo
+      run: dotnet build --configuration Debug --no-restore --no-incremental --nologo
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
@@ -54,7 +54,11 @@ jobs:
 
     - name: Test
       id: test
-      run: dotnet test --no-restore --no-build --no-banner --no-ansi --no-progress --no-launch-profile --report-trx --coverage --coverage-output-format cobertura --results-directory artifacts/TestResults
+      run: dotnet test --configuration Debug --no-restore --no-build --no-banner --no-ansi --no-progress --no-launch-profile --report-trx --coverage --coverage-output-format cobertura --results-directory artifacts/TestResults
+
+    - name: Publish LightBDD report to Job Summary
+      if: ${{ steps.test.outcome == 'success' || steps.test.outcome == 'failure' }}
+      run: cat artifacts/bin/AsciiSharp.Specs/debug/Reports/FeaturesReport.md >> "$GITHUB_STEP_SUMMARY"
 
     - name: Shutdown build servers
       if: always()
