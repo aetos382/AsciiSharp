@@ -61,19 +61,19 @@
 
 ### Implementation for User Story 2
 
-- [ ] T010 [P] [US2] SectionTitleRecognition.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleRecognitionFeature.cs + .Steps.cs を作成する（7 シナリオ）
-- [ ] T011 [P] [US2] CommentParsing.feature を変換: Test/AsciiSharp.Specs/Features/CommentParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
-- [ ] T012 [P] [US2] AttributeEntryParsing.feature を変換: Test/AsciiSharp.Specs/Features/AttributeEntryParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
-- [ ] T013 [P] [US2] SyntaxVisitor.feature を変換: Test/AsciiSharp.Specs/Features/SyntaxVisitorFeature.cs + .Steps.cs を作成する（8 シナリオ）
-- [ ] T014 [P] [US2] ErrorRecovery.feature を変換: Test/AsciiSharp.Specs/Features/ErrorRecoveryFeature.cs + .Steps.cs を作成する（4 シナリオ、@ignore シナリオは移行しない）
-- [ ] T015 [P] [US2] IncrementalParsing.feature を変換: Test/AsciiSharp.Specs/Features/IncrementalParsingFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T016 [P] [US2] SectionTitleInlineElements.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleInlineElementsFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T017 [P] [US2] SectionTitleTrivia.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleTriviaFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T018 [P] [US2] BlockInlineSyntax.feature を変換: Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.cs + .Steps.cs を作成する（5 シナリオ）
-- [ ] T019 [P] [US2] LinkParsing.feature を変換: Test/AsciiSharp.Specs/Features/LinkParsingFeature.cs + .Steps.cs を作成する（4 シナリオ）
-- [ ] T020 [P] [US2] TrailingWhitespace.feature を変換: Test/AsciiSharp.Specs/Features/TrailingWhitespaceFeature.cs + .Steps.cs を作成する（4 シナリオ）
-- [ ] T021 [P] [US2] Immutability.feature を変換: Test/AsciiSharp.Specs/Features/ImmutabilityFeature.cs + .Steps.cs を作成する（3 シナリオ）
-- [ ] T022 [P] [US2] InlineTextSyntaxRename.feature を変換: Test/AsciiSharp.Specs/Features/InlineTextSyntaxRenameFeature.cs + .Steps.cs を作成する（3 シナリオ）
+- [x] T010 [P] [US2] SectionTitleRecognition.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleRecognitionFeature.cs + .Steps.cs を作成する（7 シナリオ）
+- [x] T011 [P] [US2] CommentParsing.feature を変換: Test/AsciiSharp.Specs/Features/CommentParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
+- [x] T012 [P] [US2] AttributeEntryParsing.feature を変換: Test/AsciiSharp.Specs/Features/AttributeEntryParsingFeature.cs + .Steps.cs を作成する（7 シナリオ）
+- [x] T013 [P] [US2] SyntaxVisitor.feature を変換: Test/AsciiSharp.Specs/Features/SyntaxVisitorFeature.cs + .Steps.cs を作成する（8 シナリオ）
+- [x] T014 [P] [US2] ErrorRecovery.feature を変換: Test/AsciiSharp.Specs/Features/ErrorRecoveryFeature.cs + .Steps.cs を作成する（4 シナリオ、@ignore シナリオは移行しない）
+- [x] T015 [P] [US2] IncrementalParsing.feature を変換: Test/AsciiSharp.Specs/Features/IncrementalParsingFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [x] T016 [P] [US2] SectionTitleInlineElements.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleInlineElementsFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [x] T017 [P] [US2] SectionTitleTrivia.feature を変換: Test/AsciiSharp.Specs/Features/SectionTitleTriviaFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [x] T018 [P] [US2] BlockInlineSyntax.feature を変換: Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.cs + .Steps.cs を作成する（5 シナリオ）
+- [x] T019 [P] [US2] LinkParsing.feature を変換: Test/AsciiSharp.Specs/Features/LinkParsingFeature.cs + .Steps.cs を作成する（4 シナリオ）
+- [x] T020 [P] [US2] TrailingWhitespace.feature を変換: Test/AsciiSharp.Specs/Features/TrailingWhitespaceFeature.cs + .Steps.cs を作成する（4 シナリオ）
+- [x] T021 [P] [US2] Immutability.feature を変換: Test/AsciiSharp.Specs/Features/ImmutabilityFeature.cs + .Steps.cs を作成する（3 シナリオ）
+- [x] T022 [P] [US2] InlineTextSyntaxRename.feature を変換: Test/AsciiSharp.Specs/Features/InlineTextSyntaxRenameFeature.cs + .Steps.cs を作成する（3 シナリオ）
 
 **Checkpoint**: 全 67 シナリオが LightBDD で実行・成功する
 
@@ -87,9 +87,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T023 [P] [US3] Directory.Packages.props から Reqnroll.MsTest の PackageVersion エントリを手作業で削除する（`dotnet remove package` は csproj のみ削除するため）
-- [ ] T024 [P] [US3] CLAUDE.md 内の Reqnroll・.feature ファイル関連の記述を LightBDD に更新する
-- [ ] T025 [P] [US3] Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj から `ReqnrollDeleteObsoleteCodeBehindFilesOnClean` プロパティを手作業で削除する（`dotnet remove package` では除去されない残留プロパティ）
+- [x] T023 [P] [US3] Directory.Packages.props から Reqnroll.MsTest の PackageVersion エントリを手作業で削除する（`dotnet remove package` は csproj のみ削除するため）
+- [x] T024 [P] [US3] CLAUDE.md 内の Reqnroll・.feature ファイル関連の記述を LightBDD に更新する
+- [x] T025 [P] [US3] Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj から `ReqnrollDeleteObsoleteCodeBehindFilesOnClean` プロパティを手作業で削除する（`dotnet remove package` では除去されない残留プロパティ）
 
 **Checkpoint**: プロジェクト内に Reqnroll への参照が存在しない（specs/ ドキュメント内の履歴的言及を除く）
 

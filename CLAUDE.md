@@ -159,14 +159,14 @@ this._field = parameter ?? throw new ArgumentNullException(nameof(parameter));
 
 - テスト フレームワークには [MSTest.Sdk](https://www.nuget.org/packages/MSTest.Sdk) を使用します。
 - Behavior Driven Development (BDD) を行います。
-- `AsciiSharp.Specs` プロジェクトでは [Reqnroll](https://www.nuget.org/packages/Reqnroll) を使用します。
+- `AsciiSharp.Specs` プロジェクトでは [LightBDD.MsTest4](https://www.nuget.org/packages/LightBDD.MsTest4) を使用します。
 - テストは以下のいずれかの方法で実行します。
   - ソリューション ディレクトリまたは個別のプロジェクト ディレクトリで `dotnet test`
   - 個別のプロジェクトディレクトリで `dotnet run`
 
 ### BDD の対象範囲
 
-- BDD（.feature ファイルによる振る舞いテスト）の対象は **コア ライブラリ（Source/AsciiSharp）のみ** とします。
+- BDD（LightBDD の C# フィーチャー クラスによる振る舞いテスト）の対象は **コア ライブラリ（Source/AsciiSharp）のみ** とします。
 - その他のプロジェクト（Asg、TckAdapter 等）は通常のユニット テストで検証します。
 
 ### テスト プロジェクトの作成
@@ -185,11 +185,12 @@ dotnet new mstest --language C# --framework net10.0 --sdk --test-runner Microsof
 - **NuGet パッケージの追加**: `dotnet add package <パッケージ名>`
 - **ソリューションへのプロジェクト追加**: `dotnet sln add <プロジェクト>`
 
-### 仕様策定と .feature ファイルについて
+### 仕様策定とフィーチャー定義について
 
-- 仕様策定（`/speckit.specify` または `/speckit.plan`）の完了時には、必ず対応する .feature ファイルを `Test/AsciiSharp.Specs/Features/` に作成します。
-- .feature ファイルが作成されるまで、実装フェーズに進みません。
-- .feature ファイルは日本語で記述し、Gherkin の Given-When-Then 形式に従います。
+- 仕様策定（`/speckit.specify` または `/speckit.plan`）の完了時には、必ず対応する LightBDD フィーチャー クラスを `Test/AsciiSharp.Specs/Features/` に作成します。
+- フィーチャー クラスが作成されるまで、実装フェーズに進みません。
+- フィーチャー クラスは partial class パターンで作成し、シナリオ定義（`XxxFeature.cs`）とステップ実装（`XxxFeature.Steps.cs`）に分割します。
+- シナリオ名・ステップ メソッド名は日本語で記述します。
 
 ## コード レビューについて
 
