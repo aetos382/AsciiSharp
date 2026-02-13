@@ -3,27 +3,32 @@
   "respectGitignore": true,
   "permissions": {
     "allow": [
-      "Bash(cat:*)",
+      "Bash(cat *)",
       "Bash(dotnet build:*)",
       "Bash(dotnet clean:*)",
-      "Bash(dotnet format:*)",
+      "Bash(dotnet list:*)",
       "Bash(dotnet package search:*)",
       "Bash(dotnet restore:*)",
       "Bash(dotnet run:*)",
       "Bash(dotnet test:*)",
-      "Bash(find:*)",
-      "Bash(gh run list:*)",
-      "Bash(gh run view:*)",
-      "Bash(git fetch:*)",
-      "Bash(git ls-remote:*)",
-      "Bash(git rev-parse:*)",
-      "Bash(grep:*)",
-      "Bash(ls:*)",
+      "Bash(find *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(git fetch *)",
+      "Bash(git ls-remote *)",
+      "Bash(git rev-parse *)",
+      "Bash(git status:*)",
+      "Bash(grep *)",
+      "Bash(ls *)",
+      "Bash(pwsh -File .specify/scripts/powershell/*)",
       "Skill(commit-commands:commit)",
-      "Skill(commit-commands:commit:*)",
+      "Skill(commit-commands:commit *)",
       "WebFetch",
       "WebSearch",
-      "mcp__microsoft-learn__microsoft_docs_fetch"
+      "mcp__github__get_file_contents",
+      "mcp__github__search_code",
+      "mcp__microsoft-learn__microsoft_docs_fetch",
+      "mcp__microsoft-learn__microsoft_code_sample_search"
     ],
     "deny": [
       "Edit(/Directory.packages.props)",
@@ -36,6 +41,7 @@
       "Write(**/*.Designer.cs)"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledPlugins": {
     "claude-code-setup@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
@@ -43,7 +49,6 @@
     "csharp-lsp@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true
   },
-  "enableAllProjectMcpServers": true,
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {

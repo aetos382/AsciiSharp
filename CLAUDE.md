@@ -93,7 +93,7 @@ AsciiSharp コア ライブラリでは以下の方針に従います。
 - コミット メッセージも日本語で記述してください。
 - テスト メソッド名は日本語で書いてください。
 - クラスやメソッドには XML ドキュメント コメントを日本語で書いてください。
-- BDD の feature ファイルは日本語で書いてください。
+- BDD のシナリオ名・ステップ メソッド名は日本語で書いてください。
 - 例外のメッセージに関してはハード コーディングせず、リソースを使うものとします。また、リソースの第一言語は英語とします。
 
 ## C# と .NET について
@@ -159,14 +159,14 @@ this._field = parameter ?? throw new ArgumentNullException(nameof(parameter));
 
 - テスト フレームワークには [MSTest.Sdk](https://www.nuget.org/packages/MSTest.Sdk) を使用します。
 - Behavior Driven Development (BDD) を行います。
-- `AsciiSharp.Specs` プロジェクトでは [Reqnroll](https://www.nuget.org/packages/Reqnroll) を使用します。
+- `AsciiSharp.Specs` プロジェクトでは [LightBDD.MsTest4](https://www.nuget.org/packages/LightBDD.MsTest4) を使用します。
 - テストは以下のいずれかの方法で実行します。
   - ソリューション ディレクトリまたは個別のプロジェクト ディレクトリで `dotnet test`
   - 個別のプロジェクトディレクトリで `dotnet run`
 
 ### BDD の対象範囲
 
-- BDD（.feature ファイルによる振る舞いテスト）の対象は **コア ライブラリ（Source/AsciiSharp）のみ** とします。
+- BDD（LightBDD の C# フィーチャー クラスによる振る舞いテスト）の対象は **コア ライブラリ（Source/AsciiSharp）のみ** とします。
 - その他のプロジェクト（Asg、TckAdapter 等）は通常のユニット テストで検証します。
 
 ### テスト プロジェクトの作成
@@ -185,11 +185,34 @@ dotnet new mstest --language C# --framework net10.0 --sdk --test-runner Microsof
 - **NuGet パッケージの追加**: `dotnet add package <パッケージ名>`
 - **ソリューションへのプロジェクト追加**: `dotnet sln add <プロジェクト>`
 
-### 仕様策定と .feature ファイルについて
+### 仕様策定とフィーチャー定義について
 
-- 仕様策定（`/speckit.specify` または `/speckit.plan`）の完了時には、必ず対応する .feature ファイルを `Test/AsciiSharp.Specs/Features/` に作成します。
-- .feature ファイルが作成されるまで、実装フェーズに進みません。
-- .feature ファイルは日本語で記述し、Gherkin の Given-When-Then 形式に従います。
+- 仕様策定（`/speckit.specify` または `/speckit.plan`）の完了時には、必ず対応する LightBDD フィーチャー クラスを `Test/AsciiSharp.Specs/Features/` に作成します。
+- フィーチャー クラスが作成されるまで、実装フェーズに進みません。
+- フィーチャー クラスは partial class パターンで作成し、シナリオ定義（`XxxFeature.cs`）とステップ実装（`XxxFeature.Steps.cs`）に分割します。
+- シナリオ名・ステップ メソッド名は日本語で記述します。
+
+#### 仕様先行（Red ステップ）の具体的手順
+
+LightBDD では C# コードがコンパイルできなければテストを実行できないため、仕様先行は以下の手順で行います。
+
+1. **シナリオ定義ファイル（`XxxFeature.cs`）を作成する**
+   - `[Scenario]` 属性付きのメソッドで、`Runner.RunScenario(...)` を使いシナリオの Given-When-Then 構造を定義する
+   - この時点ではステップ メソッドの中身は不要だが、メソッド シグネチャは必要
+
+2. **ステップ実装ファイル（`XxxFeature.Steps.cs`）を作成する**
+   - 各ステップ メソッドの本体は空（何もしない）または `Assert.Inconclusive("未実装")` とする
+   - これにより、コンパイルは通るがテストは失敗する（Red の状態）
+
+3. **テストを実行して失敗を確認する**（Red 確認）
+
+```cs
+// Red ステップの例: ステップ メソッドの本体が未実装
+private void パーサーが初期化されている()
+{
+    Assert.Inconclusive("未実装");
+}
+```
 
 ## コード レビューについて
 

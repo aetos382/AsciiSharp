@@ -56,7 +56,6 @@
       "extensions": [
         "Anthropic.claude-code",
         "asciidoctor.asciidoctor-vscode",
-        "CucumberOpen.cucumber-official",
         "docker.docker",
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
