@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 開発者として、
 構文木を走査する際に、
 型システムを利用してブロック要素とインライン要素を区別したい")]
-public partial class BlockInlineSyntaxFeature : FeatureFixture
+public sealed partial class BlockInlineSyntaxFeature : FeatureFixture
 {
     [Scenario]
     public void ブロック要素はBlockSyntaxとして識別できる()

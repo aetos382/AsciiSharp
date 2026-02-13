@@ -14,7 +14,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 セクションと段落を含む AsciiDoc 文書を解析し、
 ロスレスな構文木を取得したい")]
-public partial class BasicParsingFeature : FeatureFixture
+public sealed partial class BasicParsingFeature : FeatureFixture
 {
     [Scenario]
     public void 本文のみを含む文章の解析()

@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 開発者として、
 構文木を変更せずにクエリを行い、
 必要に応じて元の構文木を保持したまま新しい構文木を作成したい")]
-public partial class ImmutabilityFeature : FeatureFixture
+public sealed partial class ImmutabilityFeature : FeatureFixture
 {
     [Scenario]
     public void ノード置換後も元の構文木は変更されない()

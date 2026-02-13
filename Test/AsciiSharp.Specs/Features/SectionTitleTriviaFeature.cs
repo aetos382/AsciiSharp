@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 セクションタイトルのマーカーとタイトル本文の間の空白が適切に保持され、
 ToFullString() で元のテキストを完全に復元したい")]
-public partial class SectionTitleTriviaFeature : FeatureFixture
+public sealed partial class SectionTitleTriviaFeature : FeatureFixture
 {
     [Scenario]
     public void 単一のスペースを持つセクションタイトルの復元()

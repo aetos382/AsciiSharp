@@ -14,7 +14,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 セクション見出しとして認識される条件を理解し、
 条件を満たさない行が段落として扱われることを確認したい")]
-public partial class SectionTitleRecognitionFeature : FeatureFixture
+public sealed partial class SectionTitleRecognitionFeature : FeatureFixture
 {
     [Scenario]
     public void 等号が7個以上の行は段落として扱われる()

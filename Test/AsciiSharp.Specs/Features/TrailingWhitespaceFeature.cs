@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 AsciiDoc 文書の行末空白や末尾改行が削除・正規化されることなく、
 ToFullString() で元のテキストを完全に復元したい")]
-public partial class TrailingWhitespaceFeature : FeatureFixture
+public sealed partial class TrailingWhitespaceFeature : FeatureFixture
 {
     [Scenario]
     public void セクションタイトルの末尾に空白がある場合に保持される()

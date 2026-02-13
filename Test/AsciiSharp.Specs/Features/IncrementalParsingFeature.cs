@@ -16,7 +16,7 @@ namespace AsciiSharp.Specs.Features;
 エディタで文書の一部を編集したとき、
 パーサーが変更された部分のみを再解析し、
 変更されていない部分の解析結果を再利用したい")]
-public partial class IncrementalParsingFeature : FeatureFixture
+public sealed partial class IncrementalParsingFeature : FeatureFixture
 {
     [Scenario]
     public void 単一ブロック内の編集で他のブロックは再利用される()

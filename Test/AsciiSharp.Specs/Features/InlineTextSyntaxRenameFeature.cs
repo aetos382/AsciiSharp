@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 プレーンテキストのインライン要素を InlineTextSyntax として参照し、
 一貫した命名規則で構文木を操作したい")]
-public partial class InlineTextSyntaxRenameFeature : FeatureFixture
+public sealed partial class InlineTextSyntaxRenameFeature : FeatureFixture
 {
     [Scenario]
     public void InlineTextSyntaxのSyntaxKindはInlineTextである()

@@ -14,7 +14,7 @@ namespace AsciiSharp.Specs.Features;
     @"リンクの解析
 URL リンクを含むテキストを解析し、
 リンクの位置とターゲットを正確に把握できる")]
-public partial class LinkParsingFeature : FeatureFixture
+public sealed partial class LinkParsingFeature : FeatureFixture
 {
     [Scenario]
     public void URLリンクを含む段落の解析()

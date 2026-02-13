@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 ドキュメント ヘッダー内の属性エントリ（:name: value 形式）を解析し、
 属性名と属性値を取得したい")]
-public partial class AttributeEntryParsingFeature : FeatureFixture
+public sealed partial class AttributeEntryParsingFeature : FeatureFixture
 {
     [Scenario]
     public void 値あり属性エントリの解析()

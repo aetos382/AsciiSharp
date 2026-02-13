@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 AsciiDoc のコメントを正しく解析し、
 ラウンドトリップが可能な構文木を取得したい")]
-public partial class CommentParsingFeature : FeatureFixture
+public sealed partial class CommentParsingFeature : FeatureFixture
 {
     [Scenario]
     public void 単一行コメントを含む文書の解析()

@@ -14,7 +14,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリ利用者として、
 AsciiDoc 文書の構文木を走査し、
 各ノードを訪問して処理を行いたい")]
-public partial class SyntaxVisitorFeature : FeatureFixture
+public sealed partial class SyntaxVisitorFeature : FeatureFixture
 {
     [Scenario]
     public void Visitorで全ノードを走査する()

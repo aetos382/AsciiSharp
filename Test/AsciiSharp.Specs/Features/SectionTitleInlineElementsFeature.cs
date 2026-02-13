@@ -15,7 +15,7 @@ namespace AsciiSharp.Specs.Features;
 ライブラリユーザーとして、
 セクションタイトルの構文木からインライン要素を取得し、
 タイトル内の構造化された情報にアクセスしたい")]
-public partial class SectionTitleInlineElementsFeature : FeatureFixture
+public sealed partial class SectionTitleInlineElementsFeature : FeatureFixture
 {
     [Scenario]
     public void セクションタイトルからインライン要素を取得する()

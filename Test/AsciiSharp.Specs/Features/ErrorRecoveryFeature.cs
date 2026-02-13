@@ -14,7 +14,7 @@ namespace AsciiSharp.Specs.Features;
 エディタ開発者として、
 構文エラーを含む AsciiDoc 文書を解析しても、
 正常な部分を最大限に解析し、有用な情報を提供したい")]
-public partial class ErrorRecoveryFeature : FeatureFixture
+public sealed partial class ErrorRecoveryFeature : FeatureFixture
 {
     [Scenario]
     public void 不完全なセクションタイトルを含む文書の解析()
