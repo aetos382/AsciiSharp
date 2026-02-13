@@ -18,32 +18,32 @@ public partial class SectionTitleRecognitionFeature
 
     private void 以下のAsciiDoc文書がある(string text)
     {
-        this._sourceText = text;
+        _sourceText = text;
     }
 
     private void 文書を解析する()
     {
-        this._syntaxTree = SyntaxTree.ParseText(this._sourceText);
+        _syntaxTree = SyntaxTree.ParseText(_sourceText);
     }
 
     private void 構文木から完全なテキストを取得する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        this._reconstructedText = this._syntaxTree.Root.ToFullString();
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        _reconstructedText = _syntaxTree.Root.ToFullString();
     }
 
     private void Documentノードは_Headerを持たない()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNull(document.Header, "Document は Header を持ちません。");
     }
 
     private void Documentノードは_N個のセクションを持つ(int expectedCount)
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
         var sections = document.Body?.ChildNodesAndTokens()
@@ -56,8 +56,8 @@ public partial class SectionTitleRecognitionFeature
 
     private void Documentノードは_N個の段落を持つ(int expectedCount)
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
         var paragraphs = document.DescendantNodes()
@@ -69,13 +69,13 @@ public partial class SectionTitleRecognitionFeature
 
     private void 再構築されたテキストは元の文書と一致する()
     {
-        Assert.AreEqual(this._sourceText, this._reconstructedText, "再構築されたテキストが元の文書と一致しません。");
+        Assert.AreEqual(_sourceText, _reconstructedText, "再構築されたテキストが元の文書と一致しません。");
     }
 
     private void 最初のセクションタイトルのレベルは(int expectedLevel)
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
         SectionTitleSyntax? sectionTitle = null;
@@ -99,13 +99,13 @@ public partial class SectionTitleRecognitionFeature
 
     private void 構文木が生成される()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        Assert.IsNotNull(this._syntaxTree.Root, "ルートノードが null です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree.Root, "ルートノードが null です。");
     }
 
     private void 構文木に診断情報が含まれる()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        Assert.IsNotEmpty(this._syntaxTree.Diagnostics, "診断情報が含まれていません。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        Assert.IsNotEmpty(_syntaxTree.Diagnostics, "診断情報が含まれていません。");
     }
 }

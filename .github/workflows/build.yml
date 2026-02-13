@@ -58,7 +58,13 @@ jobs:
 
     - name: Publish LightBDD report to Job Summary
       if: ${{ steps.test.outcome == 'success' || steps.test.outcome == 'failure' }}
-      run: cat artifacts/bin/AsciiSharp.Specs/debug/Reports/FeaturesReport.md >> "$GITHUB_STEP_SUMMARY"
+      run: |
+        REPORT_PATH="artifacts/bin/AsciiSharp.Specs/debug/Reports/FeaturesReport.md"
+        if [ -f "$REPORT_PATH" ]; then
+          cat "$REPORT_PATH" >> "$GITHUB_STEP_SUMMARY"
+        else
+          echo "::warning::LightBDD report not found at $REPORT_PATH"
+        fi
 
     - name: Shutdown build servers
       if: always()

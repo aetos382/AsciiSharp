@@ -23,138 +23,141 @@ public partial class SyntaxVisitorFeature
 
     private void 以下のAsciiDoc文書がある(string text)
     {
-        this._sourceText = text;
+        _sourceText = text;
     }
 
     private void 不完全なAsciiDoc文書がある(string text)
     {
-        this._sourceText = text;
+        _sourceText = text;
     }
 
     private void 文書を解析する()
     {
-        this._syntaxTree = SyntaxTree.ParseText(this._sourceText);
+        _syntaxTree = SyntaxTree.ParseText(_sourceText);
     }
 
     private void 全ノードを訪問するVisitorで走査する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
         var visitor = new NodeCountingVisitor();
-        this._syntaxTree.Root.Accept(visitor);
-        this._visitedNodeCount = visitor.Count;
-        this._traversalCompleted = true;
+        _syntaxTree.Root.Accept(visitor);
+        _visitedNodeCount = visitor.Count;
+        _traversalCompleted = true;
     }
 
     private void リンクを収集するVisitorで走査する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
         var visitor = new LinkCollectingVisitor();
-        this._syntaxTree.Root.Accept(visitor);
-        this._collectedLinks = visitor.Links;
-        this._traversalCompleted = true;
+        _syntaxTree.Root.Accept(visitor);
+        _collectedLinks = visitor.Links;
+        _traversalCompleted = true;
     }
 
     private void セクションタイトルを収集するVisitorで走査する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
         var visitor = new SectionTitleCollectingVisitor();
-        this._syntaxTree.Root.Accept(visitor);
-        this._collectedSectionTitles = visitor.SectionTitles;
-        this._traversalCompleted = true;
+        _syntaxTree.Root.Accept(visitor);
+        _collectedSectionTitles = visitor.SectionTitles;
+        _traversalCompleted = true;
     }
 
     private void 例外を投げるVisitorで走査する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
         var visitor = new ExceptionThrowingVisitor();
         try
         {
-            this._syntaxTree.Root.Accept(visitor);
+            _syntaxTree.Root.Accept(visitor);
         }
         catch (InvalidOperationException ex)
         {
-            this._capturedException = ex;
+            _capturedException = ex;
         }
     }
 
     private void 結果を返すVisitorで目次を生成する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
         var visitor = new TocGeneratorVisitor();
-        this._tocEntries = this._syntaxTree.Root.Accept(visitor);
-        this._traversalCompleted = true;
+        _tocEntries = _syntaxTree.Root.Accept(visitor);
+        _traversalCompleted = true;
     }
 
     private void 結果を返すVisitorでプレーンテキストを抽出する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
         var visitor = new PlainTextExtractorVisitor();
-        this._extractedText = this._syntaxTree.Root.Accept(visitor);
-        this._traversalCompleted = true;
+        _extractedText = _syntaxTree.Root.Accept(visitor);
+        _traversalCompleted = true;
     }
 
     private void すべてのノードが訪問される()
     {
-        Assert.IsTrue(this._traversalCompleted, "走査が完了していません。");
-        Assert.IsGreaterThan(0, this._visitedNodeCount, "訪問されたノードが 0 です。");
+        Assert.IsTrue(_traversalCompleted, "走査が完了していません。");
+        Assert.IsGreaterThan(0, _visitedNodeCount, "訪問されたノードが 0 です。");
     }
 
     private void 訪問されたノード数は(int expectedCount)
     {
-        Assert.AreEqual(expectedCount, this._visitedNodeCount, $"訪問されたノード数が一致しません。期待: {expectedCount}, 実際: {this._visitedNodeCount}");
+        Assert.AreEqual(expectedCount, _visitedNodeCount, $"訪問されたノード数が一致しません。期待: {expectedCount}, 実際: {_visitedNodeCount}");
     }
 
     private void 収集されたリンク数は(int expectedCount)
     {
-        Assert.HasCount(expectedCount, this._collectedLinks, $"収集されたリンク数が一致しません。期待: {expectedCount}, 実際: {this._collectedLinks.Count}");
+        Assert.HasCount(expectedCount, _collectedLinks, $"収集されたリンク数が一致しません。期待: {expectedCount}, 実際: {_collectedLinks.Count}");
     }
 
     private void 収集されたセクションタイトル数は(int expectedCount)
     {
-        Assert.HasCount(expectedCount, this._collectedSectionTitles, $"収集されたセクションタイトル数が一致しません。期待: {expectedCount}, 実際: {this._collectedSectionTitles.Count}");
+        Assert.HasCount(expectedCount, _collectedSectionTitles, $"収集されたセクションタイトル数が一致しません。期待: {expectedCount}, 実際: {_collectedSectionTitles.Count}");
     }
 
     private void セクションタイトルは順番に(string title1, string title2)
     {
-        Assert.IsGreaterThanOrEqualTo(2, this._collectedSectionTitles.Count, "セクションタイトルが 2 つ未満です。");
-        Assert.AreEqual(title1, this._collectedSectionTitles[0].GetTitleContent(), $"最初のセクションタイトルが一致しません。期待: '{title1}', 実際: '{this._collectedSectionTitles[0].GetTitleContent()}'");
-        Assert.AreEqual(title2, this._collectedSectionTitles[1].GetTitleContent(), $"2 番目のセクションタイトルが一致しません。期待: '{title2}', 実際: '{this._collectedSectionTitles[1].GetTitleContent()}'");
+        Assert.IsGreaterThanOrEqualTo(2, _collectedSectionTitles.Count, "セクションタイトルが 2 つ未満です。");
+        Assert.AreEqual(title1, _collectedSectionTitles[0].GetTitleContent(), $"最初のセクションタイトルが一致しません。期待: '{title1}', 実際: '{_collectedSectionTitles[0].GetTitleContent()}'");
+        Assert.AreEqual(title2, _collectedSectionTitles[1].GetTitleContent(), $"2 番目のセクションタイトルが一致しません。期待: '{title2}', 実際: '{_collectedSectionTitles[1].GetTitleContent()}'");
     }
 
     private void エラーなく走査が完了する()
     {
-        Assert.IsTrue(this._traversalCompleted, "走査が完了していません。");
+        Assert.IsTrue(_traversalCompleted, "走査が完了していません。");
     }
 
     private void 例外が伝播する()
     {
-        Assert.IsNotNull(this._capturedException, "例外がキャプチャされていません。");
-        Assert.IsInstanceOfType<InvalidOperationException>(this._capturedException, "例外の型が InvalidOperationException ではありません。");
+        Assert.IsNotNull(_capturedException, "例外がキャプチャされていません。");
+        Assert.IsInstanceOfType<InvalidOperationException>(_capturedException, "例外の型が InvalidOperationException ではありません。");
     }
 
     private void 欠落ノードも訪問される()
     {
-        Assert.IsTrue(this._traversalCompleted, "走査が完了していません。");
-        Assert.IsGreaterThan(0, this._visitedNodeCount, "訪問されたノードが 0 です。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var hasMissingNodes = _syntaxTree.Root.DescendantNodesAndTokens().Any(n => n.IsMissing);
+        Assert.IsTrue(hasMissingNodes, "不完全な文書なので欠落ノードが存在するはずです。");
+        Assert.IsTrue(_traversalCompleted, "走査が完了していません。");
+        Assert.IsGreaterThan(0, _visitedNodeCount, "訪問されたノードが 0 です。");
     }
 
     private void 目次項目数は(int expectedCount)
     {
-        Assert.HasCount(expectedCount, this._tocEntries, $"目次項目数が一致しません。期待: {expectedCount}, 実際: {this._tocEntries.Count}");
+        Assert.HasCount(expectedCount, _tocEntries, $"目次項目数が一致しません。期待: {expectedCount}, 実際: {_tocEntries.Count}");
     }
 
     private void 目次の階層構造が正しい()
     {
-        Assert.IsGreaterThanOrEqualTo(3, this._tocEntries.Count, "目次項目が 3 つ未満です。");
-        var level2Count = this._tocEntries.Count(e => e.Level == 2);
-        var level3Count = this._tocEntries.Count(e => e.Level == 3);
+        Assert.IsGreaterThanOrEqualTo(3, _tocEntries.Count, "目次項目が 3 つ未満です。");
+        var level2Count = _tocEntries.Count(e => e.Level == 2);
+        var level3Count = _tocEntries.Count(e => e.Level == 3);
         Assert.AreEqual(2, level2Count, $"レベル 2 の目次項目数が一致しません。期待: 2, 実際: {level2Count}");
         Assert.AreEqual(1, level3Count, $"レベル 3 の目次項目数が一致しません。期待: 1, 実際: {level3Count}");
     }
 
     private void 抽出されたテキストに_が含まれる(string expectedText)
     {
-        Assert.IsTrue(this._extractedText.Contains(expectedText, StringComparison.Ordinal), $"抽出されたテキストに '{expectedText}' が含まれていません。実際: '{this._extractedText}'");
+        Assert.IsTrue(_extractedText.Contains(expectedText, StringComparison.Ordinal), $"抽出されたテキストに '{expectedText}' が含まれていません。実際: '{_extractedText}'");
     }
 
     private readonly record struct TocEntry(int Level, string Title);
@@ -168,14 +171,14 @@ public partial class SyntaxVisitorFeature
 
         public void VisitDocument(DocumentSyntax node)
         {
-            this.Count++;
+            Count++;
             node.Header?.Accept(this);
             node.Body?.Accept(this);
         }
 
         public void VisitDocumentHeader(DocumentHeaderSyntax node)
         {
-            this.Count++;
+            Count++;
             node.Title?.Accept(this);
             node.AuthorLine?.Accept(this);
             foreach (var attr in node.AttributeEntries)
@@ -186,12 +189,12 @@ public partial class SyntaxVisitorFeature
 
         public void VisitAuthorLine(AuthorLineSyntax node)
         {
-            this.Count++;
+            Count++;
         }
 
         public void VisitDocumentBody(DocumentBodySyntax node)
         {
-            this.Count++;
+            Count++;
             foreach (var child in node.ChildNodesAndTokens())
             {
                 if (child.IsNode)
@@ -203,7 +206,7 @@ public partial class SyntaxVisitorFeature
 
         public void VisitSection(SectionSyntax node)
         {
-            this.Count++;
+            Count++;
             node.Title?.Accept(this);
             foreach (var child in node.ChildNodesAndTokens())
             {
@@ -216,7 +219,7 @@ public partial class SyntaxVisitorFeature
 
         public void VisitSectionTitle(SectionTitleSyntax node)
         {
-            this.Count++;
+            Count++;
             foreach (var child in node.ChildNodesAndTokens())
             {
                 if (child.IsNode)
@@ -228,7 +231,7 @@ public partial class SyntaxVisitorFeature
 
         public void VisitParagraph(ParagraphSyntax node)
         {
-            this.Count++;
+            Count++;
             foreach (var child in node.ChildNodesAndTokens())
             {
                 if (child.IsNode)
@@ -240,17 +243,17 @@ public partial class SyntaxVisitorFeature
 
         public void VisitInlineText(InlineTextSyntax node)
         {
-            this.Count++;
+            Count++;
         }
 
         public void VisitAttributeEntry(AttributeEntrySyntax node)
         {
-            this.Count++;
+            Count++;
         }
 
         public void VisitLink(LinkSyntax node)
         {
-            this.Count++;
+            Count++;
         }
     }
 
@@ -336,7 +339,7 @@ public partial class SyntaxVisitorFeature
 
         public void VisitLink(LinkSyntax node)
         {
-            this.Links.Add(node);
+            Links.Add(node);
         }
     }
 
@@ -392,7 +395,7 @@ public partial class SyntaxVisitorFeature
 
         public void VisitSectionTitle(SectionTitleSyntax node)
         {
-            this.SectionTitles.Add(node);
+            SectionTitles.Add(node);
             foreach (var child in node.ChildNodesAndTokens())
             {
                 if (child.IsNode)

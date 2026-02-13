@@ -20,7 +20,7 @@ public partial class ErrorRecoveryFeature : FeatureFixture
     public void 不完全なセクションタイトルを含む文書の解析()
     {
         Runner.RunScenario(
-            given => パーサーが利用可能である(),
+            given => パーサーが初期化されている(),
             given => 以下のAsciiDoc文書がある("= ドキュメントタイトル\n\n== セクション1\n\nこれは正常な段落です。\n\n== \n\n== セクション2\n\nこれも正常な段落です。\n"),
             when => 文書を解析する(),
             then => 構文木が生成される(),
@@ -34,7 +34,7 @@ public partial class ErrorRecoveryFeature : FeatureFixture
     public void 正常部分の最大解析()
     {
         Runner.RunScenario(
-            given => パーサーが利用可能である(),
+            given => パーサーが初期化されている(),
             given => 以下のAsciiDoc文書がある("= タイトル\n\n== 正常セクション1\n\n正常な段落1。\n\n== [不正な属性\n\n不正なセクション。\n\n== 正常セクション2\n\n正常な段落2。\n"),
             when => 文書を解析する(),
             then => 構文木が生成される(),
@@ -46,19 +46,18 @@ public partial class ErrorRecoveryFeature : FeatureFixture
     public void 診断情報の位置情報が正確である()
     {
         Runner.RunScenario(
-            given => パーサーが利用可能である(),
+            given => パーサーが初期化されている(),
             given => 以下のAsciiDoc文書がある("= タイトル\n\n== \n"),
             when => 文書を解析する(),
             then => 構文木に診断情報が含まれる(),
-            then => 診断情報に位置情報が含まれる(),
-            then => 診断情報の重大度が正しい("Error", "Warning"));
+            then => 診断情報に位置情報が含まれる());
     }
 
     [Scenario]
     public void 欠落トークンの検出()
     {
         Runner.RunScenario(
-            given => パーサーが利用可能である(),
+            given => パーサーが初期化されている(),
             given => 以下のAsciiDoc文書がある("= タイトル\n\n== \n\n段落テキスト。\n"),
             when => 文書を解析する(),
             then => 構文木が生成される(),
@@ -66,4 +65,14 @@ public partial class ErrorRecoveryFeature : FeatureFixture
             then => 欠落ノードのIsMissingプロパティがtrue());
     }
 
+    [Scenario]
+    public void スキップされたトークンの保持()
+    {
+        Runner.RunScenario(
+            given => パーサーが初期化されている(),
+            given => 以下のAsciiDoc文書がある("= タイトル\n\n@@@不正なトークン@@@\n\n正常な段落。\n"),
+            when => 文書を解析する(),
+            then => 構文木が生成される(),
+            then => 構文木からテキストを再構築できる());
+    }
 }

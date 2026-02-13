@@ -1,9 +1,3 @@
-// <copyright file="TrailingWhitespaceFeature.cs" company="Takamasa Matsuyama">
-// Copyright (c) 2025 Takamasa Matsuyama
-// Licensed under the MIT License
-// See the LICENSE file in the project root for full license information.
-// </copyright>
-
 using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
@@ -23,9 +17,6 @@ AsciiDoc 文書の行末空白や末尾改行が削除・正規化されるこ�
 ToFullString() で元のテキストを完全に復元したい")]
 public partial class TrailingWhitespaceFeature : FeatureFixture
 {
-    /// <summary>
-    /// セクションタイトルの末尾に空白がある場合に保持されることを検証する。
-    /// </summary>
     [Scenario]
     public void セクションタイトルの末尾に空白がある場合に保持される()
     {
@@ -37,9 +28,6 @@ public partial class TrailingWhitespaceFeature : FeatureFixture
             then => 再構築されたテキストは元の文書と一致する());
     }
 
-    /// <summary>
-    /// 段落の末尾に空白がある場合に保持されることを検証する。
-    /// </summary>
     [Scenario]
     public void 段落の末尾に空白がある場合に保持される()
     {
@@ -51,9 +39,6 @@ public partial class TrailingWhitespaceFeature : FeatureFixture
             then => 再構築されたテキストは元の文書と一致する());
     }
 
-    /// <summary>
-    /// セクションタイトルの末尾に改行がある場合に保持されることを検証する。
-    /// </summary>
     [Scenario]
     public void セクションタイトルの末尾に改行がある場合に保持される()
     {
@@ -65,9 +50,6 @@ public partial class TrailingWhitespaceFeature : FeatureFixture
             then => 再構築されたテキストは元の文書と一致する());
     }
 
-    /// <summary>
-    /// 段落の末尾に改行がある場合に保持されることを検証する。
-    /// </summary>
     [Scenario]
     public void 段落の末尾に改行がある場合に保持される()
     {

@@ -21,24 +21,24 @@ public partial class BasicParsingFeature
 
     private void 以下のAsciiDoc文書がある(string text)
     {
-        this._sourceText = text;
+        _sourceText = text;
     }
 
     private void 空のAsciiDoc文書がある()
     {
-        this._sourceText = string.Empty;
+        _sourceText = string.Empty;
     }
 
     private void BOM付きの以下のAsciiDoc文書がある(string text)
     {
         // BOM (U+FEFF) を先頭に追加
-        this._sourceText = "\uFEFF" + text;
+        _sourceText = "\uFEFF" + text;
     }
 
     private void CRLF改行コードの以下のAsciiDoc文書がある(string text)
     {
         // 改行コードを CRLF に統一
-        this._sourceText = text
+        _sourceText = text
             .Replace("\r\n", "\n", StringComparison.Ordinal)
             .Replace("\r", "\n", StringComparison.Ordinal)
             .Replace("\n", "\r\n", StringComparison.Ordinal);
@@ -47,7 +47,7 @@ public partial class BasicParsingFeature
     private void CR改行コードの以下のAsciiDoc文書がある(string text)
     {
         // 改行コードを CR に統一
-        this._sourceText = text
+        _sourceText = text
             .Replace("\r\n", "\n", StringComparison.Ordinal)
             .Replace("\n", "\r", StringComparison.Ordinal);
     }
@@ -78,47 +78,47 @@ public partial class BasicParsingFeature
             }
         }
 
-        this._sourceText = result.ToString();
+        _sourceText = result.ToString();
     }
 
     private void 文書を解析する()
     {
-        this._syntaxTree = SyntaxTree.ParseText(this._sourceText);
+        _syntaxTree = SyntaxTree.ParseText(_sourceText);
     }
 
     private void 構文木から完全なテキストを取得する()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        this._reconstructedText = this._syntaxTree.Root.ToFullString();
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        _reconstructedText = _syntaxTree.Root.ToFullString();
     }
 
     private void 構文木のルートはDocumentノードである()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        Assert.IsNotNull(this._syntaxTree.Root, "ルートノードが null です。");
-        Assert.AreEqual(SyntaxKind.Document, this._syntaxTree.Root.Kind, "ルートノードは Document である必要があります。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_syntaxTree.Root, "ルートノードが null です。");
+        Assert.AreEqual(SyntaxKind.Document, _syntaxTree.Root.Kind, "ルートノードは Document である必要があります。");
     }
 
     private void Documentノードは_Headerを持つ()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
     }
 
     private void Documentノードは_Headerを持たない()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNull(document.Header, "Document は Header を持ちません。");
     }
 
     private void Headerのタイトルは(string expectedTitle)
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
         var actualTitle = document.Header.Title?.GetTitleContent();
@@ -127,8 +127,8 @@ public partial class BasicParsingFeature
 
     private void Documentノードは_N個のセクションを持つ(int expectedCount)
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
         var sections = document.Body?.ChildNodesAndTokens()
@@ -141,8 +141,8 @@ public partial class BasicParsingFeature
 
     private void セクションNのタイトルは(int sectionIndex, string expectedTitle)
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
         var sections = document.Body?.ChildNodesAndTokens()
@@ -161,13 +161,13 @@ public partial class BasicParsingFeature
 
     private void 再構築されたテキストは元の文書と一致する()
     {
-        Assert.AreEqual(this._sourceText, this._reconstructedText, "再構築されたテキストが元の文書と一致しません。");
+        Assert.AreEqual(_sourceText, _reconstructedText, "再構築されたテキストが元の文書と一致しません。");
     }
 
     private void セクションのネスト構造が正しく解析されている()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
         var hasSections = document.DescendantNodes()
@@ -177,8 +177,8 @@ public partial class BasicParsingFeature
 
     private void Documentノードは_N個の段落を持つ(int expectedCount)
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
 
         var paragraphs = document.DescendantNodes()
@@ -190,8 +190,8 @@ public partial class BasicParsingFeature
 
     private void Headerは著者行を持つ()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var document = this._syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var document = _syntaxTree.Root as DocumentSyntax;
         Assert.IsNotNull(document, "ルートノードは DocumentSyntax である必要があります。");
         Assert.IsNotNull(document.Header, "Document は Header を持つ必要があります。");
         Assert.IsNotNull(document.Header.AuthorLine, "Header は著者行を持つ必要があります。");
@@ -200,19 +200,19 @@ public partial class BasicParsingFeature
     private void すべての空白と改行が保持されている()
     {
         // ラウンドトリップが成功していれば、空白と改行も保持されている
-        Assert.AreEqual(this._sourceText, this._reconstructedText, "空白または改行が保持されていません。");
+        Assert.AreEqual(_sourceText, _reconstructedText, "空白または改行が保持されていません。");
     }
 
     private void ソーステキストはBOMを含む()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        Assert.IsTrue(this._syntaxTree.Text.HasBom, "ソーステキストは BOM を含む必要があります。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        Assert.IsTrue(_syntaxTree.Text.HasBom, "ソーステキストは BOM を含む必要があります。");
     }
 
     private void BOMを含む元のテキストを復元できる()
     {
-        Assert.IsNotNull(this._syntaxTree, "構文木が null です。");
-        var originalText = this._syntaxTree.ToOriginalString();
-        Assert.AreEqual(this._sourceText, originalText, "BOM を含む元のテキストと一致しません。");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        var originalText = _syntaxTree.ToOriginalString();
+        Assert.AreEqual(_sourceText, originalText, "BOM を含む元のテキストと一致しません。");
     }
 }

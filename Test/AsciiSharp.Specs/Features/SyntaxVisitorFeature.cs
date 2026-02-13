@@ -73,7 +73,7 @@ public partial class SyntaxVisitorFeature : FeatureFixture
     public void 欠落ノードを含む構文木を走査する()
     {
         Runner.RunScenario(
-            given => 不完全なAsciiDoc文書がある("=\n"),
+            given => 不完全なAsciiDoc文書がある("== \n"),
             when => 文書を解析する(),
             when => 全ノードを訪問するVisitorで走査する(),
             then => 欠落ノードも訪問される());
