@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// リンクの解析機能のテスト
 /// </summary>
-[TestClass]
 [FeatureDescription(
     @"リンクの解析
 URL リンクを含むテキストを解析し、

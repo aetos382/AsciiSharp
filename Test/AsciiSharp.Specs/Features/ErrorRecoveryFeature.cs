@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// エラー耐性解析に関するフィーチャー テスト。
 /// </summary>
-[TestClass]
 [FeatureDescription(@"エラー耐性解析
 エディタ開発者として、
 構文エラーを含む AsciiDoc 文書を解析しても、

@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// InlineTextSyntax の名前・型に関するフィーチャー テスト。
 /// </summary>
-[TestClass]
 [FeatureDescription(
     @"TextSyntax を InlineTextSyntax として参照する
 ライブラリユーザーとして、

@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// 構文ノードの階層構造のテスト
 /// </summary>
-[TestClass]
 [FeatureDescription(
     @"構文ノードの階層構造
 開発者として、

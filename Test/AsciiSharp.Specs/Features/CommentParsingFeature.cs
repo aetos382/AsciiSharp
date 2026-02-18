@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// コメント解析に関する BDD テストです。
 /// </summary>
-[TestClass]
 [FeatureDescription(
     @"コメント解析
 ライブラリユーザーとして、

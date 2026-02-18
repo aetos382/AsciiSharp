@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// セクションタイトルのインライン要素取得機能のテスト
 /// </summary>
-[TestClass]
 [FeatureDescription(
     @"セクションタイトルのインライン要素取得
 ライブラリユーザーとして、
