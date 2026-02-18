@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// 構文木の走査に関するフィーチャー テスト。
 /// </summary>
-[TestClass]
 [FeatureDescription(@"構文木の走査
 ライブラリ利用者として、
 AsciiDoc 文書の構文木を走査し、

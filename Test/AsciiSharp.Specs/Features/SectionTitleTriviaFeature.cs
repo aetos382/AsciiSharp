@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// SectionTitleSyntax の空白トリビアが適切に保持される機能のテスト。
 /// </summary>
-[TestClass]
 [FeatureDescription(
     @"SectionTitleSyntax の空白トリビアが適切に保持される
 ライブラリユーザーとして、

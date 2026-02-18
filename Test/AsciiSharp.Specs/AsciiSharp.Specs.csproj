@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <!-- LightBDD 拡張シナリオ構文では this. なしでインスタンス メソッドを呼び出すため -->
-    <NoWarn>$(NoWarn);IDE0009</NoWarn>
+    <!-- IDE0009: LightBDD 拡張シナリオ構文では this. なしでインスタンス メソッドを呼び出すため -->
+    <!-- MSTEST0030: LightBDD の FeatureFixture は [FeatureFixture] 属性（TestClassAttribute の派生）を持つため [TestClass] は不要 -->
+    <NoWarn>$(NoWarn);IDE0009;MSTEST0030</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

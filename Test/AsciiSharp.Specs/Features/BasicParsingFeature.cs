@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// 基本的な AsciiDoc 文書の解析に関するフィーチャー テスト。
 /// </summary>
-[TestClass]
 [FeatureDescription(@"基本的な AsciiDoc 文書の解析
 ライブラリユーザーとして、
 セクションと段落を含む AsciiDoc 文書を解析し、

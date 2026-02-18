@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// 行末の空白や改行が正規化されずそのまま保持される機能のテスト。
 /// </summary>
-[TestClass]
 [FeatureDescription(
     @"行末の空白や改行が正規化されずそのまま保持される
 ライブラリユーザーとして、

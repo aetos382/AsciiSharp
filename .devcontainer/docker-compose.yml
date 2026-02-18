@@ -11,7 +11,7 @@ services:
       - kroki
 
   kroki:
-    image: yuzutech/kroki:0.29.1@sha256:6d70ed44236102613e1155185340680644dded2191ff0be4f559fb31b92065d9
+    image: yuzutech/kroki
     environment:
       KROKI_MERMAID_HOST: kroki-mermaid
     networks:
@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
 
   kroki-mermaid:
-    image: yuzutech/kroki-mermaid:0.29.1@sha256:963b4acfde6ec6c3bc7d33269430b95d8cc0558b0414d4151d10ec79a76a70b1
+    image: yuzutech/kroki-mermaid
     networks:
       - kroki-internal
     expose:

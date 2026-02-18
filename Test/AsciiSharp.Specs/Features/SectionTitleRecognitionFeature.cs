@@ -2,14 +2,12 @@ using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.MsTest4;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
 /// セクションタイトルの認識条件に関するフィーチャー テスト。
 /// </summary>
-[TestClass]
 [FeatureDescription(@"セクションタイトルの認識条件
 ライブラリユーザーとして、
 セクション見出しとして認識される条件を理解し、
