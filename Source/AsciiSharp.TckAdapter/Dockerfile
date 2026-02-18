@@ -1,5 +1,5 @@
-# syntax=docker/dockerfile:latest@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
-FROM mcr.microsoft.com/dotnet/sdk:10.0.102-noble-aot-amd64@sha256:dd57b0d2ace6310fc99b141d82925960b489fade10b9045bb668b6ea7b22e439 AS adapter-build
+# syntax=docker/dockerfile:latest
+FROM mcr.microsoft.com/dotnet/sdk:10.0.103-noble-aot-amd64 AS adapter-build
 
 ENV NUGET_PACKAGES=/var/cache/nuget
 
@@ -48,7 +48,7 @@ RUN --mount=type=cache,id=nuget-cache,target=/var/cache/nuget \
 
 RUN [ "dotnet", "build-server", "shutdown" ]
 
-FROM node:lts-trixie-slim@sha256:a16979bcaf12a2fd24888eb8e89874b11bd1038a3e3f1881c26a5e2b8fb92b5c AS tck
+FROM node:lts-trixie-slim AS tck
 
 WORKDIR /workspaces
 
