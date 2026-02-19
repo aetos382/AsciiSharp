@@ -38,4 +38,19 @@ public partial class TrailingWhitespaceFeature
         Assert.IsNotNull(_reconstructedText);
         Assert.AreEqual(_sourceText, _reconstructedText);
     }
+
+    private void 最後のコンテンツトークンの後続トリビアがTrailingWhitespaceTriviaである()
+    {
+        Assert.Inconclusive("未実装");
+    }
+
+    private void 行全体が単一のTrailingWhitespaceTriviaとして識別される()
+    {
+        Assert.Inconclusive("未実装");
+    }
+
+    private void 各空白行が個別のTrailingWhitespaceTriviaとして識別される()
+    {
+        Assert.Inconclusive("未実装");
+    }
 }
