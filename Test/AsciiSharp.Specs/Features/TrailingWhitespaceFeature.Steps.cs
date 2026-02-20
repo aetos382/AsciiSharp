@@ -39,17 +39,22 @@ public partial class TrailingWhitespaceFeature
         Assert.AreEqual(_sourceText, _reconstructedText);
     }
 
-    private void 最後のコンテンツトークンの後続トリビアがTrailingWhitespaceTriviaである()
+    private void セクションタイトルの最終コンテンツトークンの後続トリビアにWhitespaceTriviaとEndOfLineTriviaが含まれる()
     {
         Assert.Inconclusive("未実装");
     }
 
-    private void 行全体が単一のTrailingWhitespaceTriviaとして識別される()
+    private void セクションタイトルの最終コンテンツトークンの後続トリビアにEndOfLineTriviaのみが含まれる()
     {
         Assert.Inconclusive("未実装");
     }
 
-    private void 各空白行が個別のTrailingWhitespaceTriviaとして識別される()
+    private void セクションタイトルの最終コンテンツトークンの後続トリビアにCRLFを含むEndOfLineTriviaが含まれる()
+    {
+        Assert.Inconclusive("未実装");
+    }
+
+    private void 著者行の最終コンテンツトークンの後続トリビアにWhitespaceTriviaとEndOfLineTriviaが含まれる()
     {
         Assert.Inconclusive("未実装");
     }

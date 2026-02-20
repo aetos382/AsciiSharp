@@ -1,16 +1,15 @@
-# Specification Quality Checklist: 行末空白 Trivia の識別と保持
+# Specification Quality Checklist: 要素境界における行末トリビアの統一
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-02-19
+**Revised**: 2026-02-20
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
 
 - [x] No implementation details (languages, frameworks, APIs)
-  - 注: Assumptions セクションに .NET BCL への言及あり（「参考情報」として明示済み）。実装要件ではなく文字集合の一致を示す参考情報であるため許容
 - [x] Focused on user value and business needs
 - [x] Written for non-technical stakeholders
-  - 注: Unicode コードポイントの列挙は技術的だが、本機能の精密な定義に必要不可欠
 - [x] All mandatory sections completed
 
 ## Requirement Completeness
@@ -33,6 +32,6 @@
 
 ## Notes
 
-- すべての項目がパスしており、`/speckit.plan` または `/speckit.clarify` に進める状態
-- 「参照バージョンと改訂方針」セクションにより、Unicode バージョンアップへの対応方針が明確化されている
-- AsciiDoc 正規化仕様と本ライブラリの目標との摩擦が「背景と仕様の摩擦」セクションに文書化されている
+- 2026-02-20 改訂: `TrailingWhitespaceTrivia`（新 SyntaxKind）の追加を廃止し、既存の `WhitespaceTrivia` + `EndOfLineTrivia` の組み合わせを要素境界で一貫して使用する方針に変更
+- 対象要素を「セクションタイトル・属性エントリ・著者行」に明確化（段落・リンク括弧内は別フィーチャー）
+- すべての項目がパスしており、`/speckit.plan` に進める状態
