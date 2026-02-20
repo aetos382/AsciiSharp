@@ -52,7 +52,7 @@ public partial class IncrementalParsingFeature
         var sections = _syntaxTree.Root.DescendantNodes().OfType<SectionSyntax>();
         foreach (var section in sections)
         {
-            var titleText = section.Title.InlineElements
+            var titleText = section.Title?.InlineElements
                 .OfType<InlineTextSyntax>()
                 .Select(t => t.Text)
                 .FirstOrDefault();
@@ -117,7 +117,7 @@ public partial class IncrementalParsingFeature
 
         foreach (var section in sections)
         {
-            var titleText = section.Title.InlineElements
+            var titleText = section.Title?.InlineElements
                 .OfType<InlineTextSyntax>()
                 .Select(t => t.Text)
                 .FirstOrDefault();

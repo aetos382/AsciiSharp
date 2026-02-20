@@ -87,6 +87,7 @@ public partial class CommentParsingFeature
         Assert.IsNotNull(document);
         Assert.IsNotNull(document.Header);
 
+        Assert.IsNotNull(document.Header.Title, "ドキュメントタイトルが存在するべきです。");
         var titleContent = document.Header.Title.GetTitleContent();
         Assert.AreEqual(expectedTitle, titleContent);
     }
