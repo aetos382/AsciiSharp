@@ -241,7 +241,9 @@ internal sealed class AsciiDocParser
             }
         }
 
-        // ループ終了後：最後のコンテンツトークンに行末トリビアを付与する
+        // ループ終了後：最後のコンテンツトークンに行末トリビアを付与する。
+        // ループ内で改行を消費しない場合、後続の EmitCurrentToken が改行を処理する。
+        // このフラグにより同一の改行トークンの二重消費を防ぐ。
         var authorLineNewLineConsumed = false;
         if (lastContentToken != null)
         {
@@ -270,7 +272,7 @@ internal sealed class AsciiDocParser
         }
         else if (pendingWhitespace != null)
         {
-            // コンテンツが空白のみの場合（既存の挙動を維持）
+            // コンテンツが空白のみの場合、空白をトークンとしてそのまま出力する（行末トリビア化の対象外）
             this._sink.EmitToken(pendingWhitespace);
         }
 
@@ -451,7 +453,9 @@ internal sealed class AsciiDocParser
                 }
             }
 
-            // ループ終了後：最後のコンテンツトークンに行末トリビアを付与する
+            // ループ終了後：最後のコンテンツトークンに行末トリビアを付与する。
+            // ここで改行を消費した場合、後続のセクションタイトルレベルの改行処理をスキップする。
+            // このフラグにより同一の改行トークンの二重消費を防ぐ。
             if (lastContentToken != null)
             {
                 List<InternalTrivia> trailingTrivia = [];
@@ -479,7 +483,7 @@ internal sealed class AsciiDocParser
             }
             else if (pendingWhitespace != null)
             {
-                // コンテンツが空白のみの場合（既存の挙動を維持）
+                // コンテンツが空白のみの場合、空白をトークンとしてそのまま出力する（行末トリビア化の対象外）
                 this._sink.EmitToken(pendingWhitespace);
             }
 

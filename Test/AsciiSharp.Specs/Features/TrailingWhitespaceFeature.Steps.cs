@@ -68,9 +68,38 @@ public partial class TrailingWhitespaceFeature
         var lastToken = sectionTitle.DescendantTokens().Last();
         var trivia = lastToken.TrailingTrivia;
 
-        var endOfLineTrivia = trivia.FirstOrDefault(t => t.Kind == SyntaxKind.EndOfLineTrivia);
-        Assert.AreEqual(SyntaxKind.EndOfLineTrivia, endOfLineTrivia.Kind, "EndOfLineTrivia が存在するべきです。");
-        Assert.AreEqual("\r\n", endOfLineTrivia.Text, "EndOfLineTrivia のテキストは CRLF であるべきです。");
+        Assert.AreEqual(1, trivia.Count, "後続トリビアは EndOfLineTrivia の 1 つのみであるべきです。");
+        Assert.AreEqual(SyntaxKind.EndOfLineTrivia, trivia[0].Kind, "EndOfLineTrivia が存在するべきです。");
+        Assert.AreEqual("\r\n", trivia[0].Text, "EndOfLineTrivia のテキストは CRLF であるべきです。");
+    }
+
+    private void セクションタイトルのTextプロパティが期待値と一致する(string expectedText)
+    {
+        var sectionTitle = 最初のセクションタイトルを取得();
+        var inlineText = sectionTitle.InlineElements.OfType<InlineTextSyntax>().FirstOrDefault();
+        Assert.IsNotNull(inlineText, "セクションタイトルの InlineText が存在するべきです。");
+        Assert.AreEqual(expectedText, inlineText.Text, "InlineText.Text が期待値と一致するべきです。");
+    }
+
+    private void 著者行のTextプロパティが期待値と一致する(string expectedText)
+    {
+        Assert.IsNotNull(_syntaxTree);
+        var document = _syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(document);
+        var authorLine = document.Header?.AuthorLine;
+        Assert.IsNotNull(authorLine, "著者行が存在するべきです。");
+        Assert.AreEqual(expectedText, authorLine.Text, "AuthorLine.Text が期待値と一致するべきです。");
+    }
+
+    private void 著者行の最終コンテンツトークンの後続トリビアが空である()
+    {
+        Assert.IsNotNull(_syntaxTree);
+        var document = _syntaxTree.Root as DocumentSyntax;
+        Assert.IsNotNull(document);
+        var authorLine = document.Header?.AuthorLine;
+        Assert.IsNotNull(authorLine, "著者行が存在するべきです。");
+        var lastToken = authorLine.DescendantTokens().Last();
+        Assert.AreEqual(0, lastToken.TrailingTrivia.Count, "後続トリビアは空であるべきです。");
     }
 
     private void 著者行の最終コンテンツトークンの後続トリビアにWhitespaceTriviaとEndOfLineTriviaが含まれる()

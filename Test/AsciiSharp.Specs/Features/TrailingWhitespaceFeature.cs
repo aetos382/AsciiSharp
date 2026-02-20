@@ -59,6 +59,51 @@ public sealed partial class TrailingWhitespaceFeature : FeatureFixture
     }
 
     // ========================================
+    // User Story 2b: Text プロパティの正確性
+    // ========================================
+
+    [Scenario]
+    public void 行末空白付きセクションタイトルのTextプロパティは空白を含まない()
+    {
+        Runner.RunScenario(
+            given => パーサーが初期化されている(),
+            when => 以下のAsciiDoc文書がある("== タイトル   \n"),
+            and => 文書を解析する(),
+            then => セクションタイトルのTextプロパティが期待値と一致する("タイトル"));
+    }
+
+    [Scenario]
+    public void 行末空白付き著者行のTextプロパティは空白を含まない()
+    {
+        Runner.RunScenario(
+            given => パーサーが初期化されている(),
+            when => 以下のAsciiDoc文書がある("= タイトル\n著者名   \n"),
+            and => 文書を解析する(),
+            then => 著者行のTextプロパティが期待値と一致する("著者名"));
+    }
+
+    [Scenario]
+    public void タイトル内部空白は保持され末尾空白はトリビア化される()
+    {
+        Runner.RunScenario(
+            given => パーサーが初期化されている(),
+            when => 以下のAsciiDoc文書がある("== 単語1 単語2   \n"),
+            and => 文書を解析する(),
+            then => セクションタイトルのTextプロパティが期待値と一致する("単語1 単語2"),
+            and => セクションタイトルの最終コンテンツトークンの後続トリビアにWhitespaceTriviaとEndOfLineTriviaが含まれる());
+    }
+
+    [Scenario]
+    public void 著者行がEOFで終わる場合の後続トリビアは空である()
+    {
+        Runner.RunScenario(
+            given => パーサーが初期化されている(),
+            when => 以下のAsciiDoc文書がある("= タイトル\n著者名"),
+            and => 文書を解析する(),
+            then => 著者行の最終コンテンツトークンの後続トリビアが空である());
+    }
+
+    // ========================================
     // User Story 3: 元テキストの完全復元
     // ========================================
 

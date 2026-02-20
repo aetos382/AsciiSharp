@@ -14,7 +14,8 @@ public sealed class InlineTextSyntax : InlineSyntax
     private readonly List<SyntaxToken> _tokens = [];
 
     /// <summary>
-    /// テキストの内容（先行・後続トリビアを除く）。
+    /// テキストの内容。
+    /// 行頭・行末のトリビア（空白・改行）を除いたテキスト内容を返す。行中の空白は保持される。
     /// </summary>
     public string Text => this.Internal.ToTrimmedString();
 

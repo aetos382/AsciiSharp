@@ -14,7 +14,8 @@ public sealed class AuthorLineSyntax : BlockSyntax
     private readonly List<SyntaxToken> _tokens = [];
 
     /// <summary>
-    /// 著者行のテキスト（先行・後続トリビアを除く）。
+    /// 著者行のテキスト。
+    /// 行頭・行末のトリビア（空白・改行）を除いたテキスト内容を返す。行中の空白は保持される。
     /// </summary>
     public string Text => this.Internal.ToTrimmedString();
 
@@ -55,7 +56,7 @@ public sealed class AuthorLineSyntax : BlockSyntax
     /// <inheritdoc />
     protected override SyntaxNode ReplaceNodeCore(SyntaxNode oldNode, SyntaxNode newNode)
     {
-        // リーフノードなので、子孫にターゲットノードは存在しない
+        // 子はすべてトークンなので、子孫にターゲットノードは存在しない
         return this;
     }
 
