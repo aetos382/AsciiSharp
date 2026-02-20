@@ -56,6 +56,12 @@
         "source": "github",
         "repo": "Anthropic/claude-plugins-official"
       }
+    },
+    "richlander-dotnet-skills": {
+      "source": {
+        "source": "github",
+        "repo": "richlander/dotnet-skills"
+      }
     }
   },
   "language": "Japanese"
