@@ -14,9 +14,9 @@ public sealed class InlineTextSyntax : InlineSyntax
     private readonly List<SyntaxToken> _tokens = [];
 
     /// <summary>
-    /// テキストの内容。
+    /// テキストの内容（先行・後続トリビアを除く）。
     /// </summary>
-    public string Text => this.Internal.ToFullString();
+    public string Text => this.Internal.ToTrimmedString();
 
     /// <summary>
     /// InlineTextSyntax を作成する。
