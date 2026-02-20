@@ -1,16 +1,16 @@
-# Quickstart: 行末空白 Trivia の識別と保持
+# Quickstart: 要素境界における行末トリビアの統一
 
-**Branch**: `001-trailing-whitespace-trivia` | **Date**: 2026-02-19
+**Branch**: `001-trailing-whitespace-trivia` | **Date**: 2026-02-20
 
 ## 概要
 
-本機能が実装されると、AsciiDoc テキストの各行末にある空白文字（改行文字を含む）が `TrailingWhitespaceTrivia`（SyntaxKind = 203）として SyntaxTree に保持される。
+本機能が実装されると、セクションタイトル・属性エントリ・著者行の行末にある空白文字と改行文字が、既存の `WhitespaceTrivia`（SyntaxKind = 200）および `EndOfLineTrivia`（SyntaxKind = 201）として最終コンテンツトークンの後続トリビアに格納される。
 
 ---
 
 ## 使用例
 
-### 行末空白の検出
+### 行末トリビアの検出
 
 ```csharp
 var syntaxTree = SyntaxTree.ParseText("== セクションタイトル   \n本文テキスト\n");
@@ -21,10 +21,13 @@ foreach (var token in root.DescendantTokens())
 {
     foreach (var trivia in token.TrailingTrivia)
     {
-        if (trivia.IsKind(SyntaxKind.TrailingWhitespaceTrivia))
+        if (trivia.IsKind(SyntaxKind.WhitespaceTrivia))
         {
-            // 行末空白 Trivia が見つかった
             Console.WriteLine($"行末空白: \"{EscapeText(trivia.ToString())}\"");
+        }
+        else if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+        {
+            Console.WriteLine($"改行: \"{EscapeText(trivia.ToString())}\"");
         }
     }
 }
@@ -46,9 +49,9 @@ var reconstructed = syntaxTree.Root.ToFullString();
 
 | シナリオ | 検証内容 |
 |---------|---------|
-| `行末空白 Trivia の識別` | `TrailingWhitespaceTrivia` が SyntaxTree に格納されること |
-| `TrailingWhitespaceTrivia として識別される` | トリビア種別が `SyntaxKind.TrailingWhitespaceTrivia` であること |
-| `ラウンドトリップ完全性` | `ToFullString()` が元テキストと完全一致すること |
+| `セクションタイトルの末尾空白が WhitespaceTrivia と EndOfLineTrivia として識別される` | 末尾空白が `SyntaxKind.WhitespaceTrivia`、改行が `SyntaxKind.EndOfLineTrivia` として後続トリビアに格納されること |
+| `セクションタイトルの末尾 CRLF が単一の EndOfLineTrivia として識別される` | CRLF が分割されず 1 つの `EndOfLineTrivia("\r\n")` になること |
+| `行末空白を含むセクションタイトルのラウンドトリップが保証される` | `ToFullString()` が元テキストと完全一致すること |
 
 ---
 
@@ -56,7 +59,7 @@ var reconstructed = syntaxTree.Root.ToFullString();
 
 ```bash
 # BDD フィーチャーテストのみ実行
-dotnet test Test/AsciiSharp.Specs
+dotnet test --project Test/AsciiSharp.Specs
 
 # すべてのテストを実行
 dotnet test
