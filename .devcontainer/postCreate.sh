@@ -9,5 +9,5 @@ npm install -g @anthropic-ai/claude-code
 cat .claude/settings.json |
 jq -r '.enabledPlugins | to_entries[] | select(.value == true) | .key' |
 while read -r plugin; do
-  claude plugin install "$plugin"
+  claude plugin install "$plugin" --scope project
 done

@@ -47,13 +47,20 @@
     "claude-md-management@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "csharp-lsp@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true
+    "pr-review-toolkit@claude-plugins-official": true,
+    "dotnet-skills@richlander-dotnet-skills": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {
         "source": "github",
         "repo": "Anthropic/claude-plugins-official"
+      }
+    },
+    "richlander-dotnet-skills": {
+      "source": {
+        "source": "github",
+        "repo": "richlander/dotnet-skills"
       }
     }
   },

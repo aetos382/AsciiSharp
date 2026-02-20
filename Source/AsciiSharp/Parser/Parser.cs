@@ -194,14 +194,90 @@ internal sealed class AsciiDocParser
     {
         this._sink.StartNode(SyntaxKind.AuthorLine);
 
+        InternalToken? lastContentToken = null;
+        InternalToken? pendingWhitespace = null;
+
         // 行末まで読み取る
         while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
         {
-            this.EmitCurrentToken();
+            if (this.Current.Kind == SyntaxKind.WhitespaceToken)
+            {
+                // 空白トークン：行末トリビアの候補として保留する
+                if (pendingWhitespace != null)
+                {
+                    // 前の保留空白はコンテンツ内部の空白として確定
+                    if (lastContentToken != null)
+                    {
+                        this._sink.EmitToken(lastContentToken);
+                        lastContentToken = null;
+                    }
+
+                    this._sink.EmitToken(pendingWhitespace);
+                }
+
+                pendingWhitespace = this.Current;
+                this.Advance();
+            }
+            else
+            {
+                // 非空白トークン：保留中の空白はコンテンツ内部の空白として確定
+                if (pendingWhitespace != null)
+                {
+                    if (lastContentToken != null)
+                    {
+                        this._sink.EmitToken(lastContentToken);
+                    }
+
+                    this._sink.EmitToken(pendingWhitespace);
+                    pendingWhitespace = null;
+                }
+                else if (lastContentToken != null)
+                {
+                    this._sink.EmitToken(lastContentToken);
+                }
+
+                lastContentToken = this.Current;
+                this.Advance();
+            }
         }
 
-        // 改行を含める
-        if (this.Current.Kind == SyntaxKind.NewLineToken)
+        // ループ終了後：最後のコンテンツトークンに行末トリビアを付与する。
+        // ループ内で改行を消費しない場合、後続の EmitCurrentToken が改行を処理する。
+        // このフラグにより同一の改行トークンの二重消費を防ぐ。
+        var authorLineNewLineConsumed = false;
+        if (lastContentToken != null)
+        {
+            List<InternalTrivia> trailingTrivia = [];
+
+            if (pendingWhitespace != null)
+            {
+                trailingTrivia.Add(InternalTrivia.Whitespace(pendingWhitespace.Text));
+            }
+
+            if (this.Current.Kind == SyntaxKind.NewLineToken)
+            {
+                trailingTrivia.Add(InternalTrivia.EndOfLine(this.Current.Text));
+                this.Advance();
+                authorLineNewLineConsumed = true;
+            }
+
+            if (trailingTrivia.Count > 0)
+            {
+                this._sink.EmitToken(lastContentToken.WithTrivia(null, [.. trailingTrivia]));
+            }
+            else
+            {
+                this._sink.EmitToken(lastContentToken);
+            }
+        }
+        else if (pendingWhitespace != null)
+        {
+            // コンテンツが空白のみの場合、空白をトークンとしてそのまま出力する（行末トリビア化の対象外）
+            this._sink.EmitToken(pendingWhitespace);
+        }
+
+        // 改行を含める（著者行内でトリビアとして消費済みの場合はスキップ）
+        if (!authorLineNewLineConsumed && this.Current.Kind == SyntaxKind.NewLineToken)
         {
             this.EmitCurrentToken();
         }
@@ -324,13 +400,91 @@ internal sealed class AsciiDocParser
 
         // タイトルテキストを読み取る（InlineText ノードとしてラップ）
         var hasTitleText = false;
+        var titleNewLineConsumed = false;
         if (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
         {
             this._sink.StartNode(SyntaxKind.InlineText);
+
+            InternalToken? lastContentToken = null;
+            InternalToken? pendingWhitespace = null;
+
             while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
             {
                 hasTitleText = true;
-                this.EmitCurrentToken();
+
+                if (this.Current.Kind == SyntaxKind.WhitespaceToken)
+                {
+                    // 空白トークン：行末トリビアの候補として保留する
+                    if (pendingWhitespace != null)
+                    {
+                        // 前の保留空白はコンテンツ内部の空白として確定
+                        if (lastContentToken != null)
+                        {
+                            this._sink.EmitToken(lastContentToken);
+                            lastContentToken = null;
+                        }
+
+                        this._sink.EmitToken(pendingWhitespace);
+                    }
+
+                    pendingWhitespace = this.Current;
+                    this.Advance();
+                }
+                else
+                {
+                    // 非空白トークン：保留中の空白はコンテンツ内部の空白として確定
+                    if (pendingWhitespace != null)
+                    {
+                        if (lastContentToken != null)
+                        {
+                            this._sink.EmitToken(lastContentToken);
+                        }
+
+                        this._sink.EmitToken(pendingWhitespace);
+                        pendingWhitespace = null;
+                    }
+                    else if (lastContentToken != null)
+                    {
+                        this._sink.EmitToken(lastContentToken);
+                    }
+
+                    lastContentToken = this.Current;
+                    this.Advance();
+                }
+            }
+
+            // ループ終了後：最後のコンテンツトークンに行末トリビアを付与する。
+            // ここで改行を消費した場合、後続のセクションタイトルレベルの改行処理をスキップする。
+            // このフラグにより同一の改行トークンの二重消費を防ぐ。
+            if (lastContentToken != null)
+            {
+                List<InternalTrivia> trailingTrivia = [];
+
+                if (pendingWhitespace != null)
+                {
+                    trailingTrivia.Add(InternalTrivia.Whitespace(pendingWhitespace.Text));
+                }
+
+                if (this.Current.Kind == SyntaxKind.NewLineToken)
+                {
+                    trailingTrivia.Add(InternalTrivia.EndOfLine(this.Current.Text));
+                    this.Advance();
+                    titleNewLineConsumed = true;
+                }
+
+                if (trailingTrivia.Count > 0)
+                {
+                    this._sink.EmitToken(lastContentToken.WithTrivia(null, [.. trailingTrivia]));
+                }
+                else
+                {
+                    this._sink.EmitToken(lastContentToken);
+                }
+            }
+            else if (pendingWhitespace != null)
+            {
+                // コンテンツが空白のみの場合、空白をトークンとしてそのまま出力する（行末トリビア化の対象外）
+                this._sink.EmitToken(pendingWhitespace);
             }
 
             this._sink.FinishNode();
@@ -347,8 +501,8 @@ internal sealed class AsciiDocParser
                 new TextSpan(startPosition, errorPosition - startPosition));
         }
 
-        // 改行を読み取る
-        if (this.Current.Kind == SyntaxKind.NewLineToken)
+        // 改行を読み取る（InlineText 内でトリビアとして消費済みの場合はスキップ）
+        if (!titleNewLineConsumed && this.Current.Kind == SyntaxKind.NewLineToken)
         {
             this.EmitCurrentToken();
         }

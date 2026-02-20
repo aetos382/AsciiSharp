@@ -41,3 +41,7 @@ MVP では対応せず、後のバージョンで実装予定の機能一覧。
 
 - [SearchValuesStorage](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/String.Manipulation.cs) にある `NewLineChars` および `WhiteSpacesChars` に準拠することを検討する。
 - 行末の改行と空白は AsciiDoc 正規化仕様に倣って Trivia として保持する。
+
+## 要素の分類
+
+- インライン要素とブロック要素の意味をもうちょっと明確にする。

@@ -15,8 +15,9 @@ public sealed class InlineTextSyntax : InlineSyntax
 
     /// <summary>
     /// テキストの内容。
+    /// 行頭・行末のトリビア（空白・改行）を除いたテキスト内容を返す。行中の空白は保持される。
     /// </summary>
-    public string Text => this.Internal.ToFullString();
+    public string Text => this.Internal.ToTrimmedString();
 
     /// <summary>
     /// InlineTextSyntax を作成する。
