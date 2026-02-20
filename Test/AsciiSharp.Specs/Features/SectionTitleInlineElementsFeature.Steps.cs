@@ -95,6 +95,7 @@ public partial class SectionTitleInlineElementsFeature
             $"セクション {sectionIndex} が存在しません");
 
         var section = sections[sectionIndex - 1];
+        Assert.IsNotNull(section.Title, "セクションタイトルが存在するべきです。");
         Assert.IsTrue(section.Title.InlineElements.Count > 0);
 
         var inlineText = section.Title.InlineElements[0] as InlineTextSyntax;
