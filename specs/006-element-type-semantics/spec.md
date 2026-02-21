@@ -13,7 +13,14 @@
 
 - `BlockSyntax` の適用範囲を AsciiDoc 言語仕様でブロックとされるものに限定する
 - ブロックでもインラインでもない構文要素（`SectionTitleSyntax` 等）を `SyntaxNode` 直接派生に変更する
-- 内部構造を持つトリビアのための抽象基底クラス `StructuredTrivia` を導入する
+- 内部構造を持つトリビアのための抽象基底クラス `StructuredTriviaSyntax` を導入する
+
+## Clarifications
+
+### Session 2026-02-21
+
+- Q: `StructuredTriviaSyntax` 抽象クラスの名前は何にするか → A: `StructuredTriviaSyntax`
+- Q: `SyntaxKind.TextSpan` の enum 値の扱いは → A: 現時点で削除
 
 ## 定義
 
@@ -40,7 +47,7 @@ AsciiDoc 仕様のブロック要素ではない。これらは `SyntaxNode` を
 これらに対して公式の分類名や共通の中間基底クラスは設けない。
 将来の実装上の必要性が生じた段階で検討する。
 
-### 構造化トリビア（StructuredTrivia）
+### 構造化トリビア（StructuredTriviaSyntax）
 
 トリビアであるが内部に構文構造を持つものの抽象基底クラス。
 `////...////` で囲まれた複数行コメントが該当する。
@@ -62,7 +69,7 @@ SyntaxNode (abstract)
 ├── InlineSyntax (abstract)
 │   ├── InlineTextSyntax
 │   └── LinkSyntax
-├── StructuredTrivia (abstract) ← 新規
+├── StructuredTriviaSyntax (abstract) ← 新規
 └── （直接派生）
     ├── DocumentHeaderSyntax
     ├── DocumentBodySyntax
@@ -110,19 +117,19 @@ LSP 実装やセマンティック解析で誤った判断をする可能性が�
 
 ---
 
-### User Story 2 - StructuredTrivia が SyntaxNode として扱える (Priority: P2)
+### User Story 2 - StructuredTriviaSyntax が SyntaxNode として扱える (Priority: P2)
 
-ライブラリ利用者として、`StructuredTrivia` が `SyntaxNode` を継承していることを確認できる。
+ライブラリ利用者として、`StructuredTriviaSyntax` が `SyntaxNode` を継承していることを確認できる。
 
 **Why this priority**: 複数行コメント等の構造化トリビアを将来実装する際の基盤となる。
 
-**Independent Test**: `StructuredTrivia` が `SyntaxNode` を継承しており、
+**Independent Test**: `StructuredTriviaSyntax` が `SyntaxNode` を継承しており、
 `BlockSyntax` でも `InlineSyntax` でもないことを確認する。
 
 **Acceptance Scenarios**:
 
-1. **Given** `StructuredTrivia` 抽象クラスが存在する、**When** `is SyntaxNode` でチェックする、**Then** `true` が返される
-2. **Given** `StructuredTrivia` 抽象クラスが存在する、**When** `is BlockSyntax` でチェックする、**Then** `false` が返される
+1. **Given** `StructuredTriviaSyntax` 抽象クラスが存在する、**When** `is SyntaxNode` でチェックする、**Then** `true` が返される
+2. **Given** `StructuredTriviaSyntax` 抽象クラスが存在する、**When** `is BlockSyntax` でチェックする、**Then** `false` が返される
 
 ---
 
@@ -130,7 +137,7 @@ LSP 実装やセマンティック解析で誤った判断をする可能性が�
 
 - `DocumentSyntax` は AsciiDoc 仕様で「document はブロックである」と明記されているため `BlockSyntax` に残す
 - `SectionTitleSyntax` は heading という structural form であり、section ブロックの開始を定義するが、それ自体は独立したブロックではない
-- `StructuredTrivia` の具象クラス（`MultilineCommentTriviaSyntax` 等）の実装は本仕様のスコープ外
+- `StructuredTriviaSyntax` の具象クラス（`MultilineCommentTriviaSyntax` 等）の実装は本仕様のスコープ外
 
 ## Requirements *(mandatory)*
 
@@ -138,18 +145,18 @@ LSP 実装やセマンティック解析で誤った判断をする可能性が�
 
 - **FR-001**: `BlockSyntax` を継承するクラスは `DocumentSyntax`、`SectionSyntax`、`ParagraphSyntax` のみとしなければならない
 - **FR-002**: `DocumentHeaderSyntax`、`DocumentBodySyntax`、`SectionTitleSyntax`、`AuthorLineSyntax`、`AttributeEntrySyntax` は `BlockSyntax` の継承をやめ、`SyntaxNode` を直接継承しなければならない
-- **FR-003**: `StructuredTrivia` 抽象クラスを新規作成し、`SyntaxNode` を継承させなければならない
+- **FR-003**: `StructuredTriviaSyntax` 抽象クラスを新規作成し、`SyntaxNode` を継承させなければならない
 - **FR-004**: `BlockSyntax` の XML ドキュメントコメントは、AsciiDoc 仕様でブロックとされる要素のみを含む旨を明記しなければならない
 - **FR-005**: `SyntaxNode` を直接継承することになった各クラスの XML ドキュメントコメントは、AsciiDoc 仕様のブロックではない旨を明記しなければならない
-- **FR-006**: `StructuredTrivia` の XML ドキュメントコメントは、Roslyn の `StructuredTriviaSyntax` に相当する概念であることを明記しなければならない
+- **FR-006**: `StructuredTriviaSyntax` の XML ドキュメントコメントは、トリビアであるが内部に構文構造を持つノードの抽象基底クラスであることを明記しなければならない
 - **FR-007**: 既存のすべてのビルドおよびテストがパスしなければならない
-- **FR-008**: `SyntaxKind.TextSpan` の enum 値には、その目的または今後の扱いを示すコメントを付与しなければならない
+- **FR-008**: `SyntaxKind.TextSpan` の enum 値を削除しなければならない
 
 ### Key Entities
 
 - **BlockSyntax**: AsciiDoc 仕様のブロック要素の抽象基底クラス
 - **InlineSyntax**: AsciiDoc 仕様のインライン要素の抽象基底クラス
-- **StructuredTrivia**: 内部構造を持つトリビアの抽象基底クラス。`SyntaxNode` を継承する
+- **StructuredTriviaSyntax**: 内部構造を持つトリビアの抽象基底クラス。`SyntaxNode` を継承する
 
 ## Success Criteria *(mandatory)*
 
@@ -157,14 +164,15 @@ LSP 実装やセマンティック解析で誤った判断をする可能性が�
 
 - **SC-001**: `is BlockSyntax` が `true` を返すのが `DocumentSyntax`、`SectionSyntax`、`ParagraphSyntax` のみである
 - **SC-002**: `SectionTitleSyntax`、`AuthorLineSyntax`、`AttributeEntrySyntax`、`DocumentHeaderSyntax`、`DocumentBodySyntax` に対して `is BlockSyntax` が `false` を返す
-- **SC-003**: `StructuredTrivia` が `SyntaxNode` を継承している
+- **SC-003**: `StructuredTriviaSyntax` が `SyntaxNode` を継承している
 - **SC-004**: 既存の全てのビルドおよびテストが 100% パスする
 - **SC-005**: `BlockSyntax` のコメントに AsciiDoc 仕様との対応が明記されている
+- **SC-006**: `SyntaxKind.TextSpan` の enum 値が削除されている
 
 ## Assumptions
 
 - AsciiDoc 仕様（`submodules/asciidoc-lang`）における block の定義を基準とする
-- `StructuredTrivia` の具象実装は本仕様のスコープ外とする。基底クラスの定義のみを行う
+- `StructuredTriviaSyntax` の具象実装は本仕様のスコープ外とする。基底クラスの定義のみを行う
 - `DocumentSyntax` は AsciiDoc 仕様で「document はブロックである」と明記されているため `BlockSyntax` に含める
 - `SyntaxNode` を直接継承するクラス群に対して、共通の中間基底クラスは現時点では設けない
 - ブロックのコンテント モデルの細分化（compound、simple 等）は本仕様のスコープ外とする
