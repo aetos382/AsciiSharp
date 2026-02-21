@@ -23,7 +23,8 @@ public sealed partial class BlockSyntaxSemanticFeature : FeatureFixture
             then => SectionTitleSyntaxはBlockSyntaxではない(),
             then => DocumentHeaderSyntaxはBlockSyntaxではない(),
             then => AuthorLineSyntaxはBlockSyntaxではない(),
-            then => AttributeEntrySyntaxはBlockSyntaxではない()
+            then => AttributeEntrySyntaxはBlockSyntaxではない(),
+            then => DocumentBodySyntaxはBlockSyntaxではない()
         );
     }
 
@@ -31,6 +32,7 @@ public sealed partial class BlockSyntaxSemanticFeature : FeatureFixture
     public void StructuredTriviaSyntaxはSyntaxNodeを継承している()
     {
         Runner.RunScenario(
+            given => StructuredTriviaSyntaxクラスが定義されている(),
             then => StructuredTriviaSyntaxはSyntaxNodeのサブクラスである(),
             then => StructuredTriviaSyntaxはBlockSyntaxのサブクラスではない(),
             then => StructuredTriviaSyntaxはInlineSyntaxのサブクラスではない()

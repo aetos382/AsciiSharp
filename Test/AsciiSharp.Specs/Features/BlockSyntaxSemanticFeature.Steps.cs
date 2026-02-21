@@ -42,6 +42,16 @@ public partial class BlockSyntaxSemanticFeature
         Assert.Inconclusive("未実装");
     }
 
+    private void DocumentBodySyntaxはBlockSyntaxではない()
+    {
+        Assert.Inconclusive("未実装");
+    }
+
+    private void StructuredTriviaSyntaxクラスが定義されている()
+    {
+        // StructuredTriviaSyntax はリフレクションで検証するため、前提条件の確認のみ
+    }
+
     private void StructuredTriviaSyntaxはSyntaxNodeのサブクラスである()
     {
         Assert.Inconclusive("未実装");

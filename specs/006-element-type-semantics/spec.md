@@ -114,6 +114,7 @@ LSP 実装やセマンティック解析で誤った判断をする可能性が�
 4. **Given** 構文木に `DocumentHeaderSyntax` が含まれる、**When** `is BlockSyntax` でチェックする、**Then** `false` が返される
 5. **Given** 構文木に `AuthorLineSyntax` が含まれる、**When** `is BlockSyntax` でチェックする、**Then** `false` が返される
 6. **Given** 構文木に `AttributeEntrySyntax` が含まれる、**When** `is BlockSyntax` でチェックする、**Then** `false` が返される
+7. **Given** 構文木に `DocumentBodySyntax` が含まれる、**When** `is BlockSyntax` でチェックする、**Then** `false` が返される
 
 ---
 
