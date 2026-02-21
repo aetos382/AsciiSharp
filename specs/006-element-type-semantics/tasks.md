@@ -14,8 +14,8 @@
 
 **目的**: 型階層変更に先立つクリーンアップ。US1・US2 どちらの実装にも影響しない独立した変更。
 
-- [ ] T001 `SyntaxKind.TextSpan = 400` を削除し、`InlineText = 401` を明示的に付与する（FR-008） → `Source/AsciiSharp/SyntaxKind.cs`
-- [ ] T002 `BlockSyntax` の XML ドキュメントコメントを「AsciiDoc 言語仕様のブロックとされる要素のみが継承する」旨に更新する（FR-004） → `Source/AsciiSharp/Syntax/BlockSyntax.cs`
+- [x] T001 `SyntaxKind.TextSpan = 400` を削除し、`InlineText = 401` を明示的に付与する（FR-008） → `Source/AsciiSharp/SyntaxKind.cs`
+- [x] T002 `BlockSyntax` の XML ドキュメントコメントを「AsciiDoc 言語仕様のブロックとされる要素のみが継承する」旨に更新する（FR-004） → `Source/AsciiSharp/Syntax/BlockSyntax.cs`
 
 **Checkpoint**: T001・T002 完了後、US1・US2 を並行して実装可能
 
