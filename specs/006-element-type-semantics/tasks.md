@@ -39,7 +39,7 @@ dotnet test --project Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj
 - [ ] T006 [P] [US1] `DocumentHeaderSyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様に登場しない内部概念である旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs`
 - [ ] T007 [P] [US1] `DocumentBodySyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様に登場しない内部概念である旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/DocumentBodySyntax.cs`
 - [ ] T008 [US1] `BlockInlineSyntaxFeature` の `セクション関連ノードはBlockSyntaxとして識別できる()` シナリオを更新する（`SectionTitleノードはBlockSyntax()` を `SectionTitleノードはBlockSyntaxではない()` に変更し、シナリオ名も変更する） → `Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.cs` + `Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.Steps.cs`
-- [ ] T009 [US1] `ElementTypeSemantics006Feature.Steps.cs` の US1 ステップを実装する（`SectionTitleSyntaxはBlockSyntaxではない`・`DocumentHeaderSyntaxはBlockSyntaxではない`・`AuthorLineSyntaxはBlockSyntaxではない`・`AttributeEntrySyntaxはBlockSyntaxではない` の各 `Assert.Inconclusive` を実際のアサーションに置き換える） → `Test/AsciiSharp.Specs/Features/ElementTypeSemantics006Feature.Steps.cs`
+- [ ] T009 [US1] `BlockSyntaxSemanticFeature.Steps.cs` の US1 ステップを実装する（`SectionTitleSyntaxはBlockSyntaxではない`・`DocumentHeaderSyntaxはBlockSyntaxではない`・`AuthorLineSyntaxはBlockSyntaxではない`・`AttributeEntrySyntaxはBlockSyntaxではない` の各 `Assert.Inconclusive` を実際のアサーションに置き換える） → `Test/AsciiSharp.Specs/Features/BlockSyntaxSemanticFeature.Steps.cs`
 
 **Checkpoint**: US1 完了。`is BlockSyntax` が `SectionTitleSyntax` 等に対して `false` を返すことが BDD テストで検証済み。
 
@@ -58,7 +58,7 @@ dotnet test --project Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj
 ### Implementation for User Story 2
 
 - [ ] T010 [US2] `StructuredTriviaSyntax` 抽象クラスを新規作成する。`SyntaxNode` を継承し、「トリビアであるが内部に構文構造を持つノードの抽象基底クラスである」旨の XML ドキュメントコメントを記述する（FR-003、FR-006） → `Source/AsciiSharp/Syntax/StructuredTriviaSyntax.cs`
-- [ ] T011 [US2] `ElementTypeSemantics006Feature.Steps.cs` の US2 ステップを実装する（`StructuredTriviaSyntaxはSyntaxNodeのサブクラスである`・`StructuredTriviaSyntaxはBlockSyntaxのサブクラスではない`・`StructuredTriviaSyntaxはInlineSyntaxのサブクラスではない` の各 `Assert.Inconclusive` をリフレクションを用いたアサーションに置き換える） → `Test/AsciiSharp.Specs/Features/ElementTypeSemantics006Feature.Steps.cs`
+- [ ] T011 [US2] `BlockSyntaxSemanticFeature.Steps.cs` の US2 ステップを実装する（`StructuredTriviaSyntaxはSyntaxNodeのサブクラスである`・`StructuredTriviaSyntaxはBlockSyntaxのサブクラスではない`・`StructuredTriviaSyntaxはInlineSyntaxのサブクラスではない` の各 `Assert.Inconclusive` をリフレクションを用いたアサーションに置き換える） → `Test/AsciiSharp.Specs/Features/BlockSyntaxSemanticFeature.Steps.cs`
 
 **Checkpoint**: US2 完了。`StructuredTriviaSyntax` が `SyntaxNode` を継承し `BlockSyntax` でも `InlineSyntax` でもないことが BDD テストで検証済み。
 

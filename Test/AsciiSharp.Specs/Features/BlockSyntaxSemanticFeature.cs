@@ -6,13 +6,13 @@ using LightBDD.MsTest4;
 namespace AsciiSharp.Specs.Features;
 
 /// <summary>
-/// インライン要素とブロック要素のセマンティクス定義のテスト
+/// BlockSyntax の意味的分類が AsciiDoc 言語仕様と一致することを検証するテスト
 /// </summary>
 [FeatureDescription(
-    @"インライン要素とブロック要素のセマンティクス定義
+    @"BlockSyntax のセマンティクス定義
 ライブラリ利用者として、
 BlockSyntax の分類が AsciiDoc 言語仕様のブロック定義と一致していることを確認したい")]
-public sealed partial class ElementTypeSemantics006Feature : FeatureFixture
+public sealed partial class BlockSyntaxSemanticFeature : FeatureFixture
 {
     [Scenario]
     public void AsciiDoc仕様のブロックとされないノードはBlockSyntaxではない()

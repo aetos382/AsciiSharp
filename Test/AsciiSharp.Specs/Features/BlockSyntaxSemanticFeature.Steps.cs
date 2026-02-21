@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AsciiSharp.Specs.Features;
 
-public partial class ElementTypeSemantics006Feature
+public partial class BlockSyntaxSemanticFeature
 {
     private SourceText? _sourceText;
     private SyntaxTree? _syntaxTree;

@@ -26,7 +26,7 @@
 
 | 原則 | 状態 | 備考 |
 |------|------|------|
-| III. BDD 必須 | ✅ PASS | `ElementTypeSemantics006Feature` を plan フェーズで作成。対象は `Source/AsciiSharp` |
+| III. BDD 必須 | ✅ PASS | `BlockSyntaxSemanticFeature` を plan フェーズで作成。対象は `Source/AsciiSharp` |
 | VI. フェーズ順序 | ✅ PASS | specify → clarify → plan（現在）の順序を遵守 |
 | V. 警告ゼロ | ✅ PASS | 現在警告ゼロ。実装後も維持する |
 | IV. 継続的品質保証 | ✅ PASS | 実装後に全テストを実行して確認する |
@@ -59,8 +59,8 @@ Source/AsciiSharp/
     └── DocumentBodySyntax.cs            ← BlockSyntax → SyntaxNode、XML ドキュメント コメント更新
 
 Test/AsciiSharp.Specs/Features/
-├── ElementTypeSemantics006Feature.cs       ← 新規（BDD Red）
-├── ElementTypeSemantics006Feature.Steps.cs ← 新規（BDD Red スタブ）
+├── BlockSyntaxSemanticFeature.cs       ← 新規（BDD Red）
+├── BlockSyntaxSemanticFeature.Steps.cs ← 新規（BDD Red スタブ）
 ├── BlockInlineSyntaxFeature.cs             ← SectionTitle 関連シナリオ更新（実装フェーズ）
 └── BlockInlineSyntaxFeature.Steps.cs       ← SectionTitle 関連ステップ更新（実装フェーズ）
 ```
@@ -99,7 +99,7 @@ Test/AsciiSharp.Specs/Features/
 
 ### BDD Red ステップ（plan フェーズで作成）
 
-`ElementTypeSemantics006Feature` を以下の 2 シナリオで作成:
+`BlockSyntaxSemanticFeature` を以下の 2 シナリオで作成:
 
 **シナリオ 1**: `AsciiDoc仕様のブロックとされないノードはBlockSyntaxではない()`
 - Given: セクションタイトル・著者行・属性エントリを含む AsciiDoc 文書
