@@ -11,9 +11,11 @@ namespace AsciiSharp.Syntax;
 /// セクションタイトルを表す構文ノード。
 /// </summary>
 /// <remarks>
-/// セクションタイトルは = で始まる行で、= の数がセクションレベルを示す。
+/// <para>セクションタイトルは = で始まる行で、= の数がセクションレベルを示す。</para>
+/// <para>AsciiDoc 言語仕様において heading は section の structural form であり、
+/// 独立したブロック要素ではないため、<see cref="BlockSyntax"/> を継承しない。</para>
 /// </remarks>
-public sealed class SectionTitleSyntax : BlockSyntax
+public sealed class SectionTitleSyntax : SyntaxNode
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
 

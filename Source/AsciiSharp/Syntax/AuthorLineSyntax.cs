@@ -9,7 +9,10 @@ namespace AsciiSharp.Syntax;
 /// <summary>
 /// 著者行を表す構文ノード。
 /// </summary>
-public sealed class AuthorLineSyntax : BlockSyntax
+/// <remarks>
+/// <para>AsciiDoc 言語仕様のブロック要素ではないため、<see cref="BlockSyntax"/> を継承しない。</para>
+/// </remarks>
+public sealed class AuthorLineSyntax : SyntaxNode
 {
     private readonly List<SyntaxToken> _tokens = [];
 

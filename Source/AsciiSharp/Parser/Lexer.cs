@@ -119,7 +119,7 @@ internal sealed class Lexer
     /// </summary>
     /// <remarks>
     /// <para>AsciiDoc では空白が意味を持つため、空白はトークンとして扱う。</para>
-    /// <para>行頭コメントは Roslyn パターンに従いトリビアとして収集される。</para>
+    /// <para>行頭コメントはトリビアとして収集される。</para>
     /// </remarks>
     private void ScanLeadingTrivia()
     {

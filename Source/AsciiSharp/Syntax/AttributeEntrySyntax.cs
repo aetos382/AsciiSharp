@@ -9,7 +9,10 @@ namespace AsciiSharp.Syntax;
 /// <summary>
 /// AsciiDoc の属性エントリ（<c>:name: value</c>）を表す構文ノード。
 /// </summary>
-public sealed class AttributeEntrySyntax : BlockSyntax
+/// <remarks>
+/// <para>AsciiDoc 言語仕様のブロック要素ではないため、<see cref="BlockSyntax"/> を継承しない。</para>
+/// </remarks>
+public sealed class AttributeEntrySyntax : SyntaxNode
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
 

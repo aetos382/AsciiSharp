@@ -57,6 +57,19 @@ public partial class InlineTextSyntaxRenameFeature
         Assert.AreEqual(expectedText, firstInline.Text);
     }
 
+    private void SyntaxKindにTextSpanは存在しない()
+    {
+        Assert.IsFalse(System.Enum.IsDefined(typeof(SyntaxKind), "TextSpan"));
+    }
+
+    private void SyntaxKindのInlineTextの数値は401である()
+    {
+        // SyntaxKind.InlineText はコンパイル時定数のため MSTEST0032 を無効化
+#pragma warning disable MSTEST0032
+        Assert.AreEqual(401, (int)SyntaxKind.InlineText);
+#pragma warning restore MSTEST0032
+    }
+
     /// <summary>
     /// InlineTextSyntax の訪問を検出する Visitor。
     /// </summary>

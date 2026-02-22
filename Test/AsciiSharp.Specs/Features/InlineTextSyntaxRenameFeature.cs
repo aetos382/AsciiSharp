@@ -42,4 +42,12 @@ public sealed partial class InlineTextSyntaxRenameFeature : FeatureFixture
             when => 文書を解析する(),
             then => 段落の最初のインライン要素のテキストは("Hello, World!"));
     }
+
+    [Scenario]
+    public void TextSpanはSyntaxKindに存在せずInlineTextの値は401である()
+    {
+        Runner.RunScenario(
+            then => SyntaxKindにTextSpanは存在しない(),
+            then => SyntaxKindのInlineTextの数値は401である());
+    }
 }

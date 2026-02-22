@@ -130,11 +130,8 @@ public enum SyntaxKind
     // Nodes (Inlines) - MVP スコープ
     // ========================================
 
-    /// <summary>テキストスパンノード。</summary>
-    TextSpan = 400,
-
     /// <summary>インライン テキストノード。</summary>
-    InlineText,
+    InlineText = 401,
 
     /// <summary>リンクノード。</summary>
     Link,

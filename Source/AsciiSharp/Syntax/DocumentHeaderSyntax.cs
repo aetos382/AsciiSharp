@@ -9,9 +9,10 @@ namespace AsciiSharp.Syntax;
 /// AsciiDoc 文書のヘッダー部分を表す構文ノード。
 /// </summary>
 /// <remarks>
-/// ヘッダーには文書タイトル、著者行などが含まれる。
+/// <para>ヘッダーには文書タイトル、著者行などが含まれる。</para>
+/// <para>AsciiDoc 言語仕様に登場しない内部概念であるため、<see cref="BlockSyntax"/> を継承しない。</para>
 /// </remarks>
-public sealed class DocumentHeaderSyntax : BlockSyntax
+public sealed class DocumentHeaderSyntax : SyntaxNode
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
 

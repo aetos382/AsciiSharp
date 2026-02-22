@@ -4,7 +4,7 @@ namespace AsciiSharp.InternalSyntax;
 /// 内部構文木のノードを表す抽象基底クラス。
 /// </summary>
 /// <remarks>
-/// <para>このクラスは Roslyn の Green Tree に相当する。</para>
+/// <para>内部構文木のノードは完全に不変であり、親参照を持たず、幅のみで位置を管理する。</para>
 /// <para>特性:</para>
 /// <list type="bullet">
 ///   <item>完全に不変（Immutable）</item>

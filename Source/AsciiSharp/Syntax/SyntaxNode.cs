@@ -11,7 +11,7 @@ namespace AsciiSharp.Syntax;
 /// 外部構文木のノードを表す抽象基底クラス。
 /// </summary>
 /// <remarks>
-/// <para>このクラスは Roslyn の Red Tree に相当する。</para>
+/// <para>外部構文木のノードは、内部ノード（InternalNode）をラップし、親参照と絶対位置を保持する。</para>
 /// <para>特性:</para>
 /// <list type="bullet">
 ///   <item>内部ノード（InternalNode）をラップする</item>
