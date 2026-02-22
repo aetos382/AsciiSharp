@@ -9,7 +9,10 @@ namespace AsciiSharp.Syntax;
 /// <summary>
 /// 著者行を表す構文ノード。
 /// </summary>
-public sealed class AuthorLineSyntax : BlockSyntax
+/// <remarks>
+/// AsciiDoc 言語仕様のブロック要素ではないため、<see cref="BlockSyntax"/> を継承しない。
+/// </remarks>
+public sealed class AuthorLineSyntax : SyntaxNode
 {
     private readonly List<SyntaxToken> _tokens = [];
 
@@ -23,7 +26,7 @@ public sealed class AuthorLineSyntax : BlockSyntax
     /// AuthorLineSyntax を作成する。
     /// </summary>
     internal AuthorLineSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
-        : base(internalNode, parent, position, syntaxTree)
+        : base(internalNode, parent, position, syntaxTree) // base は SyntaxNode
     {
         var currentPosition = position;
 

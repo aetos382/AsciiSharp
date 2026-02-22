@@ -1,3 +1,5 @@
+using System.Linq;
+
 using AsciiSharp.Syntax;
 using AsciiSharp.Text;
 
@@ -24,27 +26,42 @@ public partial class BlockSyntaxSemanticFeature
 
     private void SectionTitleSyntaxはBlockSyntaxではない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree);
+        var node = _syntaxTree.Root.DescendantNodes().OfType<SectionTitleSyntax>().FirstOrDefault();
+        Assert.IsNotNull(node);
+        Assert.IsNotInstanceOfType<BlockSyntax>(node);
     }
 
     private void DocumentHeaderSyntaxはBlockSyntaxではない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree);
+        var node = _syntaxTree.Root.DescendantNodes().OfType<DocumentHeaderSyntax>().FirstOrDefault();
+        Assert.IsNotNull(node);
+        Assert.IsNotInstanceOfType<BlockSyntax>(node);
     }
 
     private void AuthorLineSyntaxはBlockSyntaxではない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree);
+        var node = _syntaxTree.Root.DescendantNodes().OfType<AuthorLineSyntax>().FirstOrDefault();
+        Assert.IsNotNull(node);
+        Assert.IsNotInstanceOfType<BlockSyntax>(node);
     }
 
     private void AttributeEntrySyntaxはBlockSyntaxではない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree);
+        var node = _syntaxTree.Root.DescendantNodes().OfType<AttributeEntrySyntax>().FirstOrDefault();
+        Assert.IsNotNull(node);
+        Assert.IsNotInstanceOfType<BlockSyntax>(node);
     }
 
     private void DocumentBodySyntaxはBlockSyntaxではない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree);
+        var node = _syntaxTree.Root.DescendantNodes().OfType<DocumentBodySyntax>().FirstOrDefault();
+        Assert.IsNotNull(node);
+        Assert.IsNotInstanceOfType<BlockSyntax>(node);
     }
 
     private void StructuredTriviaSyntaxクラスが定義されている()

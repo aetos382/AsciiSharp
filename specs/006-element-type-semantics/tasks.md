@@ -33,13 +33,13 @@ dotnet test --project Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj
 
 ### Implementation for User Story 1
 
-- [ ] T003 [P] [US1] `SectionTitleSyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様のブロックではない旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs`
-- [ ] T004 [P] [US1] `AuthorLineSyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様のブロックではない旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/AuthorLineSyntax.cs`
-- [ ] T005 [P] [US1] `AttributeEntrySyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様のブロックではない旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/AttributeEntrySyntax.cs`
-- [ ] T006 [P] [US1] `DocumentHeaderSyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様に登場しない内部概念である旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs`
-- [ ] T007 [P] [US1] `DocumentBodySyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様に登場しない内部概念である旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/DocumentBodySyntax.cs`
-- [ ] T008 [US1] `BlockInlineSyntaxFeature` の `セクション関連ノードはBlockSyntaxとして識別できる()` シナリオを更新する（`SectionTitleノードはBlockSyntax()` を `SectionTitleノードはBlockSyntaxではない()` に変更し、シナリオ名も変更する） → `Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.cs` + `Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.Steps.cs`
-- [ ] T009 [US1] `BlockSyntaxSemanticFeature.Steps.cs` の US1 ステップを実装する（`SectionTitleSyntaxはBlockSyntaxではない`・`DocumentHeaderSyntaxはBlockSyntaxではない`・`AuthorLineSyntaxはBlockSyntaxではない`・`AttributeEntrySyntaxはBlockSyntaxではない`・`DocumentBodySyntaxはBlockSyntaxではない` の各 `Assert.Inconclusive` を実際のアサーションに置き換える）（SC-002） → `Test/AsciiSharp.Specs/Features/BlockSyntaxSemanticFeature.Steps.cs`
+- [x] T003 [P] [US1] `SectionTitleSyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様のブロックではない旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/SectionTitleSyntax.cs`
+- [x] T004 [P] [US1] `AuthorLineSyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様のブロックではない旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/AuthorLineSyntax.cs`
+- [x] T005 [P] [US1] `AttributeEntrySyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様のブロックではない旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/AttributeEntrySyntax.cs`
+- [x] T006 [P] [US1] `DocumentHeaderSyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様に登場しない内部概念である旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/DocumentHeaderSyntax.cs`
+- [x] T007 [P] [US1] `DocumentBodySyntax` の基底クラスを `BlockSyntax` → `SyntaxNode` に変更し、AsciiDoc 仕様に登場しない内部概念である旨の `<remarks>` を追記する（FR-002、FR-005） → `Source/AsciiSharp/Syntax/DocumentBodySyntax.cs`
+- [x] T008 [US1] `BlockInlineSyntaxFeature` の `セクション関連ノードはBlockSyntaxとして識別できる()` シナリオを更新する（`SectionTitleノードはBlockSyntax()` を `SectionTitleノードはBlockSyntaxではない()` に変更し、シナリオ名も変更する） → `Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.cs` + `Test/AsciiSharp.Specs/Features/BlockInlineSyntaxFeature.Steps.cs`
+- [x] T009 [US1] `BlockSyntaxSemanticFeature.Steps.cs` の US1 ステップを実装する（`SectionTitleSyntaxはBlockSyntaxではない`・`DocumentHeaderSyntaxはBlockSyntaxではない`・`AuthorLineSyntaxはBlockSyntaxではない`・`AttributeEntrySyntaxはBlockSyntaxではない`・`DocumentBodySyntaxはBlockSyntaxではない` の各 `Assert.Inconclusive` を実際のアサーションに置き換える）（SC-002） → `Test/AsciiSharp.Specs/Features/BlockSyntaxSemanticFeature.Steps.cs`
 
 **Checkpoint**: US1 完了。`is BlockSyntax` が `SectionTitleSyntax` 等に対して `false` を返すことが BDD テストで検証済み。
 

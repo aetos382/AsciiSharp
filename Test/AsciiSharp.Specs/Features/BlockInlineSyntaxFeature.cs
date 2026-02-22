@@ -40,13 +40,13 @@ public sealed partial class BlockInlineSyntaxFeature : FeatureFixture
     }
 
     [Scenario]
-    public void セクション関連ノードはBlockSyntaxとして識別できる()
+    public void セクション関連ノードのBlockSyntax分類を確認できる()
     {
         Runner.RunScenario(
             given => 以下のAsciiDoc文書がある("== セクションタイトル\n"),
             when => 文書を解析する(),
             then => SectionノードはBlockSyntax(),
-            then => SectionTitleノードはBlockSyntax()
+            then => SectionTitleノードはBlockSyntaxではない()
         );
     }
 

@@ -9,9 +9,10 @@ namespace AsciiSharp.Syntax;
 /// AsciiDoc 文書の本体部分を表す構文ノード。
 /// </summary>
 /// <remarks>
-/// 本体にはセクション、段落、その他のブロック要素が含まれる。
+/// <para>本体にはセクション、段落、その他のブロック要素が含まれる。</para>
+/// <para>AsciiDoc 言語仕様に登場しない内部概念であるため、<see cref="BlockSyntax"/> を継承しない。</para>
 /// </remarks>
-public sealed class DocumentBodySyntax : BlockSyntax
+public sealed class DocumentBodySyntax : SyntaxNode
 {
     private readonly List<SyntaxNodeOrToken> _children = [];
 
@@ -19,7 +20,7 @@ public sealed class DocumentBodySyntax : BlockSyntax
     /// DocumentBodySyntax を作成する。
     /// </summary>
     internal DocumentBodySyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
-        : base(internalNode, parent, position, syntaxTree)
+        : base(internalNode, parent, position, syntaxTree) // base は SyntaxNode
     {
         var currentPosition = position;
 

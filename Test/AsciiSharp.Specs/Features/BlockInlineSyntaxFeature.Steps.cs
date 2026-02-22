@@ -78,12 +78,12 @@ public partial class BlockInlineSyntaxFeature
         Assert.IsInstanceOfType<BlockSyntax>(section);
     }
 
-    private void SectionTitleノードはBlockSyntax()
+    private void SectionTitleノードはBlockSyntaxではない()
     {
         Assert.IsNotNull(_syntaxTree);
         var sectionTitle = _syntaxTree.Root.DescendantNodes().OfType<SectionTitleSyntax>().FirstOrDefault();
         Assert.IsNotNull(sectionTitle);
-        Assert.IsInstanceOfType<BlockSyntax>(sectionTitle);
+        Assert.IsNotInstanceOfType<BlockSyntax>(sectionTitle);
     }
 
     private void すべてのBlockSyntaxノードをクエリする()
