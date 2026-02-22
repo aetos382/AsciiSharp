@@ -222,3 +222,8 @@ private void パーサーが初期化されている()
 - `[must]` - 必須修正項目（セキュリティ、バグ、重大な設計問題）
 - `[recommend]` - 推奨修正項目（パフォーマンス、可読性の大幅改善）
 - `[nits]` - 軽微な指摘（コードスタイル、タイポ等）
+
+## TCK について
+
+- TCK を実行する際は、`docker buildx bake tck` でコンテナ イメージをビルドし、`docker run --rm asciisharp-tck` で実行します。
+- AsciiSharp.Asg のテストは作成しません。TCK が Asg のテストです。
