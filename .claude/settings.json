@@ -32,11 +32,9 @@
     ],
     "deny": [
       "Edit(/Directory.packages.props)",
-      "Edit(**/packages.lock.json)",
       "Edit(**/*.g.cs)",
       "Edit(**/*.Designer.cs)",
       "Write(/Directory.packages.props)",
-      "Write(**/packages.lock.json)",
       "Write(**/*.g.cs)",
       "Write(**/*.Designer.cs)"
     ]

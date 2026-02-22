@@ -31,10 +31,10 @@ jobs:
       uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
       with:
         cache: true
-        cache-dependency-path: '**/packages.lock.json'
+        cache-dependency-path: 'Directory.Packages.props'
 
     - name: Restore dependencies
-      run: dotnet restore --locked-mode
+      run: dotnet restore
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
