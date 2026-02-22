@@ -66,7 +66,9 @@ public partial class BlockSyntaxSemanticFeature
 
     private void StructuredTriviaSyntaxクラスが定義されている()
     {
-        // StructuredTriviaSyntax はリフレクションで検証するため、前提条件の確認のみ
+        // abstract クラスとして定義されていることを確認
+        Assert.IsTrue(typeof(StructuredTriviaSyntax).IsAbstract);
+        Assert.IsFalse(typeof(StructuredTriviaSyntax).IsInterface);
     }
 
     private void StructuredTriviaSyntaxはSyntaxNodeのサブクラスである()

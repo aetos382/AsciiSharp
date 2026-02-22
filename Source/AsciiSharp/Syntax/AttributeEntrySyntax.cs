@@ -10,7 +10,7 @@ namespace AsciiSharp.Syntax;
 /// AsciiDoc の属性エントリ（<c>:name: value</c>）を表す構文ノード。
 /// </summary>
 /// <remarks>
-/// AsciiDoc 言語仕様のブロック要素ではないため、<see cref="BlockSyntax"/> を継承しない。
+/// <para>AsciiDoc 言語仕様のブロック要素ではないため、<see cref="BlockSyntax"/> を継承しない。</para>
 /// </remarks>
 public sealed class AttributeEntrySyntax : SyntaxNode
 {
@@ -50,7 +50,7 @@ public sealed class AttributeEntrySyntax : SyntaxNode
     /// AttributeEntrySyntax を作成する。
     /// </summary>
     internal AttributeEntrySyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
-        : base(internalNode, parent, position, syntaxTree) // base は SyntaxNode
+        : base(internalNode, parent, position, syntaxTree)
     {
         var currentPosition = position;
         var slotIndex = 0;

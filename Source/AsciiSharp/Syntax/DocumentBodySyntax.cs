@@ -20,7 +20,7 @@ public sealed class DocumentBodySyntax : SyntaxNode
     /// DocumentBodySyntax を作成する。
     /// </summary>
     internal DocumentBodySyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
-        : base(internalNode, parent, position, syntaxTree) // base は SyntaxNode
+        : base(internalNode, parent, position, syntaxTree)
     {
         var currentPosition = position;
 

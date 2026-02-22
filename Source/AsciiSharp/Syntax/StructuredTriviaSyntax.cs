@@ -14,6 +14,9 @@ namespace AsciiSharp.Syntax;
 /// </remarks>
 public abstract class StructuredTriviaSyntax : SyntaxNode
 {
+    /// <summary>
+    /// StructuredTriviaSyntax を作成する。
+    /// </summary>
     private protected StructuredTriviaSyntax(
         InternalNode internalNode,
         SyntaxNode? parent,

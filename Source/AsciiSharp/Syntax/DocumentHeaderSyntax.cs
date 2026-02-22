@@ -35,7 +35,7 @@ public sealed class DocumentHeaderSyntax : SyntaxNode
     /// DocumentHeaderSyntax を作成する。
     /// </summary>
     internal DocumentHeaderSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
-        : base(internalNode, parent, position, syntaxTree) // base は SyntaxNode
+        : base(internalNode, parent, position, syntaxTree)
     {
         var currentPosition = position;
         var attributeEntries = new List<AttributeEntrySyntax>();

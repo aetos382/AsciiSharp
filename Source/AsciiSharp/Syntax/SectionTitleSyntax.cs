@@ -40,7 +40,7 @@ public sealed class SectionTitleSyntax : SyntaxNode
     /// SectionTitleSyntax を作成する。
     /// </summary>
     internal SectionTitleSyntax(InternalNode internalNode, SyntaxNode? parent, int position, SyntaxTree? syntaxTree)
-        : base(internalNode, parent, position, syntaxTree) // base は SyntaxNode
+        : base(internalNode, parent, position, syntaxTree)
     {
         var currentPosition = position;
         SyntaxToken? marker = null;
