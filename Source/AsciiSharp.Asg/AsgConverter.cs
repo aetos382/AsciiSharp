@@ -61,8 +61,8 @@ public sealed class AsgConverter
                 ? this.ConvertHeader(node.Header)
                 : null;
 
-            // ヘッダーがある場合のみ attributes を生成する（FR-001、FR-002）。
-            // ヘッダーなし文書では attributes フィールドを JSON 出力から省略する。
+            // ヘッダーなし文書では attributes を null にし、AsgDocument の JsonIgnore と連携して
+            // "attributes" フィールドを JSON 出力から省略する。
             var attributes = node.Header is not null
                 ? ConvertAttributes(node.Header)
                 : null;
