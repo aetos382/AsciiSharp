@@ -57,8 +57,8 @@ dotnet test --project Test/AsciiSharp.Specs/AsciiSharp.Specs.csproj
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] `StructuredTriviaSyntax` 抽象クラスを新規作成する。`SyntaxNode` を継承し、「トリビアであるが内部に構文構造を持つノードの抽象基底クラスである」旨の XML ドキュメントコメントを記述する（FR-003、FR-006） → `Source/AsciiSharp/Syntax/StructuredTriviaSyntax.cs`
-- [ ] T011 [US2] `BlockSyntaxSemanticFeature.Steps.cs` の US2 ステップを実装する（`StructuredTriviaSyntaxはSyntaxNodeのサブクラスである`・`StructuredTriviaSyntaxはBlockSyntaxのサブクラスではない`・`StructuredTriviaSyntaxはInlineSyntaxのサブクラスではない` の各 `Assert.Inconclusive` をリフレクションを用いたアサーションに置き換える） → `Test/AsciiSharp.Specs/Features/BlockSyntaxSemanticFeature.Steps.cs`
+- [x] T010 [US2] `StructuredTriviaSyntax` 抽象クラスを新規作成する。`SyntaxNode` を継承し、「トリビアであるが内部に構文構造を持つノードの抽象基底クラスである」旨の XML ドキュメントコメントを記述する（FR-003、FR-006） → `Source/AsciiSharp/Syntax/StructuredTriviaSyntax.cs`
+- [x] T011 [US2] `BlockSyntaxSemanticFeature.Steps.cs` の US2 ステップを実装する（`StructuredTriviaSyntaxはSyntaxNodeのサブクラスである`・`StructuredTriviaSyntaxはBlockSyntaxのサブクラスではない`・`StructuredTriviaSyntaxはInlineSyntaxのサブクラスではない` の各 `Assert.Inconclusive` をリフレクションを用いたアサーションに置き換える） → `Test/AsciiSharp.Specs/Features/BlockSyntaxSemanticFeature.Steps.cs`
 
 **Checkpoint**: US2 完了。`StructuredTriviaSyntax` が `SyntaxNode` を継承し `BlockSyntax` でも `InlineSyntax` でもないことが BDD テストで検証済み。
 

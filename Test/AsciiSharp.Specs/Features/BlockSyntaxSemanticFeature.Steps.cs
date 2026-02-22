@@ -71,16 +71,16 @@ public partial class BlockSyntaxSemanticFeature
 
     private void StructuredTriviaSyntaxはSyntaxNodeのサブクラスである()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsTrue(typeof(SyntaxNode).IsAssignableFrom(typeof(StructuredTriviaSyntax)));
     }
 
     private void StructuredTriviaSyntaxはBlockSyntaxのサブクラスではない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsFalse(typeof(BlockSyntax).IsAssignableFrom(typeof(StructuredTriviaSyntax)));
     }
 
     private void StructuredTriviaSyntaxはInlineSyntaxのサブクラスではない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsFalse(typeof(InlineSyntax).IsAssignableFrom(typeof(StructuredTriviaSyntax)));
     }
 }
