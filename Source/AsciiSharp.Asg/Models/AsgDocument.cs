@@ -18,10 +18,19 @@ public sealed class AsgDocument : AsgBlockNode
     public string Name => "document";
 
     /// <summary>
-    /// ドキュメント属性。属性エントリがない場合は空の辞書。
+    /// ドキュメント属性。ヘッダーが存在しない場合は null。
     /// </summary>
+    /// <remarks>
+    /// <see cref="Header"/> の有無と連動する：
+    /// <list type="bullet">
+    ///   <item><c>null</c> → ヘッダーなし（<see cref="Header"/> も null）。JSON に "attributes" フィールドは出力されない。</item>
+    ///   <item>空の辞書 → ヘッダーあり・属性エントリなし。JSON に <c>"attributes": {}</c> が出力される。</item>
+    ///   <item>非空の辞書 → ヘッダーあり・属性エントリあり。</item>
+    /// </list>
+    /// </remarks>
     [JsonPropertyName("attributes")]
-    public IReadOnlyDictionary<string, string> Attributes { get; init; } = new Dictionary<string, string>();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyDictionary<string, string>? Attributes { get; init; }
 
     /// <summary>
     /// 文書ヘッダー（オプション）。

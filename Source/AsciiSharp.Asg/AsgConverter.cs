@@ -61,7 +61,11 @@ public sealed class AsgConverter
                 ? this.ConvertHeader(node.Header)
                 : null;
 
-            var attributes = ConvertAttributes(node.Header);
+            // ヘッダーなし文書では attributes を null にし、AsgDocument の JsonIgnore と連携して
+            // "attributes" フィールドを JSON 出力から省略する。
+            var attributes = node.Header is not null
+                ? ConvertAttributes(node.Header)
+                : null;
 
             return new AsgDocument
             {
@@ -153,16 +157,11 @@ public sealed class AsgConverter
         /// <summary>
         /// <see cref="DocumentHeaderSyntax"/> の属性エントリを辞書に変換する。
         /// </summary>
-        /// <param name="header">ドキュメントヘッダー。<c>null</c> の場合は空の辞書を返す。</param>
-        /// <returns>属性名をキー、属性値を値とする辞書。値なし属性は空文字列。</returns>
-        private static Dictionary<string, string> ConvertAttributes(DocumentHeaderSyntax? header)
+        /// <param name="header">ドキュメントヘッダー。</param>
+        /// <returns>属性名をキー、属性値を値とする辞書。属性エントリがない場合は空の辞書。</returns>
+        private static Dictionary<string, string> ConvertAttributes(DocumentHeaderSyntax header)
         {
             var attributes = new Dictionary<string, string>();
-
-            if (header is null)
-            {
-                return attributes;
-            }
 
             foreach (var entry in header.AttributeEntries)
             {
