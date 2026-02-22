@@ -15,7 +15,6 @@
     <NoWarn>$(NoWarn);CA1303</NoWarn>
     <DefaultItemExcludesInProjectFolder>
       $(DefaultItemExcludesInProjectFolder);
-      packages.lock.json;
       TestResults\**
     </DefaultItemExcludesInProjectFolder>
     <DefaultItemExcludes>
@@ -24,7 +23,6 @@
       *.binlog
     </DefaultItemExcludes>
     <IsPackable>false</IsPackable>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
   </PropertyGroup>

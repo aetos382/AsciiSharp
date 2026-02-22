@@ -14,19 +14,16 @@ COPY ["Source/Directory.Build.*", "Source/"]
 
 COPY [ \
   "Source/AsciiSharp/AsciiSharp.csproj",  \
-  "Source/AsciiSharp/packages.lock.json", \
   "Source/AsciiSharp/" \
 ]
 
 COPY [ \
   "Source/AsciiSharp.Asg/AsciiSharp.Asg.csproj", \
-  "Source/AsciiSharp.Asg/packages.lock.json", \
   "Source/AsciiSharp.Asg/" \
 ]
 
 COPY [ \
   "Source/AsciiSharp.TckAdapter/AsciiSharp.TckAdapter.csproj", \
-  "Source/AsciiSharp.TckAdapter/packages.lock.json", \
   "Source/AsciiSharp.TckAdapter/" \
 ]
 
