@@ -73,8 +73,8 @@
 
 **Purpose**: 既存テストのリグレッション修正と TCK 検証
 
-- [ ] T009 [P] 既存の段落関連テストを確認し、`InlineElements` 構造の変更に追従して修正する（`Test/AsciiSharp.Tests/`）
-- [ ] T010 TCK を実行して SC-001〜SC-006 をすべて確認する（`docker buildx bake tck && docker run --rm asciisharp-tck`）
+- [x] T009 [P] 既存の段落関連テストを確認し、`InlineElements` 構造の変更に追従して修正する（`Test/AsciiSharp.Tests/`）
+- [x] T010 TCK を実行して SC-001〜SC-006 をすべて確認する（`docker buildx bake tck && docker run --rm asciisharp-tck`）
 
 ---
 
@@ -82,9 +82,9 @@
 
 **Purpose**: 警告ゼロポリシーの適用とコード整理
 
-- [ ] T011 ビルド警告を解消する（`Source/AsciiSharp/Parser/Parser.cs`、`Source/AsciiSharp.Asg/AsgConverter.cs`）
-- [ ] T012 修正箇所のコードコメント・XML ドキュメントを日本語で整備する（`Source/AsciiSharp/Parser/Parser.cs`）
-- [ ] T013 最終ビルドとテストを実行して警告ゼロを確認する（`dotnet build`、`dotnet test`）
+- [x] T011 ビルド警告を解消する（`Source/AsciiSharp/Parser/Parser.cs`、`Source/AsciiSharp.Asg/AsgConverter.cs`）
+- [x] T012 修正箇所のコードコメント・XML ドキュメントを日本語で整備する（`Source/AsciiSharp/Parser/Parser.cs`）
+- [x] T013 最終ビルドとテストを実行して警告ゼロを確認する（`dotnet build`、`dotnet test`）
 
 ---
 

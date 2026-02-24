@@ -14,7 +14,7 @@ public sealed partial class MultipleLinesParagraphFeature
 {
     private string _input = string.Empty;
     private SyntaxTree? _syntaxTree;
-    private IReadOnlyList<ParagraphSyntax>? _paragraphs;
+    private List<ParagraphSyntax>? _paragraphs;
 
     /// <summary>
     /// パーサーが初期化されている。
@@ -81,8 +81,8 @@ public sealed partial class MultipleLinesParagraphFeature
             expected,
             inlineText.Text,
             $"InlineTextSyntax のテキストが一致しません。" +
-            $"期待: '{expected.Replace("\n", "\\n")}', " +
-            $"実際: '{inlineText.Text.Replace("\n", "\\n")}'");
+            $"期待: '{expected.Replace("\n", "\\n", System.StringComparison.Ordinal)}', " +
+            $"実際: '{inlineText.Text.Replace("\n", "\\n", System.StringComparison.Ordinal)}'");
     }
 
     private void InlineTextSyntaxのSpanEndが最終行末尾コンテンツの次の位置である()
@@ -99,10 +99,9 @@ public sealed partial class MultipleLinesParagraphFeature
         // Span 範囲のテキストに末尾改行が含まれないことを確認（最終行の改行はトリビア）
         var spanText = _syntaxTree.Text.GetText(inlineText.Span);
         Assert.IsFalse(
-            spanText.EndsWith("\n", System.StringComparison.Ordinal) ||
-            spanText.EndsWith("\r", System.StringComparison.Ordinal),
+            spanText.EndsWith('\n') || spanText.EndsWith('\r'),
             $"InlineTextSyntax の Span が末尾の改行を含んでいます。" +
-            $"Span テキスト: '{spanText.Replace("\n", "\\n").Replace("\r", "\\r")}'");
+            $"Span テキスト: '{spanText.Replace("\n", "\\n", System.StringComparison.Ordinal).Replace("\r", "\\r", System.StringComparison.Ordinal)}'");
     }
 
     private void 最初のパラグラフのSpanが改行を含まない()
@@ -115,10 +114,9 @@ public sealed partial class MultipleLinesParagraphFeature
         var spanText = _syntaxTree.Text.GetText(paragraph.Span);
 
         Assert.IsFalse(
-            spanText.EndsWith("\n", System.StringComparison.Ordinal) ||
-            spanText.EndsWith("\r", System.StringComparison.Ordinal),
+            spanText.EndsWith('\n') || spanText.EndsWith('\r'),
             $"最初の段落の Span が末尾の改行を含んでいます。" +
-            $"Span テキスト: '{spanText.Replace("\n", "\\n").Replace("\r", "\\r")}'");
+            $"Span テキスト: '{spanText.Replace("\n", "\\n", System.StringComparison.Ordinal).Replace("\r", "\\r", System.StringComparison.Ordinal)}'");
     }
 
     private void 最後のパラグラフのSpanが改行を含まない()
@@ -131,9 +129,8 @@ public sealed partial class MultipleLinesParagraphFeature
         var spanText = _syntaxTree.Text.GetText(paragraph.Span);
 
         Assert.IsFalse(
-            spanText.EndsWith("\n", System.StringComparison.Ordinal) ||
-            spanText.EndsWith("\r", System.StringComparison.Ordinal),
+            spanText.EndsWith('\n') || spanText.EndsWith('\r'),
             $"最後の段落の Span が末尾の改行を含んでいます。" +
-            $"Span テキスト: '{spanText.Replace("\n", "\\n").Replace("\r", "\\r")}'");
+            $"Span テキスト: '{spanText.Replace("\n", "\\n", System.StringComparison.Ordinal).Replace("\r", "\\r", System.StringComparison.Ordinal)}'");
     }
 }
