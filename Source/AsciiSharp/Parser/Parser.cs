@@ -517,27 +517,28 @@ internal sealed class AsciiDocParser
     {
         this._sink.StartNode(SyntaxKind.Paragraph);
 
-        // 段落の行を読み取る（空行またはセクションタイトルまで）
+        // 段落の要素を読み取る（空行またはセクションタイトルまで）
         while (!this.IsAtEnd() && !this.IsBlankLine() && !this.IsAtSectionTitle())
         {
-            // 行の内容を読み取る
-            while (!this.IsAtEnd() && this.Current.Kind != SyntaxKind.NewLineToken && this.Current.Kind != SyntaxKind.EndOfFileToken)
+            if (this.IsAtLink())
             {
-                if (this.IsAtLink())
+                this.ParseLink();
+
+                // リンク後の改行を消費する
+                if (this.Current.Kind == SyntaxKind.NewLineToken)
                 {
-                    this.ParseLink();
-                }
-                else
-                {
-                    // テキストトークンを InlineText ノードとしてラップ
-                    this.ParseInlineText();
+                    this.EmitCurrentToken();
                 }
             }
-
-            // 改行を読み取る
-            if (this.Current.Kind == SyntaxKind.NewLineToken)
+            else
             {
-                this.EmitCurrentToken();
+                var newLineConsumed = this.ParseInlineText();
+
+                // ParseInlineText() が改行を消費していない場合（リンク開始で中断した場合）のみ消費する
+                if (!newLineConsumed && this.Current.Kind == SyntaxKind.NewLineToken)
+                {
+                    this.EmitCurrentToken();
+                }
             }
         }
 
@@ -546,22 +547,155 @@ internal sealed class AsciiDocParser
 
     /// <summary>
     /// インラインテキストを解析する。
-    /// 連続するテキストトークンを InlineText ノードとしてラップする。
+    /// 連続するプレーンテキスト行を 1 つの InlineText ノードとしてラップする。
+    /// 中間行の改行はコンテンツトークンとして保持し、最終行の改行はトリビアとして付与する。
     /// </summary>
-    private void ParseInlineText()
+    /// <returns>改行トークンを消費した場合は <see langword="true"/>。</returns>
+    private bool ParseInlineText()
     {
         this._sink.StartNode(SyntaxKind.InlineText);
 
-        // リンクまたは行末に達するまでテキストトークンを読み取る
-        while (!this.IsAtEnd() &&
-               this.Current.Kind != SyntaxKind.NewLineToken &&
-               this.Current.Kind != SyntaxKind.EndOfFileToken &&
-               !this.IsAtLink())
+        InternalToken? lastContentToken = null;
+        InternalToken? pendingWhitespace = null;
+        bool newLineConsumed = false;
+
+        while (true)
         {
-            this.EmitCurrentToken();
+            // 現在の行のトークンを読む（改行・EOF・リンク開始まで）
+            while (!this.IsAtEnd() &&
+                   this.Current.Kind != SyntaxKind.NewLineToken &&
+                   this.Current.Kind != SyntaxKind.EndOfFileToken &&
+                   !this.IsAtLink())
+            {
+                if (this.Current.Kind == SyntaxKind.WhitespaceToken)
+                {
+                    // 空白：行末トリビアの候補として保留する
+                    if (pendingWhitespace != null)
+                    {
+                        // 前の保留空白はコンテンツ内部の空白として確定
+                        if (lastContentToken != null)
+                        {
+                            this._sink.EmitToken(lastContentToken);
+                            lastContentToken = null;
+                        }
+
+                        this._sink.EmitToken(pendingWhitespace);
+                    }
+
+                    pendingWhitespace = this.Current;
+                    this.Advance();
+                }
+                else
+                {
+                    // 非空白：保留中の空白を確定してコンテンツとして出力する
+                    if (pendingWhitespace != null)
+                    {
+                        if (lastContentToken != null)
+                        {
+                            this._sink.EmitToken(lastContentToken);
+                        }
+
+                        this._sink.EmitToken(pendingWhitespace);
+                        pendingWhitespace = null;
+                    }
+                    else if (lastContentToken != null)
+                    {
+                        this._sink.EmitToken(lastContentToken);
+                    }
+
+                    lastContentToken = this.Current;
+                    this.Advance();
+                }
+            }
+
+            // 行末（改行・EOF・リンク開始）に達した
+            if (this.Current.Kind == SyntaxKind.NewLineToken)
+            {
+                // 改行トークンを保存して消費する
+                var newLineToken = this.Current;
+                this.Advance();
+
+                // 次の行が段落の継続かどうかを判定する
+                bool isContinuation =
+                    !this.IsAtEnd() &&
+                    !this.IsBlankLine() &&
+                    !this.IsAtSectionTitle() &&
+                    !this.IsAtLink();
+
+                if (isContinuation)
+                {
+                    // 中間行: 行末空白はコンテンツ内部として確定し、改行をコンテンツトークンとして出力する
+                    if (pendingWhitespace != null)
+                    {
+                        if (lastContentToken != null)
+                        {
+                            this._sink.EmitToken(lastContentToken);
+                            lastContentToken = null;
+                        }
+
+                        this._sink.EmitToken(pendingWhitespace);
+                        pendingWhitespace = null;
+                    }
+                    else if (lastContentToken != null)
+                    {
+                        this._sink.EmitToken(lastContentToken);
+                        lastContentToken = null;
+                    }
+
+                    this._sink.EmitToken(newLineToken);
+                    newLineConsumed = true;
+                    // 次の行の読み取りを継続する
+                }
+                else
+                {
+                    // 最終行: 改行をトリビアとして付与して終了する
+                    List<InternalTrivia> trailingTrivia = [];
+
+                    if (pendingWhitespace != null)
+                    {
+                        trailingTrivia.Add(InternalTrivia.Whitespace(pendingWhitespace.Text));
+                    }
+
+                    trailingTrivia.Add(InternalTrivia.EndOfLine(newLineToken.Text));
+
+                    if (lastContentToken != null)
+                    {
+                        this._sink.EmitToken(lastContentToken.WithTrivia(null, [.. trailingTrivia]));
+                    }
+                    else if (pendingWhitespace != null)
+                    {
+                        // コンテンツが空白のみの場合（通常は起きないが安全のため）
+                        this._sink.EmitToken(pendingWhitespace.WithTrivia(null, [InternalTrivia.EndOfLine(newLineToken.Text)]));
+                    }
+
+                    newLineConsumed = true;
+                    break;
+                }
+            }
+            else
+            {
+                // 改行なしで終了（EOF またはリンク開始）
+                // 最後のコンテンツトークンを出力する（行末空白はトリビア化しない）
+                if (pendingWhitespace != null)
+                {
+                    if (lastContentToken != null)
+                    {
+                        this._sink.EmitToken(lastContentToken);
+                    }
+
+                    this._sink.EmitToken(pendingWhitespace);
+                }
+                else if (lastContentToken != null)
+                {
+                    this._sink.EmitToken(lastContentToken);
+                }
+
+                break;
+            }
         }
 
         this._sink.FinishNode();
+        return newLineConsumed;
     }
 
     /// <summary>

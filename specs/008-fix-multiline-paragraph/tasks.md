@@ -27,12 +27,12 @@
 
 **⚠️ CRITICAL**: US1・US2 の BDD Green ステップ実装はこのフェーズ完了後に行う
 
-- [ ] T002 `ParseInlineText()` を複数行対応に修正する（`Source/AsciiSharp/Parser/Parser.cs`）
+- [x] T002 `ParseInlineText()` を複数行対応に修正する（`Source/AsciiSharp/Parser/Parser.cs`）
   - 連続するプレーンテキスト行を1つの `InlineTextSyntax` にまとめる
   - 中間行の改行はコンテンツトークンとして出力する
   - 最終行の改行のみトリビアとして付与する（`ParseSectionTitle()` パターンを踏襲）
   - `ParseParagraph()` との改行消費フラグ（`newLineConsumed`）の調整を行う
-- [ ] T003 ビルドとテストを実行してリグレッションを確認する（`dotnet build`、`dotnet test`）
+- [x] T003 ビルドとテストを実行してリグレッションを確認する（`dotnet build`、`dotnet test`）
 
 **Checkpoint**: パーサー修正完了 — US1・US2 の BDD Green ステップ実装を開始できる
 
