@@ -133,9 +133,14 @@ public sealed class AsgConverter
         {
             ArgumentNullException.ThrowIfNull(node);
 
+            // 複数行テキストの改行を \n に正規化する（\r\n → \n、\r → \n）
+            var value = node.Text
+                .Replace("\r\n", "\n", StringComparison.Ordinal)
+                .Replace("\r", "\n", StringComparison.Ordinal);
+
             return new AsgText
             {
-                Value = node.Text,
+                Value = value,
                 Location = this.GetLocation(node)
             };
         }

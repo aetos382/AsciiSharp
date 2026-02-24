@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 using AsciiSharp.Syntax;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,55 +12,128 @@ namespace AsciiSharp.Specs.Features;
 /// </summary>
 public sealed partial class MultipleLinesParagraphFeature
 {
-    private readonly string _input = string.Empty;
+    private string _input = string.Empty;
+    private SyntaxTree? _syntaxTree;
+    private IReadOnlyList<ParagraphSyntax>? _paragraphs;
 
+    /// <summary>
+    /// パーサーが初期化されている。
+    /// ParseText 呼び出し時に初期化されるため、ここでは何もしない。
+    /// </summary>
     private void パーサーが初期化されている()
     {
-        Assert.Inconclusive("未実装");
+        // パーサーの初期化は ParseText 呼び出し時に行われる
     }
 
     private void 複数行にわたる以下のパラグラフがある(string input)
     {
-        Assert.Inconclusive("未実装");
+        _input = input;
     }
 
     private void 以下の複数パラグラフ文書がある(string input)
     {
-        Assert.Inconclusive("未実装");
+        _input = input;
     }
 
     private void 文書を解析する()
     {
-        Assert.Inconclusive("未実装");
+        _syntaxTree = SyntaxTree.ParseText(_input);
+        _paragraphs = _syntaxTree.Root
+            .DescendantNodes()
+            .OfType<ParagraphSyntax>()
+            .ToList();
     }
 
     private void パラグラフのインライン要素が_N個である(int count)
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_paragraphs, "パラグラフリストが null です。");
+        Assert.IsTrue(_paragraphs.Count > 0, "段落が見つかりません。");
+
+        Assert.HasCount(
+            count,
+            _paragraphs[0].InlineElements,
+            $"インライン要素数が一致しません。期待: {count}, 実際: {_paragraphs[0].InlineElements.Count}");
     }
 
     private void 最初のインライン要素がInlineTextSyntaxである()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_paragraphs, "パラグラフリストが null です。");
+        Assert.IsTrue(
+            _paragraphs.Count > 0 && _paragraphs[0].InlineElements.Count > 0,
+            "段落またはインライン要素が見つかりません。");
+
+        Assert.IsInstanceOfType<InlineTextSyntax>(
+            _paragraphs[0].InlineElements[0],
+            "最初のインライン要素は InlineTextSyntax である必要があります。");
     }
 
     private void InlineTextSyntaxのTextが(string expected)
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_paragraphs, "パラグラフリストが null です。");
+        Assert.IsTrue(
+            _paragraphs.Count > 0 && _paragraphs[0].InlineElements.Count > 0,
+            "段落またはインライン要素が見つかりません。");
+
+        var inlineText = _paragraphs[0].InlineElements[0] as InlineTextSyntax;
+        Assert.IsNotNull(inlineText, "最初のインライン要素は InlineTextSyntax である必要があります。");
+
+        Assert.AreEqual(
+            expected,
+            inlineText.Text,
+            $"InlineTextSyntax のテキストが一致しません。" +
+            $"期待: '{expected.Replace("\n", "\\n")}', " +
+            $"実際: '{inlineText.Text.Replace("\n", "\\n")}'");
     }
 
     private void InlineTextSyntaxのSpanEndが最終行末尾コンテンツの次の位置である()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_paragraphs, "パラグラフリストが null です。");
+        Assert.IsTrue(
+            _paragraphs.Count > 0 && _paragraphs[0].InlineElements.Count > 0,
+            "段落またはインライン要素が見つかりません。");
+
+        var inlineText = _paragraphs[0].InlineElements[0] as InlineTextSyntax;
+        Assert.IsNotNull(inlineText, "最初のインライン要素は InlineTextSyntax である必要があります。");
+
+        // Span 範囲のテキストに末尾改行が含まれないことを確認（最終行の改行はトリビア）
+        var spanText = _syntaxTree.Text.GetText(inlineText.Span);
+        Assert.IsFalse(
+            spanText.EndsWith("\n", System.StringComparison.Ordinal) ||
+            spanText.EndsWith("\r", System.StringComparison.Ordinal),
+            $"InlineTextSyntax の Span が末尾の改行を含んでいます。" +
+            $"Span テキスト: '{spanText.Replace("\n", "\\n").Replace("\r", "\\r")}'");
     }
 
     private void 最初のパラグラフのSpanが改行を含まない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_paragraphs, "パラグラフリストが null です。");
+        Assert.IsTrue(_paragraphs.Count > 0, "段落が見つかりません。");
+
+        var paragraph = _paragraphs[0];
+        var spanText = _syntaxTree.Text.GetText(paragraph.Span);
+
+        Assert.IsFalse(
+            spanText.EndsWith("\n", System.StringComparison.Ordinal) ||
+            spanText.EndsWith("\r", System.StringComparison.Ordinal),
+            $"最初の段落の Span が末尾の改行を含んでいます。" +
+            $"Span テキスト: '{spanText.Replace("\n", "\\n").Replace("\r", "\\r")}'");
     }
 
     private void 最後のパラグラフのSpanが改行を含まない()
     {
-        Assert.Inconclusive("未実装");
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+        Assert.IsNotNull(_paragraphs, "パラグラフリストが null です。");
+        Assert.IsTrue(_paragraphs.Count > 0, "段落が見つかりません。");
+
+        var paragraph = _paragraphs[_paragraphs.Count - 1];
+        var spanText = _syntaxTree.Text.GetText(paragraph.Span);
+
+        Assert.IsFalse(
+            spanText.EndsWith("\n", System.StringComparison.Ordinal) ||
+            spanText.EndsWith("\r", System.StringComparison.Ordinal),
+            $"最後の段落の Span が末尾の改行を含んでいます。" +
+            $"Span テキスト: '{spanText.Replace("\n", "\\n").Replace("\r", "\\r")}'");
     }
 }

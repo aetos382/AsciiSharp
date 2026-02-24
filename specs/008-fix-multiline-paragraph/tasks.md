@@ -46,9 +46,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [P] [US1] `AsgConverter.VisitInlineText()` で改行文字を `\n` に正規化する（`Source/AsciiSharp.Asg/AsgConverter.cs`）
-- [ ] T005 [US1] BDD Green — 共通ステップ（`パーサーが初期化されている`・`複数行にわたる以下のパラグラフがある`・`文書を解析する`）を実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
-- [ ] T006 [US1] BDD Green — US1 検証ステップ（`パラグラフのインライン要素が_N個である`・`最初のインライン要素がInlineTextSyntaxである`・`InlineTextSyntaxのTextが`）を実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
+- [x] T004 [P] [US1] `AsgConverter.VisitInlineText()` で改行文字を `\n` に正規化する（`Source/AsciiSharp.Asg/AsgConverter.cs`）
+- [x] T005 [US1] BDD Green — 共通ステップ（`パーサーが初期化されている`・`複数行にわたる以下のパラグラフがある`・`文書を解析する`）を実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
+- [x] T006 [US1] BDD Green — US1 検証ステップ（`パラグラフのインライン要素が_N個である`・`最初のインライン要素がInlineTextSyntaxである`・`InlineTextSyntaxのTextが`）を実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
 
 **Checkpoint**: シナリオ 1・2 が Green — User Story 1 MVP 達成
 
@@ -62,8 +62,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] 以下の複数パラグラフ文書がある ステップを実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
-- [ ] T008 [US2] BDD Green — US2 検証ステップ（`InlineTextSyntaxのSpanEndが最終行末尾コンテンツの次の位置である`・`最初のパラグラフのSpanが改行を含まない`・`最後のパラグラフのSpanが改行を含まない`）を実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
+- [x] T007 [US2] 以下の複数パラグラフ文書がある ステップを実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
+- [x] T008 [US2] BDD Green — US2 検証ステップ（`InlineTextSyntaxのSpanEndが最終行末尾コンテンツの次の位置である`・`最初のパラグラフのSpanが改行を含まない`・`最後のパラグラフのSpanが改行を含まない`）を実装する（`Test/AsciiSharp.Specs/Features/MultipleLinesParagraphFeature.Steps.cs`）
 
 **Checkpoint**: 全 4 シナリオが Green — User Story 1・2 ともに達成
 
