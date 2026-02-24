@@ -74,8 +74,7 @@
 **Purpose**: 既存テストのリグレッション修正と TCK 検証
 
 - [ ] T009 [P] 既存の段落関連テストを確認し、`InlineElements` 構造の変更に追従して修正する（`Test/AsciiSharp.Tests/`）
-- [ ] T010 [P] `AsciiSharp.Asg.Tests` の段落関連テストを確認し、リグレッションを修正する（`Test/AsciiSharp.Asg.Tests/`）
-- [ ] T011 TCK を実行して SC-001〜SC-006 をすべて確認する（`docker buildx bake tck && docker run --rm asciisharp-tck`）
+- [ ] T010 TCK を実行して SC-001〜SC-006 をすべて確認する（`docker buildx bake tck && docker run --rm asciisharp-tck`）
 
 ---
 
@@ -83,9 +82,9 @@
 
 **Purpose**: 警告ゼロポリシーの適用とコード整理
 
-- [ ] T012 ビルド警告を解消する（`Source/AsciiSharp/Parser/Parser.cs`、`Source/AsciiSharp.Asg/AsgConverter.cs`）
-- [ ] T013 修正箇所のコードコメント・XML ドキュメントを日本語で整備する（`Source/AsciiSharp/Parser/Parser.cs`）
-- [ ] T014 最終ビルドとテストを実行して警告ゼロを確認する（`dotnet build`、`dotnet test`）
+- [ ] T011 ビルド警告を解消する（`Source/AsciiSharp/Parser/Parser.cs`、`Source/AsciiSharp.Asg/AsgConverter.cs`）
+- [ ] T012 修正箇所のコードコメント・XML ドキュメントを日本語で整備する（`Source/AsciiSharp/Parser/Parser.cs`）
+- [ ] T013 最終ビルドとテストを実行して警告ゼロを確認する（`dotnet build`、`dotnet test`）
 
 ---
 
@@ -108,7 +107,6 @@
 ### Parallel Opportunities
 
 - T004（AsgConverter 修正）は T002（Parser 修正）と同時進行可能（異なるファイル）
-- T009（AsciiSharp.Tests）と T010（Asg.Tests）は並行実行可能
 - Phase 3 の T004 と T005〜T006 は並行実行可能
 
 ---
@@ -119,10 +117,6 @@
 # Phase 2（T002）と Phase 3 初期（T004）を並行実行:
 Task A: "ParseInlineText() を複数行対応に修正する" (Source/AsciiSharp/Parser/Parser.cs)
 Task B: "AsgConverter.VisitInlineText() で改行正規化" (Source/AsciiSharp.Asg/AsgConverter.cs)
-
-# Phase 5 のリグレッション修正を並行実行:
-Task A: "AsciiSharp.Tests の段落関連テスト修正" (Test/AsciiSharp.Tests/)
-Task B: "Asg.Tests の段落関連テスト修正" (Test/AsciiSharp.Asg.Tests/)
 ```
 
 ---
@@ -140,8 +134,8 @@ Task B: "Asg.Tests の段落関連テスト修正" (Test/AsciiSharp.Asg.Tests/)
 
 1. Phase 2: T002 → T003（パーサー基盤修正）→ Phase 3: T004〜T006（US1 Green）→ MVP 達成
 2. Phase 4: T007〜T008（US2 Green）→ 位置情報修正確認
-3. Phase 5: T009〜T011（リグレッション修正 + TCK 確認）
-4. Phase 6: T012〜T014（Refactor・警告ゼロ）
+3. Phase 5: T009〜T010（リグレッション修正 + TCK 確認）
+4. Phase 6: T011〜T013（Refactor・警告ゼロ）
 
 ---
 
