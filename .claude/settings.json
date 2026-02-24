@@ -39,9 +39,13 @@
       "Edit(/Directory.packages.props)",
       "Edit(**/*.g.cs)",
       "Edit(**/*.Designer.cs)",
+      "Edit(.specify/scripts/**/*)",
+      "Edit(.specify/templates/**/*)",
       "Write(/Directory.packages.props)",
       "Write(**/*.g.cs)",
-      "Write(**/*.Designer.cs)"
+      "Write(**/*.Designer.cs)",
+      "Write(.specify/scripts/**/*)",
+      "Write(.specify/templates/**/*)"
     ]
   },
   "enableAllProjectMcpServers": true,
