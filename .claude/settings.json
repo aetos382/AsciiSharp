@@ -12,6 +12,9 @@
       "Bash(dotnet run:*)",
       "Bash(dotnet test:*)",
       "Bash(find *)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh label list)",
       "Bash(gh run list *)",
       "Bash(gh run view *)",
       "Bash(git fetch *)",
@@ -26,6 +29,8 @@
       "WebFetch",
       "WebSearch",
       "mcp__github__get_file_contents",
+      "mcp__github__get_me",
+      "mcp__github__list_issues",
       "mcp__github__search_code",
       "mcp__microsoft-learn__microsoft_docs_fetch",
       "mcp__microsoft-learn__microsoft_code_sample_search"
@@ -49,12 +54,6 @@
     "dotnet-skills@richlander-dotnet-skills": true
   },
   "extraKnownMarketplaces": {
-    "claude-plugins-official": {
-      "source": {
-        "source": "github",
-        "repo": "Anthropic/claude-plugins-official"
-      }
-    },
     "richlander-dotnet-skills": {
       "source": {
         "source": "github",
