@@ -664,8 +664,17 @@ internal sealed class AsciiDocParser
                     }
                     else if (pendingWhitespace != null)
                     {
-                        // コンテンツが空白のみの場合（通常は起きないが安全のため）
+                        // pendingWhitespace 自体がトークン（空白文字がコンテンツ）であるため、
+                        // trailingTrivia の Whitespace エントリは付与しない（二重計上になる）。
+                        // EndOfLine のみをトリビアとして付与する。
                         this._sink.EmitToken(pendingWhitespace.WithTrivia(null, [InternalTrivia.EndOfLine(newLineToken.Text)]));
+                    }
+                    else
+                    {
+                        // lastContentToken と pendingWhitespace が共に null になるケースは、
+                        // ParseParagraph() が IsBlankLine() を確認した上で ParseInlineText() を呼ぶため、
+                        // 通常の入力では到達しない。
+                        throw new UnreachableException("ParseInlineText: 最終行処理で lastContentToken と pendingWhitespace が共に null です。");
                     }
 
                     newLineConsumed = true;
