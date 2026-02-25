@@ -7,7 +7,8 @@ using AsciiSharp.InternalSyntax;
 namespace AsciiSharp.Syntax;
 /// <summary>
 /// インライン テキストを表す構文ノード。
-/// 一行のプレーンテキストを表すインライン要素。
+/// 1 つまたは複数の連続する行からなるプレーンテキストを表すインライン要素。
+/// 中間行の改行はコンテンツとして保持され、最終行の改行はトリビアとして付与される。
 /// </summary>
 public sealed class InlineTextSyntax : InlineSyntax
 {
@@ -15,7 +16,8 @@ public sealed class InlineTextSyntax : InlineSyntax
 
     /// <summary>
     /// テキストの内容。
-    /// 行頭・行末のトリビア（空白・改行）を除いたテキスト内容を返す。行中の空白は保持される。
+    /// 先頭・末尾のトリビア（空白・改行）を除いたテキスト内容を返す。
+    /// 行中の空白および複数行テキストの中間改行はコンテンツとして保持される。
     /// </summary>
     public string Text => this.Internal.ToTrimmedString();
 

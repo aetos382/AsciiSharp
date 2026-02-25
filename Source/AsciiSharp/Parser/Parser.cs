@@ -534,7 +534,7 @@ internal sealed class AsciiDocParser
             {
                 var newLineConsumed = this.ParseInlineText();
 
-                // ParseInlineText() が改行を消費していない場合（リンク開始で中断した場合）のみ消費する
+                // ParseInlineText() が改行を消費していない場合（EOF またはリンク開始で中断した場合）のみ消費する
                 if (!newLineConsumed && this.Current.Kind == SyntaxKind.NewLineToken)
                 {
                     this.EmitCurrentToken();
@@ -550,7 +550,11 @@ internal sealed class AsciiDocParser
     /// 連続するプレーンテキスト行を 1 つの InlineText ノードとしてラップする。
     /// 中間行の改行はコンテンツトークンとして保持し、最終行の改行はトリビアとして付与する。
     /// </summary>
-    /// <returns>改行トークンを消費した場合は <see langword="true"/>。</returns>
+    /// <returns>
+    /// 改行トークンをトリビアまたはコンテンツとして消費した場合は <see langword="true"/>。
+    /// EOF またはリンク開始で行が中断した場合は <see langword="false"/>。
+    /// 呼び出し側は <see langword="false"/> の場合にのみ改行の消費を担当する。
+    /// </returns>
     private bool ParseInlineText()
     {
         this._sink.StartNode(SyntaxKind.InlineText);
@@ -558,6 +562,28 @@ internal sealed class AsciiDocParser
         InternalToken? lastContentToken = null;
         InternalToken? pendingWhitespace = null;
         bool newLineConsumed = false;
+
+        // 保留中のコンテンツトークンと空白トークンを出力して状態をリセットする。
+        // pendingWhitespace がある場合は先に lastContentToken を出力し、次に pendingWhitespace を出力する。
+        void FlushPendingTokens()
+        {
+            if (pendingWhitespace != null)
+            {
+                if (lastContentToken != null)
+                {
+                    this._sink.EmitToken(lastContentToken);
+                    lastContentToken = null;
+                }
+
+                this._sink.EmitToken(pendingWhitespace);
+                pendingWhitespace = null;
+            }
+            else if (lastContentToken != null)
+            {
+                this._sink.EmitToken(lastContentToken);
+                lastContentToken = null;
+            }
+        }
 
         while (true)
         {
@@ -588,21 +614,7 @@ internal sealed class AsciiDocParser
                 else
                 {
                     // 非空白：保留中の空白を確定してコンテンツとして出力する
-                    if (pendingWhitespace != null)
-                    {
-                        if (lastContentToken != null)
-                        {
-                            this._sink.EmitToken(lastContentToken);
-                        }
-
-                        this._sink.EmitToken(pendingWhitespace);
-                        pendingWhitespace = null;
-                    }
-                    else if (lastContentToken != null)
-                    {
-                        this._sink.EmitToken(lastContentToken);
-                    }
-
+                    FlushPendingTokens();
                     lastContentToken = this.Current;
                     this.Advance();
                 }
@@ -611,7 +623,6 @@ internal sealed class AsciiDocParser
             // 行末（改行・EOF・リンク開始）に達した
             if (this.Current.Kind == SyntaxKind.NewLineToken)
             {
-                // 改行トークンを保存して消費する
                 var newLineToken = this.Current;
                 this.Advance();
 
@@ -625,26 +636,9 @@ internal sealed class AsciiDocParser
                 if (isContinuation)
                 {
                     // 中間行: 行末空白はコンテンツ内部として確定し、改行をコンテンツトークンとして出力する
-                    if (pendingWhitespace != null)
-                    {
-                        if (lastContentToken != null)
-                        {
-                            this._sink.EmitToken(lastContentToken);
-                            lastContentToken = null;
-                        }
-
-                        this._sink.EmitToken(pendingWhitespace);
-                        pendingWhitespace = null;
-                    }
-                    else if (lastContentToken != null)
-                    {
-                        this._sink.EmitToken(lastContentToken);
-                        lastContentToken = null;
-                    }
-
+                    FlushPendingTokens();
                     this._sink.EmitToken(newLineToken);
                     newLineConsumed = true;
-                    // 次の行の読み取りを継続する
                 }
                 else
                 {
@@ -685,20 +679,7 @@ internal sealed class AsciiDocParser
             {
                 // 改行なしで終了（EOF またはリンク開始）
                 // 最後のコンテンツトークンを出力する（行末空白はトリビア化しない）
-                if (pendingWhitespace != null)
-                {
-                    if (lastContentToken != null)
-                    {
-                        this._sink.EmitToken(lastContentToken);
-                    }
-
-                    this._sink.EmitToken(pendingWhitespace);
-                }
-                else if (lastContentToken != null)
-                {
-                    this._sink.EmitToken(lastContentToken);
-                }
-
+                FlushPendingTokens();
                 break;
             }
         }

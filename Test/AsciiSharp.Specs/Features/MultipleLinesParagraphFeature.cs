@@ -78,4 +78,35 @@ public sealed partial class MultipleLinesParagraphFeature : FeatureFixture
             then => 最初のパラグラフのSpanが改行を含まない(),
             then => 最後のパラグラフのSpanが改行を含まない());
     }
+
+    /// <summary>
+    /// 複数行パラグラフのラウンドトリップが保証される。
+    /// </summary>
+    [Scenario]
+    public void 複数行パラグラフのラウンドトリップが保証される()
+    {
+        Runner.RunScenario(
+            given => パーサーが初期化されている(),
+            given => 複数行にわたる以下のパラグラフがある(
+                "This paragraph has multiple lines that wrap after reaching the 72\n" +
+                "character limit set by the text editor.\n"),
+            when => 文書を解析する(),
+            then => 構文木から復元したテキストは元の文書と一致する());
+    }
+
+    /// <summary>
+    /// リンクを含む行で InlineTextSyntax が分断される。
+    /// </summary>
+    [Scenario]
+    public void リンクを含む行でInlineTextSyntaxが分断される()
+    {
+        Runner.RunScenario(
+            given => パーサーが初期化されている(),
+            given => 複数行にわたる以下のパラグラフがある(
+                "See https://example.org[example]\n"),
+            when => 文書を解析する(),
+            then => パラグラフのインライン要素が_N個である(2),
+            then => 最初のインライン要素がInlineTextSyntaxである(),
+            then => 二番目のインライン要素がLinkSyntaxである());
+    }
 }

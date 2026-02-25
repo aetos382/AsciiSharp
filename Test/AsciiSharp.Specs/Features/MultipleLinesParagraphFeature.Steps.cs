@@ -133,4 +133,29 @@ public sealed partial class MultipleLinesParagraphFeature
             $"最後の段落の Span が末尾の改行を含んでいます。" +
             $"Span テキスト: '{spanText.Replace("\n", "\\n", System.StringComparison.Ordinal).Replace("\r", "\\r", System.StringComparison.Ordinal)}'");
     }
+
+    private void 構文木から復元したテキストは元の文書と一致する()
+    {
+        Assert.IsNotNull(_syntaxTree, "構文木が null です。");
+
+        var reconstructed = _syntaxTree.Root.ToFullString();
+        Assert.AreEqual(
+            _input,
+            reconstructed,
+            $"ラウンドトリップが失敗しました。" +
+            $"元テキスト: '{_input.Replace("\n", "\\n", System.StringComparison.Ordinal)}', " +
+            $"復元テキスト: '{reconstructed.Replace("\n", "\\n", System.StringComparison.Ordinal)}'");
+    }
+
+    private void 二番目のインライン要素がLinkSyntaxである()
+    {
+        Assert.IsNotNull(_paragraphs, "パラグラフリストが null です。");
+        Assert.IsTrue(
+            _paragraphs.Count > 0 && _paragraphs[0].InlineElements.Count > 1,
+            "段落またはインライン要素が 2 個以上存在しません。");
+
+        Assert.IsInstanceOfType<LinkSyntax>(
+            _paragraphs[0].InlineElements[1],
+            "2 番目のインライン要素は LinkSyntax である必要があります。");
+    }
 }

@@ -108,7 +108,8 @@ public sealed class AsgConverter
                 }
             }
 
-            // InlineElements が空の場合、パラグラフのテキストを直接取得
+            // InlineElements が空の場合（未対応構文やエラー回復で要素が抽出されなかった場合）、
+            // パラグラフのフルテキストから直接テキストを取得するフォールバック処理
             if (inlines.Count == 0)
             {
                 var paragraphText = node.ToString().Trim();
@@ -133,7 +134,8 @@ public sealed class AsgConverter
         {
             ArgumentNullException.ThrowIfNull(node);
 
-            // 複数行テキストの改行を \n に正規化する（\r\n → \n、\r → \n）
+            // TCK の期待する ASG 出力形式に合わせて、改行コードを \n に正規化する。
+            // Windows 形式 \r\n と旧 Mac 形式 \r をすべて Unix 形式 \n に統一する。
             var value = node.Text
                 .Replace("\r\n", "\n", StringComparison.Ordinal)
                 .Replace("\r", "\n", StringComparison.Ordinal);
